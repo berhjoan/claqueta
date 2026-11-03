@@ -1,6 +1,6 @@
 // Estado del panel: valores, planos, guardado local y enlace para compartir.
 import { DEPTOS, opcion, valoresPorDefecto } from "./catalogo.js";
-import { generarPlanos } from "./planos.js";
+import { duracionPlanos, generarPlanos } from "./planos.js";
 import { recetas } from "../data/recetas.js";
 import { voces } from "../data/voces.js";
 
@@ -27,7 +27,21 @@ export function fijar(ruta, valor) {
   const obj = partes.reduce((o, k) => o[k], estado.valores);
   obj[ultimo] = valor;
   if (AFECTAN_PLANOS.has(ruta) && !estado.planosManuales) estado.planos = generarPlanos(estado.valores);
+  if (ruta === "entrega.duracion" && estado.planosManuales) reescalarPlanos(Number(valor));
   avisar(ruta);
+}
+
+// Con planos editados a mano, cambiar la duración los reparte en proporción, sin perder el orden ni los textos.
+function reescalarPlanos(total) {
+  const actual = duracionPlanos(estado.planos);
+  if (!(total > 0) || !(actual > 0)) return;
+  const k = total / actual;
+  for (const p of estado.planos) p.dur = Math.max(0.3, Math.round(p.dur * k * 10) / 10);
+}
+
+// Y al revés: si la lista de planos cambia, la duración del encargo la sigue.
+function duracionDesdePlanos() {
+  estado.valores.entrega.duracion = Math.max(5, Math.min(600, Math.round(duracionPlanos(estado.planos) * 10) / 10));
 }
 
 export function aplicarReceta(id) {
@@ -67,6 +81,7 @@ export function cambiarPlano(id, cambios) {
   if (!p) return;
   Object.assign(p, cambios);
   estado.planosManuales = true;
+  duracionDesdePlanos();
   avisar("planos");
 }
 
@@ -83,6 +98,7 @@ export function agregarPlano(despuesDe) {
   const nuevo = { ...base, id: `p${Date.now().toString(36)}`, titulo: "Plano nuevo", texto: "", nota: "", dur: 3 };
   estado.planos.splice(i + 1, 0, nuevo);
   estado.planosManuales = true;
+  duracionDesdePlanos();
   avisar("planos");
   return nuevo.id;
 }
@@ -91,6 +107,7 @@ export function quitarPlano(id) {
   if (estado.planos.length <= 1) return;
   estado.planos = estado.planos.filter((x) => x.id !== id);
   estado.planosManuales = true;
+  duracionDesdePlanos();
   avisar("planos");
 }
 

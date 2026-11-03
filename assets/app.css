@@ -187,8 +187,8 @@ input[type="color"] { width: 54px; height: 28px; padding: 0; border: 1px solid v
 /* Cabina */
 .cabina { grid-area: cabina; display: flex; flex-direction: column; min-height: 0; background: var(--ink); border-left: 1px solid var(--linea); }
 .cabina-monitor { flex: 0 0 auto; padding: 10px 12px 8px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--linea); }
-.monitor-marco { position: relative; display: flex; justify-content: center; height: clamp(190px, 37vh, 440px); }
-.monitor { position: relative; height: 100%; max-width: 100%; overflow: hidden; background: var(--m-fondo, #0b0806); container-type: size; box-shadow: 0 0 0 1px var(--linea-fuerte); }
+.monitor-marco { position: relative; display: flex; justify-content: center; align-items: center; height: clamp(190px, 37vh, 440px); container-type: size; }
+.monitor { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--m-fondo, #0b0806); container-type: size; box-shadow: 0 0 0 1px var(--linea-fuerte); }
 .monitor::after { content: ""; position: absolute; inset: 0; background: var(--m-acento); opacity: var(--m-velo, 0); pointer-events: none; z-index: 3; }
 .m-ranura { position: absolute; inset: 0; overflow: hidden; background: var(--m-fondo); }
 .m-ranura[hidden] { display: none; }
@@ -217,7 +217,7 @@ input[type="color"] { width: 54px; height: 28px; padding: 0; border: 1px solid v
 .m-sub.e-karaoke i.on, .m-sub.e-karaoke i.ya { opacity: 1; color: var(--m-acento); }
 .m-muestra { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--ink); z-index: 4; }
 .m-muestra[hidden] { display: none; }
-.monitor-caja { position: relative; height: 100%; max-width: 100%; display: flex; }
+.monitor-caja { position: relative; flex: none; display: flex; width: min(100cqw, calc(100cqh * var(--ar, .5625))); aspect-ratio: var(--ar, .5625); }
 .guias { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
 .guias[hidden] { display: none; }
 .guias i { position: absolute; background: rgb(226 90 60 / .2); border: 0 dashed rgb(255 150 120 / .8); }

@@ -46,7 +46,12 @@ export class LineaTiempo {
     this.pista.replaceChildren();
     planos.forEach((p, i) => {
       const cam = opcion("camara", "movs", p.cam);
-      const el = h("button", { type: "button", class: "plano", role: "listitem", draggable: false, "aria-current": String(this.sel === p.id), title: `${p.titulo}: ${p.dur} s` , onclick: (e) => { if (this.arrastrado) return; this.sel = this.sel === p.id ? null : p.id; this.pintar(); } },
+      const el = h("button", { type: "button", class: "plano", role: "listitem", draggable: false, "aria-current": String(this.sel === p.id), title: `${p.titulo}: ${p.dur} s` , onclick: () => {
+        if (this.arrastrado) return;
+        this.sel = this.sel === p.id ? null : p.id;
+        this.pintar();
+        if (this.sel) this.alBuscar(planos.slice(0, i).reduce((suma, x) => suma + x.dur, 0) + 0.01);
+      } },
         h("b", {}, String(i + 1)), h("span", {}, p.titulo), h("small", {}, cam ? cam.n[0] : p.cam));
       el.style.flexGrow = String(p.dur);
       el.style.flexBasis = "0";

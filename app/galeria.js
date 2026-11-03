@@ -3,7 +3,7 @@ import { leer, fijar } from "./estado.js";
 import { h } from "./vistas.js";
 
 const PAPELES = [["base", "Principal, 70 %"], ["secundario", "Secundario, 20 %"], ["acento", "Acento, 10 %"]];
-const ESTADO = { marca: "Hecho en tu marca", prueba: "Probado hoy", adaptar: "Por adaptar" };
+const ESTADO = { marca: "Hecho en tu marca", prueba: "Probado", adaptar: "Por adaptar" };
 const AGUANTE = { alto: "Aguanta negro y oro", medio: "Pierde algo en negro y oro", bajo: "Necesita su propio color" };
 
 export function crearGaleria(estilos, { monitor }) {

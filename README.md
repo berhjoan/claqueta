@@ -4,6 +4,8 @@ Panel gratuito para dirigir videos hechos con código. Eliges estilo, duración,
 
 **Abrir el panel:** https://berhjoan.github.io/claqueta
 
+![El panel: departamentos a la izquierda, opciones al centro, monitor y encargo a la derecha, línea de tiempo abajo](docs/panel.jpg)
+
 ## Cómo se usa
 
 1. **Elige.** Parte de una receta o recorre los departamentos: guion, arte, cámara, profundidad, movimiento, montaje, sonido, subtítulos, motor y entrega. El monitor muestra una previsualización mientras eliges.

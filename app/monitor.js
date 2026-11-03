@@ -140,7 +140,7 @@ export class Monitor {
     st.setProperty("--m-peso", tipo?.peso ?? 700);
     st.setProperty("--m-tam", `${v.arte.tamano}cqh`);
     st.setProperty("--m-caja", { mayusculas: "uppercase", minusculas: "lowercase" }[v.arte.caja] ?? "none");
-    st.aspectRatio = `${m.w} / ${m.h}`;
+    this.raiz.parentElement?.style.setProperty("--ar", String(m.w / m.h)); // La caja del monitor cabe en la cabina con cualquier formato.
     const vistaTiza = tipo?.tiza || (v.movimiento.texto ?? []).includes("mano");
     if (vistaTiza && !fuenteLista()) cargarFuente().then(() => { this.a.plano = -1; this.b.plano = -1; this.dibujar(); });
     this.a.plano = -1; this.b.plano = -1;

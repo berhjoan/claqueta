@@ -4,7 +4,8 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { estado, enlaceCompartir, fijar, iniciarEstado } from "../app/estado.js";
+import { agregarPlano, cambiarPlano, estado, enlaceCompartir, fijar, iniciarEstado, quitarPlano } from "../app/estado.js";
+import { duracionPlanos } from "../app/planos.js";
 import { valoresPorDefecto } from "../app/catalogo.js";
 import { construirPrompt } from "../app/prompt.js";
 
@@ -128,4 +129,20 @@ test("un guardado de una versión anterior no deja opciones que ya no existen", 
   assert.equal(estado.valores.sonido.musica, valoresPorDefecto().sonido.musica);
   assert.equal(estado.valores.sonido.animo, "calido");
   assert.ok(estado.planos.length > 0);
+});
+
+test("la duración del encargo y la lista de planos siempre coinciden", () => {
+  abrir({ v: { entrega: { duracion: 30 } } });
+  const total = () => duracionPlanos(estado.planos);
+  assert.ok(Math.abs(total() - 30) < 1);
+  const nuevo = agregarPlano(estado.planos[0].id);
+  assert.ok(Math.abs(total() - estado.valores.entrega.duracion) < 0.2, "agregar un plano");
+  cambiarPlano(nuevo, { dur: 9 });
+  assert.ok(Math.abs(total() - estado.valores.entrega.duracion) < 0.2, "cambiar su duración");
+  quitarPlano(nuevo);
+  assert.ok(Math.abs(total() - estado.valores.entrega.duracion) < 0.2, "quitarlo");
+  const textos = estado.planos.map((p) => p.titulo);
+  fijar("entrega.duracion", 60);
+  assert.ok(Math.abs(total() - 60) < 1, `reescalar a mano da ${total()}`);
+  assert.deepEqual(estado.planos.map((p) => p.titulo), textos, "conserva los planos editados");
 });
