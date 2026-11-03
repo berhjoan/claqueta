@@ -81,12 +81,25 @@ function avisar(texto) {
   clearTimeout(tAviso); tAviso = setTimeout(() => aviso.classList.remove("ver"), 3200);
 }
 
+// El portapapeles puede rechazar, o no responder nunca, según el navegador. Nada aquí puede dejar un botón esperando.
 async function copiar(texto) {
-  try { await navigator.clipboard.writeText(texto); return true; }
-  catch {
-    const t = h("textarea", { value: texto }); document.body.append(t); t.select();
-    const ok = document.execCommand("copy"); t.remove(); return ok;
+  if (navigator.clipboard?.writeText) {
+    const hecho = await Promise.race([
+      navigator.clipboard.writeText(texto).then(() => true, () => false),
+      new Promise((res) => setTimeout(() => res(false), 1500)),
+    ]);
+    if (hecho) return true;
   }
+  const foco = document.activeElement;
+  const t = h("textarea", { value: texto, readOnly: true, "aria-hidden": "true" });
+  t.style.cssText = "position:fixed;opacity:0;left:0;top:0;width:1px;height:1px";
+  document.body.append(t);
+  t.select();
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch { ok = false; }
+  t.remove();
+  foco?.focus?.();
+  return ok;
 }
 
 async function copiarPrompt() {
@@ -98,13 +111,19 @@ async function copiarPrompt() {
 async function traducirYCopiar() {
   btTraducir.disabled = true; btTraducir.textContent = "Traduciendo…";
   idioma = "en"; pintarIdioma(); pintarPrompt();
+  // Se copia de una vez, dentro del clic: si la traducción tarda, ya hay un prompt válido en el portapapeles.
+  const antes = textoPrompt();
+  const copiado = await copiar(antes);
   try { traducciones = await traducirNotas(estado); } catch { traducciones = {}; }
   pintarPrompt();
-  const ok = await copiar(textoPrompt());
+  const despues = textoPrompt();
+  const alDia = despues === antes ? copiado : await copiar(despues);
   btTraducir.disabled = false; btTraducir.textContent = "Traducir y copiar";
   golpeClaqueta();
-  const pendientes = ["objetivo", "audiencia", "notas"].filter((k) => (leer(`guion.${k}`) ?? "").trim() && !traducciones[`guion.${k}`]).length;
-  avisar(ok ? (pendientes ? "Copiado en inglés. Una nota quedó en español porque no se pudo traducir." : "Copiado en inglés. El video se pide en español.") : "El prompt ya está en inglés. Toca «Copiar prompt» para copiarlo.");
+  const pendientes = ["objetivo", "audiencia", "notas"].some((k) => (leer(`guion.${k}`) ?? "").trim() && !traducciones[`guion.${k}`]);
+  if (alDia) avisar(pendientes ? "Copiado en inglés. Una nota quedó en español porque no se pudo traducir." : "Copiado en inglés. El video se pide en español.");
+  else if (copiado) avisar("Copiado en inglés, con las notas en español. Toca «Copiar prompt» para llevar también su traducción.");
+  else avisar("El prompt ya está en inglés. Toca «Copiar prompt» o selecciónalo a mano.");
 }
 
 const btCopiar = h("button", { type: "button", class: "bt bt-oro", onclick: copiarPrompt }, "Copiar prompt");
