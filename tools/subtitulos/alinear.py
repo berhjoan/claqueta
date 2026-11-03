@@ -2,12 +2,15 @@
 """Tiempos de palabra para subtítulos: transcribe la voz y pega esos tiempos al guion exacto.
 
 La transcripción automática escribe mal nombres y tildes; por eso el texto siempre sale del guion y solo los tiempos salen del audio.
+Después, cada palabra se afina contra la energía real del audio: Whisper marca antes de tiempo lo que sigue a una pausa.
 
 Uso:
   python tools/subtitulos/alinear.py --audio voz.wav --guion guion.txt --salida palabras.json
   python tools/subtitulos/alinear.py --audio voz.wav --guion guion.txt --salida palabras.json --modelo small
 
-Usa faster-whisper o openai-whisper, el que esté instalado. Gratis y local; el modelo se baja una vez.
+El modelo se baja una vez: base pesa unos 145 MB y small unos 460 MB. Como el texto sale del guion, base suele bastar.
+
+Usa faster-whisper o openai-whisper, el que esté instalado. Gratis y local.
   pip install faster-whisper
 """
 import argparse
@@ -17,6 +20,9 @@ import re
 import sys
 import unicodedata
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from tiempos import refinar  # noqa: E402
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -84,10 +90,11 @@ def main():
     p.add_argument("--audio", required=True)
     p.add_argument("--guion", required=True)
     p.add_argument("--salida", required=True)
-    p.add_argument("--modelo", default="small")
+    p.add_argument("--modelo", default="base")
     a = p.parse_args()
     guion = Path(a.guion).read_text(encoding="utf-8")
     palabras, cobertura = alinear(guion, transcribir(a.audio, a.modelo))
+    palabras = refinar(palabras, a.audio)
     Path(a.salida).parent.mkdir(parents=True, exist_ok=True)
     Path(a.salida).write_text(json.dumps(palabras, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({"ok": True, "palabras": len(palabras), "coincidencia": round(cobertura, 3), "salida": a.salida}))

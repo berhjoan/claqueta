@@ -1,7 +1,8 @@
 # Tomado de lemo-opuscar (MIT), commit bebbbe1. Ver library/lemo-opuscar/LICENSE.
 """Physically modelled plucked strings (extended Karplus-Strong digital waveguide) + modal synthesis (kalimba / music box). Returns mono float32 @ SR.
 
-    from core.audio import pluck as P
+    import sys; sys.path.insert(0, 'ruta/a/tools/audio')
+    import pluck as P
     x = P.pluck('guqin', 'D3', 4, vel=.7, bend=[(0.6, 0), (1.2, 2)], vib=(5, .25, 1.4))   # guqin: stopped note sliding up a second + yin-nao (吟猱, guqin finger vibrato)
     y = P.pluck('guqin', 'A4', 3, harmonic=True)                                           # harmonic
     z = P.pluck('pipa', 'E4', 1.5, trem=14)                                                # pipa lunzhi (轮指, rolling finger tremolo)
@@ -13,7 +14,7 @@ Model: fractional delay (3rd-order Lagrange, time-varying → slides / vibrato) 
 import numpy as np
 from scipy.signal import butter, sosfilt, lfilter
 try: from numba import njit
-except ImportError: raise ImportError('pluck.py needs numba: install the music tier: sh plugin/skills/lemo-opuscar/scripts/setup.sh deps music') from None
+except ImportError: raise ImportError('pluck.py needs numba: pip install numba. Original hint: sh plugin/skills/lemo-opuscar/scripts/setup.sh deps music') from None
 
 try:
     from .sfx import SR

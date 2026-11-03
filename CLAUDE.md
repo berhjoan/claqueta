@@ -6,7 +6,7 @@ Si haces un video para alguien, copia las skills a tu proyecto para que Claude C
 
 ```bash
 mkdir -p .claude/skills
-cp -r .claqueta/library/hyperframes/skills/* .claude/skills/
+cp -r ../.claqueta/library/hyperframes/skills/* .claude/skills/
 ```
 
 ## Si trabajas en el propio sistema

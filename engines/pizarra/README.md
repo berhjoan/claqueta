@@ -16,15 +16,15 @@ Escritura a mano en tiza, con letra propia del español, dentro de una escena de
 ## Montarlo en un proyecto de HyperFrames
 
 ```bash
-npx hyperframes@0.9.9 init mi-pizarra --resolution portrait --non-interactive --skip-skills
-cd mi-pizarra
+npx hyperframes@0.9.9 init proyecto --resolution portrait --non-interactive --skip-skills
+cd proyecto
 mkdir -p assets/pizarra compositions
 cp ../.claqueta/engines/pizarra/*.js assets/pizarra/
 cp ../.claqueta/engines/pizarra/ejemplo/index.html .
 cp ../.claqueta/engines/pizarra/ejemplo/pizarra-a.html ../.claqueta/engines/pizarra/ejemplo/pizarra-b.html ../.claqueta/engines/pizarra/ejemplo/capa.html compositions/
 ```
 
-Ajusta las rutas si `.claqueta` está en otro lugar. Las escenas importan `./assets/pizarra/board.js`, relativo a `index.html`.
+`.claqueta` queda al lado de `proyecto`. Las escenas importan `./assets/pizarra/board.js`, relativo a `index.html`.
 
 El ejemplo trae dos detalles que debes cambiar: la pista de audio `assets/audio/mezcla.wav` de `index.html`, y el emblema y la frase de `capa.html`. Si no tienes emblema, borra esa imagen.
 
@@ -61,8 +61,8 @@ Las dos dibujan la misma película y se cortan con la cámara en movimiento sin 
 La película también corre en Node, así que cada trazo suena en su tiempo exacto:
 
 ```bash
-node .claqueta/engines/pizarra/eventos.mjs assets/pizarra/film.js assets/audio/eventos.json
-python .claqueta/tools/audio/tiza.py assets/audio/eventos.json --salida assets/audio/tiza.wav
+node ../.claqueta/engines/pizarra/eventos.mjs assets/pizarra/film.js assets/audio/eventos.json
+python ../.claqueta/tools/audio/tiza.py assets/audio/eventos.json --salida assets/audio/tiza.wav
 ```
 
 Luego añade la tiza a `efectos.json` para `tools/audio/mezcla.py`: `{"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": 0}`. El sonido es sintético y no se ha validado de oído: pide que alguien lo escuche.

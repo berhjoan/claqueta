@@ -69,30 +69,46 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     item("Conserva tildes y signos (á é í ó ú ü ñ ¿ ¡). Comprueba que cada fuente tenga esos caracteres antes de renderizar.");
   }
 
-  sec("2. Carga el sistema", "2. Load the system");
+  sec("2. Prepara el sistema", "2. Set up the system");
   add(L(
     "Claqueta es una biblioteca pública y gratuita de skills, motores, herramientas y guías para hacer video con código.",
     "Claqueta is a free public library of skills, engines, tools and guides for making video with code."
   ));
+  const conHF = v.motor.motor === "hyperframes" || v.motor.motor === "canvas";
+  const preset = m.h > m.w ? "portrait" : m.w > m.h ? "landscape" : "square";
+  add();
+  add("```bash");
+  add(`git clone --depth 1 ${REPO}.git .claqueta`);
+  add("pip install numpy scipy soundfile numba faster-whisper");
+  add("python .claqueta/tools/doctor.py");
+  add(conHF ? `${HF} init proyecto --resolution ${preset} --non-interactive --skip-skills` : "mkdir proyecto");
+  add("cd proyecto");
+  add("```");
+  add();
   item(L(
-    `Con terminal: \`git clone --depth 1 ${REPO}.git .claqueta\` en la carpeta del proyecto, y lee \`.claqueta/AGENTS.md\`. Si ya existe, actualízala con \`git -C .claqueta pull\`.`,
-    `With a terminal: \`git clone --depth 1 ${REPO}.git .claqueta\` in the project folder, then read \`.claqueta/AGENTS.md\`. If it already exists, update it with \`git -C .claqueta pull\`.`
+    "Desde aquí, todo corre dentro de `proyecto/`. El sistema queda al lado, en `../.claqueta`, y no se edita. Las rutas `library/`, `tools/` y `engines/` de este encargo están ahí; `assets/`, `renders/` y `guion.txt` son de tu proyecto.",
+    "From here on, everything runs inside `proyecto/`. The system sits next to it in `../.claqueta` and is not edited. The `library/`, `tools/` and `engines/` paths in this brief live there; `assets/`, `renders/` and `guion.txt` belong to your project."
   ));
+  item(L("Si `.claqueta` ya existe, actualízala con `git -C .claqueta pull`. Si tu sistema no deja instalar paquetes de Python, usa un entorno virtual.", "If `.claqueta` already exists, update it with `git -C .claqueta pull`. If your system blocks Python packages, use a virtual environment."));
   item(L(`Sin terminal: lee ${SITIO}/llms.txt y abre los archivos que indica.`, `With no terminal: read ${SITIO}/llms.txt and open the files it lists.`));
   item(una("motor", "destino"));
+  item(L(
+    "Quién manda: este encargo, luego el `MOTION.md` de la marca, luego las guías de `library/guias` y por último las skills de terceros. Si dos documentos dicen cifras distintas, usa las de más arriba y sigue. `init` escribe un `AGENTS.md` y un `CLAUDE.md` genéricos: este encargo manda sobre ellos.",
+    "What wins: this brief, then the brand's `MOTION.md`, then the guides in `library/guias`, and last any third-party skill. If two documents give different numbers, use the higher one and keep going. `init` writes a generic `AGENTS.md` and `CLAUDE.md`: this brief wins over them."
+  ));
   add();
   add(L("Lee estos archivos antes de empezar, en este orden:", "Read these files before you start, in this order:"));
-  for (const d of documentos(v, { base, sec2, acento, motorSel })) add(`- \`.claqueta/${d}\``);
+  for (const d of documentos(v, { base, sec2, acento, motorSel })) add(`- \`../.claqueta/${d}\``);
   add();
   add(L(
-    "De las guías largas lee solo lo que uses: las fichas de tus estilos y los grupos de aprendizajes que vas a tocar. En este encargo, toda ruta que empiece por `library/`, `tools/` o `engines/` está dentro de `.claqueta/`.",
-    "From the long guides read only what you use: the sheets for your styles and the lessons groups you will touch. In this brief, every path starting with `library/`, `tools/` or `engines/` lives inside `.claqueta/`."
+    "De las guías largas lee solo lo que uses: las fichas de tus estilos y los grupos de aprendizajes que vas a tocar.",
+    "From the long guides read only what you use: the sheets for your styles and the lessons groups you will touch."
   ));
 
   sec("3. Sin pagar nada", "3. Pay for nothing");
   add(L(
-    "Usa solo herramientas gratuitas y locales. No uses APIs de pago, MCP de pago ni servicios con suscripción, ni pidas una llave. De HyperFrames, no uses `cloud`, `lambda`, `cloudrun`, `templates`, `reverse`, `publish` ni la skill `style-sampling`. Si algo pareciera exigir un pago, usa la alternativa gratuita de `.claqueta/AGENTS.md` y anótalo en la entrega.",
-    "Use free, local tools only. Do not use paid APIs, paid MCP servers or subscription services, and do not ask for a key. From HyperFrames, do not use `cloud`, `lambda`, `cloudrun`, `templates`, `reverse`, `publish` or the `style-sampling` skill. If something seems to need payment, use the free alternative in `.claqueta/AGENTS.md` and note it in the delivery."
+    "Usa solo herramientas gratuitas y locales. No uses APIs de pago, MCP de pago ni servicios con suscripción, ni pidas una llave. De HyperFrames, no uses `cloud`, `lambda`, `cloudrun`, `templates`, `reverse`, `publish`, `skills update` ni la skill `style-sampling`. Si algo pareciera exigir un pago, usa la alternativa gratuita de `../.claqueta/AGENTS.md` y anótalo en la entrega.",
+    "Use free, local tools only. Do not use paid APIs, paid MCP servers or subscription services, and do not ask for a key. From HyperFrames, do not use `cloud`, `lambda`, `cloudrun`, `templates`, `reverse`, `publish`, `skills update` or the `style-sampling` skill. If something seems to need payment, use the free alternative in `../.claqueta/AGENTS.md` and note it in the delivery."
   ));
 
   sec("4. Proyecto", "4. Project");
@@ -116,8 +132,11 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   const modoGuion = texto ? (v.guion.modo === "ia" ? "mejorar" : v.guion.modo) : "ia";
   item(opcion("guion", "modo", modoGuion)?.p[I]);
   item(variante);
-  if (conVoz && modoGuion === "exacto") item(L("La duración sale de este texto: genera la voz, mide lo que dura y ajusta la pieza a eso. Si difiere más de un 10 % de lo pedido, dilo en la entrega.", "The duration comes from this text: generate the voice, measure how long it lasts and fit the piece to it. If it differs by more than 10% from what was asked, say so in the delivery."));
-  else if (conVoz) item(L(`Debe durar cerca de ${m.seg} s al leerse: unas ${Math.round(m.seg * 2.3)} palabras.`, `It must take about ${m.seg} s to read aloud: about ${Math.round(m.seg * 2.3)} Spanish words.`));
+  if (modoGuion !== "ia") item(L("El gancho y la estructura de la sección 4 guían la imagen y el orden. No añaden frases: si este texto no trae una pregunta, no la inventes.", "The hook and structure in section 4 guide the picture and the order. They do not add lines: if this text has no question, do not invent one."));
+  if (conVoz && modoGuion === "exacto") {
+    const palabras = texto.split(/\s+/).filter(Boolean).length;
+    item(L(`Este texto tiene ${palabras} palabras: se lee en unos ${Math.round(palabras / 2.3)} s. La duración real sale de la voz, no del objetivo de la sección 6.`, `This text has ${palabras} words: it reads in about ${Math.round(palabras / 2.3)} s. The real duration comes from the voice, not from the target in section 6.`));
+  } else if (conVoz) item(L(`Debe durar cerca de ${m.seg} s al leerse: unas ${Math.round(m.seg * 2.3)} palabras.`, `It must take about ${m.seg} s to read aloud: about ${Math.round(m.seg * 2.3)} Spanish words.`));
   if (texto) {
     add();
     add(L("Texto en español. No lo traduzcas:", "Spanish text. Do not translate it:"));
@@ -129,7 +148,12 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
 
   sec("6. Formato", "6. Format");
   item(una("entrega", "plataforma"));
-  item(`${m.w} × ${m.h}, ${m.fps} fps, ${m.seg} s = ${m.cuadros} ${L("cuadros", "frames")}.`);
+  item(`${m.w} × ${m.h}, ${m.fps} fps. ${L("Duración objetivo", "Target duration")}: ${m.seg} s = ${m.cuadros} ${L("cuadros", "frames")}.`);
+  if (conVoz) item(L(
+    "En los comandos, `$DUR` es la duración real en segundos: lo que mide la voz más el cierre, hasta 1,5 s. Cámbialo por ese número y ajusta la lista de planos a él. Si escribes tú el guion, apunta a quedar a 10 % del objetivo. Si difiere más, dilo en la entrega.",
+    "In the commands, `$DUR` is the real duration in seconds: what the voice measures plus the ending, up to 1.5 s. Replace it with that number and fit the shot list to it. If you write the script, aim to land within 10% of the target. If it differs by more, say so in the delivery."
+  ));
+  const DUR = conVoz ? "$DUR" : String(m.seg);
   if (m.h > m.w) {
     item(L(
       `Zonas seguras en ${m.w}×${m.h}: márgenes laterales de 72 px; nada clave en los primeros 220 px; todo el texto antes de y 1640; subtítulos en y 1300 a 1540 y contenido hasta y 1280; riel derecho libre entre x 960 y 1080, de y 900 a 1700. El mundo y las texturas sí llenan todo el cuadro.`,
@@ -152,12 +176,14 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
       if (e.avoid) partes.push(`${L("Evita", "Avoid")}: ${e.avoid[I === 1 ? "en" : "es"]}`);
     }
     const [docRuta, docSeccion] = String(e.doc ?? "").split("#");
-    if (docRuta) partes.push(`${L("Ficha completa", "Full sheet")}: \`.claqueta/${docRuta}\`${docSeccion ? ` (${L("sección", "section")} ${docSeccion})` : ""}.`);
+    if (docRuta) partes.push(`${L("Ficha completa", "Full sheet")}: \`../.claqueta/${docRuta}\`${docSeccion ? ` (${L("sección", "section")} ${docSeccion})` : ""}.`);
     item(partes.join(" "));
   };
-  verEstilo(base, L("Estilo principal", "Main style"), 70);
-  verEstilo(sec2, L("Estilo secundario", "Secondary style"), 20);
-  verEstilo(acento, L("Acento", "Accent"), 10);
+  // Sin secundario ni acento, el estilo principal es todo el video.
+  const [pBase, pSec, pAcento] = sec2 && acento ? [70, 20, 10] : sec2 ? [75, 25, 0] : acento ? [85, 0, 15] : [100, 0, 0];
+  verEstilo(base, L("Estilo principal", "Main style"), pBase);
+  verEstilo(sec2, L("Estilo secundario", "Secondary style"), pSec);
+  verEstilo(acento, L("Acento", "Accent"), pAcento);
   if (base) item(L(
     "Un estilo es material, cámara y sonido, no solo una paleta. Prueba de reconocimiento: si se oculta el nombre, deben verse dos o tres rasgos propios en cada plano. Nunca mezcles más de estos estilos.",
     "A style is material, camera and sound, not just a palette. Recognition test: with its name hidden, two or three of its own traits must show in every shot. Never mix in other styles."
@@ -169,6 +195,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   item(`${L("Paleta exacta", "Exact palette")}: ${L("fondo", "ground")} ${pal.fondo}, ${L("tinta", "ink")} ${pal.tinta}, ${L("acento", "accent")} ${pal.acento}, ${L("secundario", "secondary")} ${pal.segundo}, ${L("superficie", "surface")} ${pal.superficie}. ${L("El acento marca lo importante y lleva significado: un solo elemento sólido por momento.", "The accent marks what matters and carries meaning: one solid element per moment.")}`);
   item(una("arte", "textura"));
   item(una("arte", "tipografia"));
+  if (/Sora|JetBrains/.test(una("arte", "tipografia")) || v.subtitulos.activos) item(L(
+    "Sora y JetBrains Mono: `mkdir -p assets/fonts && cp ../.claqueta/assets/fonts/*.ttf assets/fonts/`, cárgalas con `@font-face` y confirma en un cuadro que se ven.",
+    "Sora and JetBrains Mono: `mkdir -p assets/fonts && cp ../.claqueta/assets/fonts/*.ttf assets/fonts/`, load them with `@font-face` and confirm on a frame that they show."
+  ));
   item(rango("arte", "tamano"));
   item(una("arte", "caja"));
   item(una("arte", "marca"));
@@ -201,6 +231,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   for (const o of varias("movimiento", "elementos")) item(o.p[I]);
   item(una("movimiento", "vida"));
   item(L("Sostén lo que debe leerse: letras ÷ 15 + 1,5 s desde que termina de aparecer. Máximo 3 elementos animándose a la vez.", "Hold what must be read: letters ÷ 15 + 1.5 s after it finishes appearing. At most 3 elements animating at once."));
+  if (v.subtitulos.activos) item(L("Al mundo van solo palabras clave. Las frases completas van en los subtítulos: una frase larga dibujada no se alcanza a leer.", "Only key words go in the world. Full sentences go in the captions: a long sentence drawn on screen cannot be read in time."));
   item(L("Todo es función del tiempo: semilla fija, nada de Date.now, Math.random sin semilla, temporizadores ni requestAnimationFrame como reloj.", "Everything is a function of time: fixed seed, no Date.now, unseeded Math.random, timers or requestAnimationFrame as the clock."));
 
   sec("11. Montaje", "11. Editing");
@@ -209,6 +240,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   item(una("montaje", "patron"));
   for (const o of varias("montaje", "transiciones")) item(compacto ? o.n[I] : o.p[I]);
   item(rango("montaje", "tr_dur"));
+  if ((v.montaje.transiciones ?? []).some((t) => t !== "corte")) item(L("A lo sumo un tercio de las uniones entre ideas son cortes secos.", "At most a third of the seams between ideas are hard cuts."));
   for (const o of varias("montaje", "recursos")) item(o.p[I]);
 
   sec("12. Voz", "12. Voice");
@@ -226,20 +258,26 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
       if (voz.motor === "edge") item(L("Edge pide internet. Si falla, usa `--motor piper --voz es_MX-claude-high` y dilo en la entrega.", "Edge needs internet. If it fails, use `--motor piper --voz es_MX-claude-high` and say so in the delivery."));
       add();
       add("```bash");
-      add(`python .claqueta/tools/tts/hablar.py --motor ${voz.motor} --voz ${voz.voz} --archivo guion.txt --salida ${salida} --velocidad ${vel}${pal}`);
-      if (voz.motor !== "edge") add(`python .claqueta/tools/subtitulos/alinear.py --audio ${salida} --guion guion.txt --salida assets/voz/palabras.json`);
+      add(`python ../.claqueta/tools/tts/hablar.py --motor ${voz.motor} --voz ${voz.voz} --archivo guion.txt --salida ${salida} --velocidad ${vel}${pal}`);
+      if (voz.motor !== "edge") add(`python ../.claqueta/tools/subtitulos/alinear.py --audio ${salida} --guion guion.txt --salida assets/voz/palabras.json`);
       add("```");
       add();
     }
     item(una("sonido", "intencion"));
-    item(L("Mide la duración real de la voz y ajusta los planos a ella. Comprueba con Whisper que se dijo lo escrito y corrige lo que suene mal.", "Measure the real voice duration and fit the shots to it. Check with Whisper that what was written was said, and fix what sounds wrong."));
+    add();
+    add("```bash");
+    add(`ffprobe -v error -show_entries format=duration -of csv=p=0 ${voz?.motor === "edge" ? "assets/voz/voz.mp3" : "assets/voz/voz.wav"}`);
+    add(`python ../.claqueta/tools/qa/comparar_voz.py --audio ${voz?.motor === "edge" ? "assets/voz/voz.mp3" : "assets/voz/voz.wav"} --guion guion.txt`);
+    add("```");
+    add();
+    item(L("El primero mide la voz y fija `$DUR`. El segundo comprueba que se dijo lo escrito. `assets/voz/palabras.json` trae los tiempos ya afinados contra el audio; úsalos para que cada elemento caiga en su palabra.", "The first measures the voice and sets `$DUR`. The second checks that what was written was said. `assets/voz/palabras.json` holds timings already refined against the audio; use them so each element lands on its word."));
   }
 
   sec("13. Música, efectos y mezcla", "13. Music, effects and mix");
   const mus = opcion("sonido", "musica", v.sonido.musica);
   item(mus?.p[I]);
   const conMusica = v.sonido.musica !== "sin";
-  const mezcla = ["python .claqueta/tools/audio/mezcla.py"];
+  const mezcla = ["python ../.claqueta/tools/audio/mezcla.py"];
   if (conVoz && voz && v.sonido.voz_propia !== "grabada") mezcla.push(`--voz ${voz.motor === "edge" ? "assets/voz/voz.mp3" : "assets/voz/voz.wav"}`);
   else if (conVoz) mezcla.push("--voz assets/voz/voz.wav");
   if (conMusica) {
@@ -247,10 +285,17 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     if (v.sonido.musica === "codigo") {
       add();
       add("```bash");
-      add(`python .claqueta/tools/audio/musica.py --caracter ${v.sonido.animo} --bpm ${v.sonido.bpm} --dur ${m.seg} --salida assets/audio/musica.wav --rejilla assets/audio/rejilla.json`);
+      add(`python ../.claqueta/tools/audio/musica.py --caracter ${v.sonido.animo} --bpm ${v.sonido.bpm} --dur ${DUR} --salida assets/audio/musica.wav --rejilla assets/audio/rejilla.json`);
       add("```");
       add();
-      item(L("Corta sobre los pulsos de `assets/audio/rejilla.json`. Sus secciones (entrada, cuerpo, respiro, cierre) marcan dónde puede subir o aflojar la imagen. Si la duración cambia, vuelve a componer con la duración real.", "Cut on the beats in `assets/audio/rejilla.json`. Its sections (entrada, cuerpo, respiro, cierre) mark where the picture can rise or ease. If the duration changes, recompose with the real duration."));
+      item(L("Cuando toque cortar, corta sobre un pulso de `assets/audio/rejilla.json`; no todo pulso es un corte. Sus secciones (entrada, cuerpo, cierre y, en piezas largas, respiro) marcan dónde puede subir o aflojar la imagen. Compón con la duración real.", "When a cut is due, land it on a beat from `assets/audio/rejilla.json`; not every beat is a cut. Its sections (entrada, cuerpo, cierre and, in long pieces, respiro) mark where the picture can rise or ease. Compose with the real duration."));
+    } else if (v.sonido.musica === "cuerdas") {
+      add();
+      add("```bash");
+      add(`python ../.claqueta/tools/audio/notas.py partitura.json --dur ${DUR} --salida assets/audio/musica.wav`);
+      add("```");
+      add();
+      item(L("`partitura.json` es una lista como `[{\"t\": 0.5, \"nota\": \"A3\", \"dur\": 3, \"vel\": 0.6, \"instrumento\": \"nylon_guitar\"}]`.", "`partitura.json` is a list like `[{\"t\": 0.5, \"nota\": \"A3\", \"dur\": 3, \"vel\": 0.6, \"instrumento\": \"nylon_guitar\"}]`."));
     } else {
       item(`${L("Mide la rejilla real con", "Measure the real grid with")} \`${HF} beats --json assets/audio/musica.wav\`.`);
     }
@@ -265,10 +310,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   }
   item(interruptor("sonido", "silencios"));
   item(interruptor("sonido", "golpes"));
-  item(L("Mezcla y máster con este comando. Deja −14 LUFS y −3 dBTP e imprime lo medido. `efectos.json` es la lista de golpes con su segundo, y `--silencios` admite tramos como 12.4-12.8.", "Mix and master with this command. It leaves −14 LUFS and −3 dBTP and prints what it measured. `efectos.json` is the list of hits with their second, and `--silencios` takes ranges like 12.4-12.8."));
+  item(L("Mezcla y máster con este comando. Deja −14 LUFS y −3 dBTP e imprime lo medido. `efectos.json` es una lista como `[{\"pico\": 1.23, \"sonido\": \"barrido\", \"ganancia\": -8}]`: `pico` pone el punto más fuerte en ese segundo, y `t`, el inicio. `--silencios` admite tramos como 12.4-12.8. Mira la guía `library/guias/sonido.md`.", "Mix and master with this command. It leaves −14 LUFS and −3 dBTP and prints what it measured. `efectos.json` is a list like `[{\"pico\": 1.23, \"sonido\": \"barrido\", \"ganancia\": -8}]`: `pico` puts the loudest point at that second, and `t` puts the start. `--silencios` takes ranges like 12.4-12.8. See the guide `library/guias/sonido.md`."));
   add();
   add("```bash");
-  add(`${mezcla.join(" ")} --dur ${m.seg} --salida assets/audio/mezcla.wav`);
+  add(`${mezcla.join(" ")} --dur ${DUR} --salida assets/audio/mezcla.wav`);
   add("```");
   add();
   item(L("Coloca `assets/audio/mezcla.wav` en la composición como una sola pista. Mide también el archivo ya renderizado.", "Place `assets/audio/mezcla.wav` in the composition as a single track. Measure the rendered file too."));
@@ -306,15 +351,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
 
   sec("16. Cómo construirlo", "16. How to build it");
   item(motorSel?.paso[I]);
-  if (v.motor.motor === "hyperframes" || v.motor.motor === "canvas") {
-    const preset = m.h > m.w ? "portrait" : m.w > m.h ? "landscape" : "square";
-    add();
-    add("```bash");
-    add(`${HF} init proyecto --resolution ${preset} --non-interactive --skip-skills`);
-    add("```");
-    add();
-    item(L(`Las skills ya están en \`.claqueta\`, por eso \`--skip-skills\`. Comprueba que \`data-width\` y \`data-height\` den ${m.w}×${m.h}.`, `The skills are already in \`.claqueta\`, hence \`--skip-skills\`. Check that \`data-width\` and \`data-height\` give ${m.w}×${m.h}.`));
-  }
+  if (conHF) item(L(
+    `\`init\` deja \`lang="en"\` y fondo negro: pon \`lang="es"\` y el fondo de tu paleta, y comprueba que \`data-width\` y \`data-height\` den ${m.w}×${m.h} y que \`data-duration\` sea \`${DUR}\`.`,
+    `\`init\` leaves \`lang="en"\` and a black ground: set \`lang="es"\` and your palette's ground, and check that \`data-width\` and \`data-height\` give ${m.w}×${m.h} and that \`data-duration\` is \`${DUR}\`.`
+  ));
   const pasos = [
     L("Escribe `TREATMENT.md`: tres estructuras posibles y la elegida con su razón, un movimiento que solo este medio puede hacer, y una tabla de sonido por sección.", "Write `TREATMENT.md`: three possible structures and the chosen one with its reason, one move only this medium can do, and a sound table per section."),
     L("Escribe `SPEC.md`: convierte este encargo en cifras (LOOK, MOTION, SHOTS, BANNED, QA).", "Write `SPEC.md`: turn this brief into numbers (LOOK, MOTION, SHOTS, BANNED, QA)."),
@@ -337,14 +377,14 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     add(`${HF} snapshot --review`);
     add(`${HF} render --output renders/final.mp4 --fps ${m.fps}`);
   }
-  add(`python .claqueta/tools/qa/verificar_video.py verificar renders/final.mp4 --duracion ${m.seg} --ancho ${m.w} --alto ${m.h}`);
-  add(`python .claqueta/tools/qa/hoja_cuadros.py renders/final.mp4 --salida renders/hoja.jpg`);
-  add(`python .claqueta/tools/qa/saltos.py renders/final.mp4`);
+  add(`python ../.claqueta/tools/qa/verificar_video.py verificar renders/final.mp4 --duracion ${DUR} --ancho ${m.w} --alto ${m.h}`);
+  add(`python ../.claqueta/tools/qa/hoja_cuadros.py renders/final.mp4 --salida renders/hoja.jpg`);
+  add(`python ../.claqueta/tools/qa/saltos.py renders/final.mp4`);
+  if (conVoz) add("python ../.claqueta/tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt");
   add("```");
   add();
   item(L("Mira los cuadros de verdad antes de decir que está listo: texto dentro de zonas seguras, tildes correctas, nada cortado ni encimado, sujeto grande y primer cuadro con imagen.", "Actually look at the frames before saying it is done: text inside safe areas, correct accents, nothing cut or overlapping, a large subject and an image on the first frame."));
   item(L("Los avisos de solape de `check` pueden ser falsos en capas de efecto: confírmalos en un cuadro antes de cambiar nada.", "`check` overlap warnings can be false on effect layers: confirm on a frame before changing anything."));
-  if (conVoz) item(L("Transcribe la mezcla final y compárala con el guion.", "Transcribe the final mix and compare it to the script."));
   item(L("Di en la entrega qué mediste y qué no pudiste comprobar. Si no puedes oír, dilo.", "State in the delivery what you measured and what you could not check. If you cannot hear, say so."));
 
   sec("18. Prohibido", "18. Banned");
@@ -394,7 +434,7 @@ export function documentos(v, { base, sec2, acento, motorSel }) {
     if (tipo) docs.push(`${r}/types/${tipo}.md`);
     if (v.profundidad.modo === "real" || v.profundidad.modo === "nubes") docs.push(`${r}/types/3d.md`);
     if (v.subtitulos.activos) docs.push(`${r}/captions.md`);
-    if (v.sonido.narracion || v.sonido.musica !== "sin" || v.sonido.sfx !== "cero") docs.push(`${r}/sound.md`);
+    if (v.sonido.narracion || v.sonido.musica !== "sin" || v.sonido.sfx !== "cero") docs.push("library/guias/sonido.md");
     docs.push(`${r}/review.md`);
   }
   if (v.sonido.narracion) docs.push("tools/tts/README.md");

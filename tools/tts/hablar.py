@@ -100,6 +100,13 @@ def edge(texto, voz, salida, velocidad, tono, palabras):
     marcas = asyncio.run(correr(temporal))
     a_salida(temporal, salida)
     if palabras:
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "subtitulos"))
+            from tiempos import refinar
+            marcas = refinar(marcas, salida, desfase_global=True)  # Edge marca parejo antes de lo que suena en el archivo.
+        except (ImportError, OSError, ValueError, subprocess.CalledProcessError) as e:
+            print(f"Aviso: tiempos sin afinar contra el audio: {e}", file=sys.stderr)
+        Path(palabras).parent.mkdir(parents=True, exist_ok=True)
         Path(palabras).write_text(json.dumps(marcas, ensure_ascii=False, indent=1), encoding="utf-8")
 
 

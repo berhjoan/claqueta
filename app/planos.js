@@ -50,9 +50,19 @@ export function generarPlanos(v) {
     for (let i = 1; i < durs.length; i++) durs[i] += sobra / (durs.length - 1);
   }
 
+  // Los cortes secos no pasan de un tercio de las uniones, salvo que no haya otra transición elegida.
+  const otras = trans.filter((t) => t !== "corte");
+  const maxCortes = Math.floor((nombres.length - 1) / 3);
+  let cortes = 0;
+  const salida = (i) => {
+    const t = trans[i % trans.length];
+    if (t !== "corte" || !otras.length) return t;
+    if (cortes < maxCortes) { cortes += 1; return t; }
+    return otras[i % otras.length];
+  };
   const planos = nombres.map((titulo, i) => ({
     id: nuevoId(), titulo, texto: "", dur: redondear(durs[i]),
-    cam: movs[i % movs.length], tr: i === nombres.length - 1 ? "corte" : trans[i % trans.length], nota: "",
+    cam: movs[i % movs.length], tr: i === nombres.length - 1 ? "corte" : salida(i), nota: "",
   }));
   // Ajusta el redondeo para que la suma sea exacta.
   const dif = redondear(total - planos.reduce((a, p) => a + p.dur, 0));

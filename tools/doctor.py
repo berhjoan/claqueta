@@ -39,10 +39,10 @@ def main():
         fila(prog, bool(v), v[:40] if v else "no encontrado", "Instala ffmpeg: https://ffmpeg.org/download.html")
     fila("git", bool(shutil.which("git")), shutil.which("git") or "no encontrado", "Instala git: https://git-scm.com")
     fila("Python 3.10 o más", sys.version_info >= (3, 10), sys.version.split()[0], "Instala Python 3.10 o más")
-    fila("numpy", bool(importlib.util.find_spec("numpy")), "herramientas de revisión y audio", "pip install numpy scipy soundfile")
-    fila("scipy", bool(importlib.util.find_spec("scipy")), "efectos sintetizados", "pip install numpy scipy soundfile")
-    for mod, inst, uso in (("edge_tts", "pip install edge-tts", "voz Edge"), ("kokoro_onnx", "pip install kokoro-onnx soundfile", "voz Kokoro"), ("piper", "pip install piper-tts", "voz Piper"),
-                           ("faster_whisper", "pip install faster-whisper", "tiempos de palabra"), ("numba", "pip install numba", "cuerdas sintéticas")):
+    paquetes = "pip install numpy scipy soundfile numba faster-whisper"
+    for mod, uso in (("numpy", "revisión y audio"), ("scipy", "efectos y mezcla"), ("soundfile", "leer y escribir audio"), ("numba", "música y cuerdas"), ("faster_whisper", "tiempos de palabra y comprobar lo que se dijo")):
+        fila(mod, bool(importlib.util.find_spec(mod)), uso, paquetes)
+    for mod, inst, uso in (("edge_tts", "pip install edge-tts", "voz Edge"), ("kokoro_onnx", "pip install kokoro-onnx soundfile", "voz Kokoro"), ("piper", "pip install piper-tts", "voz Piper"), ("pocket_tts", "pip install pocket-tts", "voz Pocket TTS")):
         fila(mod, bool(importlib.util.find_spec(mod)), f"{uso}. Si la usas: {inst}", necesario=False)
     npx = shutil.which("npx") or shutil.which("npx.cmd")
     fila("npx", bool(npx), "corre HyperFrames sin instalarlo: npx hyperframes@0.9.9", "Viene con Node")

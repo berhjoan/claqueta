@@ -92,8 +92,11 @@ test("cada voz trae su comando exacto", () => {
 
 test("la música compuesta aquí trae el comando con los valores elegidos", () => {
   const t = texto(armar({ "sonido.musica": "codigo", "sonido.animo": "lofi", "sonido.bpm": 82, "entrega.duracion": 40 }));
-  assert.ok(t.includes("--caracter lofi --bpm 82 --dur 40"));
+  assert.ok(t.includes("--caracter lofi --bpm 82 --dur $DUR"), "con voz, la duración real sale de la voz");
   assert.ok(t.includes("tools/audio/mezcla.py"));
+  const sinVoz = texto(armar({ "sonido.musica": "codigo", "sonido.animo": "lofi", "sonido.bpm": 82, "entrega.duracion": 40, "sonido.narracion": false }));
+  assert.ok(sinVoz.includes("--dur 40"), "sin voz, manda el objetivo");
+  assert.ok(!sinVoz.includes("$DUR"));
 });
 
 test("el prompt no pide pagar ni usa comandos de pago como instrucción", () => {
@@ -120,4 +123,60 @@ test("los departamentos del catálogo cubren lo que se pidió", () => {
 test("los enlaces públicos apuntan al mismo sistema", () => {
   assert.equal(REPO, "https://github.com/berhjoan/claqueta");
   assert.equal(SITIO, "https://berhjoan.github.io/claqueta");
+});
+
+test("todos los comandos corren desde el proyecto, con el sistema al lado", () => {
+  const t = texto(armar({ "sonido.narracion": true }));
+  const bloques = [...t.matchAll(/```bash\n([\s\S]*?)```/g)].map((m) => m[1]);
+  assert.ok(bloques.length >= 4);
+  const [preparar, ...resto] = bloques;
+  assert.ok(preparar.includes(".claqueta"));
+  assert.ok(preparar.indexOf("git clone") < preparar.indexOf("init proyecto"));
+  assert.ok(preparar.trim().endsWith("cd proyecto"));
+  for (const b of resto) for (const linea of b.split("\n")) {
+    if (linea.startsWith("python ")) assert.ok(linea.startsWith("python ../.claqueta/"), linea);
+  }
+  assert.ok(preparar.includes("faster-whisper"), "lo que el encargo exige se instala al inicio");
+});
+
+test("el encargo dice quién manda si los documentos se contradicen", () => {
+  assert.match(texto(armar(), "en"), /What wins: this brief/);
+  assert.match(texto(armar(), "es"), /Quién manda: este encargo/);
+});
+
+test("un guion exacto no se contradice con la duración objetivo ni obliga a inventar frases", () => {
+  const frase = "Una IA no recuerda tu última conversación. Cada chat empieza de cero.";
+  const t = texto(armar({ "guion.modo": "exacto", "guion.texto": frase, "entrega.duracion": 30 }), "en");
+  assert.match(t, /The real duration comes from the voice/);
+  assert.match(t, /do not invent one/);
+  assert.match(t, /--duracion \$DUR/);
+  assert.ok(!t.includes("--duracion 30"));
+  assert.ok(!/about 69 Spanish words/.test(t), "no pide más palabras a un texto exacto");
+});
+
+test("sin guion escrito, la IA escribe; con guion y sin elegir, lo toma como borrador", () => {
+  assert.match(texto(armar({ "guion.texto": "" }), "en"), /Write the full script/);
+  assert.match(texto(armar({ "guion.texto": "Un borrador." }), "en"), /Start from the draft below/);
+  assert.match(texto(armar({ "guion.modo": "exacto", "guion.texto": "" }), "en"), /Write the full script/);
+});
+
+test("el porcentaje de cada estilo refleja lo elegido", () => {
+  const solo = texto(armar({ "arte.estilos": { base: "S26", secundario: null, acento: null } }), "en");
+  assert.match(solo, /Main style \(100 %\)/);
+  const dos = texto(armar({ "arte.estilos": { base: "S26", secundario: "S40", acento: null } }), "en");
+  assert.match(dos, /Main style \(75 %\)/);
+  assert.match(dos, /Secondary style \(25 %\)/);
+  const tres = texto(armar({ "arte.estilos": { base: "S26", secundario: "S40", acento: "S07" } }), "en");
+  assert.match(tres, /Main style \(70 %\)/);
+  assert.match(tres, /Accent \(10 %\)/);
+});
+
+test("los cortes secos no pasan de un tercio de las uniones", () => {
+  for (const r of recetas) {
+    const estado = armar({}, r);
+    const uniones = estado.planos.slice(0, -1);
+    const cortes = uniones.filter((p) => p.tr === "corte").length;
+    const soloCortes = estado.valores.montaje.transiciones.every((t) => t === "corte");
+    if (!soloCortes) assert.ok(cortes <= Math.floor(uniones.length / 3), `${r.id}: ${cortes} de ${uniones.length}`);
+  }
 });

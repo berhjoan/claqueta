@@ -41,7 +41,27 @@ export function control(depto, c) {
 function campoTexto(ruta, c) {
   return h("input", { class: "campo", type: "text", "data-ruta": ruta, value: leer(ruta) ?? "", placeholder: c.holder ?? "", "aria-label": c.titulo, oninput: (e) => fijar(ruta, e.target.value) });
 }
+// Lo que dura un guion pegado se ve antes de pedir el video, no después.
+export function pintarNotaLectura() {
+  const nota = document.querySelector(".nota-lectura");
+  if (!nota) return;
+  const palabras = (leer("guion.texto") ?? "").trim().split(/\s+/).filter(Boolean).length;
+  if (!palabras) { nota.replaceChildren(); return; }
+  const seg = Math.max(1, Math.round(palabras / 2.3));
+  const pedido = Number(leer("entrega.duracion"));
+  const ideal = Math.max(5, seg + 2);
+  const lejos = Math.abs(ideal - pedido) / pedido > 0.15;
+  nota.replaceChildren(`Se lee en unos ${seg} s (${palabras} palabras). El video está en ${pedido} s.`,
+    lejos ? h("button", { type: "button", class: "bt-mini", onclick: () => fijar("entrega.duracion", ideal) }, `Ajustar a ${ideal} s`) : "");
+}
+
 function campoArea(ruta, c) {
+  if (ruta === "guion.texto") {
+    const campo = h("textarea", { class: "campo", rows: c.filas ?? 3, "data-ruta": ruta, value: leer(ruta) ?? "", placeholder: c.holder ?? "", "aria-label": c.titulo, oninput: (e) => fijar(ruta, e.target.value) });
+    const nota = h("p", { class: "ct-nota nota-lectura" });
+    queueMicrotask(pintarNotaLectura);
+    return h("div", {}, campo, nota);
+  }
   return h("textarea", { class: "campo", rows: c.filas ?? 3, "data-ruta": ruta, value: leer(ruta) ?? "", placeholder: c.holder ?? "", "aria-label": c.titulo, oninput: (e) => fijar(ruta, e.target.value) });
 }
 

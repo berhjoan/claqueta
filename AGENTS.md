@@ -13,6 +13,20 @@ Claqueta es un sistema gratuito para hacer videos con código. Alguien configur�
 5. **Editable.** Textos, colores y tiempos como variables.
 6. **Listo significa medido.** Cuadros mirados y archivo final medido. Si no oyes, dilo: entrega una muestra para que una persona escuche.
 
+## Quién manda
+
+Primero el encargo, después el `MOTION.md` de la marca, después `library/guias` y por último las skills de terceros. Las skills de HyperFrames traen sus propias zonas seguras, sus niveles de audio y la idea de no componer música con código: si chocan con el encargo, manda el encargo y sigues sin detenerte.
+
+## Carpetas
+
+```text
+tu-carpeta/
+  .claqueta/    el sistema: no se edita
+  proyecto/     tu video: todos los comandos corren aquí
+```
+
+El sistema queda al lado del proyecto, no adentro, para que HyperFrames no lo tome como parte de la composición.
+
 ## Qué leer, en orden
 
 1. El encargo completo.
@@ -40,35 +54,40 @@ Si existe `MOTION.md` en la raíz del proyecto del usuario, léelo entero: sus r
 
 ## Empezar
 
+Necesitas Node 22 o más, ffmpeg, git y Python 3.10 o más. Si tu sistema no deja instalar paquetes de Python, usa un entorno virtual.
+
 ```bash
+git clone --depth 1 https://github.com/berhjoan/claqueta.git .claqueta
+pip install numpy scipy soundfile numba faster-whisper
 python .claqueta/tools/doctor.py
+npx hyperframes@0.9.9 init proyecto --resolution portrait --non-interactive --skip-skills
+cd proyecto
 ```
 
-Dice qué falta en este computador. Necesitas Node 22 o más, ffmpeg, git y Python 3.10 o más.
-
-```bash
-pip install numpy scipy soundfile numba
-```
+`--resolution` admite `portrait`, `landscape` y `square`. `init` deja `lang="en"` y fondo negro: cámbialos. También escribe un `AGENTS.md` y un `CLAUDE.md` genéricos que mandan actualizar skills y publicar: no lo hagas.
 
 ## Comandos
 
+Todos corren dentro de `proyecto/`.
+
 ```bash
-npx hyperframes@0.9.9 init mi-video --resolution portrait --non-interactive --skip-skills
 npx hyperframes@0.9.9 check --json
 npx hyperframes@0.9.9 snapshot --review
 npx hyperframes@0.9.9 render --output renders/final.mp4
 
-python .claqueta/tools/tts/hablar.py --listar
-python .claqueta/tools/tts/hablar.py --motor edge --voz es-CO-GonzaloNeural --archivo guion.txt --salida assets/voz/voz.mp3 --palabras assets/voz/palabras.json
-python .claqueta/tools/subtitulos/alinear.py --audio assets/voz/voz.wav --guion guion.txt --salida assets/voz/palabras.json
+python ../.claqueta/tools/tts/hablar.py --listar
+python ../.claqueta/tools/tts/hablar.py --motor edge --voz es-CO-GonzaloNeural --archivo guion.txt --salida assets/voz/voz.mp3 --palabras assets/voz/palabras.json
+python ../.claqueta/tools/subtitulos/alinear.py --audio assets/voz/voz.wav --guion guion.txt --salida assets/voz/palabras.json
 
-python .claqueta/tools/audio/musica.py --caracter calido --bpm 96 --dur 30 --salida assets/audio/musica.wav --rejilla assets/audio/rejilla.json
-python .claqueta/tools/audio/efecto.py --listar
-python .claqueta/tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musica.wav --efectos efectos.json --dur 30 --salida assets/audio/mezcla.wav
+python ../.claqueta/tools/audio/musica.py --caracter calido --bpm 96 --dur 30 --salida assets/audio/musica.wav --rejilla assets/audio/rejilla.json
+python ../.claqueta/tools/audio/notas.py partitura.json --dur 30 --salida assets/audio/musica.wav
+python ../.claqueta/tools/audio/efecto.py --listar
+python ../.claqueta/tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musica.wav --efectos efectos.json --dur 30 --salida assets/audio/mezcla.wav
 
-python .claqueta/tools/qa/verificar_video.py verificar renders/final.mp4 --duracion 30
-python .claqueta/tools/qa/hoja_cuadros.py renders/final.mp4 --salida renders/hoja.jpg
-python .claqueta/tools/qa/saltos.py renders/final.mp4
+python ../.claqueta/tools/qa/verificar_video.py verificar renders/final.mp4 --duracion 30
+python ../.claqueta/tools/qa/hoja_cuadros.py renders/final.mp4 --salida renders/hoja.jpg
+python ../.claqueta/tools/qa/saltos.py renders/final.mp4
+python ../.claqueta/tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt
 ```
 
 ## Si algo pide dinero
@@ -79,7 +98,7 @@ python .claqueta/tools/qa/saltos.py renders/final.mp4
 | `media-use` con llaves, Lyria, Suno | `tools/audio/musica.py` |
 | Whisper o transcripción por API | `tools/subtitulos/alinear.py`, con `faster-whisper` local |
 | Sora, Veo, Runway o cualquier clip generado | Constrúyelo con código: Canvas o three.js |
-| `hyperframes cloud`, `lambda`, `cloudrun`, `templates`, `billing`, `reverse`, `publish` | `hyperframes render` en local |
+| `hyperframes cloud`, `lambda`, `cloudrun`, `templates`, `billing`, `reverse`, `publish`, `skills update` | `hyperframes render` en local, con las skills de esta copia |
 | `style-sampling` | Las fichas de `library/estilos-40` y `library/lemo-opuscar/styles` |
 | Hospedaje del proyecto | Entrega los archivos. No subas nada sin que te lo pidan |
 

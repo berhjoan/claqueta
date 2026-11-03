@@ -399,7 +399,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Corte seco | Hard cut | Corte seco en el cuadro más rápido de un movimiento, con dirección y velocidad iguales a ambos lados. |
+| Corte seco | Hard cut | Corte seco: cae en un pulso o sobre una acción. Si un movimiento cruza el corte, córtalo en su cuadro más rápido, con dirección y velocidad iguales a ambos lados. |
 | Corte por coincidencia | Match cut | Corte por coincidencia: una forma, posición o movimiento continúa en la escena siguiente. |
 | El objeto se vuelve el mundo | Object becomes the world | El objeto se vuelve el mundo: crece más allá del cuadro en 0,65 s con power2.inOut, su radio se reduce, lo de alrededor se desenfoca 15 px y se apaga en 0,3 s. |
 | Zoom a través | Zoom through | Zoom a través: la cámara avanza en Z en tres fases, con desenfoque máximo de 10 px en texto y 20 px a cuadro completo, y opacidad de 0,15 en el corte. |
@@ -459,7 +459,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Compuesta aquí con código | Composed here with code | Compón la música con tools/audio/musica.py: es original, no usa modelos ni llaves, y su rejilla es exacta porque las notas se calculan. |
 | Modelo local de música | Local music model | Genera la música con un modelo local: Stable Audio 3 Small (pesos gratis bajo 1 M USD al año, acepta sus condiciones en Hugging Face) o ACE-Step 1.5 (MIT, lento sin GPU, unos 10 GB). Mide los pulsos con la herramienta de rejilla. Si no se puede instalar, usa tools/audio/musica.py y dilo. |
 | Tema con instrumentos reales | Theme with real instruments | Compón un tema original con library/lemo-opuscar/core/audio/sampler.py e instrumentos libres, al tempo exacto de la rejilla. Baja las muestras con: git clone https://github.com/lemomo-ai/lemo-opuscar .lemo, luego dentro de .lemo: git checkout bebbbe1 y sh tools/fetch.sh instruments vsco2ce. Usa solo los instrumentos necesarios. |
-| Cuerdas escasas, nota por nota | Sparse strings, note by note | Música escasa de cuerdas pulsadas con tools/audio/pluck.py (modelo físico: nylon_guitar, harp, kalimba): pocas notas ligadas a lo que aparece en pantalla. |
+| Cuerdas escasas, nota por nota | Sparse strings, note by note | Música escasa de cuerdas con tools/audio/notas.py: escribe partitura.json con pocas notas (nylon_guitar, harp, kalimba) ligadas a lo que aparece en pantalla. |
 | Pista de una biblioteca libre | Free library track | Usa una pista de una biblioteca libre (dominio público o CC0, o CC BY con crédito). alvana-audio trae archivos de pulsos; revisa el origen de cada tema. Anota URL y licencia en CREDITOS.md. |
 | Mi propia pista | My own track | Usa la pista indicada en las notas. Entra en su compás más fuerte y termina en una línea de compás. |
 
@@ -529,11 +529,11 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Cualquier IA con terminal | Any AI with a terminal | Destino: cualquier IA con terminal. Si tu entorno carga skills, copia las de .claqueta/library/hyperframes/skills a su carpeta de skills. Si no, ábrelas como archivos cuando las necesites. |
-| Claude Code | Claude Code | Destino: Claude Code. Copia las skills de .claqueta/library/hyperframes/skills a .claude/skills de este proyecto antes de empezar. |
-| Codex | Codex | Destino: Codex. Copia las skills de .claqueta/library/hyperframes/skills a .agents/skills de este proyecto antes de empezar. |
-| Gemini CLI | Gemini CLI | Destino: Gemini CLI. Lee .claqueta/GEMINI.md y carga las skills como archivos de contexto cuando las necesites. |
-| Cursor, Windsurf u otro editor | Cursor, Windsurf or another editor | Destino: un editor con agente. Lee .claqueta/AGENTS.md y abre las skills como archivos cuando las necesites. |
+| Cualquier IA con terminal | Any AI with a terminal | Destino: cualquier IA con terminal. Si tu entorno carga skills, copia las de ../.claqueta/library/hyperframes/skills a su carpeta de skills. Si no, ábrelas como archivos cuando las necesites. |
+| Claude Code | Claude Code | Destino: Claude Code. Copia las skills de ../.claqueta/library/hyperframes/skills a .claude/skills de este proyecto antes de empezar. |
+| Codex | Codex | Destino: Codex. Copia las skills de ../.claqueta/library/hyperframes/skills a .agents/skills de este proyecto antes de empezar. |
+| Gemini CLI | Gemini CLI | Destino: Gemini CLI. Lee ../.claqueta/GEMINI.md y carga las skills como archivos de contexto cuando las necesites. |
+| Cursor, Windsurf u otro editor | Cursor, Windsurf or another editor | Destino: un editor con agente. Lee ../.claqueta/AGENTS.md y abre las skills como archivos cuando las necesites. |
 | IA sin terminal | AI with no terminal | Destino: una IA sin terminal. Lee https://berhjoan.github.io/claqueta/llms.txt. Escribe todos los archivos completos y las instrucciones para que una persona ejecute el render en su computador. Nunca digas que el video ya existe. |
 
 ### Cómo trabaja

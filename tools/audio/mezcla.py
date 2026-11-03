@@ -5,14 +5,14 @@ Uso:
   python tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musica.wav \
       --efectos efectos.json --dur 30 --salida assets/audio/mezcla.wav --nivel-musica -22 --silencios 12.4-12.8,20.0-20.4
 
-efectos.json es una lista de golpes:
-  [{"t": 1.20, "sonido": "barrido", "ganancia": -8, "dur": 0.4, "pan": 0.2},
-   {"t": 4.87, "archivo": "assets/audio/tiza.wav", "ganancia": -3},
-   {"t": 9.10, "sonido": "impacto", "ganancia": -5, "semilla": 3}]
+efectos.json es una lista de golpes. "pico" pone el punto más fuerte del sonido en ese segundo, y "t" pone su inicio:
+  [{"pico": 1.23, "sonido": "barrido", "ganancia": -8, "dur": 0.4, "pan": 0.2},
+   {"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": -3},
+   {"pico": 9.13, "sonido": "impacto", "ganancia": -5, "semilla": 3}]
 
 - nivel-musica: decibeles de la música por debajo de la voz mientras se habla. Sin voz, sube 6 dB.
 - silencios: tramos donde callan música y efectos. Sirven para que la siguiente frase pese.
-- Coloca el pico del efecto un cuadro después de su imagen.
+- Usa "pico" con un cuadro más que el segundo de su imagen: primero se ve y luego se oye.
 
 Sale en -14 LUFS con pico verdadero de -3 dBTP. Imprime lo medido.
 Necesita numpy, scipy, soundfile y ffmpeg.
@@ -134,14 +134,21 @@ def main():
             if ev.get("archivo"):
                 x = leer(ev["archivo"])
             elif ev.get("sonido") in CATALOGO:
-                x = generar(ev["sonido"], ev.get("dur"), 0.9, ev.get("semilla", int(ev["t"] * 100)))
+                x = generar(ev["sonido"], ev.get("dur"), 0.9, ev.get("semilla", int(float(ev.get("pico", ev.get("t", 0))) * 100)))
                 pan = float(ev.get("pan", 0))
                 ang = (pan + 1) * np.pi / 4
                 x = np.stack([x * np.cos(ang) * 1.414, x * np.sin(ang) * 1.414], 1)
             else:
                 sys.exit(f"Error: efecto sin archivo ni sonido conocido: {ev}")
-            s = int(ev["t"] * SR)
-            if s >= n:
+            if "pico" in ev:
+                s = int(float(ev["pico"]) * SR) - int(np.argmax(np.abs(x).max(1)))
+            elif "t" in ev:
+                s = int(float(ev["t"]) * SR)
+            else:
+                sys.exit(f'Error: el efecto necesita "pico" o "t": {ev}')
+            if s < 0:
+                x, s = x[-s:], 0
+            if s >= n or not len(x):
                 continue
             x = x[: n - s] * 10 ** (float(ev.get("ganancia", -8)) / 20)
             mezcla[s : s + len(x)] += x * silencio[s : s + len(x), None]

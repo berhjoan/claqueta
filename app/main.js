@@ -4,7 +4,7 @@ import { estado, iniciarEstado, alCambiar, fijar, leer, aplicarReceta, reiniciar
 import { construirPrompt } from "./prompt.js";
 import { Monitor } from "./monitor.js";
 import { LineaTiempo } from "./linea.js";
-import { h, control, configurarVistas } from "./vistas.js";
+import { pintarNotaLectura, h, control, configurarVistas } from "./vistas.js";
 import { crearGaleria } from "./galeria.js";
 import { vistaBiblioteca, vistaRadar, vistaAyuda } from "./biblioteca.js";
 import { traducirNotas } from "./traducir.js";
@@ -237,6 +237,7 @@ function pintarClaqueta() {
   for (const el of mesa.querySelectorAll("[data-ruta]")) if (el !== document.activeElement) el.value = leer(el.dataset.ruta) ?? "";
   const m = medidas(v);
   guias.dataset.vertical = String(m.h > m.w);
+  pintarNotaLectura();
 }
 let tPintado;
 function pintarVivo(que) {

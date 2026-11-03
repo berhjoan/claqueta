@@ -1,6 +1,6 @@
 {
  "generado": "scripts/armar-biblioteca.mjs",
- "total": 217,
+ "total": 220,
  "items": [
   {
    "titulo": "Dirección: cómo no parecer generado",
@@ -20,7 +20,7 @@
   },
   {
    "titulo": "Sonido sin pagar",
-   "desc": "Todo corre en tu computador. Lo único que pide internet es Edge, y es opcional.",
+   "desc": "Todo corre en tu computador. Lo único que pide internet es Edge, y es opcional. Las rutas parten de la raíz del sistema: desde tu proyecto, antepón `../.claqueta/`.",
    "ruta": "library/guias/sonido.md",
    "cat": "guias",
    "catNombre": "Guías de la casa",
@@ -129,6 +129,30 @@
    "cat": "herramientas",
    "catNombre": "Herramientas gratis",
    "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Música escasa, nota por nota",
+   "desc": "tools/audio/notas.py",
+   "ruta": "tools/audio/notas.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Comprueba que se oye lo que dice el guion",
+   "desc": "tools/qa/comparar_voz.py",
+   "ruta": "tools/qa/comparar_voz.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Afina tiempos de palabra contra el audio",
+   "desc": "tools/subtitulos/tiempos.py",
+   "ruta": "tools/subtitulos/tiempos.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
   },
   {
    "titulo": "Narración gratis, un comando para tres motores",

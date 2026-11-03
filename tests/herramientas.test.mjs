@@ -16,8 +16,7 @@ const dir = fs.mkdtempSync(path.join(os.tmpdir(), "claqueta-"));
 test.after(() => fs.rmSync(dir, { recursive: true, force: true }));
 
 test("la ayuda de cada herramienta corre", { skip: !python && "falta Python" }, () => {
-  for (const h of ["tools/tts/hablar.py", "tools/subtitulos/alinear.py", "tools/qa/verificar_video.py", "tools/qa/hoja_cuadros.py", "tools/doctor.py"]) {
-    if (h.endsWith("doctor.py")) continue;
+  for (const h of ["tools/tts/hablar.py", "tools/subtitulos/alinear.py", "tools/qa/verificar_video.py", "tools/qa/hoja_cuadros.py"]) {
     const r = correr(python, [h, "--help"]);
     assert.equal(r.status, 0, `${h}: ${r.stderr}`);
   }
@@ -73,4 +72,55 @@ test("la escritura en tiza falla si falta una letra, en vez de saltarla", async 
   assert.throws(() => writeLatin("hola ☃", 0, 100, 76, 0, {}));
   const s = writeLatin("¿Dónde está el niño?", 0, 100, 76, 0, {});
   assert.ok(s.length > 10);
+});
+
+test("un efecto se puede colocar por su pico", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  const fx = path.join(dir, "pico.json"), salida = path.join(dir, "pico.wav");
+  fs.writeFileSync(fx, JSON.stringify([{ pico: 1.5, sonido: "impacto", ganancia: -3 }]));
+  const r = correr(python, ["tools/audio/mezcla.py", "--efectos", fx, "--dur", "3", "--salida", salida, "--lufs", "-20"]);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  const medir = correr(python, ["-c", `import soundfile as sf, numpy as np; x,s=sf.read(r"${salida}"); print(np.abs(x).max(1).argmax()/s)`]);
+  assert.ok(Math.abs(Number(medir.stdout) - 1.5) < 0.05, `pico en ${medir.stdout}`);
+  const mal = path.join(dir, "mal.json");
+  fs.writeFileSync(mal, JSON.stringify([{ sonido: "impacto" }]));
+  assert.notEqual(correr(python, ["tools/audio/mezcla.py", "--efectos", mal, "--dur", "3", "--salida", salida]).status, 0);
+});
+
+test("las notas sueltas salen en su tiempo", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  const par = path.join(dir, "partitura.json"), salida = path.join(dir, "notas.wav");
+  fs.writeFileSync(par, JSON.stringify([{ t: 1, nota: "A3", dur: 2, vel: 0.7, instrumento: "nylon_guitar" }]));
+  const r = correr(python, ["tools/audio/notas.py", par, "--dur", "4", "--salida", salida]);
+  assert.equal(r.status, 0, r.stderr);
+  const medir = correr(python, ["-c", `import soundfile as sf, numpy as np; x,s=sf.read(r"${salida}"); m=np.abs(x).max(1); print(len(x)/s, np.argmax(m>0.02)/s)`]);
+  const [dur, inicio] = medir.stdout.trim().split(" ").map(Number);
+  assert.ok(Math.abs(dur - 4) < 0.01, `dura ${dur}`);
+  assert.ok(Math.abs(inicio - 1) < 0.08, `empieza en ${inicio}`);
+  fs.writeFileSync(par, JSON.stringify([{ t: 0, nota: "A3", instrumento: "tuba" }]));
+  assert.notEqual(correr(python, ["tools/audio/notas.py", par, "--dur", "2", "--salida", salida]).status, 0);
+});
+
+test("los tiempos de palabra se apoyan en lo que suena", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  // Silencio, sonido de 1,0 a 1,5 s, silencio, sonido de 2,5 a 3,0 s. Las marcas llegan corridas, como las de Whisper.
+  const prueba = path.join(dir, "tiempos.py");
+  fs.writeFileSync(prueba, `
+import json, subprocess, sys
+import numpy as np, soundfile as sf
+sys.path.insert(0, r"${path.join(raiz, "tools", "subtitulos")}")
+from tiempos import refinar
+sr = 16000
+x = np.zeros(4 * sr)
+t = np.arange(int(0.5 * sr)) / sr
+ruido = np.sin(2 * np.pi * 220 * t) * 0.3
+x[sr:sr + len(t)] = ruido
+x[int(2.5 * sr):int(2.5 * sr) + len(t)] = ruido
+sf.write(r"${path.join(dir, "t.wav")}", x, sr)
+r = refinar([{"palabra": "uno", "inicio": 0.7, "fin": 1.4}, {"palabra": "dos", "inicio": 2.2, "fin": 3.3}], r"${path.join(dir, "t.wav")}")
+print(json.dumps(r))
+`);
+  const r = correr(python, [prueba]);
+  assert.equal(r.status, 0, r.stderr);
+  const [uno, dos] = JSON.parse(r.stdout);
+  assert.ok(Math.abs(uno.inicio - 1.0) < 0.03, `uno empieza en ${uno.inicio}`);
+  assert.ok(Math.abs(dos.inicio - 2.5) < 0.03, `dos empieza en ${dos.inicio}`);
+  assert.ok(Math.abs(dos.fin - 3.0) < 0.04, `dos termina en ${dos.fin}`);
 });

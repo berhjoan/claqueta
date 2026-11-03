@@ -1,10 +1,12 @@
 # Sonido sin pagar: voz, música, efectos y mezcla
 
-Todo corre en tu computador. Lo único que pide internet es Edge, y es opcional.
+Todo corre en tu computador. Lo único que pide internet es Edge, y es opcional. Las rutas parten de la raíz del sistema: desde tu proyecto, antepón `../.claqueta/`.
 
 ```bash
-pip install numpy scipy soundfile numba
+pip install numpy scipy soundfile numba faster-whisper
 ```
+
+Las skills de HyperFrames dicen que no se escriba música con código porque nadie puede oírla. Aquí se resuelve de otra forma: la herramienta está probada, se mide y una persona la escucha antes de publicar.
 
 ## Orden
 
@@ -32,14 +34,22 @@ La rejilla trae `pulsos`, `compases` y `secciones`:
 |---|---|---|
 | `entrada` | Escasa, unos 5 dB abajo | Plantear |
 | `cuerpo` | Plena | Desarrollar |
-| `respiro` | Unos 10 dB abajo, cerca del 62 % | Soltar la cámara, dar el silencio |
+| `respiro` | Unos 10 dB abajo, cerca del 62 %. Solo si la pieza tiene 10 compases o más | Soltar la cámara, dar el silencio |
 | `cierre` | Lo más fuerte | Dato final, llamado |
+
+Pocas notas ligadas a la imagen, en vez de una cama continua:
+
+```bash
+python tools/audio/notas.py --listar
+python tools/audio/notas.py partitura.json --dur 10 --salida assets/audio/musica.wav
+```
+
+`partitura.json` es una lista como `[{"t": 0.5, "nota": "A3", "dur": 3, "vel": 0.6, "pan": -0.2, "instrumento": "nylon_guitar"}]`.
 
 Si necesitas otras opciones:
 
 | Fuente | Licencia | Cuándo |
 |---|---|---|
-| `tools/audio/pluck.py` | MIT | Pocas notas ligadas a lo que aparece |
 | `library/lemo-opuscar/core/audio/sampler.py` con VSCO 2 CE o VCSL | CC0, con otras librerías a revisar | Tema con instrumentos reales. Baja 70–400 MB |
 | Meta Open Sound, `facebookincubator/Meta-open-sound` | CC0 | 1.075 muestras de piano y guitarras |
 | alvana-audio, `seyedpouramir/alvana-audio` | CC0 salvo 5 temas CC BY. Revisa cada origen | Temas ya hechos con archivo de pulsos |
@@ -69,11 +79,14 @@ python tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musi
 
 ```json
 [
-  {"t": 1.23, "sonido": "barrido", "ganancia": -8, "dur": 0.4, "pan": 0.2},
-  {"t": 4.87, "archivo": "assets/audio/golpe-1.wav", "ganancia": -5},
-  {"t": 9.10, "sonido": "impacto", "ganancia": -6, "semilla": 3}
+  {"pico": 1.23, "sonido": "barrido", "ganancia": -8, "dur": 0.4, "pan": 0.2},
+  {"pico": 4.87, "archivo": "assets/audio/golpe-1.wav", "ganancia": -5},
+  {"pico": 9.13, "sonido": "impacto", "ganancia": -6, "semilla": 3},
+  {"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": 0}
 ]
 ```
+
+`pico` pone el punto más fuerte del sonido en ese segundo: úsalo en golpes, con un cuadro más que su imagen. `t` pone su inicio: úsalo en capas largas.
 
 - La voz se lleva a −16 LUFS antes de mezclar.
 - `--nivel-musica` es cuánto queda la música bajo la voz mientras se habla. Sube 6 dB cuando la voz calla, con subida de 120 ms y bajada de 700 ms.
@@ -84,5 +97,5 @@ python tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musi
 
 - `npx hyperframes@0.9.9 audio` dice dónde cae cada golpe en tiempo de película.
 - `tools/qa/verificar_video.py` mide volumen y pico del archivo final.
-- Transcribe la mezcla con Whisper y compárala con el guion: si se entiende, la música no tapa la voz.
+- `python tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt` transcribe y compara con el guion. Si coincide, la música no tapa la voz.
 - `ffmpeg -i mezcla.wav -lavfi showspectrumpic=s=1600x600 espectro.png` muestra si algo tapa la voz.

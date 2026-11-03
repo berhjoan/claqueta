@@ -1,5 +1,7 @@
 # MOTION.md — bg_system_ia
 
+> En Claqueta, el encargo manda sobre este archivo. Donde aquí se nombra una voz de pago, usa la voz gratuita del encargo. Sirve para color, tipografía, movimiento y control de calidad.
+
 Contrato visual de todas las piezas de video de la marca. Se lee completo antes de diseñar, animar o renderizar. Si la marca cambia, este archivo se corrige antes de producir.
 
 ## 1. Propósito
