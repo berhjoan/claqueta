@@ -66,7 +66,7 @@ def presencia(voz, n):
     """Curva 0-1 de cuándo se habla: sube en 120 ms y baja en 700 ms."""
     mono = np.abs(voz).mean(1)
     ventana = int(0.03 * SR)
-    e = np.sqrt(uniform_filter1d(mono ** 2, size=ventana))
+    e = np.sqrt(np.maximum(uniform_filter1d(mono ** 2, size=ventana), 0))
     umbral = max(1e-4, float(np.percentile(e[e > 1e-5], 60)) * 0.25) if (e > 1e-5).any() else 1.0
     bruto = (e > umbral).astype(np.float32)
     subir, bajar = 1 - np.exp(-1 / (0.12 * SR)), 1 - np.exp(-1 / (0.7 * SR))

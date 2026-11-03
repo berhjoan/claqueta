@@ -17,6 +17,7 @@ import argparse
 import difflib
 import json
 import re
+import subprocess
 import sys
 import unicodedata
 from pathlib import Path
@@ -35,6 +36,10 @@ def normal(p):
 
 
 def transcribir(audio, modelo):
+    pistas = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", str(audio)], capture_output=True, text=True)
+    if pistas.returncode or not pistas.stdout.strip():
+        print(f"Error: {audio} no tiene pista de audio. Revisa que el audio esté en la composición antes de renderizar.", file=sys.stderr)
+        sys.exit(2)
     try:
         from faster_whisper import WhisperModel
         m = WhisperModel(modelo, device="cpu", compute_type="int8")

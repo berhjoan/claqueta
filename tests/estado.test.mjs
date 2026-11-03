@@ -146,3 +146,14 @@ test("la duración del encargo y la lista de planos siempre coinciden", () => {
   assert.ok(Math.abs(total() - 60) < 1, `reescalar a mano da ${total()}`);
   assert.deepEqual(estado.planos.map((p) => p.titulo), textos, "conserva los planos editados");
 });
+
+test("un proyecto que llega por enlace queda marcado para avisar", () => {
+  estado.desdeEnlace = false;
+  abrir({ v: { guion: { titulo: "de otra persona" } } });
+  assert.equal(estado.desdeEnlace, true);
+  estado.desdeEnlace = false;
+  guardado.clear();
+  ponerUrl();
+  iniciarEstado();
+  assert.equal(estado.desdeEnlace, false);
+});

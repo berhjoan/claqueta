@@ -166,7 +166,7 @@ function valorSano(c, val, def) {
   }
 }
 
-function valoresSanos(extra) {
+export function valoresSanos(extra) {
   const base = valoresPorDefecto();
   if (!extra || typeof extra !== "object") return base;
   for (const d of DEPTOS) {
@@ -179,7 +179,7 @@ function valoresSanos(extra) {
   return base;
 }
 
-function planosSanos(lista, valores) {
+export function planosSanos(lista, valores) {
   if (!Array.isArray(lista) || !lista.length) return null;
   const texto = (x, largo) => (typeof x === "string" ? x.slice(0, largo) : "");
   return lista.slice(0, 200).map((p, i) => {
@@ -222,6 +222,7 @@ export function iniciarEstado() {
       const planos = planosSanos(d?.p, estado.valores);
       estado.planos = planos ?? generarPlanos(estado.valores);
       estado.planosManuales = Boolean(planos);
+      estado.desdeEnlace = true;
       history.replaceState(null, "", location.pathname);
       return;
     } catch { /* enlace dañado: sigue con lo guardado */ }

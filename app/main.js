@@ -281,6 +281,12 @@ async function iniciar() {
   configurarVistas({ monitor, galeria: crearGaleria(estilos, { monitor: () => monitor }), cargarFuente: cargarFuenteWeb, refrescarDepto: pintarEquipo });
 
   linea = new LineaTiempo(lineaRaiz, { alBuscar: (t) => { monitor.pausar(); monitor.ir(t); pintarPlay(); } });
+  if (estado.desdeEnlace) {
+    const banda = h("div", { class: "banda-enlace", role: "status" },
+      h("span", {}, "Este proyecto llegó por un enlace. Revisa el guion, las notas y los textos de los planos antes de copiar: tu IA los va a leer."),
+      h("button", { type: "button", class: "bt-mini", onclick: () => banda.remove() }, "Entendido"));
+    claqueta.append(banda);
+  }
   app.append(claqueta, equipo, mesa, cabina, lineaRaiz, pestanas, aviso);
   document.body.dataset.vista = "elegir";
   pintarPestanas();
