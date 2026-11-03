@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js" integrity="sha384-sG0Hv1tP1lZCk9KQmrIbY/XNwi+OY84GQqhMscbnsoBFqAz8KNCil1kvfL3Hbbk2" crossorigin="anonymous"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #0b0806; }
+      .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+      #el-capa { z-index: 5; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-qv3y" id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+      <div data-hf-id="hf-v9ju" id="el-pizarra-a" class="scene" data-composition-id="pizarra-a" data-composition-src="compositions/pizarra-a.html" data-start="0" data-duration="7.6" data-track-index="1" data-track-kind="graphics"></div>
+      <div data-hf-id="hf-uduk" id="el-pizarra-b" class="scene" data-composition-id="pizarra-b" data-composition-src="compositions/pizarra-b.html" data-start="7.6" data-duration="7.4" data-track-index="1" data-track-kind="graphics"></div>
+      <div data-hf-id="hf-5i76" id="el-capa" class="scene" data-composition-id="capa" data-composition-src="compositions/capa.html" data-start="0" data-duration="15" data-track-index="2" data-track-kind="graphics"></div>
+      <audio data-hf-id="hf-4jlk" id="mezcla" src="assets/audio/mezcla.wav" data-start="0" data-duration="15" data-track-index="10" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

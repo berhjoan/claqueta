@@ -1,0 +1,21 @@
+<template>
+  <style>
+    @font-face { font-family: "Sora"; src: url("assets/fonts/Sora-Variable.ttf") format("truetype"); font-weight: 100 800; font-style: normal; font-display: block; }
+    #root { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; font-family: "Sora", sans-serif; color: #f7ebd3; }
+    #ca-marca { position: absolute; left: 72px; top: 232px; width: 64px; height: 64px; border-radius: 50%; opacity: 0.7; object-fit: cover; }
+    #ca-frase { position: absolute; left: 72px; top: 1352px; width: 888px; overflow: hidden; }
+    #ca-frase-txt { display: block; font-size: 50px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; }
+  </style>
+  <div data-hf-id="hf-2yc0" id="root" data-composition-id="capa" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+    <img data-hf-id="hf-72x2" id="ca-marca" class="clip" data-start="0" data-duration="15" data-track-index="0" src="assets/emblema.png" alt="">
+    <div data-hf-id="hf-vk5y" id="ca-frase" class="clip" data-start="11.6" data-duration="3.4" data-track-index="1"><span data-hf-id="hf-mf4f" id="ca-frase-txt">La IA, explicada con claridad</span></div>
+  </div>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#ca-frase-txt", { yPercent: 110 }, { yPercent: 0, duration: 0.34, ease: "power3.out" }, 11.6);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["capa"] = tl;
+    })();
+  </script>
+</template>

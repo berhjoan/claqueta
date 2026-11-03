@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claqueta: panel de dirección de video</title>
+  <meta name="description" content="Configura estilo, cámara, profundidad, montaje y voz de un video, copia el prompt y cualquier IA lo construye con código y herramientas gratuitas.">
+  <meta name="theme-color" content="#15110D">
+  <link rel="icon" href="assets/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/app.css">
+  <link rel="alternate" type="text/plain" href="llms.txt" title="Índice para IA">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="f-tiza" x="-4%" y="-8%" width="108%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" result="d"/>
+      <feTurbulence type="fractalNoise" baseFrequency="2.6" numOctaves="1" seed="9"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.4 1.85" result="g"/>
+      <feComposite in="d" in2="g" operator="in"/>
+    </filter>
+  </svg>
+  <div id="app" class="app"></div>
+  <noscript><p style="padding:2rem;color:#F3E9D6">Este panel necesita JavaScript. La biblioteca sigue disponible en <a href="llms.txt">llms.txt</a>.</p></noscript>
+  <script type="module" src="app/main.js"></script>
+</body>
+</html>

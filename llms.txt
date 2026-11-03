@@ -1,0 +1,41 @@
+# Claqueta
+
+> Free system to make videos with code. A person configures a brief in the panel at https://berhjoan.github.io/claqueta and pastes it into any AI. This repository holds the skills, engines and tools to fulfil it without paying for any API or MCP. Videos are in Spanish; Spanish script, on-screen text and captions are literal and are never translated.
+
+If you can run commands: `git clone --depth 1 https://github.com/berhjoan/claqueta.git .claqueta`, then read `.claqueta/AGENTS.md`.
+
+If you cannot run commands: read the files below through their raw URLs, write every project file in full, and give exact commands for the person to run. Never claim you rendered something you could not render. Raw base: https://raw.githubusercontent.com/berhjoan/claqueta/main/
+
+## Read first
+
+- [AGENTS.md](https://raw.githubusercontent.com/berhjoan/claqueta/main/AGENTS.md): rules, reading order, commands, free alternatives
+- [Direction guide](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/direccion.md): how not to look generated
+- [Engines guide](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/motores.md): what to use for each video, and licenses
+- [Sound guide](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/sonido.md): voice, music, effects and mix for free
+- [Production lessons](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/aprendizajes.md): what cost time to discover
+- [Options dictionary](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/diccionario.md): every panel option, Spanish and English
+
+## HyperFrames 0.9.9
+
+- [Entry skill](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/hyperframes/skills/hyperframes/SKILL.md): always start here
+- [Motion](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/hyperframes/skills/hyperframes/references/motion.md)
+- [Format](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/hyperframes/skills/hyperframes/references/format.md)
+- [Sound](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/hyperframes/skills/hyperframes/references/sound.md)
+- [Review](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/hyperframes/skills/hyperframes/references/review.md)
+
+## Styles
+
+- [40-style atlas](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/estilos-40/GUIA_ESTILOS_CLAUDE.md)
+- [Style catalog as data](https://raw.githubusercontent.com/berhjoan/claqueta/main/data/styles.json): 106 styles, bilingual
+- [lemo-opuscar notes](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/lemo-opuscar/ORIGEN.md)
+
+## Tools
+
+- [Voices](https://raw.githubusercontent.com/berhjoan/claqueta/main/tools/tts/README.md): free Spanish voices
+- [Chalkboard engine](https://raw.githubusercontent.com/berhjoan/claqueta/main/engines/pizarra/README.md)
+- [Tool radar](https://raw.githubusercontent.com/berhjoan/claqueta/main/docs/radar.md): 50 repositories reviewed, with license and verdict
+- [Library index](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/manifest.json): every document, searchable
+
+## Optional
+
+- [Licenses](https://raw.githubusercontent.com/berhjoan/claqueta/main/NOTICE.md)

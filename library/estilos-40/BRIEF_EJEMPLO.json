@@ -1,0 +1,60 @@
+{
+  "objetivo": "Explicar una idea en un video breve",
+  "archivo_entrada": "REEMPLAZAR_CON_RUTA_REAL",
+  "formato": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 30
+  },
+  "estilo_base": "S21",
+  "estilo_texto": "S07",
+  "estilo_acento": "S24",
+  "intensidad": "media",
+  "texto_exacto": "REEMPLAZAR",
+  "voz": "conservar",
+  "paleta": [
+    "#102737",
+    "#f7f3e9",
+    "#e1663e"
+  ],
+  "restricciones": [
+    "No tapar el rostro",
+    "No inventar datos"
+  ],
+  "escenas": [
+    {
+      "inicio_s": 0,
+      "fin_s": 5,
+      "objetivo": "presentar la pregunta",
+      "estilos": [
+        "S21",
+        "S07"
+      ]
+    },
+    {
+      "inicio_s": 5,
+      "fin_s": 24,
+      "objetivo": "explicar con anotaciones",
+      "estilos": [
+        "S21",
+        "S24"
+      ]
+    },
+    {
+      "inicio_s": 24,
+      "fin_s": 30,
+      "objetivo": "cerrar con la conclusión",
+      "estilos": [
+        "S21",
+        "S07"
+      ]
+    }
+  ],
+  "entregables": [
+    "video final",
+    "proyecto editable",
+    "assets usados",
+    "nota de verificación"
+  ]
+}

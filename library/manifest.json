@@ -1,0 +1,1742 @@
+{
+ "generado": "scripts/armar-biblioteca.mjs",
+ "total": 217,
+ "items": [
+  {
+   "titulo": "Dirección: cómo no parecer generado",
+   "desc": "Esta guía vale para cualquier motor. Salió de producir piezas reales y de revisar cuadro a cuadro las que no funcionaron.",
+   "ruta": "library/guias/direccion.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Motores: qué usar para cada video",
+   "desc": "Regla: un solo motor ensambla. Se abre otro solo cuando el material lo exige, y siempre dentro del que ensambla.",
+   "ruta": "library/guias/motores.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Sonido sin pagar",
+   "desc": "Todo corre en tu computador. Lo único que pide internet es Edge, y es opcional.",
+   "ruta": "library/guias/sonido.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Aprendizajes de producción",
+   "desc": "Lo que costó descubrir produciendo videos reales con estas herramientas, en Windows con Git Bash. Cada línea evitó o habría evitado un problema. Revísala solo en los grupos que…",
+   "ruta": "library/guias/aprendizajes.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "AGENTS: instrucciones para cualquier IA",
+   "desc": "Claqueta es un sistema gratuito para hacer videos con código. Alguien configuró un encargo en el panel y te lo pegó. Este repositorio trae lo que necesitas para cumplirlo sin…",
+   "ruta": "AGENTS.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Radar: herramientas revisadas en GitHub",
+   "desc": "Herramientas para hacer video con código, gratis y en local, en una PC sin GPU dedicada (i5-11400T, 16 GB, Intel UHD 730, Windows 11, Node 24, Python 3.11, ffmpeg 8) y con…",
+   "ruta": "docs/radar.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Diccionario de opciones",
+   "desc": "Todas las opciones del panel, en español e inglés, con lo que le pide a la IA.",
+   "ruta": "library/guias/diccionario.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Voces gratis en español",
+   "desc": "python tools/tts/hablar.py --listar",
+   "ruta": "tools/tts/README.md",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Motor de pizarra",
+   "desc": "Escritura a mano en tiza, con letra propia del español, dentro de una escena de HyperFrames. Probado en 0.8.150 y 0.9.9, en `check`, Studio y render: ir atrás y adelante da la…",
+   "ruta": "engines/pizarra/README.md",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT y OFL"
+  },
+  {
+   "titulo": "Música original con rejilla exacta",
+   "desc": "tools/audio/musica.py",
+   "ruta": "tools/audio/musica.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Efectos sintetizados",
+   "desc": "tools/audio/efecto.py",
+   "ruta": "tools/audio/efecto.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Mezcla con la música cediendo bajo la voz",
+   "desc": "tools/audio/mezcla.py",
+   "ruta": "tools/audio/mezcla.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Máster a -14 LUFS",
+   "desc": "tools/audio/masterizar.py",
+   "ruta": "tools/audio/masterizar.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Sonido de tiza trazo a trazo",
+   "desc": "tools/audio/tiza.py",
+   "ruta": "tools/audio/tiza.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Biblioteca de síntesis de efectos",
+   "desc": "tools/audio/sfx.py",
+   "ruta": "tools/audio/sfx.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Cuerdas por modelo físico",
+   "desc": "tools/audio/pluck.py",
+   "ruta": "tools/audio/pluck.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Narración gratis, un comando para tres motores",
+   "desc": "tools/tts/hablar.py",
+   "ruta": "tools/tts/hablar.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Tiempos de palabra pegados al guion",
+   "desc": "tools/subtitulos/alinear.py",
+   "ruta": "tools/subtitulos/alinear.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Mide formato, duración y volumen del MP4",
+   "desc": "tools/qa/verificar_video.py",
+   "ruta": "tools/qa/verificar_video.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Hoja de cuadros de un video",
+   "desc": "tools/qa/hoja_cuadros.py",
+   "ruta": "tools/qa/hoja_cuadros.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Busca saltos y cuadros negros",
+   "desc": "tools/qa/saltos.py",
+   "ruta": "tools/qa/saltos.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Revisa qué falta en este computador",
+   "desc": "tools/doctor.py",
+   "ruta": "tools/doctor.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Genera el encargo sin abrir el panel",
+   "desc": "tools/prompt.mjs",
+   "ruta": "tools/prompt.mjs",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "figma: skill",
+   "desc": "Bring Figma into a HyperFrames video - rendered assets, brand tokens, components, storyboard frames as reconstructed motion (frames read as states, not slides), shaders and…",
+   "ruta": "library/hyperframes/skills/figma/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-cli: skill",
+   "desc": "The HyperFrames CLI by job - scaffold, check, look at frames, edit the timeline, preview, render locally or in the cloud, publish, project history - plus reading its JSON and…",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Generate a project beat grid",
+   "desc": "Use `hyperframes beats` when an existing HyperFrames project needs the Studio-compatible beat file for its music track. This is a CLI utility, not a complete video workflow.",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/beats.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "cloud — HeyGen-hosted rendering (zero-infra)",
+   "desc": "npx hyperframes auth login # one-time sign-in",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/cloud.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Cloud Run rendering on Google Cloud",
+   "desc": "Use `hyperframes cloudrun` only when the user explicitly wants self-managed Google Cloud infrastructure. It deploys Cloud Run, Workflows, and Cloud Storage. For a managed default…",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/cloudrun.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Compare and batch rendering",
+   "desc": "Use these commands for deliberate visual comparison or variable-driven template output. They do not replace `lint`, `check`, final preview approval, or output verification.",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/compare-and-batch.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "CLI conventions for agents and CI",
+   "desc": "npx hyperframes doctor --json | jq -e '.ok' >/dev/null",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/conventions.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "doctor, browser",
+   "desc": "Environment diagnosis and bundled-Chrome management. Run these first when a render or preview fails.",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/doctor-browser.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Feedback reports",
+   "desc": "After verifying a successful render, send one feedback report unless telemetry is disabled or the user opted out:",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/feedback.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "init, capture, skills",
+   "desc": "<!-- registry-items: allow=blank,landscape-4k,portrait-4k,square-4k,media-use -->",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/init-and-scaffold.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Lambda rendering on AWS",
+   "desc": "Use `hyperframes lambda` when the user explicitly wants self-managed AWS infrastructure or needs distributed rendering. It wraps `@hyperframes/aws-lambda` and AWS SAM.",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/lambda.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "lint, check, snapshot",
+   "desc": "Use `lint` for fast static feedback while iterating. Use `check` as the required final gate: it reruns the same linter, then audits runtime, layout, motion, and contrast in one…",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/lint-validate-inspect.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "preview, play, render, publish",
+   "desc": "Serve, render, and share commands.",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/preview-render.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "info, upgrade, compositions, timeline, docs, benchmark, telemetry, asset preprocessing",
+   "desc": "Catch-all reference for commands that don't fit the main dev loop.",
+   "ruta": "library/hyperframes/skills/hyperframes-cli/references/upgrade-info-misc.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-registry: skill",
+   "desc": "About 450 ready-made HyperFrames blocks and components installed as editable source - transitions, overlays, titles, kinetic type, captions, charts, map overlays, 3D, camera…",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Component quality bar",
+   "desc": "What a catalog component has to be for us to keep shipping it. Every criterion here comes from a",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/component-quality-bar.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Contributing a Block or Component to the Registry",
+   "desc": "Guide the user from idea to merged PR for a new registry block or component.",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/contributing.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "The demo.html Convention",
+   "desc": "Every component in the registry ships a companion `demo.html` file alongside its snippet. The demo serves two purposes:",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/demo-html-pattern.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Registry discovery",
+   "desc": "<!-- registry-items: allow=data-composition-id,data-start,data-track-index -->",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/discovery.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Install Locations",
+   "desc": "The `target` field in each item's `registry-item.json` specifies a default install path. The `add` command remaps the prefix based on `hyperframes.json#paths`:",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/install-locations.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Placeholder material",
+   "desc": "Registry items ship with stand-in content: a rectangle where the user's screenshot goes, a",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/placeholder-material.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Searching the catalog",
+   "desc": "How `hyperframes catalog` ranks, what its `--json` envelope means, offline behaviour, and reporting a miss.",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/search.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Contribute Templates",
+   "desc": "Copy-paste starter templates for each component type. These embed the proven patterns that pass `lint` and `check`.",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/templates.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Wiring Blocks",
+   "desc": "Blocks are standalone compositions with their own `data-composition-id`, dimensions, duration, and GSAP timeline. Include them in a host composition using `data-composition-src`…",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/wiring-blocks.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Wiring Components",
+   "desc": "Components are effect snippets — HTML, CSS, and optionally JS that you merge directly into an existing composition. Unlike blocks, components have no standalone timeline; they…",
+   "ruta": "library/hyperframes/skills/hyperframes-registry/references/wiring-components.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes: skill",
+   "desc": "Read first to make, edit, animate or render any video with HyperFrames (HTML rendered to video), including launch films, explainers, music videos, charts, maps, vertical clips,…",
+   "ruta": "library/hyperframes/skills/hyperframes/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Captions",
+   "desc": "tl.to(group, { opacity: 0, duration: 0.12, ease: \"power2.in\" }, end - 0.12);",
+   "ruta": "library/hyperframes/skills/hyperframes/references/captions.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Films from a source: measured facts",
+   "desc": "What is specific to HyperFrames, or was measured on shipped films, when one video is made from a website, a script, a pull request, a music track, a real place or a short motion…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/film.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Composition format",
+   "desc": "The detail behind the contract in `SKILL.md`. Full references: `npx hyperframes docs compositions`, `docs data-attributes`, `docs troubleshooting`.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/format.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "The look",
+   "desc": "Left alone, the same brief comes out with the same look run after run, and banning that look only moves it to the next default. Outside input breaks it, in this order: the…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/look.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Motion",
+   "desc": "Measured frame by frame from the official HyperFrames launch films. These are defaults: a reference the person gave, or a Moment that does otherwise on purpose, wins for its own…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/motion.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Cards over talking-head footage",
+   "desc": "Designed cards, lower thirds and split layouts over a person speaking. Placement numbers are for 1920×1080 and 1080×1920; scale others.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/overlays.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Running from an installed plugin",
+   "desc": "Check the directory two levels above the loaded `SKILL.md` for `plugin.json`,",
+   "ruta": "library/hyperframes/skills/hyperframes/references/plugin-installation.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Review",
+   "desc": "You wrote the timeline, so you know what happens; the viewer sees it once, at full speed, often on a phone. Review is how you see the film as they will: as a harsh motion…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/review.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Animation runtimes",
+   "desc": "HyperFrames seeks each frame on its own, so motion must be a function of time, never of the previous frame. Full GSAP reference: `npx hyperframes docs gsap`.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/runtimes.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Skill installation and freshness",
+   "desc": "Read this reference when installing or updating skills, diagnosing unexpected skill behavior, or running HyperFrames setup in CI.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/skill-lifecycle.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Sound",
+   "desc": "Sound is half of how a film feels, and the viewer notices a silent one before any frame. Every judge of frames misses it, so plan it on purpose.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/sound.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "The spec",
+   "desc": "Adjectives are where the default look lives. Given \"premium, modern, clean\", the model fills every gap with its own defaults, and they look the same in every run: a dark void, a…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/spec.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Story",
+   "desc": "Read before building any video that tells something over about 15 s: a launch or promo, an explainer, a pull-request or changelog video, a recap, a music video with a narrative.…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/story.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Storyboard format — `STORYBOARD.md` + parsed manifest",
+   "desc": "Defines the storyboard's **base data format** only: the `STORYBOARD.md` file shape and the `StoryboardManifest` it parses into. Planning the film itself is in…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/storyboard-format.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Storyboard recipe — plan a video as stills the person approves",
+   "desc": "Use it whenever a run makes or changes a storyboard: when the person asks for one, or when you want their go on the shots before animating. This file owns **how to make the…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/storyboard.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "3D, simulations and generative pieces",
+   "desc": "Use 3D when the film earns it: an object or a set as the payoff, a product, a simulation that explains. Loading Three.js, WebGPU, p5 or canvas and the seek protocol are in…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/types/3d.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Characters, mascots and story shorts",
+   "desc": "A character gives every transition a cause and gives the film its jokes: it carries the result into the player, rejects its own first try, reads the manual. After Effects…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/types/character.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Numbers, charts and data stories",
+   "desc": "A grid of KPI cards; a dashboard; a pie chart; every number counting up at once; numbers with no source.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/types/data.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Explainers, tutorials and \"how it works\"",
+   "desc": "One idea the viewer understands by the end (`../story.md` §1). The spine is one concrete example worked through, start to finish, not a tour of facts. Usually 30–90 s.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/types/explainer.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Launch, promo and feature films",
+   "desc": "The shape is `../story.md` §4 (hook → tension → reveal → proof → payoff → claim → end card), usually 20–45 s. What a viewer shares is real people and real output: in the official…",
+   "ruta": "library/hyperframes/skills/hyperframes/references/types/launch.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Music videos and films cut to a track",
+   "desc": "The song is the structure. Timing facts (hits, beat trust, loops) are in `../film.md` \"On music\"; this file is the shape.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/types/music.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Vertical and social clips (9:16)",
+   "desc": "Made at 1080×1920 when the request or the platform says vertical; a landscape film is not squeezed into it but recomposed.",
+   "ruta": "library/hyperframes/skills/hyperframes/references/types/vertical.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "media-use: skill",
+   "desc": "Get or make any media for a HyperFrames video - music, sound effects, images, icons, logos, voiceover, avatar and generated video, transcripts, cutouts, colour grades and looks -…",
+   "ruta": "library/hyperframes/skills/media-use/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Background music (BGM)",
+   "desc": "One music bed per composition, produced by the shared audio engine (`scripts/audio.mjs` → `scripts/lib/bgm.mjs`). Two routes, chosen by the engine's one switch — whether a HeyGen…",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/bgm.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Captions",
+   "desc": "<!-- registry-items: allow=max-width,data-composition-src,hyperframes-registry,blend-mode,caption-style,font-family -->",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/captions/authoring.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Dynamic Caption Techniques",
+   "desc": "You are here because SKILL.md told you to read this file before writing animation code. Pick your technique combination from the table below based on the energy level you…",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/captions/motion.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Transcript Guide",
+   "desc": "For the `transcribe` CLI invocation, the `.en`-translates-non-English rule, and whisper model selection, see [`../transcribe.md`](../transcribe.md). This file covers what to do…",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/captions/transcript-handling.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Background Removal",
+   "desc": "Make a transparent overlay (typical: a talking head over an arbitrary scene). Uses `u2net_human_seg` (Apache-2.0).",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/remove-background.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Requirements & Caches",
+   "desc": "Run `npx hyperframes auth status` to see what's configured and which engines a workflow will use (see the skill's **Preflight** section). Keys resolve in this order — **first…",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/requirements.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Sound effects (SFX)",
+   "desc": "Named sound effects, produced by the shared audio engine (`scripts/audio.mjs` → `scripts/lib/sfx.mjs`). No account or key is needed:",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/sfx.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Transcription",
+   "desc": "Create normalized word-level timestamps. **Always specify `--model` explicitly** — `npx hyperframes transcribe` uses `small.en` as its default whisper model, which silently…",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/transcribe.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "TTS → Captions",
+   "desc": "When no recorded voiceover exists, generate one and obtain word-level caption timing. Two paths depending on which TTS provider is in use:",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/tts-to-captions.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Text To Speech",
+   "desc": "bundled `heygen-tts.mjs` script below.",
+   "ruta": "library/hyperframes/skills/media-use/audio/references/tts.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Audio engine — voiceover, music, SFX, captions, transcription",
+   "desc": "For a full audio pass (TTS voiceover + background music + sound effects in one",
+   "ruta": "library/hyperframes/skills/media-use/references/audio.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Color grading — grade blocks and LUTs",
+   "desc": "Use `grade` when you need a canonical HyperFrames grading/effects payload for",
+   "ruta": "library/hyperframes/skills/media-use/references/grading.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "HeyGen from the HyperFrames CLI",
+   "desc": "A refusal names its fix: `api_key_required` needs an API key, `402` or `insufficient_credit` needs a top-up, `hf_usage_exhausted` means the plan's allowance is used up.",
+   "ruta": "library/hyperframes/skills/media-use/references/heygen.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Local media commands",
+   "desc": "These run on this machine, free, and write into the project.",
+   "ruta": "library/hyperframes/skills/media-use/references/local.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Media treatment recipes",
+   "desc": "These are optional tested seeds, not the complete capability surface. Read the",
+   "ruta": "library/hyperframes/skills/media-use/references/media-treatment-recipes.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Media treatments",
+   "desc": "A media treatment is a source-aware plan that composes existing HyperFrames",
+   "ruta": "library/hyperframes/skills/media-use/references/media-treatments.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "User memory — preferences and recipes",
+   "desc": "The lightweight tier of user memory: confirmed brief answers (destination, aspect, language, flow, storyboard, voice, style preset) persisted on the same two-tier split as assets…",
+   "ruta": "library/hyperframes/skills/media-use/references/memory.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Ownership matrix, usage stats, telemetry, privacy",
+   "desc": "Maintainer-facing reference. Nothing here changes how you resolve or operate on media.",
+   "ruta": "library/hyperframes/skills/media-use/references/meta.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Mixing in HyperFrames",
+   "desc": "Preview and render run the same Web Audio graph, so what plays while scrubbing is what renders. Everything lives in attributes on the `<audio>` or `<video>` element.",
+   "ruta": "library/hyperframes/skills/media-use/references/mixing.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Media operations: agent guidance",
+   "desc": "media-use resolves and remembers assets. For **operating** on them: cutting,",
+   "ruta": "library/hyperframes/skills/media-use/references/operations.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Resolve — command, flags, reuse, adopt, inventory",
+   "desc": "npx hyperframes media-use resolve --type <type> --intent \"<description>\" --project <dir>",
+   "ruta": "library/hyperframes/skills/media-use/references/resolve.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Setup and providers — install, auth, RAM ladders, forcing a provider",
+   "desc": "Install the HeyGen CLI through its [verified release instructions](https://developers.heygen.com/cli), then run:",
+   "ruta": "library/hyperframes/skills/media-use/references/setup-providers.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "media-use usage dashboard",
+   "desc": "Reproducible definition of the media-use usage dashboard. The dashboard answers",
+   "ruta": "library/hyperframes/skills/media-use/references/telemetry-dashboard.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "remotion-to-hyperframes: skill",
+   "desc": "Bring existing video code or footage into HyperFrames and verify it frame by frame against the original - Remotion first, also Motion Canvas, Lottie, Three.js, p5.js, canvas or…",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Remotion → HyperFrames API Map",
+   "desc": "Authoritative translation table. Load this reference when starting a translation",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/api-map.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "When to bow out: the runtime interop pattern",
+   "desc": "Some Remotion compositions can't be translated cleanly. The skill should",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/escape-hatch.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Eval: how to validate a translation end-to-end",
+   "desc": "Every translation should be measured. The skill ships a source linter and",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/eval.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Font translation",
+   "desc": "Fonts are the dominant non-translation noise floor. Same `font-weight: 800`",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/fonts.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Translation limitations",
+   "desc": "What the skill explicitly cannot translate, separated from the",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/limitations.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Lottie translation: @remotion/lottie → HF lottie adapter",
+   "desc": "Lottie animations are a clean translation case — HF has a built-in",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/lottie.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Media translation: Audio, Video, Img, IFrame, staticFile",
+   "desc": "Remotion's `staticFile(\"x.png\")` resolves to the project's `public/` directory.",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/media.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Parameter translation: Zod schemas, defaultProps, calculateMetadata",
+   "desc": "How a typed Remotion `<Composition schema={...} defaultProps={...} />`",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/parameters.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Sequencing translation: Sequence, Series, Composition root",
+   "desc": "How Remotion's nested `Sequence` tree maps to one sub-composition host per",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/sequencing.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Timing translation: interpolate, spring, easing",
+   "desc": "The single highest-leverage reference. Easings and timings are what readers",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/timing.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Transitions translation: @remotion/transitions → HF crossfades / shader-transitions",
+   "desc": "The `@remotion/transitions` package is Remotion's library of pre-built",
+   "ruta": "library/hyperframes/skills/remotion-to-hyperframes/references/transitions.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "reverse-any-video: skill",
+   "desc": "Rebuild any video file as an editable HyperFrames project - motion graphics, talking heads, live action or AI-generated footage. Measure and watch it, rebuild every layer, then…",
+   "ruta": "library/hyperframes/skills/reverse-any-video/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Animated and painted films",
+   "desc": "In a hand-painted or 3D-animated film the character, the world and the camera are one picture, so the layers do not come apart. Decide shot by shot: build what code can carry,…",
+   "ruta": "library/hyperframes/skills/reverse-any-video/references/animated.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Matching what is drawn",
+   "desc": "Where earlier rebuilds lost points on drawn layers, and what fixed it.",
+   "ruta": "library/hyperframes/skills/reverse-any-video/references/match.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Re-shooting a person",
+   "desc": "Every person on screen, speaking or not, is re-shot with HeyGen so the original's face and the text burned over it never ship. What makes a re-shot person match is the original's…",
+   "ruta": "library/hyperframes/skills/reverse-any-video/references/people.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Opening a Reverse",
+   "desc": "What the person reads at the start, and when credits run out mid-run. Write it for them, not for an agent:",
+   "ruta": "library/hyperframes/skills/reverse-any-video/references/start.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "slideshow: skill",
+   "desc": "Build a HyperFrames slideshow to present live - slides, fragment reveals, branching hotspots and presenter mode with speaker notes, served by `hyperframes present` - or turn an…",
+   "ruta": "library/hyperframes/skills/slideshow/SKILL.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Standalone HyperFrames Slideshow Harness",
+   "desc": "These patterns are a **temporary workaround** for standalone demos. The durable solution is engine-hosted: a future `hyperframes preview --slideshow` / studio present mode will…",
+   "ruta": "library/hyperframes/skills/slideshow/references/standalone-harness.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Origen de HyperFrames 0.9.9",
+   "desc": "Usa siempre `npx hyperframes@0.9.9`. Estas instrucciones corresponden a esa versión.",
+   "ruta": "library/hyperframes/ORIGEN.md",
+   "cat": "hyperframes",
+   "catNombre": "HyperFrames 0.9.9",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "embedded-captions: flujo clásico",
+   "desc": "Add captions or subtitles to an existing single-subject talking-head video without editing the footage. Use for plain verbatim captions, cinematic captions embedded behind the…",
+   "ruta": "library/hyperframes-clasico/skills/embedded-captions/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "faceless-explainer: flujo clásico",
+   "desc": "Turn arbitrary text — an article, notes, a topic, a brief — into a faceless explainer video: there is no site or footage to capture, so the visuals are invented per scene…",
+   "ruta": "library/hyperframes-clasico/skills/faceless-explainer/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "figma: flujo clásico",
+   "desc": "Import Figma content into a HyperFrames composition — rendered assets, brand tokens, components, storyboard sections → reconstructed motion (frames read as states, not slides)…",
+   "ruta": "library/hyperframes-clasico/skills/figma/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "general-video: flujo clásico",
+   "desc": "Author or edit a custom HyperFrames composition when no specialized workflow fits, or when BRIEF.md sets flow: companion. Use for longer or multi-scene pieces, brand and sizzle…",
+   "ruta": "library/hyperframes-clasico/skills/general-video/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-animation: flujo clásico",
+   "desc": "All animation knowledge for HyperFrames — atomic motion rules, multi-phase scene blueprints, scene transitions, broader motion-design techniques, AND the seven runtime adapters…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-animation/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-audio: flujo clásico",
+   "desc": "Use when audio already placed in a HyperFrames composition needs to be mixed: fade-in/fade-out, crossfade, track gain or volume, volume automation, ducking, a music bed that…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-audio/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-cli: flujo clásico",
+   "desc": "Use the HyperFrames CLI development loop: init, add, catalog, capture, lint, check, snapshot, compare, grade-compare, preview, play, present, beats, keyframes, single or batch…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-cli/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-core: flujo clásico",
+   "desc": "The HyperFrames composition contract — build one renderable project. Use for composition structure, the `data-*` timing attributes, `class=\"clip\"`, tracks, sub-compositions,…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-core/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-creative: flujo clásico",
+   "desc": "Non-animation creative direction for HyperFrames videos. Use for design spec (frame.md / design.md) handling, palettes, typography, narration, beat planning, audio-reactive…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-creative/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-keyframes: flujo clásico",
+   "desc": "Use when a HyperFrames composition needs a punch-in, punch-out, zoom, reframe, Ken Burns treatment, camera move, visual match/whip handoff, or other seek-safe 2D/3D keyframes;…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-keyframes/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-registry: flujo clásico",
+   "desc": "Search, install, and wire registry blocks and components into HyperFrames compositions. Use BEFORE hand-building any named visual — whenever a brief, a user, or a storyboard…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-registry/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes-studio: flujo clásico",
+   "desc": "Use when working with a person on a HyperFrames project in Studio: first, whether their message asks for a change at all (questions, loose ideas and \"don't change anything\" get…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes-studio/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "hyperframes: flujo clásico",
+   "desc": "Mandatory entry point: read this first for any request to make, create, edit, animate, or render a video, animation, or motion graphic, including a promo, explainer, captioned…",
+   "ruta": "library/hyperframes-clasico/skills/hyperframes/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "media-use: flujo clásico",
+   "desc": "Agent Media OS for a HyperFrames project. Resolve BGM, SFX, image, icon, brand logo, voice, color grade, or LUT into a frozen local file or paste-ready block + ledger record (one…",
+   "ruta": "library/hyperframes-clasico/skills/media-use/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "motion-graphics: flujo clásico",
+   "desc": "A short, design-led motion graphic where motion is the message — kinetic typography, stat count-up, chart/data-viz hit, logo sting / brand lockup, lower-third / callout / social…",
+   "ruta": "library/hyperframes-clasico/skills/motion-graphics/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "music-to-video: flujo clásico",
+   "desc": "Turn a music track (an audio file, a video to pull audio from, or a track generated from a mood brief) into a beat-synced video — lyric video, slideshow, or kinetic promo. The…",
+   "ruta": "library/hyperframes-clasico/skills/music-to-video/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "pr-to-video: flujo clásico",
+   "desc": "Turn a GitHub pull request (a PR URL, owner/repo#N, or 'this PR' in a checked-out repo) into a code-change explainer video — changelog, feature reveal, fix, or refactor…",
+   "ruta": "library/hyperframes-clasico/skills/pr-to-video/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "product-launch-video: flujo clásico",
+   "desc": "Turn a product or marketing URL, pasted script, or brief into a product launch / promo video — SaaS promos, feature reveals, product demos, app and company launches. Use when the…",
+   "ruta": "library/hyperframes-clasico/skills/product-launch-video/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "remotion-to-hyperframes: flujo clásico",
+   "desc": "Port an existing Remotion (React) composition''s source to HyperFrames HTML. Use ONLY on an explicit ask to port/convert/migrate/translate a Remotion source — one-way,…",
+   "ruta": "library/hyperframes-clasico/skills/remotion-to-hyperframes/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "slideshow: flujo clásico",
+   "desc": "Author a HyperFrames slideshow — a presentation, pitch deck, or interactive deck with discrete slides, fragment reveals, branching, hotspot navigation, and built-in presenter…",
+   "ruta": "library/hyperframes-clasico/skills/slideshow/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "talking-head-recut: flujo clásico",
+   "desc": "Package an existing talking-head / interview / podcast video with timed, designed GRAPHIC OVERLAY cards — kinetic titles, lower-thirds, data callouts, quotes, side panels,…",
+   "ruta": "library/hyperframes-clasico/skills/talking-head-recut/SKILL.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Por qué existe esta copia",
+   "desc": "La versión 0.9.x ya no trae `faceless-explainer` ni `general-video`, dos flujos completos para hacer un video desde un tema, con voz, guion y escenas. Además, esta versión trae…",
+   "ruta": "library/hyperframes-clasico/ORIGEN.md",
+   "cat": "clasico",
+   "catNombre": "HyperFrames clásico 0.8.150",
+   "licencia": "Apache-2.0"
+  },
+  {
+   "titulo": "Atlas de 40 estilos: léeme",
+   "desc": "Catálogo de estilos de video con recetas y dos prompts por estilo, uno para crear y otro para editar.",
+   "ruta": "library/estilos-40/LEEME.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "Propio"
+  },
+  {
+   "titulo": "Atlas: las 40 fichas",
+   "desc": "40 estilos · 80 prompts · referencias visuales",
+   "ruta": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "Propio"
+  },
+  {
+   "titulo": "Noticia con subtítulos",
+   "desc": "Noticia en video que se entiende sin sonido. Subtítulos enormes que entran por bloques, con una palabra clave sobre un bloque amarillo, sobre material real y documentos.",
+   "ruta": "library/lemo-opuscar/styles/caption-news/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Noticiero de los años 20",
+   "desc": "Archivo real en una ventana de proyector 1,37:1 con un solo gris plateado, parpadeo, rayas y polvo; periódicos, telegramas y mapas se filman en vez de maquetarse.",
+   "ruta": "library/lemo-opuscar/styles/newsreel/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Cuenta atrás en pantalla dividida en vivo",
+   "desc": "Imágenes reales de un evento con un cero conocido, en tiempo real. El reloj marca cada segundo y la pantalla se divide en más celdas a medida que se acerca el momento.",
+   "ruta": "library/lemo-opuscar/styles/countdown/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Sinfonía de time-lapse",
+   "desc": "Película de ciudad cortada como música minimalista. El time-lapse convierte el tráfico en ríos de luz, los cortes se densifican con la partitura y termina con un corte seco a…",
+   "ruta": "library/lemo-opuscar/styles/city-symphony/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Investigación visual",
+   "desc": "Mesa de investigación fría. Video, fotos, documentos, sonido y mapas de un mismo hecho real, dispuestos en un solo reloj para que se verifiquen entre sí.",
+   "ruta": "library/lemo-opuscar/styles/visual-investigation/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Montaje constructivista",
+   "desc": "Archivo real impreso como un cartel de tinta y papel con un solo rojo. Bandas diagonales con la tipografía, ventanas que contienen el film y personas recortadas apiladas en…",
+   "ruta": "library/lemo-opuscar/styles/kino-montage/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Telestrator deportivo",
+   "desc": "Análisis de fútbol de televisión. Se reproduce, se rebobina, se congela y se dibuja sobre la imagen real con anillos, flechas y una zona roja para el espacio sin cubrir.",
+   "ruta": "library/lemo-opuscar/styles/telestrator/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Paquete de noticiero de televisión",
+   "desc": "Paquete de pantalla de un noticiero hecho en código. Cortinilla, resumen de noticias, franja inferior que no sale de cuadro y gráficos a pantalla completa con un dato por pantalla.",
+   "ruta": "library/lemo-opuscar/styles/news-package/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Informe satelital",
+   "desc": "Imágenes satelitales reales de un lugar real, graduadas a un gris de analista, con líneas blancas finas medidas sobre el terreno. Retícula de fijación, contornos, línea de…",
+   "ruta": "library/lemo-opuscar/styles/satellite-briefing/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Pizarra de informe de ingeniería",
+   "desc": "Una pared real de pizarra blanca filmada. Luz de ventana sobre esmalte, restos de marcador borrado, marco y repisa; recortes de fotos reales caen con peso y la tinta se dibuja…",
+   "ruta": "library/lemo-opuscar/styles/briefing-board/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Levantamiento LiDAR",
+   "desc": "Puntos láser aéreos reales de un lugar real, flotando en la oscuridad como una nube medida; una línea de escaneo o un plano de corte los condensa en una superficie sólida con luz…",
+   "ruta": "library/lemo-opuscar/styles/lidar-survey/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Proyección sobre maqueta blanca",
+   "desc": "Una maqueta blanca de un lugar real sobre un pedestal en un cuarto oscuro; un proyector pinta datos como luz, capa por capa, sobre las superficies que lo enfrentan.",
+   "ruta": "library/lemo-opuscar/styles/white-model/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Datos hechos objeto",
+   "desc": "Estadísticas reales construidas como objetos. Cada unidad es una pieza contable de material, apilada a escala exacta sobre una base artesanal y filmada como un producto de estudio.",
+   "ruta": "library/lemo-opuscar/styles/data-physical/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Despiece de producto",
+   "desc": "Un producto real construido a partir de sus propios archivos de ingeniería, iluminado como una foto de estudio y desarmado ante la cámara, con capas que se elevan sobre un solo…",
+   "ruta": "library/lemo-opuscar/styles/teardown/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Relato de microscopio",
+   "desc": "Microscopía real y con licencia limpia de una muestra real, y un cambio de escala continuo que lleva de la lámina de vidrio en la mano a una sola célula; el enfoque respira al…",
+   "ruta": "library/lemo-opuscar/styles/microscope/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Mesa de luz de archivo",
+   "desc": "Objetos reales de archivo (negativos de vidrio, cartas, telegramas, recortes) sobre una mesa de luz fría; una lupa baja sobre uno y dentro del cristal el objeto cobra vida.",
+   "ruta": "library/lemo-opuscar/styles/archive-lighttable/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Libro ilustrado en crayón",
+   "desc": "Página de libro ilustrado dibujada en vivo con crayón de cera sobre papel con dientes, con color que se sale del contorno y una aguada de acuarela que revela lo que el crayón…",
+   "ruta": "library/lemo-opuscar/styles/crayon-book/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Pincel de acuarela",
+   "desc": "Página de diario pintada a mano que se pinta sola. Pinceladas translúcidas con pincel seco y blanco volador sobre papel de algodón cálido, con notas manuscritas y sin líneas…",
+   "ruta": "library/lemo-opuscar/styles/watercolor/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Pintura china a la tinta",
+   "desc": "Pintura xieyi en tinta sobre papel de arroz, animada. Tinta negra en cinco tonos y un solo rojo, el sello bermellón; el papel en blanco es espacio y una pincelada es una montaña,…",
+   "ruta": "library/lemo-opuscar/styles/ink-wash/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Óleo con empaste",
+   "desc": "Óleo grueso aplicado con espátula. Planos grandes, planos y de bordes nítidos, con luz rasante que muestra cada cresta; primero la estructura de valores y después la textura.",
+   "ruta": "library/lemo-opuscar/styles/impasto/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Dibujo de una sola línea",
+   "desc": "Una sola línea de tinta que nunca se levanta del papel. Todo en pantalla es esa línea dibujándose y las escenas no cortan, se transforman.",
+   "ruta": "library/lemo-opuscar/styles/one-line/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Explicador en pizarra blanca",
+   "desc": "Explicación dibujada en vivo en una sola pizarra blanca brillante. Escritura de una línea que se escribe trazo a trazo, marcadores flotantes sin mano, imanes que se mueven y un…",
+   "ruta": "library/lemo-opuscar/styles/whiteboard/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Boceto urbano con pluma y aguada",
+   "desc": "Página de cuaderno dibujada en el lugar. Líneas finas de tinta sepia que tiemblan, se pasan de las esquinas y no cierran del todo, con acuarela transparente suelta encima y…",
+   "ruta": "library/lemo-opuscar/styles/urban-sketch/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Pizarra de tiza",
+   "desc": "Una pizarra de aula real donde la tiza se escribe sola, trazo a trazo y en el orden correcto, sin mano, tiza ni borrador a la vista. Verde tinta profundo, limpia, con tres tizas…",
+   "ruta": "library/lemo-opuscar/styles/chalkboard/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Teatro de sombras",
+   "desc": "Teatro de sombras chino. Títeres de piel teñida translúcida, tallados como encaje, pegados a una pantalla de algodón e iluminados por detrás con lámparas de aceite.",
+   "ruta": "library/lemo-opuscar/styles/shadow-puppet/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Ukiyo-e",
+   "desc": "Grabados en madera de la era Edo con vida. Bloques de color plano, líneas de tinta talladas, cielos con bokashi, papel que se siente y una cámara que recorre la estampa como un…",
+   "ruta": "library/lemo-opuscar/styles/ukiyoe/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Papel recortado rojo",
+   "desc": "Papeles recortados chinos de ventana con vida. Piezas rojas articuladas sobre fondos de papel, donde el corte es el dibujo y los huecos son por donde entra la luz.",
+   "ruta": "library/lemo-opuscar/styles/papercut-red/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Caja de luz de papel recortado",
+   "desc": "Caja de luz de papel recortado en capas, iluminada por detrás. De 6 a 9 láminas de cartulina en una caja poco profunda, con luz cálida a través del papel y ventanas que arden por…",
+   "ruta": "library/lemo-opuscar/styles/paper-lantern/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Impresión risográfica",
+   "desc": "Animación que parece impresa cuadro a cuadro en un duplicador. De dos a tres tintas translúcidas sobreimpresas en papel cálido, tramas de puntos, grano de tinta y placas que…",
+   "ruta": "library/lemo-opuscar/styles/risograph/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Expediente en semitono",
+   "desc": "Expediente impreso retro con papel crema, puntos de semitono sobreimpresos en pocas tintas planas, titulares enormes de sombras desalineadas, sellos de goma y personajes de…",
+   "ruta": "library/lemo-opuscar/styles/halftone-dossier/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Xilografía",
+   "desc": "Grabado en relieve que se talla solo. Cada cuadro es un bloque de madera negro y la luz solo existe donde el cuchillo cortó; un solo color como máximo, y solo para lo que arde.",
+   "ruta": "library/lemo-opuscar/styles/woodcut/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Grabado en cobre",
+   "desc": "Una plancha calcográfica que se graba sola. Un buril corta líneas que se ensanchan y afinan en el cobre y la figura crece con contorno y rayados; el tono son líneas, nunca…",
+   "ruta": "library/lemo-opuscar/styles/engraving/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Cartel de serigrafía de viajes",
+   "desc": "Tintas planas, opacas y de borde duro, pasadas una a una por una malla. De 4 a 6 por cartel, bandas escalonadas en vez de degradados y finos huecos de papel donde el registro se…",
+   "ruta": "library/lemo-opuscar/styles/silkscreen-poster/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Plano secuencia impreso",
+   "desc": "Un mundo tridimensional renderizado como un grabado raspado, tinta y papel con un solo rojo, recorrido por un movimiento de cámara continuo; profundidad, clima y luz son líneas…",
+   "ruta": "library/lemo-opuscar/styles/printed-long-take/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Gráfica en movimiento suiza",
+   "desc": "Estilo tipográfico internacional en movimiento. Retícula modular, una sola tipografía, un color de señal y movimiento exacto como una imprenta; diseño gráfico 2D puro sobre papel…",
+   "ruta": "library/lemo-opuscar/styles/swiss-motion/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Créditos de espías de los años 60",
+   "desc": "Créditos de papel recortado en cuatro tintas para una película inexistente, con siluetas que cruzan escenarios hechos de los propios créditos; cada golpe de metales es un corte.",
+   "ruta": "library/lemo-opuscar/styles/spy-titles/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Art déco",
+   "desc": "Laca negra, línea dorada grabada y geometría de aerógrafo, como un cartel de los años 30 que se mueve, con eje central, transiciones que abren o cierran sobre él y luz de…",
+   "ruta": "library/lemo-opuscar/styles/art-deco/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Plano técnico en cianotipo",
+   "desc": "Dibujos de ingeniería que cobran vida sobre papel cianotipo. Línea técnica blanca sobre azul de Prusia, dibujada en orden de delineante, con anotaciones que se mueven; todo…",
+   "ruta": "library/lemo-opuscar/styles/blueprint/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Vitral",
+   "desc": "Vitral medieval visto desde un salón de piedra oscuro, vivo solo donde lo toca el sol, con vidrio de color en plomo oscuro y rostros en grisalla marrón; la luz es el reloj, la…",
+   "ruta": "library/lemo-opuscar/styles/stained-glass/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Movimiento de pictogramas",
+   "desc": "Película sincronizada al pulso con un gráfico base de cuadrícula (círculos, semidiscos y celdas con patrones cuyas filas se deslizan) y pictogramas geométricos de objetos,…",
+   "ruta": "library/lemo-opuscar/styles/pictogram-motion/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Terminal ASCII y CRT",
+   "desc": "Todo en pantalla es un carácter real en una cuadrícula monoespaciada, iluminado por el fósforo de un viejo CRT monocromo, ámbar P3 (o verde P1) sobre vidrio oscuro curvo, con…",
+   "ruta": "library/lemo-opuscar/styles/ascii-crt/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Narración con datos",
+   "desc": "Un gráfico que cuenta una historia. Datos reales dibujados marca por marca sobre papel crema por un lápiz rojo y azul, con notas manuscritas ancladas a las cifras; el gráfico es…",
+   "ruta": "library/lemo-opuscar/styles/dataviz/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Infografía isométrica",
+   "desc": "Un diagrama de sistema que cobra vida. Diorama isométrico de bloques planos de tres tonos, etiquetas finas y números Isotype, donde las cosas se abren para mostrar su interior y…",
+   "ruta": "library/lemo-opuscar/styles/iso-infographic/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Keynote tecnológico oscuro",
+   "desc": "Película de lanzamiento de software con la interfaz como estrella. Degradado casi negro, retícula fina, luz suave, un solo acento de marca e interfaz que se mueve con precisión…",
+   "ruta": "library/lemo-opuscar/styles/dark-keynote/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Screencast vivo",
+   "desc": "Recorrido de producto que parece una grabación de pantalla sin serlo. Todo se redibuja en 2D y una mascota de baja resolución vive en una interfaz de alta resolución y actúa lo…",
+   "ruta": "library/lemo-opuscar/styles/living-screencast/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Holograma HUD de ciencia ficción",
+   "desc": "Un objeto escaneado como malla de luz sobre una base de proyector; cajas de objetivo se fijan en sus partes, se abren en vista explosionada y sus cifras pasan de glifos basura al…",
+   "ruta": "library/lemo-opuscar/styles/hologram-hud/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Mapa de transporte",
+   "desc": "Esquema de metro impreso en una hoja. Líneas en ocho direcciones, paradas blancas, cápsulas de intercambio con contorno negro y agua como banda plana; la red se dibuja con puntas…",
+   "ruta": "library/lemo-opuscar/styles/transit-map/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Libro ilustrado isométrico",
+   "desc": "Un explicador calmado de una regla cotidiana en un lugar real en isométrico y color plano. Figuras sin rostro, de espaldas, actúan en orden mientras la tipografía serif aterriza…",
+   "ruta": "library/lemo-opuscar/styles/isometric-picture-book/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Placa de circuito",
+   "desc": "El tema se dibuja como una placa de circuito vista desde arriba, con cobre bajo máscara verde, pistas como rutas, pads como lugares y serigrafía blanca; lo que fluye es luz sobre…",
+   "ruta": "library/lemo-opuscar/styles/circuit-board/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Caricatura de los años 30 con extremidades de manguera",
+   "desc": "Dibujos animados en blanco y negro entintados a mano, de la era del sonoro temprano, donde todo está vivo y se balancea con jazz; extremidades de manguera sin codos, guantes…",
+   "ruta": "library/lemo-opuscar/styles/rubber-hose/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Anime de cel de los años 80",
+   "desc": "Animación de cel de la era dorada de los OVA japoneses, recreada en código. Cels planos de dos tonos sobre fondos de aerógrafo, neón a contraluz y animación limitada, como un…",
+   "ruta": "library/lemo-opuscar/styles/cel-anime-80s/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Caricatura de sitcom de ciencia ficción",
+   "desc": "Animación 2D de televisión para adultos. Contornos gruesos que hierven, color plano con sombras de borde duro, ojos blancos grandes de pupilas diminutas, un portal brillante y…",
+   "ruta": "library/lemo-opuscar/styles/scifi-toon/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Caricatura de mediados de siglo",
+   "desc": "Color plano y animación limitada de los años 50, con color impreso fuera de su línea de tinta quebrada, cuerpos quietos mientras trabajan las manos y salas abstractas de bloques…",
+   "ruta": "library/lemo-opuscar/styles/midcentury-toon/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "RPG de píxeles de 16 bits",
+   "desc": "Un corto que se ve, suena y se comporta como un RPG de consola de mediados de los 90, con 320×180 píxeles, paleta indexada, cuadros de texto que se escriben, menús, partidas y…",
+   "ruta": "library/lemo-opuscar/styles/pixel-rpg/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "HD-2D",
+   "desc": "Sprites de píxeles hechos a mano, como recortes de papel, dentro de un diorama 3D iluminado y con niebla, filmado desde un ángulo tres cuartos alto con un lente tilt-shift. Un…",
+   "ruta": "library/lemo-opuscar/styles/hd-2d/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Frenesí de microjuegos",
+   "desc": "Una película de fiesta a toda velocidad. Una palabra de mando, unos segundos, una acción. Cada microjuego se dibuja en un estilo artístico completamente distinto y la película se…",
+   "ruta": "library/lemo-opuscar/styles/microgame/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Concurso en vector plano",
+   "desc": "Un programa de variedades de ritmo en vector plano, con mascotas de juguete de contornos gruesos sobre rayas y rayos de colores caramelo, cada golpe en una rejilla de tempo fija…",
+   "ruta": "library/lemo-opuscar/styles/game-show/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Cine mudo de los años 20",
+   "desc": "Cine mudo de ilustración grabada proyectado en una sala. Línea de tinta y aguada plateada, copia 4:3 que parpadea y se balancea entre cortinas de terciopelo, e intertítulos en…",
+   "ruta": "library/lemo-opuscar/styles/silent-film/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Metraje encontrado liminal",
+   "desc": "Cintas de videocámara halladas en espacios vacíos, interminables y de luz fluorescente. Reglas en lugar de monstruos. Una grabación en primera persona de los años 90 (VHS 4:3),…",
+   "ruta": "library/lemo-opuscar/styles/backrooms/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Juguete de ladrillos",
+   "desc": "Películas de ladrillos de juguete en stop motion, filmadas como fotografía macro sobre un escritorio real. Un mundo de ladrillos de plástico con espigas redondas, animado pose a…",
+   "ruta": "library/lemo-opuscar/styles/brick-toy/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Libro desplegable de papel",
+   "desc": "Un libro desplegable sobre un escritorio real se vuelve escenario. Actores de papel con bordes blancos actúan ante decorados que saltan de la página, con luz de lámpara y lente…",
+   "ruta": "library/lemo-opuscar/styles/paper-popup/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Miniatura tilt-shift",
+   "desc": "Un lugar de aspecto real fotografiado desde muy arriba con lente inclinado y time-lapse, de modo que el mundo se lee como una maqueta de mesa; solo una franja horizontal fina…",
+   "ruta": "library/lemo-opuscar/styles/tilt-shift/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Isla isométrica low poly",
+   "desc": "Un mundo diminuto y facetado visto con un lente isométrico ortográfico. Todo es un bloque geométrico y todo lo que aparece llega con un rebote y una nota.",
+   "ruta": "library/lemo-opuscar/styles/lowpoly-island/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Render de producto en vidrio",
+   "desc": "Render de producto de lanzamiento en vidrio transparente y esmerilado. Un objeto héroe flotando en un estudio negro, con barridos de luz en tira, dispersión, cáusticas y luz que…",
+   "ruta": "library/lemo-opuscar/styles/glass-product/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Diorama Memphis",
+   "desc": "Un lugar como maqueta de mesa. Sobre papel blanco cálido crece un marco orgánico granulado con un mundo en colores planos Memphis, contornos de tinta, sombras púrpura duras y…",
+   "ruta": "library/lemo-opuscar/styles/memphis-diorama/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Recorrido por el escritorio",
+   "desc": "Pantallas de apps sobre un escritorio soleado como tarjetas de papel; personajes de píxeles hechos juguetes de vóxel llevan el trabajo de tarjeta en tarjeta, seguidos por una…",
+   "ruta": "library/lemo-opuscar/styles/desktop-flythrough/STYLE.md",
+   "cat": "estilos",
+   "catNombre": "Estilos",
+   "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Origen y avisos de lemo-opuscar",
+   "desc": "git clone https://github.com/lemomo-ai/lemo-opuscar .lemo",
+   "ruta": "library/lemo-opuscar/ORIGEN.md",
+   "cat": "lemo",
+   "catNombre": "lemo-opuscar",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Director de lemo-opuscar",
+   "desc": "The directing method behind every film in this library. Pair it with one `styles/<slug>/STYLE.md` (the style) and [`TECHNIQUE.md`](TECHNIQUE.md) (how to build).",
+   "ruta": "library/lemo-opuscar/DIRECTOR.md",
+   "cat": "lemo",
+   "catNombre": "lemo-opuscar",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Técnica de lemo-opuscar",
+   "desc": "Every film here is made from code: no video generation, no stock footage. This page explains the pipeline, to reproduce with our tools in `core/` or in your own stack. Pair it…",
+   "ruta": "library/lemo-opuscar/TECHNIQUE.md",
+   "cat": "lemo",
+   "catNombre": "lemo-opuscar",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Crear estilos propios",
+   "desc": "A user makes a style of their own, in one of two ways: **change a library style**, or **start from a blank page**. You plan it with them, one question at a time or in free…",
+   "ruta": "library/lemo-opuscar/MY-STYLES.md",
+   "cat": "lemo",
+   "catNombre": "lemo-opuscar",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Núcleo de lemo-opuscar",
+   "desc": "Command reference for `core/` and `tools/`. How the pieces fit together is in [`TECHNIQUE.md`](../TECHNIQUE.md). Run commands from the library root (`$LIB` in skill mode); Python…",
+   "ruta": "library/lemo-opuscar/core/README.md",
+   "cat": "lemo",
+   "catNombre": "lemo-opuscar",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Instrumentos: muestreador y cuerdas",
+   "desc": "For writing **original scores** for Lemo-Opuscar style films. Everything is synthesised offline with numpy/soxr at **48 kHz**, with the same conventions as `sfx.py` (`SR`,…",
+   "ruta": "library/lemo-opuscar/core/audio/INSTRUMENTS.md",
+   "cat": "lemo",
+   "catNombre": "lemo-opuscar",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Skills de la casa",
+   "desc": "Si usas otra IA, léelas como cualquier documento.",
+   "ruta": "library/skills-propias/LEEME.md",
+   "cat": "propias",
+   "catNombre": "Método de la casa",
+   "licencia": "Propio"
+  },
+  {
+   "titulo": "Motion system: resumen",
+   "desc": "Guía maestra del usuario para producción visual y motion design en CUALQUIER proyecto — MOTION.md como constitución visual por proyecto, brief y storyboard antes de animar, la…",
+   "ruta": "library/skills-propias/motion-system/SKILL.md",
+   "cat": "propias",
+   "catNombre": "Método de la casa",
+   "licencia": "Propio"
+  },
+  {
+   "titulo": "Motion system: guía completa",
+   "desc": "Usa este documento como política operativa.",
+   "ruta": "library/skills-propias/motion-system/GUIA-MAESTRA.md",
+   "cat": "propias",
+   "catNombre": "Método de la casa",
+   "licencia": "Propio"
+  },
+  {
+   "titulo": "Video con personajes en Remotion",
+   "desc": "Producir un corto animado completo (historia, personajes, cámara, partículas, voz en español, lip-sync, música, mezcla) 100 % con código usando Remotion y herramientas locales,…",
+   "ruta": "library/skills-propias/video-con-codigo/SKILL.md",
+   "cat": "propias",
+   "catNombre": "Método de la casa",
+   "licencia": "Propio"
+  },
+  {
+   "titulo": "Cómo escribir tu MOTION.md",
+   "desc": "Sin marca propia, no copies este: escoge paleta y tipografía en el panel. Si tienes marca, crea un `MOTION.md` con la plantilla de la sección 5 de…",
+   "ruta": "library/marca/LEEME.md",
+   "cat": "propias",
+   "catNombre": "Método de la casa",
+   "licencia": "Propio"
+  },
+  {
+   "titulo": "Ejemplo: MOTION.md de BG System IA",
+   "desc": "Contrato visual de todas las piezas de video de la marca. Se lee completo antes de diseñar, animar o renderizar. Si la marca cambia, este archivo se corrige antes de producir.",
+   "ruta": "library/marca/bg-system-ia/MOTION.md",
+   "cat": "propias",
+   "catNombre": "Método de la casa",
+   "licencia": "Propio"
+  }
+ ]
+}
