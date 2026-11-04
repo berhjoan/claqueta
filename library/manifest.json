@@ -1,6 +1,6 @@
 {
  "generado": "scripts/armar-biblioteca.mjs",
- "total": 220,
+ "total": 221,
  "items": [
   {
    "titulo": "Dirección: cómo no parecer generado",
@@ -129,6 +129,14 @@
    "cat": "herramientas",
    "catNombre": "Herramientas gratis",
    "licencia": "MIT (lemo-opuscar)"
+  },
+  {
+   "titulo": "Grano fino con semilla fija",
+   "desc": "tools/imagen/grano.py",
+   "ruta": "tools/imagen/grano.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
   },
   {
    "titulo": "Música escasa, nota por nota",

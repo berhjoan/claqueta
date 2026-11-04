@@ -48,11 +48,11 @@ export const pantallas = [
 ];
 
 export const texturas = [
-  { id: "limpio", n: ["Limpio", "Clean"], p: ["Acabado limpio, con un grano mínimo del 1 % solo para evitar bandas.", "Clean finish with a minimal 1% grain only to prevent banding."] },
-  { id: "grano", n: ["Grano fino", "Fine grain"], p: ["Grano fino de 2 % a 3 % con semilla fija, sobre el fondo y no sobre el texto.", "Fine grain of 2% to 3% with a fixed seed, on the ground and not on the text."] },
+  { id: "limpio", n: ["Limpio", "Clean"], p: ["Acabado limpio, con un grano mínimo del 1 % solo para evitar bandas: tools/imagen/grano.py --alfa 1.", "Clean finish with a minimal 1% grain only to prevent banding: tools/imagen/grano.py --alfa 1."] },
+  { id: "grano", n: ["Grano fino", "Fine grain"], p: ["Grano fino de 2 % a 3 % con semilla fija, sobre el fondo y no sobre el texto: tools/imagen/grano.py --alfa 2.5.", "Fine grain of 2% to 3% with a fixed seed, on the ground and not on the text: tools/imagen/grano.py --alfa 2.5."] },
   { id: "papel", n: ["Papel", "Paper"], p: ["Textura de papel con fibra visible al 4 %.", "Paper texture with visible fiber at 4%."] },
   { id: "semitono", n: ["Semitono", "Halftone"], p: ["Trama de semitono ordenada en sombras e imágenes.", "Ordered halftone screen in shadows and images."] },
-  { id: "pelicula", n: ["Película analógica", "Analog film"], p: ["Acabado de película: grano 3 %, viñeta 6 % y leve halación en las luces.", "Film finish: 3% grain, 6% vignette and slight halation on highlights."] },
+  { id: "pelicula", n: ["Película analógica", "Analog film"], p: ["Acabado de película: grano 3 % (tools/imagen/grano.py --alfa 3), viñeta 6 % y leve halación en las luces.", "Film finish: 3% grain (tools/imagen/grano.py --alfa 3), 6% vignette and slight halation on highlights."] },
   { id: "crt", n: ["Pantalla CRT", "CRT screen"], p: ["Pantalla CRT: líneas de barrido, curvatura leve y persistencia de fósforo.", "CRT screen: scanlines, slight curvature and phosphor persistence."] },
   { id: "vhs", n: ["VHS", "VHS"], p: ["Tratamiento VHS con corrimiento de color y ruido de cinta, sin tapar el texto.", "VHS treatment with color bleed and tape noise, never covering the text."] },
   { id: "tiza", n: ["Tiza sobre pizarra", "Chalk on slate"], p: ["Superficie de pizarra con grano; la tiza deja polvo fino al final de cada trazo.", "Slate surface with grain; chalk leaves fine powder at the end of each stroke."] },
@@ -89,7 +89,7 @@ export const arte = {
     { id: "marca", titulo: "Marca y referencia", controles: [
         { k: "marca", t: "opciones", vista: "chips", titulo: "Marca", def: "bg", label: ["Marca", "Brand"], opciones: [
           { id: "ninguna", n: ["Sin marca", "No brand"], p: ["Sin marca ni logos.", "No brand or logos."] },
-          { id: "bg", n: ["BG System IA", "BG System IA"], p: ["Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png: úsalo sin redibujarlo.", "BG System IA brand, with the line «La IA, explicada con claridad». Read library/marca/bg-system-ia/MOTION.md and follow it. Its real emblem is library/marca/bg-system-ia/emblema.png: use it without redrawing it."] },
+          { id: "bg", n: ["BG System IA", "BG System IA"], p: ["Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png, un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes.", "BG System IA brand, with the line «La IA, explicada con claridad». Read library/marca/bg-system-ia/MOTION.md and follow it. Its real emblem is library/marca/bg-system-ia/emblema.png, a square with its own background: crop it to a circle with border-radius and do not redraw it."] },
           { id: "propia", n: ["Otra marca", "Another brand"], p: ["Usa la marca descrita en las notas. Solo logos, colores y fuentes reales, nunca inventados. Si tiene sitio web, extrae sus datos con npx hyperframes capture.", "Use the brand described in the notes. Real logos, colors and fonts only, never invented. If it has a website, extract its data with npx hyperframes capture."] },
         ] },
         { k: "referencia", t: "texto", titulo: "Referencia visual (enlace o descripción)", holder: "Un video o imagen que te guste", def: "", label: ["Referencia", "Reference"], traducible: true, nota: ["Toma de la referencia su gramática: duración de planos, entradas, transiciones y escala. Nunca su contenido.", "Take the reference's grammar: shot lengths, entrances, transitions and scale. Never its content."] },

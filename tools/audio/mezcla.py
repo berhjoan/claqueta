@@ -129,6 +129,7 @@ def main():
         base = referencia + (a.nivel_musica if hay_voz else 0) - i_m
         ganancia = 10 ** ((base + 6 * (1 - curva)) / 20) if hay_voz else np.full(n, 10 ** (base / 20), np.float32)
         mezcla += m * (ganancia * silencio)[:, None]
+    colocados = []
     if a.efectos:
         for ev in json.loads(Path(a.efectos).read_text(encoding="utf-8")):
             if ev.get("archivo"):
@@ -152,6 +153,7 @@ def main():
                 continue
             x = x[: n - s] * 10 ** (float(ev.get("ganancia", -8)) / 20)
             mezcla[s : s + len(x)] += x * silencio[s : s + len(x), None]
+            colocados.append({"efecto": ev.get("sonido") or Path(ev["archivo"]).name, "pico_s": round((s + int(np.argmax(np.abs(x).max(1)))) / SR, 3)})
     mezcla = mezcla + voz
 
     pico = 10 ** (a.techo / 20) * 0.9
@@ -165,7 +167,7 @@ def main():
     i, tp = lufs(mezcla)
     Path(a.salida).parent.mkdir(parents=True, exist_ok=True)
     sf.write(a.salida, mezcla, SR, subtype="PCM_16")
-    informe.update({"ok": abs(i - a.lufs) < 1 and tp <= a.techo + 0.5, "lufs": round(i, 2), "pico_verdadero": round(tp, 2), "dur": a.dur, "salida": a.salida})
+    informe.update({"ok": abs(i - a.lufs) < 1 and tp <= a.techo + 0.5, "lufs": round(i, 2), "pico_verdadero": round(tp, 2), "dur": a.dur, "salida": a.salida, "efectos": colocados})
     print(json.dumps(informe, ensure_ascii=False))
     sys.exit(0 if informe["ok"] else 1)
 

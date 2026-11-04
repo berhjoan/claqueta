@@ -35,7 +35,13 @@ Tomada del `MODEL_CARD` de cada voz:
 
 ## Comprueba lo que se dijo
 
-Una voz sintética puede saltarse palabras o decir mal un número. Antes de usarla, transcríbela y compárala con el guion. `alinear.py` avisa si coincide menos del 85 %. Escribe los números y las siglas como se dicen: «dos mil veintiséis», «i a».
+Una voz sintética puede saltarse palabras o decir mal un número. Antes de usarla, compárala con el guion:
+
+```bash
+python tools/qa/comparar_voz.py --audio assets/voz/voz.mp3 --guion guion.txt
+```
+
+Si algo suena mal, no toques `guion.txt`. Haz una copia `guion_voz.txt` solo para el motor, con una coma o con la palabra escrita como suena («dos mil veintiséis», «i a»), y genera con esa copia. `guion.txt` sigue literal para los subtítulos y para comparar.
 
 ## Otras voces gratis, sin probar en este sistema
 

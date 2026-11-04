@@ -124,3 +124,23 @@ print(json.dumps(r))
   assert.ok(Math.abs(dos.inicio - 2.5) < 0.03, `dos empieza en ${dos.inicio}`);
   assert.ok(Math.abs(dos.fin - 3.0) < 0.04, `dos termina en ${dos.fin}`);
 });
+
+test("el grano sale igual con la misma semilla y con transparencia", { skip: !python && "falta Python" }, () => {
+  const a = path.join(dir, "g1.png"), b = path.join(dir, "g2.png");
+  for (const salida of [a, b]) assert.equal(correr(python, ["tools/imagen/grano.py", "--salida", salida, "--tam", "64", "--alfa", "2.5"]).status, 0);
+  assert.ok(fs.readFileSync(a).equals(fs.readFileSync(b)));
+  const r = spawnSync("ffprobe", ["-v", "error", "-show_entries", "stream=pix_fmt,width", "-of", "csv=p=0", a], { encoding: "utf8" });
+  assert.match(r.stdout, /ya8/);
+  assert.match(r.stdout, /64/);
+});
+
+test("verificar_video dice lo que midió", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  const v = path.join(dir, "v.mp4");
+  spawnSync("ffmpeg", ["-y", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "color=c=black:s=1080x1920:r=30:d=2", "-f", "lavfi", "-i", "sine=f=440:d=2", "-shortest", "-pix_fmt", "yuv420p", v]);
+  const r = correr(python, ["tools/qa/verificar_video.py", "verificar", v, "--duracion", "2"]);
+  const j = JSON.parse(r.stdout);
+  assert.equal(j.medido.ancho, 1080);
+  assert.equal(j.medido.fps, 30);
+  assert.ok(Number.isFinite(j.medido.lufs));
+  assert.ok(Math.abs(j.medido.duracion_s - 2) < 0.1);
+});

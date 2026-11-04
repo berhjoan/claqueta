@@ -35,6 +35,18 @@ def normal(p):
     return re.sub(r"[^a-z0-9ñ]", "", s)
 
 
+def fonetica(texto):
+    """Pliega lo que suena igual en español, para no alarmar por «un agente» y «una gente» o «haya» y «halla»."""
+    t = texto.replace("ñ", "ni").replace("h", "").replace("v", "b").replace("z", "s").replace("ll", "y")
+    return re.sub(r"c(?=[ei])", "s", t).replace("qu", "k").replace("c", "k")
+
+
+def parecido(guion, oido):
+    """De 0 a 1, cuánto suena igual lo oído que lo escrito, de corrido: el reconocimiento parte palabras y confunde homófonos."""
+    a, b = (fonetica("".join(normal(w) for w in lista)) for lista in (guion, oido))
+    return difflib.SequenceMatcher(None, a, b, autojunk=False).ratio()
+
+
 def transcribir(audio, modelo):
     pistas = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", str(audio)], capture_output=True, text=True)
     if pistas.returncode or not pistas.stdout.strip():
@@ -87,7 +99,7 @@ def alinear(guion, asr):
             s["inicio"], s["fin"] = t0 + (t1 - t0) * k / n, t0 + (t1 - t0) * (k + 1) / n
     for s in salida:
         s["inicio"], s["fin"] = round(s["inicio"], 3), round(s["fin"], 3)
-    return salida, sum(1 for i in conocidos) / len(esc)
+    return salida, parecido(esc, [w[0] for w in asr])
 
 
 def main():
@@ -104,7 +116,7 @@ def main():
     Path(a.salida).write_text(json.dumps(palabras, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({"ok": True, "palabras": len(palabras), "coincidencia": round(cobertura, 3), "salida": a.salida}))
     if cobertura < 0.85:
-        print("Aviso: menos del 85 % coincide. Quizá la voz no dijo lo escrito: escúchala o transcríbela.", file=sys.stderr)
+        print("Aviso: suena menos de un 85 % igual al guion. Quizá la voz no dijo lo escrito: usa tools/qa/comparar_voz.py para ver qué palabras cambian.", file=sys.stderr)
 
 
 if __name__ == "__main__":

@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Transcribe un audio o un video y dice si se oye lo que dice el guion. Si coincide, la música tampoco está tapando la voz.
 
-Uso: python tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt [--modelo base] [--minimo 0.9]
+Uso: python tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt [--modelo base] [--minimo 0.85]
+Compara cómo suena de corrido, no palabra por palabra. Whisper confunde homófonos: base y small oyen «una gente» donde se dijo «un agente».
+Si dudas de una palabra, repite con --modelo medium (unos 1,5 GB) antes de cambiar la voz.
 Termina con error si coincide menos de lo pedido. Gratis y local: pip install faster-whisper
 """
 import argparse
 import difflib
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -15,13 +16,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "subtitulos"))
-from alinear import normal, transcribir  # noqa: E402
-
-
-def fonetica(texto):
-    """Pliega lo que suena igual en español, para no alarmar por «un agente» y «una gente» o «haya» y «halla»."""
-    t = texto.replace("ñ", "ni").replace("h", "").replace("v", "b").replace("z", "s").replace("ll", "y")
-    return re.sub(r"c(?=[ei])", "s", t).replace("qu", "k").replace("c", "k")
+from alinear import normal, parecido, transcribir  # noqa: E402
 
 
 def main():
@@ -42,8 +37,7 @@ def main():
         else:
             faltan += guion[i1:i2]
             sobran += oido[j1:j2]
-    # Se compara el sonido de corrido, no palabra por palabra: el reconocimiento parte y confunde homófonos.
-    cobertura = difflib.SequenceMatcher(None, fonetica("".join(x)), fonetica("".join(y)), autojunk=False).ratio()
+    cobertura = parecido(guion, oido)
     print(json.dumps({"ok": cobertura >= a.minimo, "coincidencia": round(cobertura, 3), "palabras": len(x), "palabras_iguales": aciertos, "distintas_en_guion": faltan, "distintas_en_lo_oido": sobran, "aviso": "El reconocimiento también se equivoca: oye las palabras listadas antes de regenerar la voz."}, ensure_ascii=False, indent=1))
     sys.exit(0 if cobertura >= a.minimo else 1)
 

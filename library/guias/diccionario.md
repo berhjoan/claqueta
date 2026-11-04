@@ -148,11 +148,11 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Limpio | Clean | Acabado limpio, con un grano mínimo del 1 % solo para evitar bandas. |
-| Grano fino | Fine grain | Grano fino de 2 % a 3 % con semilla fija, sobre el fondo y no sobre el texto. |
+| Limpio | Clean | Acabado limpio, con un grano mínimo del 1 % solo para evitar bandas: tools/imagen/grano.py --alfa 1. |
+| Grano fino | Fine grain | Grano fino de 2 % a 3 % con semilla fija, sobre el fondo y no sobre el texto: tools/imagen/grano.py --alfa 2.5. |
 | Papel | Paper | Textura de papel con fibra visible al 4 %. |
 | Semitono | Halftone | Trama de semitono ordenada en sombras e imágenes. |
-| Película analógica | Analog film | Acabado de película: grano 3 %, viñeta 6 % y leve halación en las luces. |
+| Película analógica | Analog film | Acabado de película: grano 3 % (tools/imagen/grano.py --alfa 3), viñeta 6 % y leve halación en las luces. |
 | Pantalla CRT | CRT screen | Pantalla CRT: líneas de barrido, curvatura leve y persistencia de fósforo. |
 | VHS | VHS | Tratamiento VHS con corrimiento de color y ruido de cinta, sin tapar el texto. |
 | Tiza sobre pizarra | Chalk on slate | Superficie de pizarra con grano; la tiza deja polvo fino al final de cada trazo. |
@@ -185,7 +185,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Español | English | Qué pide |
 |---|---|---|
 | Sin marca | No brand | Sin marca ni logos. |
-| BG System IA | BG System IA | Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png: úsalo sin redibujarlo. |
+| BG System IA | BG System IA | Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png, un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes. |
 | Otra marca | Another brand | Usa la marca descrita en las notas. Solo logos, colores y fuentes reales, nunca inventados. Si tiene sitio web, extrae sus datos con npx hyperframes capture. |
 
 ## Cámara
@@ -320,7 +320,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Firme | Firm | Curvas por función: llegadas con cola larga (expo.out o power4.out), cámara con power2.inOut y salidas o zooms de paso con power3.in. |
+| Firme | Firm | Curvas por función: llegadas con cola larga (expo.out o power4.out), cámara con la curva de su sección y salidas o zooms de paso con power3.in. |
 | Suave | Smooth | Curva base power3.out, cubic-bezier(.215,.61,.355,1). Sin rebotes. |
 | Resorte contenido | Restrained spring | Resortes con razón de amortiguación de 0,7 a 0,85 en posición y tamaño, nunca en opacidad ni color. Sobrepaso máximo del 6 %. |
 | Juguetón | Playful | Resortes con amortiguación de 0,4 a 0,6 y poses exageradas del 10 % al 30 %. Nunca en texto que se lee. |
@@ -404,7 +404,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | El objeto se vuelve el mundo | Object becomes the world | El objeto se vuelve el mundo: crece más allá del cuadro en 0,65 s con power2.inOut, su radio se reduce, lo de alrededor se desenfoca 15 px y se apaga en 0,3 s. |
 | Zoom a través | Zoom through | Zoom a través: la cámara avanza en Z en tres fases, con desenfoque máximo de 10 px en texto y 20 px a cuadro completo, y opacidad de 0,15 en el corte. |
 | Zoom inverso | Inverse zoom | Zoom inverso para llegadas y remates: la escena nueva llega desde lejos y se asienta. |
-| Cortar en la curva | Cut the curve | Cortar en la curva: salida con power3.in y entrada con power3.out en la misma dirección y velocidad, de modo que el corte queda oculto en el punto más rápido. |
+| Cortar en la curva | Cut the curve | Cortar en la curva: salida con power3.in y entrada con power3.out en la misma dirección y velocidad, de modo que el corte queda oculto en el punto más rápido. Si al igualar la velocidad quedara un cuadro vacío, acorta el recorrido: nunca cuadros sin objetos. |
 | Cascada de palabras | Word waterfall | Cascada de palabras: cada palabra sale y la siguiente entra como una ola horizontal; la última muere en el corte. |
 | Barrido rápido | Whip | Barrido rápido de 0,13 a 0,3 s; lo que llega aterriza desenfocado y se aclara en 0,13 s. |
 | Cortinilla direccional | Directional wipe | Cortinilla direccional con clip-path en 0,4 a 0,6 s, en la dirección de la narración. |

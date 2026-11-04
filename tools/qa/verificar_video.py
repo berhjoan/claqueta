@@ -69,6 +69,22 @@ def verificar(ruta, ancho=1080, alto=1920, fps=30, duracion=None, lufs=-14.0, to
     return fallos
 
 
+def medidas(ruta) -> dict:
+    """Lo que hay en el archivo, para poder decirlo en la entrega."""
+    ruta = Path(ruta)
+    if not ruta.exists() or ruta.stat().st_size == 0:
+        return {}
+    info = probe(ruta)
+    salida = {"duracion_s": round(float(info["format"].get("duration", 0)), 3), "megabytes": round(ruta.stat().st_size / 1048576, 2)}
+    for s in info["streams"]:
+        if s["codec_type"] == "video":
+            num, den = map(int, s["r_frame_rate"].split("/"))
+            salida.update(ancho=s["width"], alto=s["height"], fps=round(num / den, 3), video=s["codec_name"], pixeles=s.get("pix_fmt"))
+        elif s["codec_type"] == "audio":
+            salida.update(audio=s["codec_name"], **{k: round(v, 2) for k, v in loudness(ruta).items()})
+    return salida
+
+
 def normalizar(entrada, salida, lufs=-14.0) -> None:
     base = f"loudnorm=I={lufs}:TP=-1.5:LRA=11"
     d = _medir(entrada, f"{base}:print_format=json")
@@ -99,7 +115,7 @@ def main() -> None:
         normalizar(args.entrada, args.salida)
         return
     fallos = verificar(args.ruta, ancho=args.ancho, alto=args.alto, duracion=args.duracion)
-    print(json.dumps({"ok": not fallos, "fallos": fallos}, ensure_ascii=False))
+    print(json.dumps({"ok": not fallos, "fallos": fallos, "medido": medidas(args.ruta)}, ensure_ascii=False))
     sys.exit(1 if fallos else 0)
 
 

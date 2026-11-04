@@ -277,6 +277,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
       add();
     }
     item(una("sonido", "intencion"));
+    item(L(
+      "Si una palabra suena mal, no toques `guion.txt`: haz una copia `guion_voz.txt` solo para el motor de voz, con una coma o la palabra escrita como suena, y genera con esa copia. `guion.txt` sigue literal para los subtítulos y para comparar. Si aun así suena mal, prueba otra voz.",
+      "If a word sounds wrong, do not touch `guion.txt`: make a copy `guion_voz.txt` only for the voice engine, with a comma or the word spelled as it sounds, and generate from that copy. `guion.txt` stays literal for captions and comparison. If it still sounds wrong, try another voice."
+    ));
     add();
     add("```bash");
     add(`ffprobe -v error -show_entries format=duration -of csv=p=0 ${voz?.motor === "edge" ? "assets/voz/voz.mp3" : "assets/voz/voz.wav"}`);
@@ -374,7 +378,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     conVoz ? L("Escribe `guion.txt`, genera la voz y obtén los tiempos de cada palabra.", "Write `guion.txt`, generate the voice and get each word's timing.") : L("Fija la pista o el reloj de la pieza.", "Fix the track or the piece's clock."),
     L("Haz un cuadro de estilo real a tamaño final con tu mejor plano, y compáralo con este encargo antes de animar lo demás.", "Make one real full-size style frame of your best shot, and compare it against this brief before animating the rest."),
     L("Construye las escenas, una por archivo, con textos y colores como variables para que sigan siendo editables.", "Build the scenes, one per file, with copy and colors as variables so they stay editable."),
-    L("Mezcla: ambiente, efectos por acción, música y voz.", "Mix: ambience, effects per action, music and voice."),
+    L("Mezcla efectos por acción, música y voz. Añade ambiente solo si el estilo lo pide, y nunca dentro de los silencios.", "Mix effects per action, music and voice. Add ambience only if the style asks for it, and never inside the silences."),
     L("Revisa con la lista de la sección 17, corrige una vez y renderiza.", "Check against section 17, correct once and render."),
   ];
   pasos.forEach((p, i) => add(`${i + 1}. ${p}`));
@@ -388,7 +392,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   if (v.motor.motor === "hyperframes" || v.motor.motor === "canvas") {
     add(`${HF} check --json`);
     add(`${HF} snapshot --review`);
-    add(`${HF} render --output renders/final.mp4 --fps ${m.fps}`);
+    add(`${HF} render --output renders/final.mp4 --fps ${m.fps} --crf 17`);
   }
   add(`python ../.claqueta/tools/qa/verificar_video.py verificar renders/final.mp4 --duracion ${DUR} --ancho ${m.w} --alto ${m.h}`);
   add(`python ../.claqueta/tools/qa/hoja_cuadros.py renders/final.mp4 --salida renders/hoja.jpg`);

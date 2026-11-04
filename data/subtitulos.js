@@ -18,7 +18,7 @@ export const subtitulos = {
           { id: "centro", n: ["Centro", "Center"], p: ["Subtítulos en el centro del cuadro.", "Captions at frame center."] },
           { id: "arriba", n: ["Arriba", "Top"], p: ["Subtítulos en el tercio superior, debajo de y 240.", "Captions in the top third, below y 240."] },
         ] },
-        { k: "frases", t: "interruptor", titulo: "Agrupar por frase con sentido", ayuda: "Evita fragmentos sueltos en pantalla.", def: true, p: ["Agrupa por frases con sentido, nunca fragmentos sueltos como «a empezar,». Máximo 32 caracteres por línea, y sin tapar al sujeto.", "Group by meaningful phrases, never loose fragments. At most 32 characters per line, and never covering the subject."] },
+        { k: "frases", t: "interruptor", titulo: "Agrupar por frase con sentido", ayuda: "Evita fragmentos sueltos en pantalla.", def: true, p: ["Agrupa por frases con sentido, nunca fragmentos sueltos como «a empezar,». Máximo 28 caracteres por línea, y sin tapar al sujeto.", "Group by meaningful phrases, never loose fragments. At most 28 characters per line, and never covering the subject."] },
         { k: "exacto", t: "interruptor", titulo: "Texto exacto del guion", ayuda: "La transcripción automática escribe mal los nombres.", def: true, p: ["Los subtítulos muestran el guion exacto, con tildes y nombres correctos. Usa la transcripción solo para los tiempos: tools/subtitulos/alinear.py.", "Captions show the exact script, with correct accents and names. Use transcription for timing only: tools/subtitulos/alinear.py."] },
       ] },
   ],

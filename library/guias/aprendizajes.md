@@ -12,6 +12,9 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 
 ## Voz y pronunciación
 
+- Si una palabra suena mal, no toques el guion: usa una copia solo para el motor, con una coma o escrita como suena. El guion sigue literal para subtítulos y comparación. Una coma en «ejecuta, y revisa» arregló lo que bajar la velocidad no arregló.
+- Whisper `base` y `small` oyen «una gente de ella» donde se dijo «un agente de IA»: no es la voz. Para confirmar una palabra, usa `medium`.
+
 - Las palabras en otro idioma (una marca en inglés) se generan aparte, en su idioma, y se empalman.
 - Un llamado corto en español se genera dentro de su frase, con varias semillas, y se recorta. Aislado es inestable.
 - El reconocimiento de voz perdona acentos. Mide con Whisper con idioma forzado y log-prob del texto objetivo, energía sobre 4 kHz de la «s» y f0 por sílaba.
@@ -45,7 +48,9 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - `fromTo` aplica el estado inicial en t=0: para destellos usa dos `tl.to` seguidos.
 - Los bloques del registro vienen en 1920×1080: recompón para 9:16, nunca recorte ciego.
 - `check` da falsos errores con capas superpuestas (glitch, neón, ASCII) y tableros en giro: verifica en un cuadro antes de arreglar.
-- Sora no tiene `≈` ni `≠`, y ninguna fuente de marca tiene `✓` ni `✗`: `≠` en JetBrains Mono o SVG, `✓ ✗` siempre en SVG.
+- Sora no tiene `≈`, `≠` ni flechas (`→ ↑`), y ninguna fuente de marca tiene `✓` ni `✗`: `≠` en JetBrains Mono o SVG; flechas y `✓ ✗`, siempre en SVG.
+- `check --json` escribe su avance por stderr: no redirijas `2>&1` si vas a leer el JSON.
+- `render` sin `--crf` puede salir en calidad `standard`, aunque la ayuda diga otra cosa. Para un máster, pasa `--crf 17`.
 - three.js en render real: `three@0.181.2/+esm`, `preserveDrawingBuffer:true`, `setPixelRatio(1)`, un renderer por frame y dibujo solo desde un tween proxy de GSAP.
 - Canvas 2D funciona en `check`, Studio y `render`. Dos relojes probados: proxy de GSAP (tiempo local, solo dibuja con la escena activa, es el preferido) y `hf-seek` (tiempo global, filtra lo que quede fuera de la escena). Ir atrás y adelante da la misma imagen.
 - Un `<script type="module">` dentro del `<template>` importa con `./assets/…`, relativo a `index.html`. El módulo se evalúa una vez por página: hornea ahí y comparte entre escenas.
