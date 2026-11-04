@@ -245,3 +245,40 @@ test("el encargo no manda a bajar scripts ni a quitar verificaciones de integrid
     assert.ok(t.includes("tools/lib/gsap.min.js"), `${lang}: falta la copia local`);
   }
 });
+
+test("las cifras de pantalla siguen el formato elegido", () => {
+  for (const lang of ["es", "en"]) {
+    const horizontal = texto(armar({ "entrega.formato": "16:9", "entrega.plataforma": "youtube" }), lang);
+    for (const mala of [/1080×1920/, /y 1300/, /y 1640/, /28 (caracteres|characters)/, /1080 (de ancho|wide)/, /franja que tapa|strip the app/]) assert.ok(!mala.test(horizontal), `${lang} 16:9: ${mala}`);
+    for (const buena of ["1920×1080", "y 842", "--ancho 42 --max 84", "36 px"]) assert.ok(horizontal.includes(buena), `${lang} 16:9: falta ${buena}`);
+
+    const retrato = texto(armar({ "entrega.formato": "4:5" }), lang);
+    for (const mala of [/y 1300/, /y 1640/, /1080×1920/]) assert.ok(!mala.test(retrato), `${lang} 4:5: ${mala}`);
+    assert.ok(retrato.includes("1080×1350"), `${lang} 4:5: falta su tamaño`);
+
+    const vertical = texto(armar(), lang);
+    for (const buena of ["y 1300", "1080×1920", "44 px"]) assert.ok(vertical.includes(buena), `${lang} 9:16: falta ${buena}`);
+    assert.ok(/28 (caracteres|characters)/.test(vertical), `${lang} 9:16: faltan los 28 caracteres`);
+    assert.ok(!/srt\.py[^\n]*--ancho/.test(vertical), `${lang} 9:16: srt.py no necesita --ancho`);
+  }
+});
+
+test("ninguna marca de formato queda sin reemplazar", () => {
+  const formatos = ["9:16", "4:5", "1:1", "16:9", "21:9"];
+  for (const receta of recetas) for (const formato of formatos) for (const lang of ["es", "en"]) {
+    for (const posicion of ["seguro", "centro", "arriba"]) {
+      const t = texto(armar({ "entrega.formato": formato, "subtitulos.posicion": posicion }, receta), lang);
+      assert.ok(!/\{(y0|y1|y2|ya|dim|c|min|v)\}/.test(t), `${receta.id} ${formato} ${lang}: marca sin reemplazar`);
+    }
+  }
+});
+
+test("una ficha de estilo no contradice al encargo", () => {
+  const iso = recetas.find((r) => r.id === "isometrico");
+  for (const lang of ["es", "en"]) {
+    const t = texto(armar({}, iso), lang);
+    assert.ok(!/85 mm|altura de los ojos|Eye-level/.test(t), `${lang}: lente o ángulo en una proyección isométrica`);
+    assert.ok(/Proyección isométrica, sin lente|Isometric projection, with no lens/.test(t), `${lang}: falta la nota de proyección`);
+    assert.ok(/mandan la paleta de abajo y la sección 8|the palette below and section 8 win/.test(t), `${lang}: falta quién manda sobre la ficha`);
+  }
+});

@@ -58,6 +58,7 @@ def main():
     p.add_argument("--salida", required=True)
     p.add_argument("--inicio", type=float, default=0.0)
     p.add_argument("--max", type=int, default=56, help="Caracteres por subtítulo, sumando sus dos líneas")
+    p.add_argument("--ancho", type=int, default=28, help="Caracteres por línea: 28 en vertical, 42 en horizontal")
     p.add_argument("--minimo", type=float, default=1.8)
     a = p.parse_args()
     palabras = json.loads(Path(a.palabras).read_text(encoding="utf-8"))
@@ -70,7 +71,7 @@ def main():
         ini, fin = g[0]["inicio"] + a.inicio, g[-1]["fin"] + a.inicio
         tope = grupos[i + 1][0]["inicio"] + a.inicio if i + 1 < len(grupos) else fin + a.minimo
         fin = min(max(fin, ini + a.minimo), tope)
-        bloques.append(f"{i + 1}\n{marca(ini)} --> {marca(fin)}\n{en_dos_lineas(' '.join(x['palabra'] for x in g))}\n")
+        bloques.append(f"{i + 1}\n{marca(ini)} --> {marca(fin)}\n{en_dos_lineas(' '.join(x['palabra'] for x in g), a.ancho)}\n")
     Path(a.salida).parent.mkdir(parents=True, exist_ok=True)
     Path(a.salida).write_text("\n".join(bloques), encoding="utf-8")
     print(json.dumps({"ok": True, "salida": a.salida, "subtitulos": len(bloques)}, ensure_ascii=False))

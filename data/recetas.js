@@ -2,7 +2,7 @@
 export const recetas = [
   { id: "pizarra", nombre: "Pizarra que corrige", d: "Mito y verdad a tiza. Enseña desmintiendo.", cambios: {
     "guion.estructura": "mito", "guion.gancho": "pregunta", "arte.estilos": { base: "S40", secundario: null, acento: null }, "arte.formas": ["trazos"], "arte.pantalla": "mundo", "arte.textura": "tiza", "arte.tipografia": "tiza",
-    "camara.movs": ["pull", "fija", "push"], "camara.lente": "50", "profundidad.modo": "plano", "profundidad.foco": "no", "movimiento.curva": "suave", "movimiento.texto": ["mano"], "movimiento.elementos": ["trazar"],
+    "camara.movs": ["pull", "fija", "push"], "camara.lente": "50", "camara.desenfoque": "no", "profundidad.modo": "plano", "profundidad.foco": "no", "movimiento.curva": "suave", "movimiento.texto": ["mano"], "movimiento.elementos": ["trazar"],
     "montaje.ritmo": "pausado", "montaje.transiciones": ["material", "corte"], "montaje.patron": "silencio", "sonido.sfx": "foley", "sonido.musica": "cuerdas", "motor.motor": "canvas", "subtitulos.estilo": "activa" } },
   { id: "infografia", nombre: "Infografía que crece", d: "Cifras y diagramas que se completan.", cambios: {
     "guion.tipo": "datos", "guion.estructura": "concepto", "guion.gancho": "dato", "arte.estilos": { base: "S26", secundario: "S18", acento: null }, "arte.formas": ["diagrama", "tecnicas"], "arte.pantalla": "crece",

@@ -122,7 +122,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Un solo mundo | One world | La pantalla es un solo mundo que llena todo el cuadro, también la franja que tapa la app; solo la información respeta las zonas seguras. |
+| Un solo mundo | One world | La pantalla es un solo mundo que llena todo el cuadro, también lo que tape la interfaz de la app; solo la información respeta las zonas seguras. |
 | Capítulos | Chapters | Cada idea es un cuadro distinto con su propia composición; nunca el mismo diseño dos veces seguidas. |
 | El diagrama crece | The diagram grows | Un solo cuadro se va completando: nada se borra y al final se lee el conjunto como un póster. |
 | Texto gigante | Giant type | Una idea por pantalla con texto enorme: del 9 % al 15 % de la altura del cuadro. |
@@ -508,9 +508,9 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Sobre la zona segura | Above the safe area | Banda de subtítulos entre y 1300 y 1540 en 1080×1920; el contenido llega hasta y 1280. |
+| Sobre la zona segura | Above the safe area | Banda de subtítulos entre y {y1} y {y2} en {dim}; el contenido llega hasta y {y0}. |
 | Centro | Center | Subtítulos en el centro del cuadro. |
-| Arriba | Top | Subtítulos en el tercio superior, debajo de y 240. |
+| Arriba | Top | Subtítulos en el tercio superior, debajo de y {ya}. |
 
 ## Motor e IA
 

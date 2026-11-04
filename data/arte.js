@@ -39,7 +39,7 @@ export const formas = [
 ];
 
 export const pantallas = [
-  { id: "mundo", n: ["Un solo mundo", "One world"], d: "Un lugar llena los 1920 px; la cámara lo recorre.", p: ["La pantalla es un solo mundo que llena todo el cuadro, también la franja que tapa la app; solo la información respeta las zonas seguras.", "The screen is one world filling the whole frame, including the strip the app covers; only information respects the safe areas."] },
+  { id: "mundo", n: ["Un solo mundo", "One world"], d: "Un lugar llena todo el cuadro; la cámara lo recorre.", p: ["La pantalla es un solo mundo que llena todo el cuadro, también lo que tape la interfaz de la app; solo la información respeta las zonas seguras.", "The screen is one world filling the whole frame, including whatever the app's interface covers; only information respects the safe areas."] },
   { id: "capitulos", n: ["Capítulos", "Chapters"], d: "Cada idea es un cuadro distinto.", p: ["Cada idea es un cuadro distinto con su propia composición; nunca el mismo diseño dos veces seguidas.", "Each idea is its own frame with its own composition; never the same layout twice in a row."] },
   { id: "crece", n: ["El diagrama crece", "The diagram grows"], d: "Un mismo cuadro se va completando.", p: ["Un solo cuadro se va completando: nada se borra y al final se lee el conjunto como un póster.", "One frame keeps filling in: nothing is removed, and the end reads as a poster."] },
   { id: "gigante", n: ["Texto gigante", "Giant type"], d: "Una idea, una palabra enorme.", p: ["Una idea por pantalla con texto enorme: del 9 % al 15 % de la altura del cuadro.", "One idea per screen with huge type: 9% to 15% of the frame height."] },
@@ -79,7 +79,7 @@ export const arte = {
       ] },
     { id: "tipo", titulo: "Tipografía", controles: [
         { k: "tipografia", t: "opciones", vista: "tipo", def: "marca", label: ["Tipografía", "Typography"], opciones: tipografias },
-        { k: "tamano", t: "rango", titulo: "Tamaño de los títulos", min: 3, max: 15, paso: 0.5, def: 6, unidad: "% de la altura", label: ["Tamaño de títulos", "Title size"], p: ["Títulos de cerca de {v} % de la altura del cuadro. Nada que deba leerse por debajo de 44 px a 1080 de ancho.", "Titles around {v}% of the frame height. Nothing meant to be read under 44 px at 1080 wide."] },
+        { k: "tamano", t: "rango", titulo: "Tamaño de los títulos", min: 3, max: 15, paso: 0.5, def: 6, unidad: "% de la altura", label: ["Tamaño de títulos", "Title size"], p: ["Títulos de cerca de {v} % de la altura del cuadro. Nada que deba leerse por debajo de {min} px.", "Titles around {v}% of the frame height. Nothing meant to be read under {min} px."] },
         { k: "caja", t: "opciones", vista: "chips", titulo: "Mayúsculas y minúsculas", def: "oracion", label: ["Caja", "Case"], opciones: [
           { id: "oracion", n: ["Oración", "Sentence case"], p: ["Caja de oración: solo la primera en mayúscula.", "Sentence case: only the first letter capitalized."] },
           { id: "minusculas", n: ["Minúsculas", "Lowercase"], p: ["Todo en minúsculas, como elemento gráfico; conserva las tildes.", "All lowercase, as a graphic element; keep the accents."] },

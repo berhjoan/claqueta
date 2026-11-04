@@ -21,6 +21,14 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   const L = (es, en) => (I ? en : es);
   const v = estado.valores;
   const m = medidas(v);
+  // Las cifras de pantalla dependen del formato: lo medido en 9:16 no sirve en otro.
+  const es916 = m.h / m.w > 1.6;
+  const banda = es916
+    ? { y1: 1300, y2: 1540, y0: 1280, ya: 240 }
+    : { y1: Math.round(m.h * 0.78), y2: Math.round(m.h * 0.92), y0: Math.round(m.h * 0.76), ya: Math.round(m.h * 0.08) };
+  const porLinea = es916 ? 28 : m.w > m.h ? 42 : 32;
+  const cifras = { ...banda, dim: `${m.w}×${m.h}`, c: porLinea, min: m.w > m.h ? 36 : 44 };
+  const conFormato = (t) => (t ? t.replace(/\{(y0|y1|y2|ya|dim|c|min)\}/g, (_, k) => cifras[k]) : t);
   const planos = estado.planos ?? [];
   const lineas = [];
   const add = (s = "") => lineas.push(s);
@@ -168,7 +176,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     "In the commands, `$DUR` is the real duration in seconds: what the voice measures plus the ending, up to 1.5 s. Replace it with that number and fit the shot list to it. If you write the script, aim to land within 10% of the target. If it differs by more, say so in the delivery."
   ));
   const DUR = conVoz ? "$DUR" : String(m.seg);
-  if (m.h > m.w) {
+  if (es916) {
     item(L(
       `Zonas seguras en ${m.w}×${m.h}: márgenes laterales de 72 px; nada clave en los primeros 220 px; todo el texto antes de y 1640; subtítulos en y 1300 a 1540 y contenido hasta y 1280; riel derecho libre entre x 960 y 1080, de y 900 a 1700. El mundo y las texturas sí llenan todo el cuadro.`,
       `Safe areas at ${m.w}×${m.h}: 72 px side margins; nothing key in the first 220 px; all text above y 1640; captions at y 1300 to 1540 and content down to y 1280; keep the right rail clear from x 960 to 1080, y 900 to 1700. The world and its textures do fill the whole frame.`
@@ -203,6 +211,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     "A style is material, camera and sound, not just a palette. Recognition test: with its name hidden, two or three of its own traits must show in every shot. Never mix in other styles."
   ));
   if (base) item(L("Toma de cada ficha su lenguaje, no sus ejemplos: si el guion no trae cifras, no hay ejes ni valores.", "Take each sheet's language, not its examples: if the script has no figures, there are no axes or values."));
+  if (base) item(L("Si una ficha nombra otros colores u otra cámara, mandan la paleta de abajo y la sección 8. De la ficha toma el material, las formas y el ritmo.", "If a sheet names other colors or another camera, the palette below and section 8 win. Take its material, shapes and rhythm."));
   item(una("arte", "intensidad"));
   for (const o of varias("arte", "formas")) item(instr(o));
   item(una("arte", "pantalla"));
@@ -214,7 +223,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     "Sora y JetBrains Mono: `mkdir -p assets/fonts && cp ../.claqueta/assets/fonts/*.ttf assets/fonts/`, cárgalas con `@font-face` y `font-weight: 100 800` porque son variables, y confirma en un cuadro que se ven.",
     "Sora and JetBrains Mono: `mkdir -p assets/fonts && cp ../.claqueta/assets/fonts/*.ttf assets/fonts/`, load them with `@font-face` and `font-weight: 100 800` because they are variable, and confirm on a frame that they show."
   ));
-  item(rango("arte", "tamano"));
+  item(conFormato(rango("arte", "tamano")));
   item(una("arte", "caja"));
   item(una("arte", "marca"));
   const ref = libre("arte", "referencia");
@@ -223,9 +232,11 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   sec("8. Cámara", "8. Camera");
   for (const o of varias("camara", "movs")) item(compacto ? o.n[I] : o.p[I]);
   if (!omitirRango("camara", "intensidad")) item(rango("camara", "intensidad"));
-  item(una("camara", "lente"));
+  const isometrico = v.profundidad.modo === "isometrico";
+  if (isometrico) item(L("Proyección isométrica, sin lente ni perspectiva: la cámara se desplaza y cambia de escala, y la proyección no cambia nunca.", "Isometric projection, with no lens or perspective: the camera pans and changes scale, and the projection never changes."));
+  else item(una("camara", "lente"));
   item(una("camara", "encuadre"));
-  item(una("camara", "angulo"));
+  if (!isometrico) item(una("camara", "angulo"));
   item(interruptor("camara", "motivo"));
   item(interruptor("camara", "texto_quieto"));
   item(una("camara", "desenfoque"));
@@ -349,14 +360,14 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   } else {
     item(L("Subtítulos en español.", "Captions in Spanish."));
     item(una("subtitulos", "estilo"));
-    item(una("subtitulos", "posicion"));
-    item(interruptor("subtitulos", "frases"));
+    item(conFormato(una("subtitulos", "posicion")));
+    item(conFormato(interruptor("subtitulos", "frases")));
     item(interruptor("subtitulos", "exacto"));
     if (conVoz) {
       item(L("`palabras.json` trae `{palabra, inicio, fin}` por palabra: úsalo también si una guía habla de `text`, `start` y `end`. El SRT sale de ahí:", "`palabras.json` holds `{palabra, inicio, fin}` per word: use it even if a guide speaks of `text`, `start` and `end`. The SRT comes from it:"));
       add();
       add("```bash");
-      add("python ../.claqueta/tools/subtitulos/srt.py --palabras assets/voz/palabras.json --guion guion.txt --salida renders/final.srt");
+      add(`python ../.claqueta/tools/subtitulos/srt.py --palabras assets/voz/palabras.json --guion guion.txt --salida renders/final.srt${es916 ? "" : ` --ancho ${porLinea} --max ${porLinea * 2}`}`);
       add("```");
       add();
     }
