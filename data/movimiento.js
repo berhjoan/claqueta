@@ -38,7 +38,7 @@ export const movimiento = {
   grupos: [
     { id: "carac", titulo: "Carácter", ayuda: "Cómo se mueve todo lo que no es cámara.", controles: [
         { k: "curva", t: "opciones", vista: "tarjetas", def: "firme", label: ["Carácter del movimiento", "Motion character"], opciones: curvas },
-        { k: "velocidad", t: "rango", titulo: "Duración de las entradas", min: 150, max: 1200, paso: 50, def: 450, unidad: "ms", label: ["Entradas", "Entrances"], p: ["Las entradas duran unos {v} ms; las salidas, entre 40 % y 50 % menos. Las salidas nunca se detienen a medio camino.", "Entrances last about {v} ms; exits are 40% to 50% shorter. Exits never stop halfway."] },
+        { k: "velocidad", t: "rango", titulo: "Duración de las entradas", min: 150, max: 1200, paso: 50, def: 450, unidad: "ms", label: ["Entradas", "Entrances"], p: ["Las entradas duran unos {v} ms; las salidas, entre 40 % y 50 % menos. Las salidas nunca se detienen a medio camino. Las transiciones entre escenas siguen su propia duración, en Montaje.", "Entrances last about {v} ms; exits are 40% to 50% shorter. Exits never stop halfway. Transitions between scenes follow their own length, in Editing."] },
       ] },
     { id: "texto", titulo: "Texto", controles: [
         { k: "texto", t: "opciones", vista: "tarjetas", multi: 3, def: ["mascara", "desenfoque"], label: ["Entrada de texto", "Text entrance"], opciones: entradasTexto, ayuda: "Hasta 3. Varía la entrada durante la pieza; nunca el mismo aparecer con desplazamiento en todo." },

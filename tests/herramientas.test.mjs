@@ -63,6 +63,8 @@ test("el motor de pizarra entrega eventos de sonido", () => {
   assert.equal(r.status, 0, r.stderr);
   const e = JSON.parse(fs.readFileSync(salida, "utf8"));
   assert.ok(e.trazos.length > 50);
+  assert.ok(e.borradores.length >= 1, "cada pasada del borrador tiene su evento");
+  assert.ok(e.trazos.some((t) => t.acento), "el acento se distingue para sonar distinto");
   assert.ok(e.dur > 0);
   assert.ok(e.trazos.every((t) => Number.isFinite(t.t0) && t.d > 0));
 });
@@ -143,4 +145,32 @@ test("verificar_video dice lo que midió", { skip: !conAudio && "faltan dependen
   assert.equal(j.medido.fps, 30);
   assert.ok(Number.isFinite(j.medido.lufs));
   assert.ok(Math.abs(j.medido.duracion_s - 2) < 0.1);
+});
+
+test("la película del motor se configura sin tocar el compositor", async () => {
+  const { PALETA, DUR, build } = await import("../engines/pizarra/film.js");
+  const F = build();
+  assert.deepEqual(Object.keys(F.paleta), Object.keys(PALETA));
+  for (const c of Object.values(PALETA)) assert.match(c, /^#[0-9A-Fa-f]{6}$/);
+  assert.ok(Array.isArray(F.wipes) && F.wipes.length >= 1);
+  assert.ok(F.S.every((st) => Number.isInteger(st.borrador) && st.borrador < F.wipes.length));
+  assert.ok(F.S.some((st) => st.borrador === 0));
+  assert.equal(F.DUR, DUR);
+  const board = fs.readFileSync(path.join(raiz, "engines/pizarra/board.js"), "utf8");
+  assert.ok(!board.includes("F.wipe;") && !board.includes("st.wiped"), "el compositor ya no asume una sola pasada");
+  const indice = fs.readFileSync(path.join(raiz, "engines/pizarra/ejemplo/index.html"), "utf8");
+  for (const m of indice.matchAll(/data-composition-src="([^"]+)"/g)) assert.ok(fs.existsSync(path.join(raiz, "engines/pizarra/ejemplo", path.basename(m[1]))), m[1]);
+});
+
+test("la mezcla deja el pico bajo el techo aun con una capa de transitorios fuertes", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  const e = path.join(dir, "ev.json"), tiza = path.join(dir, "tz.wav"), fx = path.join(dir, "fx.json"), salida = path.join(dir, "fuerte.wav");
+  correr(process.execPath, ["engines/pizarra/eventos.mjs", "engines/pizarra/film.js", e]);
+  assert.equal(correr(python, ["tools/audio/tiza.py", e, "--salida", tiza]).status, 0);
+  fs.writeFileSync(fx, JSON.stringify([{ t: 0, archivo: tiza, ganancia: 0, bajo_voz: -24 }, { pico: 3, sonido: "impacto", ganancia: 0 }, { pico: 7, sonido: "impacto", ganancia: 0 }]));
+  const r = correr(python, ["tools/audio/mezcla.py", "--voz", "assets/voices/edge-es-CO-GonzaloNeural.mp3", "--efectos", fx, "--dur", "12", "--salida", salida]);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  const j = JSON.parse(r.stdout.trim().split("\n").pop());
+  assert.ok(j.pico_verdadero <= -2.7, `pico ${j.pico_verdadero}`);
+  assert.ok(Math.abs(j.lufs + 14) < 1, `lufs ${j.lufs}`);
+  assert.equal(j.efectos.length, 3);
 });

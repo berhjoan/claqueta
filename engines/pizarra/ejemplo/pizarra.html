@@ -1,0 +1,18 @@
+<template>
+  <style>
+    #pz-lienzo { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  </style>
+  <div data-hf-id="hf-bflu" id="root" data-composition-id="pizarra" data-start="0" data-duration="15" data-width="1080" data-height="1920" style="position: absolute; inset: 0; overflow: hidden;">
+    <canvas data-hf-id="hf-ailc" id="pz-lienzo" class="clip" data-start="0" data-duration="15" data-track-index="0" width="1080" height="1920"></canvas>
+  </div>
+  <script type="module">
+    import { montar } from "./assets/pizarra/board.js";
+    // El reloj es un proxy de GSAP: entrega el tiempo local de la escena. INICIO es el segundo de la película en que abre la escena.
+    const ID = "pizarra", D = 15, INICIO = 0, render = montar(document.getElementById("pz-lienzo"));
+    const tl = gsap.timeline({ paused: true }), clock = { t: 0 };
+    tl.fromTo(clock, { t: 0 }, { t: D, duration: D, ease: "none", onUpdate: () => render(INICIO + clock.t) }, 0);
+    render(INICIO);
+    window.__timelines = window.__timelines || {};
+    window.__timelines[ID] = tl;
+  </script>
+</template>

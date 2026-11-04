@@ -482,7 +482,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 |---|---|---|
 | Sin efectos | No effects | Sin efectos de sonido. |
 | Solo en los cambios | Scene changes only | Efectos solo en cambios de escena y en el remate. |
-| Por cada acción | Every visible action | Cada acción visible importante suena, con un máximo de 1 efecto por segundo y nunca encima de una palabra clave. Cada efecto tiene su causa en pantalla. |
+| Por cada acción | Every visible action | Cada acción visible importante suena, con un máximo de 1 efecto por segundo y sin tapar una palabra clave: si un golpe cae junto a ella, adelántalo o bájalo. Cada efecto tiene su causa en pantalla. |
 | El material suena siempre | The material always sounds | El material suena de forma continua, como tiza, papel o teclas, sincronizado con cada trazo o elemento. No cuenta como efecto suelto. |
 
 ### De dónde salen

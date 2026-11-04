@@ -33,6 +33,6 @@ sh tools/fetch.sh instruments vsco2ce
 
 - **El autor afina el sistema para Claude Opus 5.5.** Otras IA pueden no reproducir la misma calidad.
 - **Su mascota no se usa.** Nada de personajes ni marcas ajenas en tus videos, tampoco los que aparecen en estos demos.
-- **`setup.sh deps` no sirve en Windows:** espera `.venv/bin/python`. `video.mjs` funciona con `PLAYWRIGHT_CHROME`, y `mux.sh` funciona en Git Bash.
+- **`setup.sh deps` no sirve en Windows, y sus documentos sugieren WSL:** no hace falta. `video.mjs` funciona con `PLAYWRIGHT_CHROME`, `mux.sh` funciona en Git Bash, y para tiza `engines/pizarra` ya trae lo necesario.
 - **El vertical no sale solo.** Con `--size 1080x1920`, terminal e isométrico quedan con media pantalla vacía. Hay que recomponer.
 - Tres estilos parecen homenajes a marcas conocidas (`scifi-toon`, `brick-toy`, `paper-popup`): su miniatura no se publica en el panel. Si los usas, no copies personajes ni diseños reconocibles.

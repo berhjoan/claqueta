@@ -3,7 +3,8 @@
 
 Uso: python tools/audio/tiza.py assets/audio/eventos.json --salida assets/audio/tiza.wav
 
-Sale sin máster, para usarlo como una capa de tools/audio/mezcla.py.
+Sale sin máster, para usarlo como una capa de tools/audio/mezcla.py. Bájala bajo la voz o tapa las palabras:
+  {"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": -2, "bajo_voz": -24}
 Es sintético y sin grabaciones. Una persona debe escucharlo: ninguna IA puede validar este sonido de oído.
 """
 import argparse
@@ -77,8 +78,7 @@ def main():
         if s["d"] > 0.07 and rng.random() < 0.7:
             add(buf, golpe(objetivo * 1.1, rng.uniform(380, 700)), s["t0"] - 0.003, 1.0, pan)
 
-    b = E.get("borrador")
-    if b:
+    for b in E.get("borradores") or []:
         d = b["t1"] - b["t0"] + 0.1
         n = int(d * SR)
         w = rng.standard_normal(n)

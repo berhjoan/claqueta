@@ -6,70 +6,88 @@ Escritura a mano en tiza, con letra propia del español, dentro de una escena de
 
 | Archivo | Qué hace |
 |---|---|
-| `film.js` | **Lo único que editas.** Toda la película como datos: líneas, tiempos, borrador y cámara |
+| `film.js` | **Tu película.** Duración, colores, líneas, trazos, borrador y cámara. Para una pieza normal, es lo único que editas |
 | `board.js` | Dibuja un instante `t`. `montar(canvas)` devuelve `render(t)` |
 | `chalk.js`, `r2d.js`, `lib.js` | El trazo, el depósito de tiza y el grano (lemo-opuscar, MIT) |
-| `latin.js`, `glifos.js`, `ems-delight.js` | Escritura en español con EMS Delight (OFL). Falla si falta una letra |
+| `latin.js`, `glifos.js`, `ems-delight.js` | Escritura en español con EMS Delight (OFL), guardada como datos. Falla si falta una letra |
 | `eventos.mjs` | Saca los eventos de sonido de la película, en Node y sin navegador |
-| `ejemplo/` | Proyecto mínimo: `index.html` y tres composiciones |
+| `ejemplo/` | Proyecto mínimo: `index.html`, `pizarra.html` y `capa.html` |
 
-## Montarlo en un proyecto de HyperFrames
+## Montarlo
+
+Desde la carpeta que tiene a `.claqueta`:
 
 ```bash
 npx hyperframes@0.9.9 init proyecto --resolution portrait --non-interactive --skip-skills
 cd proyecto
-mkdir -p assets/pizarra compositions
+mkdir -p assets/pizarra assets/audio assets/fonts compositions
 cp ../.claqueta/engines/pizarra/*.js assets/pizarra/
 cp ../.claqueta/engines/pizarra/ejemplo/index.html .
-cp ../.claqueta/engines/pizarra/ejemplo/pizarra-a.html ../.claqueta/engines/pizarra/ejemplo/pizarra-b.html ../.claqueta/engines/pizarra/ejemplo/capa.html compositions/
+cp ../.claqueta/engines/pizarra/ejemplo/pizarra.html ../.claqueta/engines/pizarra/ejemplo/capa.html compositions/
+cp ../.claqueta/assets/fonts/*.ttf assets/fonts/
+cp ../.claqueta/library/marca/bg-system-ia/emblema.png assets/emblema.png
 ```
 
-`.claqueta` queda al lado de `proyecto`. Las escenas importan `./assets/pizarra/board.js`, relativo a `index.html`.
+Las escenas importan `./assets/pizarra/board.js`, relativo a `index.html`. Con esto ya hay una película de muestra de 15 s: mírala con `snapshot --at` antes de cambiarla.
 
-El ejemplo trae dos detalles que debes cambiar: la pista de audio `assets/audio/mezcla.wav` de `index.html`, y el emblema y la frase de `capa.html`. Si no tienes emblema, borra esa imagen.
+Cambia estas cuatro cosas:
+
+1. `assets/pizarra/film.js`, tu película.
+2. `DUR` en `film.js`, y el mismo número en cada `data-duration` de `index.html`, `pizarra.html` y `capa.html`, y en la constante `D` de `pizarra.html`.
+3. `index.html` trae `assets/audio/mezcla.wav`. Mientras no exista, quita ese `<audio>` o `check` dará error.
+4. `capa.html` trae el emblema y una frase de cierre. Cámbialos, o quita esa escena de `index.html` si no van.
 
 ## Escribir tu película
 
-Edita `build()` en `assets/pizarra/film.js`:
+`film.js` está por secciones, de la 1 a la 6:
 
 ```js
-export const W = 1080, H = 1920, DUR = 15, CORTE = 7.6;
+export const PALETA = { tinta: '#F7EBD3', acento: '#E9A93B', secundario: '#B8692E', pizarra: '#0B0806', pared: '#1A120A' };
 
-L.push(linea(S, '¿Qué hace un', 430, 76, -.45, 1.6, { color: CREMA, seed: 1, bloque: 'pregunta', press: 1.1 }));
-//              texto           y   cap  empieza dura
+linea(S, L, '¿Qué hace un', 430, 76, -.45, 1.6, { color: TINTA, seed: 1, press: 1.1 });
+//           texto          y   cap  empieza dura
 ```
 
-- `y` es la línea base, `cap` la altura de letra. `cap` 76 da mayúsculas de 103 px y unos 13 caracteres en 888 px.
+- Pon en `PALETA` los colores del encargo. La pared, la pizarra y las tizas de la bandeja salen de ahí.
+- `y` es la línea base y `cap` la altura de letra. `cap` 76 da mayúsculas de 103 px y unos 13 caracteres en 888 px. Mide con `latinWidth(texto, cap)`.
 - Lo pequeño pide más peso: con `cap` 60 la tiza ya se ve calada, y con 40 queda débil.
-- Mano creíble: 0,08–0,13 s por trazo. La función `linea` reparte los trazos en `dur`.
-- `{ wiped: true }` marca lo que el borrador se lleva. Define `wipe = { t0, t1, w, path }`.
-- `C` es la cámara: tramos `[t, cx, cy, s]`, siempre de frente.
-- Un `DUR` distinto debe coincidir con `data-duration` en `index.html` y en las escenas. `CORTE` es el segundo donde `pizarra-a` da paso a `pizarra-b`.
+- Mano creíble: 0,08–0,13 s por trazo. `linea` reparte los trazos en `dur`. Por eso una frase larga no cabe: al mundo van palabras clave, y las frases van en los subtítulos.
+- Un segundo de inicio negativo deja la línea escrita al abrir.
+- `trazo(S, puntos, t0, t1, opciones)` dibuja subrayados, flechas, marcas o globos.
+- El borrador es una lista: `wipes = [{ t0, t1, w, path }, ...]`. Una línea o un trazo con `borrador: 0` se va en la primera pasada, con `borrador: 1` en la segunda.
+- `C` es la cámara: claves `[segundo, centro x, centro y, escala]`, siempre de frente. `curvaCamara` es la curva entre claves: cámbiala si el encargo pide otra.
 
-## Por qué dos escenas
+## Piezas largas
 
-Las dos dibujan la misma película y se cortan con la cámara en movimiento sin salto medible. Partir así acorta el horneado por página y sirve para piezas largas. Para una pieza corta basta con una sola.
+Una escena basta para piezas cortas. Para más de 30 s conviene partir: copia `pizarra.html` con otro `ID`, otro `INICIO` y otra duración, y añádela a `index.html` con su `data-start`. Dos escenas que dibujan la misma película se cortan con la cámara en movimiento sin salto medible, y comparten el horneado porque el módulo se evalúa una vez por página.
 
-## Reloj
+## Reloj y selectores
 
-- `hf-seek` entrega el tiempo global: filtra lo que quede fuera de la escena. Lo usa `pizarra-a`.
-- Un tween proxy de GSAP entrega tiempo local y solo dibuja con la escena activa. Lo usa `pizarra-b`, y es el preferido.
-- Nunca `requestAnimationFrame` ni `Date`.
+- El reloj es un tween proxy de GSAP: tiempo local, solo dibuja con la escena activa. Nunca `requestAnimationFrame` ni `Date`.
+- Dentro de una escena no uses `document.getElementById("root")`: la página armada tiene varios `#root`, y te da el primero. Si `check` marca `text_occluded` o contraste 1,06:1 sobre texto creado por script, suele ser eso. Busca por `[data-composition-id="tu-escena"]`.
 
 ## Sonido
 
-La película también corre en Node, así que cada trazo suena en su tiempo exacto:
+La película también corre en Node, así que cada trazo suena en su tiempo exacto y cada pasada del borrador también:
 
 ```bash
 node ../.claqueta/engines/pizarra/eventos.mjs assets/pizarra/film.js assets/audio/eventos.json
 python ../.claqueta/tools/audio/tiza.py assets/audio/eventos.json --salida assets/audio/tiza.wav
 ```
 
-Luego añade la tiza a `efectos.json` para `tools/audio/mezcla.py`: `{"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": 0}`. El sonido es sintético y no se ha validado de oído: pide que alguien lo escuche.
+Añade la tiza a `efectos.json` de `tools/audio/mezcla.py`:
 
-## Lo que verás en `check`
+```json
+{"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": -2, "bajo_voz": -24}
+```
 
-`did not become render-ready within 3000ms` y `canvas_content_at_edge` no son errores: vienen del horneado y del grano de la pizarra. Hornear 74 trazos tarda unos 5 s por página. En un i5 sin GPU, 450 cuadros toman unos 1,5 min con 4 procesos.
+`bajo_voz` hace falta: la tiza es ruido de banda ancha y tapa las palabras. En una prueba real, Whisper leía «cacha que» donde se dijo «cada chat» aun con la tiza 16 dB abajo, y leía bien con 24 dB. Así, mientras se habla, la tiza casi no se oye; el oído de una persona debe juzgar ese equilibrio. El sonido es sintético y no se ha validado de oído.
+
+## Lo que verás en las revisiones
+
+- `did not become render-ready within 3000ms` y `canvas_content_at_edge` no son errores: vienen del horneado y del grano de la pizarra. Hornear 74 trazos tarda unos 5 s por página. En un i5 sin GPU, 450 cuadros toman unos 1,5 min con 4 procesos.
+- Con una sola escena, `snapshot --review` da cinco cuadros parejos y sin tiras de cortes. Usa `snapshot --at` con tus momentos clave.
+- Con fondo `#0B0806` y poca tiza en pantalla, `blackdetect` marca cuadros negros que no lo son.
 
 ## Licencias
 

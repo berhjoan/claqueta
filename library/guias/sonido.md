@@ -86,12 +86,12 @@ python tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musi
 ]
 ```
 
-`pico` pone el punto más fuerte del sonido en ese segundo: úsalo en golpes, con un cuadro más que su imagen. `t` pone su inicio: úsalo en capas largas.
+`pico` pone el punto más fuerte del sonido en ese segundo: úsalo en golpes, con un cuadro más que su imagen. `t` pone su inicio: úsalo en capas largas. `semilla` da otra toma del mismo sonido. Con `"bajo_voz": -24`, una capa continua cede mientras se habla: la tiza tapa las palabras sin eso. La salida del comando dice en qué segundo cayó cada efecto.
 
 - La voz se lleva a −16 LUFS antes de mezclar.
 - `--nivel-musica` es cuánto queda la música bajo la voz mientras se habla. Sube 6 dB cuando la voz calla, con subida de 120 ms y bajada de 700 ms.
 - `--silencios` calla música y efectos en esos tramos. La voz no se toca.
-- Sale en −14 LUFS y −3 dBTP. Después de AAC queda cerca de −2,7 dBTP.
+- Sale en −14 LUFS y −3 dBTP. Después de AAC queda entre −2,7 y −2,2 dBTP, dentro del máximo de −1.
 
 ## Revisar sin oído
 

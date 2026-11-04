@@ -5,6 +5,7 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 ## Entorno y Windows
 
 - En Git Bash, ffmpeg y Node necesitan rutas Windows (`cygpath -m`). Node importa rutas absolutas como `file:///C:/…`.
+- Git Bash y Python de Windows entienden distinto `/tmp`: Python escribe en `C:\\tmp` y bash en otra parte. Usa rutas dentro del proyecto.
 - `python -I` ignora `PYTHONUTF8`. Para imprimir tildes fija `PYTHONIOENCODING=utf-8`.
 - `hyperframes snapshot` en 0.8.x describe los cuadros con Gemini si existe `GEMINI_API_KEY` y envía imágenes del video: usa `--describe false`. En 0.9.9 está apagado por defecto.
 - WebGL funciona en una Intel UHD 730 por D3D11 (ANGLE).
@@ -14,6 +15,9 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 
 - Si una palabra suena mal, no toques el guion: usa una copia solo para el motor, con una coma o escrita como suena. El guion sigue literal para subtítulos y comparación. Una coma en «ejecuta, y revisa» arregló lo que bajar la velocidad no arregló.
 - Whisper `base` y `small` oyen «una gente de ella» donde se dijo «un agente de IA»: no es la voz. Para confirmar una palabra, usa `medium`.
+- Edge lee «IA» como la sílaba «ya» en cualquier grafía: `IA`, `I A`, `i a`, `ía`, `I-A`. Lo único que dio los dos nombres de letra fue `i, a,` en el guion de voz, recortando después las pausas que deja. Una persona debe oírlo.
+- Una toma larga puede deformar una frase que sola sale bien: «Cada chat» salió «cacha te» dentro de dos oraciones y bien al generarla aparte. Genera por oraciones y une en la pausa.
+- Edge es un servicio en línea y mañana puede devolver otra toma: guarda las que uses.
 
 - Las palabras en otro idioma (una marca en inglés) se generan aparte, en su idioma, y se empalman.
 - Un llamado corto en español se genera dentro de su frase, con varias semillas, y se recorta. Aislado es inestable.
@@ -32,6 +36,8 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - Rejilla: afina período y fase sobre `onset_strength`; cada corte con un ataque a ±25 ms.
 - Una mezcla limitada a −3 dBTP y −14 LUFS pasa por el render de HyperFrames y sale en −14,2 LUFS y −2,66 dBTP tras AAC.
 - Con música de bombo fuerte, limitar unos 6 dB e iterar midiendo el archivo ya codificado.
+- Una capa continua de banda ancha, como la tiza, tapa la voz aunque esté 16 dB abajo: Whisper leía «cacha que» donde se dijo «cada chat». Con 24 dB bajo la voz leyó bien. Usa `"bajo_voz": -24` en `efectos.json`.
+- Tomas de un mismo efecto: con `semilla` por golpe en `efectos.json`. `efecto.py --tomas` es para tenerlas como archivos.
 
 ## Subtítulos
 
@@ -50,6 +56,8 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - `check` da falsos errores con capas superpuestas (glitch, neón, ASCII) y tableros en giro: verifica en un cuadro antes de arreglar.
 - Sora no tiene `≈`, `≠` ni flechas (`→ ↑`), y ninguna fuente de marca tiene `✓` ni `✗`: `≠` en JetBrains Mono o SVG; flechas y `✓ ✗`, siempre en SVG.
 - `check --json` escribe su avance por stderr: no redirijas `2>&1` si vas a leer el JSON.
+- Dentro de una escena no uses `document.getElementById("root")`: la página armada tiene varios `#root` y te da el primero. El texto creado por script cae en el padre equivocado y `check` marca `text_occluded` o contraste 1,06:1. Busca por `[data-composition-id="tu-escena"]`.
+- Con fondo `#0B0806` y poco contenido, `blackdetect` marca cuadros negros que no lo son. Mira el cuadro.
 - `render` sin `--crf` puede salir en calidad `standard`, aunque la ayuda diga otra cosa. Para un máster, pasa `--crf 17`.
 - three.js en render real: `three@0.181.2/+esm`, `preserveDrawingBuffer:true`, `setPixelRatio(1)`, un renderer por frame y dibujo solo desde un tween proxy de GSAP.
 - Canvas 2D funciona en `check`, Studio y `render`. Dos relojes probados: proxy de GSAP (tiempo local, solo dibuja con la escena activa, es el preferido) y `hf-seek` (tiempo global, filtra lo que quede fuera de la escena). Ir atrás y adelante da la misma imagen.

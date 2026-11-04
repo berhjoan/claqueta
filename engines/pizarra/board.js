@@ -1,5 +1,6 @@
-// Compositor de la prueba: dibuja la pizarra de un instante t, siempre función de t. Adaptado de app.js y stage.js de lemo-opuscar
-// (MIT) para vertical, negro cálido y sin la capa WebGL. La pizarra se hornea una sola vez por página, aunque haya dos escenas.
+// Compositor: dibuja la pizarra de un instante t, siempre función de t. Adaptado de app.js y stage.js de lemo-opuscar (MIT) para
+// vertical, negro cálido y sin la capa WebGL. La pizarra se hornea una sola vez por página, aunque haya varias escenas.
+// La película y sus colores están en film.js. Aquí solo se toca algo si cambian la sala o el material.
 import { clamp } from './lib.js';
 import { bake, drawStroke, rng, n1 } from './chalk.js';
 import { installDeposit, grainTile } from './r2d.js';
@@ -37,13 +38,13 @@ function palito(c, x, y, len, r, col, ang) {                     // tiza de verd
   g.addColorStop(0, f(1.06)); g.addColorStop(.45, f(1)); g.addColorStop(1, f(.55));
   c.fillStyle = g; c.beginPath(); c.roundRect(-len / 2, -r, len, r * 2, r * .7); c.fill(); c.restore();
 }
-function hornearSala() {
+function hornearSala(P, COL) {
   const cv = new OffscreenCanvas(SALA.w, SALA.h), c = cv.getContext('2d'); c.translate(-SALA.x0, -SALA.y0); c.imageSmoothingQuality = 'high';
   const [x0, y0, x1, y1] = SLATE, sw = x1 - x0, sh = y1 - y0;
-  c.fillStyle = '#17100a'; c.fillRect(SALA.x0, SALA.y0, SALA.w, SALA.h);                                 // la pared
+  c.fillStyle = P.pared; c.fillRect(SALA.x0, SALA.y0, SALA.w, SALA.h);                                   // la pared
   c.drawImage(ruido(Math.ceil(SALA.w / 200), Math.ceil(SALA.h / 200), 31, [34, 24, 14], .5), SALA.x0, SALA.y0, SALA.w, SALA.h);
   c.save(); c.filter = 'blur(26px)'; c.fillStyle = 'rgba(0,0,0,.6)'; c.fillRect(x0 - 26, y0 - 26, sw + 52, sh + 70); c.restore();   // sombra de la pizarra
-  c.fillStyle = '#0d0907'; c.fillRect(x0, y0, sw, sh);                                                   // la pizarra: negro cálido parejo
+  c.fillStyle = P.pizarra; c.fillRect(x0, y0, sw, sh);                                                   // la pizarra, de un solo color
   c.drawImage(ruido(Math.ceil(sw / 240), Math.ceil(sh / 240), 61, [24, 18, 13], .5), x0, y0, sw, sh);
   c.drawImage(ruido(Math.ceil(sw / 60), Math.ceil(sh / 60), 62, [7, 5, 4], .28), x0, y0, sw, sh);
   c.save(); c.beginPath(); c.rect(x0, y0, sw, sh); c.clip(); c.globalCompositeOperation = 'soft-light'; c.globalAlpha = .16;   // grano fino, horneado
@@ -53,8 +54,9 @@ function hornearSala() {
   { const g = c.createLinearGradient(0, y0, 0, y0 + 18); g.addColorStop(0, 'rgba(0,0,0,.42)'); g.addColorStop(1, 'rgba(0,0,0,0)'); c.fillStyle = g; c.fillRect(x0, y0, sw, 18); }
   c.save(); c.filter = 'blur(14px)'; c.fillStyle = 'rgba(0,0,0,.7)'; c.fillRect(x0 - 30, y1 + 70, sw + 60, 34); c.restore();            // sombra de la bandeja
   madera(c, x0 - 44, y1 + 28, sw + 88, 54, true, 8, '#3a2712'); madera(c, x0 - 44, y1, sw + 88, 28, true, 9, '#20150a');                // bandeja
-  c.save(); c.globalAlpha = .1; c.fillStyle = '#f7ebd3'; c.filter = 'blur(10px)'; c.fillRect(x0 + 120, y1 + 8, sw - 300, 14); c.restore();   // polvo de tiza en la bandeja
-  palito(c, 300, y1 + 16, 150, 11, [247, 235, 211], -.03); palito(c, 520, y1 + 18, 96, 11, [245, 198, 107], .05); palito(c, 690, y1 + 15, 62, 10, [247, 235, 211], -.12);
+  c.save(); c.globalAlpha = .1; c.fillStyle = P.tinta; c.filter = 'blur(10px)'; c.fillRect(x0 + 120, y1 + 8, sw - 300, 14); c.restore();   // polvo de tiza en la bandeja
+  const a255 = (col) => col.map((v) => v * 255);
+  palito(c, 300, y1 + 16, 150, 11, a255(COL.TINTA), -.03); palito(c, 520, y1 + 18, 96, 11, a255(COL.ACENTO), .05); palito(c, 690, y1 + 15, 62, 10, a255(COL.TINTA), -.12);
   return { cv };
 }
 
@@ -66,7 +68,7 @@ function preparar() {
   const F = build();
   for (const s of F.S) bake(s, s.o.R || 2);
   const capa = new OffscreenCanvas(W, H);
-  M = { F, sala: hornearSala(), capa, lx: capa.getContext('2d') };
+  M = { F, sala: hornearSala(F.paleta, F.colores), capa, lx: capa.getContext('2d') };
   window.__pizarraBakeMs = Math.round(performance.now() - t0);
   return M;
 }
@@ -80,26 +82,28 @@ function frente(x, t, s, sx, sy, col, w) {                       // unos granos 
 }
 
 function dibujar(x, t) {
-  const { F, sala, capa, lx } = M, c = F.camAt(t), s = c.s, m = [s, 0, 0, s, W / 2 - c.cx * s, H / 2 - c.cy * s], w = F.wipe;
+  const { F, sala, capa, lx } = M, c = F.camAt(t), s = c.s, m = [s, 0, 0, s, W / 2 - c.cx * s, H / 2 - c.cy * s];
   x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'source-over'; x.globalAlpha = 1; x.filter = 'none';
   x.setTransform(...m); x.imageSmoothingQuality = 'high';
   x.drawImage(sala.cv, SALA.x0, SALA.y0, SALA.w, SALA.h);
 
-  // lo que se borra va en su propia capa; después de la pasada no queda nada que dibujar, solo una neblina muy tenue
-  if (t > w.t0) {
+  // Lo que se borra va en su propia capa; después de cada pasada no queda nada que dibujar, solo una neblina muy tenue.
+  F.wipes.forEach((w, k) => {
+    const mios = F.S.filter((st) => st.borrador === k);
+    if (t <= w.t0) { for (const st of mios) if (t > st.t0) drawStroke(x, st, t); return; }
     const n = Math.max(2, Math.round(w.path.length * clamp((t - w.t0) / (w.t1 - w.t0)))), p = new Path2D();
     w.path.slice(0, n).forEach(([a, b], i) => i ? p.lineTo(a, b) : p.moveTo(a, b));
     if (t < w.t1) {
       lx.setTransform(1, 0, 0, 1, 0, 0); lx.clearRect(0, 0, W, H); lx.filter = 'none'; lx.globalCompositeOperation = 'source-over'; lx.setTransform(...m);
-      for (const st of F.S) if (st.wiped && t > st.t0) drawStroke(lx, st, t);
+      for (const st of mios) if (t > st.t0) drawStroke(lx, st, t);
       lx.globalCompositeOperation = 'destination-out'; lx.filter = `blur(${Math.max(1, 16 * s)}px)`; lx.lineCap = 'round'; lx.lineJoin = 'round'; lx.lineWidth = w.w; lx.strokeStyle = '#000'; lx.stroke(p);
       lx.globalCompositeOperation = 'source-over'; lx.filter = 'none';
       x.setTransform(1, 0, 0, 1, 0, 0); x.drawImage(capa, 0, 0); x.setTransform(...m);
     }
     x.save(); x.beginPath(); x.rect(SLATE[0], SLATE[1], SLATE[2] - SLATE[0], SLATE[3] - SLATE[1]); x.clip(); x.filter = `blur(${Math.max(1, 12 * s)}px)`; x.strokeStyle = 'rgba(214,202,180,.009)'; x.lineCap = 'round'; x.lineJoin = 'round'; x.lineWidth = w.w * .9; x.stroke(p); x.restore();
-  } else for (const st of F.S) if (st.wiped && t > st.t0) drawStroke(x, st, t);
+  });
 
-  for (const st of F.S) if (!st.wiped && t > st.t0) drawStroke(x, st, t);
+  for (const st of F.S) if (st.borrador < 0 && t > st.t0) drawStroke(x, st, t);
 
   // caída de luz suave, siempre igual en pantalla
   x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'multiply';

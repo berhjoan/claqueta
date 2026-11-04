@@ -41,7 +41,9 @@ Una voz sintética puede saltarse palabras o decir mal un número. Antes de usar
 python tools/qa/comparar_voz.py --audio assets/voz/voz.mp3 --guion guion.txt
 ```
 
-Si algo suena mal, no toques `guion.txt`. Haz una copia `guion_voz.txt` solo para el motor, con una coma o con la palabra escrita como suena («dos mil veintiséis», «i a»), y genera con esa copia. `guion.txt` sigue literal para los subtítulos y para comparar.
+Si algo suena mal, no toques `guion.txt`. Haz una copia `guion_voz.txt` solo para el motor, con una coma o con la palabra escrita como suena («dos mil veintiséis»), y genera con esa copia. `guion.txt` sigue literal para los subtítulos y para comparar.
+
+Trampas medidas con Edge: «IA» suena como la sílaba «ya» en cualquier grafía, y solo `i, a,` da los dos nombres de letra, con pausas que luego hay que recortar. Una frase puede deformarse dentro de una toma larga y salir bien sola: genera por oraciones y une en la pausa. Guarda las tomas que uses: es un servicio en línea.
 
 ## Otras voces gratis, sin probar en este sistema
 

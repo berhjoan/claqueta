@@ -372,6 +372,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     `\`init\` deja \`lang="en"\` y fondo negro: pon \`lang="es"\` y el fondo de tu paleta, y comprueba que \`data-width\` y \`data-height\` den ${m.w}×${m.h} y que \`data-duration\` sea \`${DUR}\`.`,
     `\`init\` leaves \`lang="en"\` and a black ground: set \`lang="es"\` and your palette's ground, and check that \`data-width\` and \`data-height\` give ${m.w}×${m.h} and that \`data-duration\` is \`${DUR}\`.`
   ));
+  if (conHF) item(L("La plantilla carga GSAP desde internet. Baja a `assets/lib/` la versión que cita `index.html` y apunta el `<script>` a esa copia, para que el proyecto se pueda volver a renderizar sin red.", "The template loads GSAP from the internet. Download the version `index.html` cites into `assets/lib/` and point the `<script>` at that copy, so the project can be rendered again offline."));
   const pasos = [
     L("Escribe `TREATMENT.md`: tres estructuras posibles y la elegida con su razón, un movimiento que solo este medio puede hacer, y una tabla de sonido por sección.", "Write `TREATMENT.md`: three possible structures and the chosen one with its reason, one move only this medium can do, and a sound table per section."),
     L("Escribe `SPEC.md`: convierte este encargo en cifras (LOOK, MOTION, SHOTS, BANNED, QA).", "Write `SPEC.md`: turn this brief into numbers (LOOK, MOTION, SHOTS, BANNED, QA)."),
@@ -402,6 +403,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   add();
   item(L("Mira los cuadros de verdad antes de decir que está listo: texto dentro de zonas seguras, tildes correctas, nada cortado ni encimado, sujeto grande y primer cuadro con imagen.", "Actually look at the frames before saying it is done: text inside safe areas, correct accents, nothing cut or overlapping, a large subject and an image on the first frame."));
   item(L("Los avisos de solape de `check` pueden ser falsos en capas de efecto: confírmalos en un cuadro antes de cambiar nada.", "`check` overlap warnings can be false on effect layers: confirm on a frame before changing anything."));
+  if (v.motor.motor === "hyperframes" || v.motor.motor === "canvas") item(L("Si la pieza es una sola escena, `snapshot --review` da cuadros parejos y no ve los cambios: usa `snapshot --at` con tus momentos clave.", "If the piece is a single scene, `snapshot --review` gives even frames and misses the changes: use `snapshot --at` with your key moments."));
   item(L("Di en la entrega qué mediste y qué no pudiste comprobar. Si no puedes oír, dilo.", "State in the delivery what you measured and what you could not check. If you cannot hear, say so."));
 
   sec("18. Prohibido", "18. Banned");

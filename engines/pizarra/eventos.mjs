@@ -13,18 +13,16 @@ if (!film || !salida) {
 const { build, DUR } = await import(pathToFileURL(path.resolve(film)).href);
 const F = build();
 
-const capDe = {};
-for (const l of F.L) for (const s of F.S) if (s.t0 >= l.t0 - 1e-6 && s.t1 <= l.t1 + 1e-6) capDe[s.seed] = l.cap;
-
 const trazos = F.S.map((s) => ({
   t0: +s.t0.toFixed(4),
   d: +(s.t1 - s.t0).toFixed(4),
   len: Math.round(s.len),
   x: Math.round((s.start[0] + s.end[0]) / 2),
-  cap: capDe[s.seed] ?? 120,
-  acento: s.bloque === "respuesta",
+  cap: s.cap ?? 90,
+  acento: Boolean(s.acento),
   baja: s.end[1] > s.start[1],
 }));
+const borradores = (F.wipes ?? []).map((w) => ({ t0: w.t0, t1: w.t1 }));
 fs.mkdirSync(path.dirname(path.resolve(salida)), { recursive: true });
-fs.writeFileSync(salida, JSON.stringify({ dur: DUR, trazos, borrador: F.wipe ? { t0: F.wipe.t0, t1: F.wipe.t1 } : null }));
-console.log(JSON.stringify({ ok: true, trazos: trazos.length, escritura_s: +trazos.reduce((a, s) => a + s.d, 0).toFixed(2), salida }));
+fs.writeFileSync(salida, JSON.stringify({ dur: DUR, trazos, borradores }));
+console.log(JSON.stringify({ ok: true, trazos: trazos.length, borradores: borradores.length, escritura_s: +trazos.reduce((a, s) => a + s.d, 0).toFixed(2), salida }));

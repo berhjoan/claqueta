@@ -23,7 +23,7 @@ export const animos = [
 export const densidadSfx = [
   { id: "cero", n: ["Sin efectos", "No effects"], p: ["Sin efectos de sonido.", "No sound effects."] },
   { id: "minimo", n: ["Solo en los cambios", "Scene changes only"], p: ["Efectos solo en cambios de escena y en el remate.", "Effects only on scene changes and the payoff."] },
-  { id: "accion", n: ["Por cada acción", "Every visible action"], p: ["Cada acción visible importante suena, con un máximo de 1 efecto por segundo y nunca encima de una palabra clave. Cada efecto tiene su causa en pantalla.", "Every important visible action sounds, at most 1 effect per second and never over a key word. Each effect has a cause on screen."] },
+  { id: "accion", n: ["Por cada acción", "Every visible action"], p: ["Cada acción visible importante suena, con un máximo de 1 efecto por segundo y sin tapar una palabra clave: si un golpe cae junto a ella, adelántalo o bájalo. Cada efecto tiene su causa en pantalla.", "Every important visible action sounds, at most 1 effect per second and without covering a key word: if a hit falls next to one, move it earlier or lower it. Each effect has a cause on screen."] },
   { id: "foley", n: ["El material suena siempre", "The material always sounds"], p: ["El material suena de forma continua, como tiza, papel o teclas, sincronizado con cada trazo o elemento. No cuenta como efecto suelto.", "The material sounds continuously, like chalk, paper or keys, synced to each stroke or element. It does not count as a separate effect."] },
 ];
 

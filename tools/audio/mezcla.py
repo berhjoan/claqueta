@@ -7,8 +7,9 @@ Uso:
 
 efectos.json es una lista de golpes. "pico" pone el punto más fuerte del sonido en ese segundo, y "t" pone su inicio:
   [{"pico": 1.23, "sonido": "barrido", "ganancia": -8, "dur": 0.4, "pan": 0.2},
-   {"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": -3},
+   {"t": 0, "archivo": "assets/audio/tiza.wav", "ganancia": -2, "bajo_voz": -24},
    {"pico": 9.13, "sonido": "impacto", "ganancia": -5, "semilla": 3}]
+Una capa continua puede bajar mientras se habla con "bajo_voz": -24. La semilla da otra toma del mismo sonido.
 
 - nivel-musica: decibeles de la música por debajo de la voz mientras se habla. Sin voz, sube 6 dB.
 - silencios: tramos donde callan música y efectos. Sirven para que la siguiente frase pese.
@@ -30,7 +31,7 @@ import soundfile as sf
 from scipy.ndimage import uniform_filter1d
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from masterizar import limitar, medir  # noqa: E402
+from masterizar import medir, nivelar  # noqa: E402
 from efecto import CATALOGO, generar  # noqa: E402
 
 SR = 48000
@@ -152,22 +153,16 @@ def main():
             if s >= n or not len(x):
                 continue
             x = x[: n - s] * 10 ** (float(ev.get("ganancia", -8)) / 20)
+            if "bajo_voz" in ev:  # Una capa continua, como la tiza, cede mientras se habla: sus agudos tapan las palabras.
+                x = x * (10 ** (float(ev["bajo_voz"]) * curva[s : s + len(x)] / 20))[:, None]
             mezcla[s : s + len(x)] += x * silencio[s : s + len(x), None]
             colocados.append({"efecto": ev.get("sonido") or Path(ev["archivo"]).name, "pico_s": round((s + int(np.argmax(np.abs(x).max(1)))) / SR, 3)})
     mezcla = mezcla + voz
 
-    pico = 10 ** (a.techo / 20) * 0.9
-    for _ in range(6):
-        i, tp = lufs(mezcla)
-        if abs(i - a.lufs) < 0.15 and tp <= a.techo + 0.1:
-            break
-        mezcla = mezcla * 10 ** ((a.lufs - i) / 20)
-        for c in range(2):
-            mezcla[:, c] = limitar(mezcla[:, c], SR, pico)
-    i, tp = lufs(mezcla)
+    mezcla, i, tp = nivelar(mezcla, SR, a.lufs, a.techo)
     Path(a.salida).parent.mkdir(parents=True, exist_ok=True)
     sf.write(a.salida, mezcla, SR, subtype="PCM_16")
-    informe.update({"ok": abs(i - a.lufs) < 1 and tp <= a.techo + 0.5, "lufs": round(i, 2), "pico_verdadero": round(tp, 2), "dur": a.dur, "salida": a.salida, "efectos": colocados})
+    informe.update({"ok": abs(i - a.lufs) < 1 and tp <= a.techo + 0.3, "lufs": round(i, 2), "pico_verdadero": round(tp, 2), "dur": a.dur, "salida": a.salida, "efectos": colocados})
     print(json.dumps(informe, ensure_ascii=False))
     sys.exit(0 if informe["ok"] else 1)
 
