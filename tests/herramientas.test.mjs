@@ -174,3 +174,47 @@ test("la mezcla deja el pico bajo el techo aun con una capa de transitorios fuer
   assert.ok(Math.abs(j.lufs + 14) < 1, `lufs ${j.lufs}`);
   assert.equal(j.efectos.length, 3);
 });
+
+test("el SRT usa el texto exacto del guion y frases con sentido", { skip: !python && "falta Python" }, () => {
+  const pal = path.join(dir, "pal.json"), gui = path.join(dir, "gui.txt"), srt = path.join(dir, "s.srt");
+  const tiempos = ["Qué", "hace", "un", "agente", "No", "solo", "contesta"].map((palabra, i) => ({ palabra, inicio: i * 0.4 + 0.1, fin: i * 0.4 + 0.45 }));
+  fs.writeFileSync(pal, JSON.stringify(tiempos));
+  fs.writeFileSync(gui, "¿Qué hace un agente? No solo contesta.");
+  const r = correr(python, ["tools/subtitulos/srt.py", "--palabras", pal, "--guion", gui, "--salida", srt, "--inicio", "1"]);
+  assert.equal(r.status, 0, r.stderr);
+  const t = fs.readFileSync(srt, "utf8");
+  assert.match(t, /¿Qué hace un agente\?/);
+  assert.match(t, /No solo contesta\./);
+  assert.match(t, /00:00:01,100 --> /);
+  assert.equal([...t.matchAll(/-->/g)].length, 2);
+});
+
+test("generar por oraciones une tomas con un silencio real y corre las marcas", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  const prueba = path.join(dir, "oraciones.py"), salida = path.join(dir, "oraciones.wav"), marcas = path.join(dir, "oraciones.json");
+  fs.writeFileSync(prueba, `
+import json, subprocess, sys
+from pathlib import Path
+import numpy as np, soundfile as sf
+sys.path.insert(0, r"${path.join(raiz, "tools", "tts")}")
+import hablar
+assert hablar.partir_oraciones("Hola. ¿Cómo va? Bien!") == ["Hola.", "¿Cómo va?", "Bien!"]
+def falso(texto, ruta, palabras):
+    sr = 48000
+    t = np.arange(sr) / sr
+    x = np.concatenate([np.zeros(int(.2 * sr)), np.sin(2 * np.pi * 220 * t) * .3, np.zeros(int(.5 * sr))]).astype(np.float32)
+    sf.write(str(ruta), x, sr)
+    if palabras:
+        Path(palabras).write_text(json.dumps([{"palabra": texto, "inicio": .2, "fin": 1.2}]), encoding="utf-8")
+hablar.por_oraciones(falso, "Uno. Dos.", r"${salida}", 0.4, r"${marcas}")
+x, sr = sf.read(r"${salida}")
+e = np.abs(x) > .01
+print(json.dumps({"dur": len(x) / sr, "hueco": float(np.sum(~e[int(1.03 * sr):int(1.5 * sr)]) / sr), "marcas": json.load(open(r"${marcas}", encoding="utf-8"))}))
+`);
+  const r = correr(python, [prueba]);
+  assert.equal(r.status, 0, r.stderr);
+  const j = JSON.parse(r.stdout);
+  assert.ok(Math.abs(j.dur - 2.52) < 0.1, `dura ${j.dur}`);
+  assert.ok(j.hueco > 0.3, `hueco ${j.hueco}`);
+  assert.ok(Math.abs(j.marcas[0].inicio - 0.03) < 0.03, JSON.stringify(j.marcas));
+  assert.ok(Math.abs(j.marcas[1].inicio - 1.49) < 0.06, JSON.stringify(j.marcas));
+});

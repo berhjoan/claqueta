@@ -15,7 +15,7 @@ Escritura a mano en tiza, con letra propia del español, dentro de una escena de
 
 ## Montarlo
 
-Desde la carpeta que tiene a `.claqueta`:
+Desde la carpeta que tiene a `.claqueta`. Si el encargo ya corrió `init` y estás dentro de `proyecto/`, salta las dos primeras líneas:
 
 ```bash
 npx hyperframes@0.9.9 init proyecto --resolution portrait --non-interactive --skip-skills
@@ -35,7 +35,7 @@ Cambia estas cuatro cosas:
 1. `assets/pizarra/film.js`, tu película.
 2. `DUR` en `film.js`, y el mismo número en cada `data-duration` de `index.html`, `pizarra.html` y `capa.html`, y en la constante `D` de `pizarra.html`.
 3. `index.html` trae `assets/audio/mezcla.wav`. Mientras no exista, quita ese `<audio>` o `check` dará error.
-4. `capa.html` trae el emblema y una frase de cierre. Cámbialos, o quita esa escena de `index.html` si no van.
+4. `capa.html` trae el emblema y una frase de cierre, a partir del segundo 11,6 y en y 1352. Cámbialos, o quita esa escena de `index.html` si no van. Con subtítulos, la frase debe ir fuera de su banda o después del último.
 
 ## Escribir tu película
 
@@ -55,7 +55,8 @@ linea(S, L, '¿Qué hace un', 430, 76, -.45, 1.6, { color: TINTA, seed: 1, press
 - Un segundo de inicio negativo deja la línea escrita al abrir.
 - `trazo(S, puntos, t0, t1, opciones)` dibuja subrayados, flechas, marcas o globos.
 - El borrador es una lista: `wipes = [{ t0, t1, w, path }, ...]`. Una línea o un trazo con `borrador: 0` se va en la primera pasada, con `borrador: 1` en la segunda.
-- `C` es la cámara: claves `[segundo, centro x, centro y, escala]`, siempre de frente. `curvaCamara` es la curva entre claves: cámbiala si el encargo pide otra.
+- `C` es la cámara: claves `[segundo, centro x, centro y, escala]`, siempre de frente. `curvaCamara` es la curva entre claves: cámbiala si el encargo pide otra. No escales el lienzo con CSS: se vería borroso.
+- Varía el borrador de una pasada a otra: otra dirección, otro recorrido. Es la transición natural de este material.
 
 ## Piezas largas
 

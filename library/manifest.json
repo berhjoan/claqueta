@@ -1,6 +1,6 @@
 {
  "generado": "scripts/armar-biblioteca.mjs",
- "total": 221,
+ "total": 222,
  "items": [
   {
    "titulo": "Dirección: cómo no parecer generado",
@@ -20,7 +20,7 @@
   },
   {
    "titulo": "Sonido sin pagar",
-   "desc": "Todo corre en tu computador. Lo único que pide internet es Edge, y es opcional. Las rutas parten de la raíz del sistema: desde tu proyecto, antepón `../.claqueta/`.",
+   "desc": "Todo corre en tu computador. Pide internet Edge, en cada uso, y una vez lo que se baja: modelos de voz y de Whisper. Las rutas parten de la raíz del sistema: desde tu proyecto,…",
    "ruta": "library/guias/sonido.md",
    "cat": "guias",
    "catNombre": "Guías de la casa",
@@ -158,6 +158,14 @@
    "titulo": "Afina tiempos de palabra contra el audio",
    "desc": "tools/subtitulos/tiempos.py",
    "ruta": "tools/subtitulos/tiempos.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "SRT con frases y el texto exacto del guion",
+   "desc": "tools/subtitulos/srt.py",
+   "ruta": "tools/subtitulos/srt.py",
    "cat": "herramientas",
    "catNombre": "Herramientas gratis",
    "licencia": "MIT"

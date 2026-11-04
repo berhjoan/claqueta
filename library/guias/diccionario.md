@@ -185,7 +185,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Español | English | Qué pide |
 |---|---|---|
 | Sin marca | No brand | Sin marca ni logos. |
-| BG System IA | BG System IA | Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png, un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes. |
+| BG System IA | BG System IA | Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png, un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes. Sin resplandor añadido. Emblema y lema son la única excepción a los rótulos en esquinas; el lema va fuera de la banda de subtítulos o después del último. |
 | Otra marca | Another brand | Usa la marca descrita en las notas. Solo logos, colores y fuentes reales, nunca inventados. Si tiene sitio web, extrae sus datos con npx hyperframes capture. |
 
 ## Cámara
@@ -393,7 +393,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Parejo | Even | Ritmo parejo durante toda la pieza. |
 | Acelera hacia el final | Builds to the end | El ritmo acelera hacia el final: los últimos planos duran la mitad que los primeros. |
 | Golpes y respiros | Hits and breaths | Alterna ráfagas con pausas: un momento de contraste al menos cada 15 s. |
-| Silencio antes del dato | Silence before the fact | Antes del dato más importante, sostén 0,3 a 0,75 s en silencio; el remate va a velocidad normal. |
+| Silencio antes del dato | Silence before the fact | Antes del dato más importante, sostén 0,3 a 0,5 s en silencio; el remate va a velocidad normal. |
 
 ### transiciones
 
@@ -529,7 +529,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Cualquier IA con terminal | Any AI with a terminal | Destino: cualquier IA con terminal. Si tu entorno carga skills, copia las de ../.claqueta/library/hyperframes/skills a su carpeta de skills. Si no, ábrelas como archivos cuando las necesites. |
+| Cualquier IA con terminal | Any AI with a terminal | Destino: cualquier IA con terminal. Las skills de ../.claqueta/library/hyperframes/skills se abren como archivos cuando hagan falta; no hay que instalarlas. |
 | Claude Code | Claude Code | Destino: Claude Code. Copia las skills de ../.claqueta/library/hyperframes/skills a .claude/skills de este proyecto antes de empezar. |
 | Codex | Codex | Destino: Codex. Copia las skills de ../.claqueta/library/hyperframes/skills a .agents/skills de este proyecto antes de empezar. |
 | Gemini CLI | Gemini CLI | Destino: Gemini CLI. Lee ../.claqueta/GEMINI.md y carga las skills como archivos de contexto cuando las necesites. |
@@ -588,7 +588,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
-| Máster MP4 | MP4 master | Máster MP4 H.264, yuv420p, CRF 16 a 18, AAC 192 kbps. |
+| Máster MP4 | MP4 master | Máster MP4 H.264, yuv420p, CRF 16 a 18, con audio AAC. |
 | Copia liviana | Light copy | Copia liviana de menos de 30 MB para revisar en el teléfono. |
 | Portada | Cover | Portada PNG tomada de un cuadro real y legible. |
 | Subtítulos SRT | SRT captions | Archivo SRT con el guion exacto. |

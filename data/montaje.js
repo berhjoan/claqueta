@@ -19,7 +19,7 @@ export const patrones = [
   { id: "constante", n: ["Parejo", "Even"], p: ["Ritmo parejo durante toda la pieza.", "Even pace across the piece."] },
   { id: "acelera", n: ["Acelera hacia el final", "Builds to the end"], p: ["El ritmo acelera hacia el final: los últimos planos duran la mitad que los primeros.", "The pace builds: the last shots last half as long as the first."] },
   { id: "golpes", n: ["Golpes y respiros", "Hits and breaths"], p: ["Alterna ráfagas con pausas: un momento de contraste al menos cada 15 s.", "Alternate bursts with holds: a contrast moment at least every 15 s."] },
-  { id: "silencio", n: ["Silencio antes del dato", "Silence before the fact"], p: ["Antes del dato más importante, sostén 0,3 a 0,75 s en silencio; el remate va a velocidad normal.", "Before the most important fact, hold 0.3 to 0.75 s in silence; the payoff plays at normal speed."] },
+  { id: "silencio", n: ["Silencio antes del dato", "Silence before the fact"], p: ["Antes del dato más importante, sostén 0,3 a 0,5 s en silencio; el remate va a velocidad normal.", "Before the most important fact, hold 0.3 to 0.5 s in silence; the payoff plays at normal speed."] },
 ];
 
 export const transiciones = [

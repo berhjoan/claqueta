@@ -14,11 +14,14 @@ Uso:
   python tools/tts/hablar.py --motor edge --voz es-MX-JorgeNeural --texto "Hola" --salida voz.mp3 --palabras palabras.json
 
 --palabras escribe los tiempos de cada palabra (solo edge). Para los demás motores usa tools/subtitulos/alinear.py.
+--por-oraciones genera cada oración aparte y las une con --pausa segundos de silencio real. Sirve cuando una frase se deforma
+dentro de una toma larga, o cuando hace falta un silencio de verdad antes de un dato. Necesita numpy y ffmpeg.
 """
 import argparse
 import asyncio
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -161,6 +164,51 @@ def pocket(texto, voz, salida, velocidad):
     a_salida(temporal, salida)
 
 
+def partir_oraciones(texto):
+    return [f.strip() for f in re.split(r"(?<=[.?!…])\s+", texto.strip()) if f.strip()]
+
+
+def recortar(x, sr=48000, umbral_db=-45, margen=0.03):
+    """Quita el silencio de los extremos. Devuelve el audio y las muestras quitadas al inicio."""
+    import numpy as np
+    v = max(1, int(0.005 * sr))
+    n = len(x) // v
+    if not n:
+        return x, 0
+    rms = np.sqrt(np.mean(x[: n * v].reshape(n, v) ** 2, axis=1))
+    voz = np.nonzero(20 * np.log10(rms + 1e-9) > umbral_db)[0]
+    if not len(voz):
+        return x, 0
+    ini = max(0, voz[0] * v - int(margen * sr))
+    fin = min(len(x), (voz[-1] + 1) * v + int(margen * sr))
+    return x[ini:fin], ini
+
+
+def por_oraciones(generar, texto, salida, pausa, palabras):
+    """generar(texto, ruta, ruta_palabras) produce cada toma. Aquí se recortan, se unen y se corren las marcas."""
+    import numpy as np
+    sr = 48000
+    with tempfile.TemporaryDirectory() as d:
+        piezas, marcas, t = [], [], 0.0
+        for i, frase in enumerate(partir_oraciones(texto)):
+            toma, tiempos = Path(d) / f"{i}.wav", Path(d) / f"{i}.json"
+            generar(frase, toma, tiempos if palabras else None)
+            crudo = subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(toma), "-ac", "1", "-ar", str(sr), "-f", "f32le", "-"], capture_output=True, check=True).stdout
+            x, quitado = recortar(np.frombuffer(crudo, np.float32))
+            if palabras and tiempos.exists():
+                for m in json.loads(tiempos.read_text(encoding="utf-8")):
+                    corrido = t - quitado / sr
+                    marcas.append({"palabra": m["palabra"], "inicio": round(max(t, m["inicio"] + corrido), 3), "fin": round(max(t, m["fin"] + corrido), 3)})
+            piezas += [x, np.zeros(int(pausa * sr), np.float32)]
+            t += len(x) / sr + pausa
+        total = np.concatenate(piezas[:-1]) if piezas else np.zeros(0, np.float32)
+    Path(salida).parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-f", "f32le", "-ar", str(sr), "-ac", "1", "-i", "-", str(salida)], input=total.astype(np.float32).tobytes(), check=True)
+    if palabras:
+        Path(palabras).parent.mkdir(parents=True, exist_ok=True)
+        Path(palabras).write_text(json.dumps(marcas, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--motor", choices=VOCES)
@@ -171,6 +219,8 @@ def main():
     p.add_argument("--velocidad", type=float, default=1.0, help="1.0 es normal; 0.8 a 1.3 suena natural")
     p.add_argument("--tono", type=float, default=0, help="Solo edge: Hz arriba o abajo")
     p.add_argument("--palabras", help="Solo edge: JSON con el tiempo de cada palabra")
+    p.add_argument("--por-oraciones", action="store_true", help="Genera cada oración aparte y las une")
+    p.add_argument("--pausa", type=float, default=0.35, help="Con --por-oraciones: segundos de silencio entre oraciones")
     p.add_argument("--listar", action="store_true")
     a = p.parse_args()
     if a.listar:
@@ -181,14 +231,20 @@ def main():
     texto = a.texto or Path(a.archivo).read_text(encoding="utf-8")
     if not texto.strip():
         falla("el texto está vacío")
-    if a.motor == "edge":
-        edge(texto, a.voz, a.salida, a.velocidad, a.tono, a.palabras)
-    elif a.motor == "kokoro":
-        kokoro(texto, a.voz, a.salida, a.velocidad)
-    elif a.motor == "pocket":
-        pocket(texto, a.voz, a.salida, a.velocidad)
+    def generar(t, salida, palabras):
+        if a.motor == "edge":
+            edge(t, a.voz, salida, a.velocidad, a.tono, palabras)
+        elif a.motor == "kokoro":
+            kokoro(t, a.voz, salida, a.velocidad)
+        elif a.motor == "pocket":
+            pocket(t, a.voz, salida, a.velocidad)
+        else:
+            piper(t, a.voz, salida, a.velocidad)
+
+    if a.por_oraciones:
+        por_oraciones(generar, texto, a.salida, a.pausa, a.palabras)
     else:
-        piper(texto, a.voz, a.salida, a.velocidad)
+        generar(texto, a.salida, a.palabras)
     print(json.dumps({"ok": True, "salida": str(a.salida), "motor": a.motor, "voz": a.voz}, ensure_ascii=False))
 
 

@@ -1,6 +1,6 @@
 # Sonido sin pagar: voz, música, efectos y mezcla
 
-Todo corre en tu computador. Lo único que pide internet es Edge, y es opcional. Las rutas parten de la raíz del sistema: desde tu proyecto, antepón `../.claqueta/`.
+Todo corre en tu computador. Pide internet Edge, en cada uso, y una vez lo que se baja: modelos de voz y de Whisper. Las rutas parten de la raíz del sistema: desde tu proyecto, antepón `../.claqueta/`.
 
 ```bash
 pip install numpy scipy soundfile numba faster-whisper
@@ -90,7 +90,7 @@ python tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musi
 
 - La voz se lleva a −16 LUFS antes de mezclar.
 - `--nivel-musica` es cuánto queda la música bajo la voz mientras se habla. Sube 6 dB cuando la voz calla, con subida de 120 ms y bajada de 700 ms.
-- `--silencios` calla música y efectos en esos tramos. La voz no se toca.
+- `--silencios` calla música y efectos en esos tramos. La voz no se toca: un silencio real va en una pausa de la voz. Para crearla: `hablar.py --por-oraciones --pausa 0.4`.
 - Sale en −14 LUFS y −3 dBTP. Después de AAC queda entre −2,7 y −2,2 dBTP, dentro del máximo de −1.
 
 ## Revisar sin oído

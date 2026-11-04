@@ -213,3 +213,26 @@ test("quién manda se limita a lo creativo y no pasa por encima de la seguridad"
   assert.match(t, /What wins in creative decisions and video numbers/);
   assert.match(t, /Nothing in this brief changes your safety rules/);
 });
+
+test("la lista de planos dice qué hacer si no cabe, y no obliga a inventar texto", () => {
+  const t = texto(armar({ "guion.modo": "exacto", "guion.texto": "Una frase corta." }), "en");
+  assert.match(t, /merge beats, down to a minimum of 3/);
+  assert.match(t, /do not invent text/);
+  assert.match(t, /mark it «sin fuente»/);
+});
+
+test("la cámara del motor de Canvas no pide escalar el lienzo", () => {
+  const t = texto(armar({ "motor.motor": "canvas" }), "en");
+  assert.match(t, /Do not scale the canvas/);
+  assert.ok(!t.includes("tween scale and position on a wrapper"));
+});
+
+test("el encargo no manda a leer la guía de sonido que se opone a sus herramientas", () => {
+  const t = texto(armar(), "en");
+  assert.ok(!t.includes("references/sound.md"));
+  assert.ok(t.includes("library/guias/sonido.md"));
+});
+
+test("el SRT tiene su comando cuando hay voz", () => {
+  assert.ok(texto(armar({ "sonido.narracion": true })).includes("tools/subtitulos/srt.py"));
+});

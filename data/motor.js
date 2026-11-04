@@ -17,7 +17,7 @@ export const motores = [
 ];
 
 export const destinos = [
-  { id: "cualquiera", n: ["Cualquier IA con terminal", "Any AI with a terminal"], p: ["Destino: cualquier IA con terminal. Si tu entorno carga skills, copia las de ../.claqueta/library/hyperframes/skills a su carpeta de skills. Si no, ábrelas como archivos cuando las necesites.", "Target: any AI with a terminal. If your environment loads skills, copy those from ../.claqueta/library/hyperframes/skills into its skills folder. If not, open them as files when you need them."] },
+  { id: "cualquiera", n: ["Cualquier IA con terminal", "Any AI with a terminal"], p: ["Destino: cualquier IA con terminal. Las skills de ../.claqueta/library/hyperframes/skills se abren como archivos cuando hagan falta; no hay que instalarlas.", "Target: any AI with a terminal. Open the skills in ../.claqueta/library/hyperframes/skills as files when you need them; there is nothing to install."] },
   { id: "claude", n: ["Claude Code", "Claude Code"], p: ["Destino: Claude Code. Copia las skills de ../.claqueta/library/hyperframes/skills a .claude/skills de este proyecto antes de empezar.", "Target: Claude Code. Copy the skills from ../.claqueta/library/hyperframes/skills to this project's .claude/skills before you start."] },
   { id: "codex", n: ["Codex", "Codex"], p: ["Destino: Codex. Copia las skills de ../.claqueta/library/hyperframes/skills a .agents/skills de este proyecto antes de empezar.", "Target: Codex. Copy the skills from ../.claqueta/library/hyperframes/skills to this project's .agents/skills before you start."] },
   { id: "gemini", n: ["Gemini CLI", "Gemini CLI"], p: ["Destino: Gemini CLI. Lee ../.claqueta/GEMINI.md y carga las skills como archivos de contexto cuando las necesites.", "Target: Gemini CLI. Read ../.claqueta/GEMINI.md and load the skills as context files when you need them."] },
@@ -54,7 +54,7 @@ export const formatos = [
 ];
 
 export const entregables = [
-  { id: "master", n: ["Máster MP4", "MP4 master"], p: ["Máster MP4 H.264, yuv420p, CRF 16 a 18, AAC 192 kbps.", "MP4 master, H.264, yuv420p, CRF 16 to 18, AAC 192 kbps."] },
+  { id: "master", n: ["Máster MP4", "MP4 master"], p: ["Máster MP4 H.264, yuv420p, CRF 16 a 18, con audio AAC.", "MP4 master, H.264, yuv420p, CRF 16 to 18, with AAC audio."] },
   { id: "liviano", n: ["Copia liviana", "Light copy"], p: ["Copia liviana de menos de 30 MB para revisar en el teléfono.", "Light copy under 30 MB for phone review."] },
   { id: "portada", n: ["Portada", "Cover"], p: ["Portada PNG tomada de un cuadro real y legible.", "PNG cover taken from a real, readable frame."] },
   { id: "srt", n: ["Subtítulos SRT", "SRT captions"], p: ["Archivo SRT con el guion exacto.", "SRT file with the exact script."] },
