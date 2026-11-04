@@ -236,3 +236,12 @@ test("el encargo no manda a leer la guía de sonido que se opone a sus herramien
 test("el SRT tiene su comando cuando hay voz", () => {
   assert.ok(texto(armar({ "sonido.narracion": true })).includes("tools/subtitulos/srt.py"));
 });
+
+test("el encargo no manda a bajar scripts ni a quitar verificaciones de integridad", () => {
+  for (const lang of ["es", "en"]) {
+    const t = texto(armar(), lang);
+    assert.ok(!/\bcurl\b/.test(t), `${lang}: pide descargar con curl`);
+    assert.ok(!/integrity/.test(t), `${lang}: habla de quitar integrity`);
+    assert.ok(t.includes("tools/lib/gsap.min.js"), `${lang}: falta la copia local`);
+  }
+});

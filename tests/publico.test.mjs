@@ -1,6 +1,7 @@
 // Este repositorio es público. Ninguna llave, correo ni ruta local puede colarse.
 import test from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -57,4 +58,12 @@ test("no se publican capturas del video ajeno", () => {
     assert.ok(n >= 21, `no debería estar ${a}`);
   }
   assert.ok(!fs.existsSync(path.join(raiz, "library/hyperframes/skills/style-sampling")), "style-sampling es de pago");
+});
+
+test("la copia local de GSAP es exactamente la versión verificada del ejemplo", () => {
+  const copia = fs.readFileSync(path.join(raiz, "tools/lib/gsap.min.js"));
+  const hash = `sha384-${createHash("sha384").update(copia).digest("base64")}`;
+  const ejemplo = fs.readFileSync(path.join(raiz, "engines/pizarra/ejemplo/index.html"), "utf8");
+  assert.ok(ejemplo.includes(`integrity="${hash}"`), "el hash del ejemplo no coincide con la copia local");
+  assert.ok(ejemplo.includes("gsap@3.15.0"));
 });

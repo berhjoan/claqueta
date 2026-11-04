@@ -12,6 +12,7 @@ El código propio de Claqueta va bajo MIT (`LICENSE`). Lo siguiente pertenece a 
 | Síntesis de efectos y cuerdas | `tools/audio/sfx.py`, `tools/audio/pluck.py` | lemo-opuscar | MIT |
 | EMS Delight | `engines/pizarra/ems-delight.js` | Sheldon B. Michaels, Evil Mad Scientist | SIL OFL 1.1 |
 | Sora, JetBrains Mono | `assets/fonts` | Sora Project, JetBrains | SIL OFL 1.1 |
+| GSAP 3.15.0 | `tools/lib/gsap.min.js` | GreenSock. La misma copia que distribuyen las skills de HyperFrames | Licencia estándar de GSAP |
 
 ## Marca
 
