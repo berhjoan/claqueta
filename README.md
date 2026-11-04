@@ -85,7 +85,7 @@ Dos IA nuevas, de un modelo más modesto que el que construyó esto y sin más c
 
 Lo que encontraron se corrigió aquí mismo: rutas que no servían desde ninguna carpeta, una duración que contradecía al guion, tiempos de palabra con hasta 0,36 s de error y un motor de tiza que era más demo que motor. Después se repitió la cadena de comandos desde una carpeta limpia, pero no la prueba completa con otra IA.
 
-También probado, en Windows 11 con un i5-11400T sin GPU dedicada: el panel en escritorio y teléfono, HyperFrames 0.9.9 con Canvas de `check` a `render`, los cuatro motores de voz y todas las herramientas de `tools/`. `npm test` corre 72 comprobaciones.
+También probado, en Windows 11 con un i5-11400T sin GPU dedicada: el panel en escritorio y teléfono, HyperFrames 0.9.9 con Canvas de `check` a `render`, los cuatro motores de voz y todas las herramientas de `tools/`. `npm test` corre todas las comprobaciones automáticas.
 
 Falta el oído de una persona. Ninguna IA puede validar cómo suenan una voz, la música o la tiza: el sistema los mide y deja una muestra para que alguien la escuche. Tampoco se probaron Remotion, Motion Canvas ni Manim, que quedan como opciones del panel.
 
