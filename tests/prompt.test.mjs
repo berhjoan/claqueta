@@ -592,3 +592,12 @@ test("la música de cuerdas no deja variables sin definir en su comando", () => 
   assert.doesNotMatch(t, /\$DUR/);
   assert.match(t, /notas\.py partitura\.json --dur <dur de assets\/tiempos\.json>/);
 });
+
+test("si el formato no es el de la plataforma, el encargo no promete un máster vertical", () => {
+  for (const lang of ["es", "en"]) {
+    const t = texto(armar({ "entrega.formato": "1:1", "entrega.plataforma": "vertical" }), lang);
+    assert.ok(!/máster vertical|vertical master/.test(t), `${lang}: sigue diciendo vertical`);
+    assert.ok(/Se entrega en 1:1|Delivered in 1:1/.test(t), lang);
+  }
+  assert.ok(/máster vertical/.test(texto(armar({ "entrega.formato": "9:16", "entrega.plataforma": "vertical" }), "es")));
+});

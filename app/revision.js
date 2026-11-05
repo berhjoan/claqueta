@@ -43,6 +43,9 @@ export function revisar(estado, { estilos = [], palabras = 0, compacto = false }
   }
   if (v.arte.marca === "bg" && v.arte.paleta !== "bg") aviso("marca-otra-paleta", "info", "La marca va solo con emblema y lema: sus reglas de color no aplican con esta paleta.", { etiqueta: "Usar negro y oro", cambios: { "arte.paleta": "bg" } });
 
+  const plataforma = opcion("entrega", "plataforma", v.entrega.plataforma);
+  if (plataforma?.formato && plataforma.formato !== v.entrega.formato) aviso("plataforma-formato", "info", `${plataforma.n[0]} suele ir en ${plataforma.formato}, y este video está en ${v.entrega.formato}.`, { etiqueta: `Pasar a ${plataforma.formato}`, cambios: { "entrega.formato": plataforma.formato } });
+
   // El tiempo.
   const total = duracionPlanos(planos);
   const cortos = planos.filter((p) => p.dur < 1.2 && p.tipo !== "rafaga");

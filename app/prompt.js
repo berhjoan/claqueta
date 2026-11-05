@@ -183,7 +183,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   }
 
   sec("6. Formato", "6. Format");
-  item(una("entrega", "plataforma"));
+  const plataforma = opcion("entrega", "plataforma", v.entrega.plataforma);
+  item(plataforma?.formato && plataforma.formato !== v.entrega.formato
+    ? L(`Se entrega en ${v.entrega.formato}. Las plataformas elegidas suelen ir en ${plataforma.formato}: manda el formato, y el cuadro se recompone, sin recortar.`, `Delivered in ${v.entrega.formato}. The chosen platforms usually take ${plataforma.formato}: the format wins, and the frame is recomposed, never cropped.`)
+    : una("entrega", "plataforma"));
   item(`${m.w} × ${m.h}, ${m.fps} fps. ${L("Duración objetivo", "Target duration")}: ${m.seg} s = ${m.cuadros} ${L("cuadros", "frames")}.`);
   const cierreS = v.arte.marca !== "ninguna" ? 2.5 : 1.2;
   if (conVoz) item(L(
