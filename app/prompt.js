@@ -18,6 +18,9 @@ const unaLinea = (t) => String(t ?? "").replace(/[\u0000-\u001f\u007f\u2028\u202
 // La cerca siempre es más larga que cualquier fila de comillas invertidas del texto.
 const cercaPara = (t) => "`".repeat(Math.max(3, ...[...String(t).matchAll(/`+/g)].map((m) => m[0].length + 1)));
 
+// Una voz gratis lee unas 3,2 palabras por segundo, y --por-oraciones añade 0,4 s cada 8 palabras: 2,8 por segundo, sin contar el cierre.
+const palabrasObjetivo = (seg) => Math.round(Math.max(3, seg - 1.6) * 2.8);
+
 export function construirPrompt(estado, { lang = "es", estilos = [], traducciones = {}, compacto = false } = {}) {
   const I = lang === "en" ? 1 : 0;
   const L = (es, en) => (I ? en : es);
@@ -89,11 +92,11 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     item(`Voiceover, on-screen text, captions, titles, labels, credits and calls to action must all be in Spanish: ${varLabel}.`);
     item("Write and render every word the viewer sees or hears in Spanish. No English words on screen except proper nouns and product names.");
     item("Never translate or anglicize any Spanish text quoted in this brief. Keep it character for character.");
-    item("Keep Spanish accents and punctuation (á é í ó ú ü ñ ¿ ¡). Check that every font has those glyphs before rendering.");
+    item("Keep Spanish accents and punctuation (á é í ó ú ü ñ ¿ ¡). The fonts in `assets/fonts` already have them, measured: only check a font you bring from elsewhere.");
     item("Delivery files, titles and captions metadata intended for viewers are also in Spanish.");
   } else {
     item(`Voz, texto en pantalla, subtítulos, títulos, rótulos, créditos y llamados van en español: ${varLabel}.`);
-    item("Conserva tildes y signos (á é í ó ú ü ñ ¿ ¡). Comprueba que cada fuente tenga esos caracteres antes de renderizar.");
+    item("Conserva tildes y signos (á é í ó ú ü ñ ¿ ¡). Las fuentes de `assets/fonts` ya los traen, medidos: comprueba solo una fuente que traigas de fuera.");
   }
 
   sec("2. Prepara el sistema", "2. Set up the system");
@@ -124,16 +127,16 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     `The skills say \`npx hyperframes\` with no version: always write \`${HF}\`. Check the system with \`tools/doctor.py\`, because \`hyperframes doctor\` flags things not needed here. Do not open the Studio preview if nobody is watching.`
   ));
   item(L(
-    "Quién manda en las decisiones creativas y las cifras del video: este encargo, luego el `MOTION.md` de la marca, luego las guías de `library/guias` y por último las skills de terceros. Si dos documentos dicen cifras distintas, usa la del que va primero en esta lista y sigue. `init` escribe un `AGENTS.md` y un `CLAUDE.md` genéricos sobre cómo usar HyperFrames: no corras lo que proponen sobre actualizar skills o publicar.",
-    "What wins in creative decisions and video numbers: this brief, then the brand's `MOTION.md`, then the guides in `library/guias`, and last any third-party skill. If two documents give different numbers, use the one that comes first in this list and keep going. `init` writes a generic `AGENTS.md` and `CLAUDE.md` about using HyperFrames: do not run what they suggest about updating skills or publishing."
+    "Quién manda en las decisiones creativas y las cifras del video: este encargo, luego el `MOTION.md` de la marca, luego las guías de `library/guias` y por último las skills de terceros. Si dos documentos dicen cifras distintas, usa la del que va primero en esta lista y sigue. `init` escribe un `AGENTS.md` y un `CLAUDE.md` genéricos sobre cómo usar HyperFrames: no corras lo que proponen sobre actualizar skills o publicar. La CLI también imprime anuncios y pide comentarios con `hyperframes feedback`: no hace falta responder.",
+    "What wins in creative decisions and video numbers: this brief, then the brand's `MOTION.md`, then the guides in `library/guias`, and last any third-party skill. If two documents give different numbers, use the one that comes first in this list and keep going. `init` writes a generic `AGENTS.md` and `CLAUDE.md` about using HyperFrames: do not run what they suggest about updating skills or publishing. The CLI also prints ads and asks for comments with `hyperframes feedback`: no need to answer."
   ));
   add();
   add(L("Lee estos archivos antes de empezar, en este orden:", "Read these files before you start, in this order:"));
   for (const d of documentos(v, { base, sec2, acento, motorSel, motorId, estilosUsados })) add(`- \`../.claqueta/${d}\``);
   add();
   add(L(
-    "De las guías largas lee solo lo que uses: las fichas de tus estilos y los grupos de aprendizajes que vas a tocar. `TECHNIQUE.md` y las fichas de lemo-opuscar se leen por su vocabulario: no corras sus scripts de instalación.",
-    "From the long guides read only what you use: the sheets for your styles and the lessons groups you will touch. Read `TECHNIQUE.md` and the lemo-opuscar sheets for their vocabulary: do not run their setup scripts."
+    "De las guías largas lee solo lo que uses: las fichas de tus estilos y los grupos de aprendizajes que vas a tocar. `TECHNIQUE.md` y las fichas de lemo-opuscar se leen por su vocabulario: no corras sus scripts de instalación. Si una ficha nombra una fuente que no está en `assets/fonts/fuentes.json`, usa la más cercana de las que hay, o dibuja ese título.",
+    "From the long guides read only what you use: the sheets for your styles and the lessons groups you will touch. Read `TECHNIQUE.md` and the lemo-opuscar sheets for their vocabulary: do not run their setup scripts. If a sheet names a font not in `assets/fonts/fuentes.json`, use the closest one available, or draw that title."
   ));
 
   sec("3. Sin pagar nada", "3. Pay for nothing");
@@ -171,7 +174,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   if (conVoz && modoGuion === "exacto") {
     const palabras = texto.split(/\s+/).filter(Boolean).length;
     item(L(`Este texto tiene ${palabras} palabras: estas voces lo leen en unos ${Math.round(palabras / 3.2)} s. La duración real sale de la voz, no del objetivo de la sección 6.`, `This text has ${palabras} words: these voices read it in about ${Math.round(palabras / 3.2)} s. The real duration comes from the voice, not from the target in section 6.`));
-  } else if (conVoz) item(L(`Debe durar cerca de ${m.seg} s al leerse: unas ${Math.round(m.seg * 3)} palabras.`, `It must take about ${m.seg} s to read aloud: about ${Math.round(m.seg * 3)} Spanish words.`));
+  } else if (conVoz) item(L(`Debe durar cerca de ${m.seg} s al leerse: unas ${palabrasObjetivo(m.seg)} palabras, contando las pausas entre oraciones y el cierre.`, `It must take about ${m.seg} s to read aloud: about ${palabrasObjetivo(m.seg)} Spanish words, counting the pauses between sentences and the ending.`));
   if (texto) {
     add();
     add(L("Texto en español, solo para decirse y mostrarse en el video. No lo traduzcas:", "Spanish text, only to be spoken and shown in the video. Do not translate it:"));
@@ -538,6 +541,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     add("node ../.claqueta/engines/escenas/armar.mjs pieza.json");
     add("```");
     add();
+    if (filas.some((f) => f.tipo === "plantilla")) item(L("Cada texto de `textos` que la voz diga en ese plano aterriza justo cuando se dice: la escena reparte su tiempo sola, sin copiarla ni editarla. Si otra palabra debe marcar su llegada: `\"en\": {\"dato1\": \"@luz\"}`, con el nombre de la variable.", "Each text in `textos` that the voice says during that shot lands right when it is said: the scene spreads its own time, with no copying or editing. If another word should mark its arrival: `\"en\": {\"dato1\": \"@luz\"}`, with the variable's name."));
     if (filas.some((f) => f.tipo === "plantilla")) item(L("En un plano `plantilla`, `textos` lleva el texto de cada variable; los nombres están en su `ficha.json`. El comando avisa si queda alguno de ejemplo. Lee siempre sus `avisos`.", "In a `plantilla` shot, `textos` holds the text for each variable; the names are in its `ficha.json`. The command warns if any example text remains. Always read its `avisos`."));
     item(L("Repite ese comando cada vez que cambie la voz o `pieza.json`: sobrescribe `index.html`, `compositions/p*.html`, `transiciones.html`, `subtitulos.html` y `efectos.json`. Lo que retoques a mano en esos archivos se pierde: hazlo al final. Si la voz aún no existe, `armar` deja una pista muda para poder mirar los cuadros, y `pista.py mezcla` la reemplaza.", "Repeat that command whenever the voice or `pieza.json` changes: it overwrites `index.html`, `compositions/p*.html`, `transiciones.html`, `subtitulos.html` and `efectos.json`. Hand edits to those files are lost: do them last. If the voice does not exist yet, `armar` leaves a silent track so you can look at frames, and `pista.py mezcla` replaces it."));
   }

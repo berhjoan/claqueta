@@ -16,7 +16,7 @@ export function motorDe(v, base) {
 }
 
 // El plano de la lista se vuelve un plano de pieza.json. El tipo es una propuesta: lo decide quien escribe el guion.
-function planoDePieza(p, i, total, estilos, conRecorrido, propios, vertical, enMezcla) {
+function planoDePieza(p, i, total, estilos, conRecorrido, propios, vertical, enMezcla, anterior) {
   const e = estilos.find((x) => x.id === (enMezcla ?? p.estilo));
   const salida = { tipo: i === 0 ? "titulo" : i === total - 1 ? "cierre" : "frase", _idea: p.titulo };
   if (i > 0) salida.desde = "@primera-palabra-de-esta-parte";
@@ -49,7 +49,8 @@ function planoDePieza(p, i, total, estilos, conRecorrido, propios, vertical, enM
     if (propios) salida.paleta = "propia";
   }
   if (CAMARAS[p.cam]) salida.camara = CAMARAS[p.cam];
-  if (i > 0 && TRANSICIONES[p.tr]) salida.transicion = TRANSICIONES[p.tr];
+  // En la lista, «Pasa con» es cómo sale cada plano. En pieza.json, «transicion» es cómo entra.
+  if (i > 0 && TRANSICIONES[anterior?.tr]) salida.transicion = TRANSICIONES[anterior.tr];
   return salida;
 }
 
@@ -79,6 +80,6 @@ export function piezaInicial(v, planos, { estilos = [], base, tipografia = null 
   if (tipografia) pieza.tipografia = tipografia;
   pieza.subtitulos = v.subtitulos.activos ? { estilo: v.subtitulos.estilo, posicion: v.subtitulos.posicion } : false;
   const mezcla = planosDeMezcla(v, planos.length);
-  pieza.planos = planos.map((p, i) => planoDePieza(p, i, planos.length, estilos, conRecorrido, propios, v.entrega.formato === "9:16", mezcla.get(i)));
+  pieza.planos = planos.map((p, i) => planoDePieza(p, i, planos.length, estilos, conRecorrido, propios, v.entrega.formato === "9:16", mezcla.get(i), planos[i - 1]));
   return pieza;
 }

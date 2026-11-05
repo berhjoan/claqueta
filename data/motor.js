@@ -63,7 +63,7 @@ export const entregables = [
   { id: "liviano", n: ["Copia liviana", "Light copy"], p: ["Copia liviana de menos de 30 MB para revisar en el teléfono, si el máster pesa más.", "Light copy under 30 MB for phone review, if the master is larger."] },
   { id: "portada", n: ["Portada", "Cover"], p: ["Portada PNG tomada de un cuadro real y legible.", "PNG cover taken from a real, readable frame."] },
   { id: "srt", n: ["Subtítulos SRT", "SRT captions"], p: ["Archivo SRT con el guion exacto.", "SRT file with the exact script."] },
-  { id: "editable", n: ["Proyecto editable", "Editable project"], p: ["Proyecto editable completo con sus fuentes, audio y assets.", "Complete editable project with its fonts, audio and assets."] },
+  { id: "editable", n: ["Proyecto editable", "Editable project"], p: ["Proyecto editable completo con sus fuentes, audio y assets, sin `.hyperframes/` ni `renders/revision/`, que se pueden borrar.", "Complete editable project with its fonts, audio and assets, without `.hyperframes/` or `renders/revision/`, which can be deleted."] },
   { id: "textos", n: ["Textos para cada red", "Copy for each network"], p: ["Título, descripción y etiquetas por red, en español.", "Title, description and tags per network, in Spanish."] },
   { id: "fuentes", n: ["Fuentes y créditos", "Sources and credits"], p: ["FUENTES.md con URL y cita de cada dato, y CREDITOS.md con cada licencia.", "FUENTES.md with URL and quote for each fact, and CREDITOS.md with each license."] },
   { id: "cuadrado", n: ["Versión cuadrada y horizontal", "Square and horizontal versions"], p: ["Versiones 1:1 y 16:9 recompuestas por escena, nunca con recorte ciego.", "1:1 and 16:9 versions recomposed per scene, never blind-cropped."] },

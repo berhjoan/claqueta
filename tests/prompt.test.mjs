@@ -1,5 +1,6 @@
 // El prompt es el producto. Debe servir para cualquier combinación, sin referencias rotas ni texto vacío, y sin traducir lo literal.
 import test from "node:test";
+import { piezaInicial } from "../app/pieza.js";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
@@ -600,4 +601,20 @@ test("si el formato no es el de la plataforma, el encargo no promete un máster 
     assert.ok(/Se entrega en 1:1|Delivered in 1:1/.test(t), lang);
   }
   assert.ok(/máster vertical/.test(texto(armar({ "entrega.formato": "9:16", "entrega.plataforma": "vertical" }), "es")));
+});
+
+test("la transición de cada plano en pieza.json es la que la lista pone en el plano anterior", () => {
+  const { valores, planos } = armar({ "motor.motor": "escenas" });
+  const pieza = piezaInicial(valores, planos, { estilos });
+  const TR = { corte: "corte", coincidencia: "corte", oscuro: "corte", latigo: "barrido", cortinilla: "barrido", curva: "barrido", desenfoque: "barrido", cascada: "persiana", inundar: "inundar", objeto: "inundar", iris: "inundar", glitch: "falla", material: "papel" };
+  pieza.planos.forEach((p, i) => {
+    if (i && p.transicion) assert.equal(p.transicion, TR[planos[i - 1].tr], `plano ${i + 1}`);
+  });
+  assert.ok(pieza.planos.slice(1).some((p) => p.transicion));
+  assert.equal(pieza.planos[0].transicion, undefined);
+});
+
+test("las palabras del guion cuentan las pausas y el cierre", () => {
+  const t = texto(armar({ "entrega.duracion": 20 }), "es");
+  assert.match(t, /unas 52 palabras/);
 });

@@ -3,6 +3,7 @@
 import { opcion } from "./catalogo.js";
 import { duracionPlanos } from "./planos.js";
 import { motorDe } from "./pieza.js";
+import { vozPorId } from "../data/voces.js";
 
 export const LARGO_RECOMENDADO = 2500;
 
@@ -45,6 +46,9 @@ export function revisar(estado, { estilos = [], palabras = 0, compacto = false }
 
   const plataforma = opcion("entrega", "plataforma", v.entrega.plataforma);
   if (plataforma?.formato && plataforma.formato !== v.entrega.formato) aviso("plataforma-formato", "info", `${plataforma.n[0]} suele ir en ${plataforma.formato}, y este video está en ${v.entrega.formato}.`, { etiqueta: `Pasar a ${plataforma.formato}`, cambios: { "entrega.formato": plataforma.formato } });
+
+  const vozElegida = vozPorId(v.sonido?.voz);
+  if (v.sonido?.narracion !== false && v.guion?.variante === "es-419" && ["Argentina", "España"].includes(vozElegida?.pais)) aviso("voz-acento", "info", `${vozElegida.nombre} habla con acento de ${vozElegida.pais}, y el guion pide español neutro de Latinoamérica.`);
 
   // El tiempo.
   const total = duracionPlanos(planos);
