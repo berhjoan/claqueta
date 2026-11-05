@@ -12,6 +12,10 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - WebGL funciona en una Intel UHD 730 por D3D11 (ANGLE).
 - Las pruebas de `faceless-explainer` fallan en Windows porque arman la ruta con `.pathname`. El flujo en sí sirve.
 
+- `hyperframes render` en segundo plano termina en `render_cancelled_parent_exited`: córrelo en primer plano. Con poca memoria, `--workers 2`: 1713 cuadros en 4,5 min.
+- Sin red no se baja `chrome-headless-shell`: fija `HYPERFRAMES_BROWSER_PATH` con la ruta a Chrome.
+- En Windows, `python3` puede ser el atajo de la Microsoft Store y no corre nada: usa `python`.
+
 ## Voz y pronunciación
 
 - Si una palabra suena mal, no toques el guion: usa una copia solo para el motor, con una coma o escrita como suena. El guion sigue literal para subtítulos y comparación. Una coma en «ejecuta, y revisa» arregló lo que bajar la velocidad no arregló.
@@ -30,6 +34,10 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - En `audio_meta.json`, `frame` va como entero: con texto, el ensamblador cuenta 0 voces.
 - Si el motor de voz entrega MP3 con extensión `.wav`, ffmpeg lo lee bien.
 
+- Si Edge falla, el respaldo es Kokoro, que baja de GitHub. Piper también baja sus voces de Hugging Face.
+- Sin acceso a Hugging Face no hay Whisper: `tools/subtitulos/tiempos_por_tramos.py` saca los tiempos generando la voz por tramos.
+- No le pases el guion completo a Whisper como pista: lo da por dicho y se salta frases. En una toma se perdieron 14 s.
+
 ## Música y mezcla
 
 - Los modelos de música no respetan el tempo pedido (120 → 161). Analiza y corta sobre lo medido. `tools/audio/musica.py` evita el problema porque calcula las notas.
@@ -42,6 +50,9 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - Con música de bombo fuerte, limitar unos 6 dB e iterar midiendo el archivo ya codificado.
 - Una capa continua de banda ancha, como la tiza, tapa la voz aunque esté 16 dB abajo: Whisper leía «cacha que» donde se dijo «cada chat». Con 24 dB bajo la voz leyó bien. Usa `"bajo_voz": -24` en `efectos.json`.
 - Tomas de un mismo efecto: con `semilla` por golpe en `efectos.json`. `efecto.py --tomas` es para tenerlas como archivos.
+
+- En un montaje rápido hay más acciones que segundos: el máximo de 1 efecto por segundo manda, y suena la más importante.
+- `mix-blend-mode` en una capa dentro de un elemento transformado solo mezcla con lo que tenga debajo en ese mismo grupo. Con `will-change` o un fondo en otro nivel, el grano de `overlay` se vuelve un velo gris: pon el suelo dentro del grupo.
 
 ## Subtítulos
 
@@ -69,6 +80,12 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - Dos escenas que dibujan la misma película se cortan con la cámara en movimiento sin salto medible: sirve para partir piezas largas.
 - Con horneado largo, `check` avisa «did not become render-ready within 3000ms» y marca `canvas_content_at_edge`. Ninguno es un error.
 - Un `index.html` de revisión dentro del proyecto entra al lint del Studio: esas páginas van fuera.
+
+- En una máscara, `yPercent: 115` deja asomar el 15 % de la letra si el contenedor tiene relleno para tildes: usa 170.
+- GSAP no interpola `color-mix()`: calcula el color y pásalo en hexadecimal.
+- En un barrido, la escena que entra lleva la raíz transparente: si no, tapa a la que sale. Con `mix-blend-mode` entre escenas, los anfitriones van sin `z-index`.
+- Rotar un `<g>` de SVG: usa `svgOrigin: "x y"` en el tween. `transform-origin` en CSS no sirve.
+- El aviso `line_unread` salta en una ráfaga con nombres de 2 cuadros: pon nombre solo en las paradas.
 
 ## Material dibujado
 

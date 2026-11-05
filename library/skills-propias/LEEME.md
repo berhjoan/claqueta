@@ -1,5 +1,6 @@
 # Skills de la casa
 
+- `claqueta/`: la entrada a este sistema. Cópiala a la carpeta de skills de tu asistente para que cualquier pedido de video llegue aquí.
 - `motion-system/`: método general de producción visual. `SKILL.md` es el resumen, y `GUIA-MAESTRA.md` trae 20 secciones que se leen de a una: `MOTION.md`, brief, storyboard, audio, revisión y qué significa «listo».
 - `video-con-codigo/`: método con Remotion para piezas con personajes, rigs y labios sincronizados. Remotion tiene límites de licencia: revisa `library/guias/motores.md`. El kit que menciona no viene incluido.
 

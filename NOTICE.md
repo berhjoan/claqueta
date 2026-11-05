@@ -12,6 +12,12 @@ El código propio de Claqueta va bajo MIT (`LICENSE`). Lo siguiente pertenece a 
 | Síntesis de efectos y cuerdas | `tools/audio/sfx.py`, `tools/audio/pluck.py` | lemo-opuscar | MIT |
 | EMS Delight | `engines/pizarra/ems-delight.js` | Sheldon B. Michaels, Evil Mad Scientist | SIL OFL 1.1 |
 | Sora, JetBrains Mono | `assets/fonts` | Sora Project, JetBrains | SIL OFL 1.1 |
+| Archivo, Archivo Black, Barlow, Bebas Neue, Anton, Fraunces, Source Sans 3, DM Serif Display, DM Sans, Syne, Manrope, Unbounded, Onest, Poiret One, Josefin Sans, VT323 | `assets/fonts`, con sus avisos en `OFL-fuentes.txt` | Sus autores, empaquetadas por Fontsource | SIL OFL 1.1 |
+| Iconos Lucide | `assets/iconos` | Lucide Contributors | ISC, en `assets/iconos/LICENSE-lucide.txt` |
+| FFmpeg Skill | `library/ffmpeg-skill` | kajisho5, https://github.com/kajisho5/ffmpeg-skill, commit `1ce2c18` | MIT |
+| Método de tomas y bordes de corte | `tools/material/toma.py` | Inspirado en kurbaitaev/ghost-editor, commit `ce17272` | MIT |
+| Rúbrica de cortos y ajuste de fronteras | `tools/material/cortos.py` | Adaptado de AgriciDaniel/claude-shorts, commit `a369fad` | MIT |
+| Búsqueda de medios | `tools/medios/medios.py` | No copia nada: consulta Openverse, Wikimedia Commons, NASA e Internet Archive. Cada archivo conserva su licencia, y `creditos.json` la anota | Según cada archivo |
 | GSAP 3.15.0 | `tools/lib/gsap.min.js` | GreenSock. La misma copia que distribuyen las skills de HyperFrames | Licencia estándar de GSAP |
 
 ## Marca

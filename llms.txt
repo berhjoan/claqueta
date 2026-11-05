@@ -15,6 +15,15 @@ If you cannot run commands: read the files below through their raw URLs, write e
 - [Production lessons](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/aprendizajes.md): what cost time to discover
 - [Options dictionary](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/diccionario.md): every panel option, Spanish and English
 
+## Ready-made pieces: start here, they fail less
+
+- [Scene kit](https://raw.githubusercontent.com/berhjoan/claqueta/main/engines/escenas/README.md): from a JSON file to a full project, anchored to the voice
+- [Style templates](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/plantillas/README.md): tested vertical scenes, with their own colors
+- [Audio in one command](https://raw.githubusercontent.com/berhjoan/claqueta/main/tools/pista.py): voice, word timings, music and mix
+- [Review in one command](https://raw.githubusercontent.com/berhjoan/claqueta/main/tools/qa/revisar.py): everything measurable, and what to look at
+- [Real footage guide](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/guias/material.md): raw takes, long videos to shorts, reframing
+- [Free media](https://raw.githubusercontent.com/berhjoan/claqueta/main/tools/medios/medios.py): images, sounds and video with a clear license, no key
+
 ## HyperFrames 0.9.9
 
 - [Entry skill](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/hyperframes/skills/hyperframes/SKILL.md): always start here

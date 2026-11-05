@@ -9,17 +9,26 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Español | English | Qué pide |
 |---|---|---|
 | Explicador | Explainer | Explicador educativo: una sola idea, entendida al final. |
-| Noticia | News brief | Noticia breve: qué pasó, por qué importa y qué hacer con eso. Cada dato con fuente. |
+| Noticia | News brief | Noticia breve: cada dato con fuente. |
 | Caso de negocio | Business case | Caso de negocio: un problema real, la decisión y el resultado medible, sin inventar cifras. |
 | Tutorial | Tutorial | Tutorial: pasos concretos, cada uno comprobable, con capturas reales de pantalla. |
 | Promo de producto | Product promo | Promo de producto: el producto real en acción, un beneficio por escena y un llamado claro. |
 | Lanzamiento | Launch film | Lanzamiento: anuncio con arco de tensión y remate de marca al final. |
-| Historia o minidocumental | Story or mini-doc | Historia: inicio, tensión, giro, resolución y lección. Cada plano causa el siguiente. |
+| Historia o minidocumental | Story or mini-doc | Historia o minidocumental: cada plano causa el siguiente. |
 | Historia con datos | Data story | Historia con datos: escalas primero, luego valores y al final la conclusión; solo cifras con fuente. |
 | Video musical o arte | Music or art film | Pieza musical: la pista es el reloj y la imagen responde a su energía. |
 | Anuncio tipográfico | Type-only spot | Anuncio solo con tipografía en movimiento; la palabra es la imagen. |
 | Reedición de un video | Re-edit of footage | Reedición de material existente: conserva voz, identidad y hechos; solo agrega lo pedido y nunca tapes el rostro. |
-| Reel de opinión | Opinion reel | Reel de opinión: una afirmación fuerte, su argumento y una pregunta al final. |
+| Reel de opinión | Opinion reel | Reel de opinión: una afirmación fuerte y su argumento. |
+
+### De qué partes
+
+| Español | English | Qué pide |
+|---|---|---|
+| Un tema o un guion | A topic or a script | Todo se hace con código. |
+| Mi toma en bruto | My raw take | Se parte de una grabación de la persona, hablando a cámara, con varios intentos de cada frase. Debe estar en `material/toma.mp4`. Si no está, pídela. Limpia la toma antes de todo lo demás y revisa `cortes.json` y `hoja-aprobacion.jpg`. Se conservan su voz, sus hechos y su cara: nunca tapes el rostro. |
+| Un video largo | A long video | Se parte de un video largo de la persona, en `material/largo.mp4`. Si no está, pídelo. Transcribe, elige los mejores momentos con la rúbrica de `cortos.py`, y entrega cada corto reencuadrado, con subtítulos. |
+| Una grabación de pantalla | A screen recording | Se parte de una grabación de pantalla de la persona, en `material/pantalla.mp4`. Si no está, pídela. La interfaz es real: no la redibujes ni la inventes. |
 
 ### Estructura
 
@@ -95,6 +104,13 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 ## Estilo y arte
 
+### Cómo se usan los estilos
+
+| Español | English | Qué pide |
+|---|---|---|
+| Mezcla | Blend | Hasta tres estilos para toda la pieza: 70, 20 y 10 %. |
+| Recorrido | Style tour | Un estilo por plano, de uno en uno, con un plano de ráfaga si quieres. |
+
 ### Intensidad del estilo
 
 | Español | English | Qué pide |
@@ -103,7 +119,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Media | Medium | Intensidad media: el estilo se reconoce en al menos dos rasgos propios en cada plano. |
 | Alta | High | Intensidad alta: el estilo es el protagonista. |
 
-### Lenguaje de formas
+### Lenguaje de formas (opcional: si no eliges, manda el estilo)
 
 | Español | English | Qué pide |
 |---|---|---|
@@ -133,6 +149,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
+| Colores de cada estilo | Each style's own colors | Cada estilo con su paleta propia. Sin imponer un color. |
 | Negro y oro | Warm black and gold | La marca BG System IA. |
 | Tinta y papel | Ink on paper | Editorial, cálido, impreso. |
 | Pizarra verde | Green slate | Aula clásica. |
@@ -161,14 +178,15 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
+| Según el estilo | By style | Tipografía según el estilo, de las que trae el sistema: `python ../.claqueta/tools/medios/fuentes.py --listar`. Las copias con su CSS con `python ../.claqueta/tools/medios/fuentes.py <nombre>`. |
 | Sora | Sora | Títulos y texto en Sora 600 y 700; datos en JetBrains Mono 500. Ambas con licencia OFL, en assets/fonts del sistema. |
-| Archivo Black | Archivo Black | Títulos en Archivo Black y texto en Archivo. Ambas OFL de Google Fonts: bájalas a assets/fonts con @font-face. |
-| Bebas Neue y Barlow | Bebas Neue and Barlow | Títulos en Bebas Neue, muy grandes, y texto en Barlow. OFL de Google Fonts. |
-| Fraunces y Source Sans 3 | Fraunces and Source Sans 3 | Títulos en Fraunces y texto en Source Sans 3. OFL de Google Fonts. |
-| DM Serif Display y DM Sans | DM Serif Display and DM Sans | Títulos en DM Serif Display y texto en DM Sans. OFL de Google Fonts. |
-| Syne y Manrope | Syne and Manrope | Títulos en Syne 800 y texto en Manrope. OFL de Google Fonts. |
-| Unbounded y Onest | Unbounded and Onest | Títulos en Unbounded y texto en Onest. OFL de Google Fonts. |
-| Poiret One y Josefin Sans | Poiret One and Josefin Sans | Títulos en Poiret One y texto en Josefin Sans. OFL de Google Fonts. |
+| Archivo Black | Archivo Black | Títulos en Archivo Black y texto en Archivo. OFL, incluidas: tools/medios/fuentes.py. |
+| Bebas Neue y Barlow | Bebas Neue and Barlow | Títulos en Bebas Neue, muy grandes, y texto en Barlow. OFL, incluidas: tools/medios/fuentes.py. |
+| Fraunces y Source Sans 3 | Fraunces and Source Sans 3 | Títulos en Fraunces y texto en Source Sans 3. OFL, incluidas: tools/medios/fuentes.py. |
+| DM Serif Display y DM Sans | DM Serif Display and DM Sans | Títulos en DM Serif Display y texto en DM Sans. OFL, incluidas: tools/medios/fuentes.py. |
+| Syne y Manrope | Syne and Manrope | Títulos en Syne 800 y texto en Manrope. OFL, incluidas: tools/medios/fuentes.py. |
+| Unbounded y Onest | Unbounded and Onest | Títulos en Unbounded y texto en Onest. OFL, incluidas: tools/medios/fuentes.py. |
+| Poiret One y Josefin Sans | Poiret One and Josefin Sans | Títulos en Poiret One y texto en Josefin Sans. OFL, incluidas: tools/medios/fuentes.py. |
 | VT323 y JetBrains Mono | VT323 and JetBrains Mono | Títulos en VT323 y texto en JetBrains Mono. OFL. |
 | Letra de tiza | Chalk handwriting | Texto del mundo escrito con EMS Delight, fuente de una sola línea en engines/pizarra, trazo a trazo; subtítulos en Sora. |
 
@@ -180,12 +198,12 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Minúsculas | Lowercase | Todo en minúsculas, como elemento gráfico; conserva las tildes. |
 | Mayúsculas | All caps | Títulos en mayúsculas, de 1 a 3 palabras, conservando las tildes. |
 
-### Marca
+### Marca (aparte de la paleta)
 
 | Español | English | Qué pide |
 |---|---|---|
 | Sin marca | No brand | Sin marca ni logos. |
-| BG System IA | BG System IA | Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png, un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes. Sin resplandor añadido. Emblema y lema son la única excepción a los rótulos en esquinas; el lema va fuera de la banda de subtítulos o después del último. |
+| BG System IA | BG System IA | Marca BG System IA: su emblema real, library/marca/bg-system-ia/emblema.png, es un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes. Su frase de cierre es «La IA, explicada con claridad»: cierra con ella solo si el tema es de IA. |
 | Otra marca | Another brand | Usa la marca descrita en las notas. Solo logos, colores y fuentes reales, nunca inventados. Si tiene sitio web, extrae sus datos con npx hyperframes capture. |
 
 ## Cámara
@@ -467,6 +485,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
+| Según el estilo | By style | El carácter y el tempo salen del estilo elegido. |
 | Pulso mínimo | Minimal pulse | pulso mínimo y tenso |
 | Cálido y acústico | Warm acoustic | cálido y acústico |
 | Electrónico limpio | Clean electronic | electrónico limpio |
@@ -482,7 +501,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 |---|---|---|
 | Sin efectos | No effects | Sin efectos de sonido. |
 | Solo en los cambios | Scene changes only | Efectos solo en cambios de escena y en el remate. |
-| Por cada acción | Every visible action | Cada acción visible importante suena, con un máximo de 1 efecto por segundo y sin tapar una palabra clave: si un golpe cae junto a ella, adelántalo o bájalo. Cada efecto tiene su causa en pantalla. |
+| Por cada acción | Every visible action | Máximo 1 efecto por segundo: esa cifra manda. Si hay más acciones que segundos, suena la más importante y las demás van en silencio. Sin tapar una palabra clave: si un golpe cae junto a ella, adelántalo o bájalo. Cada efecto tiene su causa en pantalla. |
 | El material suena siempre | The material always sounds | El material suena de forma continua, como tiza, papel o teclas, sincronizado con cada trazo o elemento. No cuenta como efecto suelto. |
 
 ### De dónde salen
@@ -518,6 +537,9 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 
 | Español | English | Qué pide |
 |---|---|---|
+| Según el estilo | By style | Usa lo que ya está probado para tu estilo: kit de escenas, plantilla o motor propio. Si no hay, HyperFrames a mano. |
+| Kit de escenas | Scene kit | De un JSON a un proyecto editable: planos anclados a la voz, subtítulos, transiciones y efectos. |
+| Motor isométrico | Isometric engine | Maqueta isométrica con objetos listos, anclada a la voz. |
 | HyperFrames | HyperFrames | HTML a video. El recomendado: probado en esta casa, Apache-2.0. |
 | Remotion | Remotion | React a video. Gratis para personas y equipos de hasta 3; mira su licencia. |
 | Motores de estilo en Canvas | Canvas style engines | Tiza, terminal, isométrico: material que el DOM no da, dentro de HyperFrames. |

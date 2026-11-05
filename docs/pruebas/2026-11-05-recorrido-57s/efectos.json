@@ -1,0 +1,242 @@
+[
+ {
+  "pico": 0.53,
+  "sonido": "pop",
+  "ganancia": -12,
+  "semilla": 1
+ },
+ {
+  "pico": 1.53,
+  "sonido": "pop",
+  "ganancia": -14,
+  "semilla": 2
+ },
+ {
+  "pico": 2.92,
+  "sonido": "falla",
+  "ganancia": -10,
+  "semilla": 1
+ },
+ {
+  "pico": 4.99,
+  "sonido": "golpe",
+  "ganancia": -12,
+  "semilla": 1
+ },
+ {
+  "pico": 6.02,
+  "sonido": "tecla",
+  "ganancia": -14,
+  "semilla": 1
+ },
+ {
+  "pico": 7.05,
+  "sonido": "tecla",
+  "ganancia": -14,
+  "semilla": 2
+ },
+ {
+  "pico": 9.53,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 1
+ },
+ {
+  "pico": 10.73,
+  "sonido": "pop",
+  "ganancia": -12,
+  "semilla": 3
+ },
+ {
+  "pico": 11.85,
+  "sonido": "pop",
+  "ganancia": -14,
+  "semilla": 4
+ },
+ {
+  "pico": 13.88,
+  "sonido": "barrido",
+  "ganancia": -10,
+  "semilla": 1
+ },
+ {
+  "pico": 15.05,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 2
+ },
+ {
+  "pico": 16.44,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 3
+ },
+ {
+  "pico": 17.68,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 4
+ },
+ {
+  "pico": 19.4,
+  "sonido": "tecla",
+  "ganancia": -13,
+  "semilla": 4
+ },
+ {
+  "pico": 20.6,
+  "sonido": "campana",
+  "ganancia": -14,
+  "semilla": 1
+ },
+ {
+  "pico": 21.75,
+  "sonido": "chasquido",
+  "ganancia": -10,
+  "semilla": 1
+ },
+ {
+  "pico": 22.75,
+  "sonido": "pop",
+  "ganancia": -12,
+  "semilla": 5
+ },
+ {
+  "pico": 25.56,
+  "sonido": "impacto",
+  "ganancia": -12,
+  "semilla": 1
+ },
+ {
+  "pico": 26.6,
+  "sonido": "barrido",
+  "ganancia": -14,
+  "semilla": 2
+ },
+ {
+  "pico": 27.75,
+  "sonido": "clic",
+  "ganancia": -14,
+  "semilla": 5
+ },
+ {
+  "pico": 29.4,
+  "sonido": "chasquido",
+  "ganancia": -12,
+  "semilla": 2
+ },
+ {
+  "pico": 30.42,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 6
+ },
+ {
+  "pico": 31.45,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 7
+ },
+ {
+  "pico": 32.47,
+  "sonido": "campana",
+  "ganancia": -14,
+  "semilla": 3
+ },
+ {
+  "pico": 33.92,
+  "sonido": "impacto",
+  "ganancia": -16,
+  "semilla": 2
+ },
+ {
+  "pico": 36.14,
+  "sonido": "pop",
+  "ganancia": -12,
+  "semilla": 6
+ },
+ {
+  "pico": 37.26,
+  "sonido": "pop",
+  "ganancia": -12,
+  "semilla": 7
+ },
+ {
+  "pico": 38.55,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 8
+ },
+ {
+  "pico": 39.75,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 9
+ },
+ {
+  "pico": 40.88,
+  "sonido": "barrido",
+  "ganancia": -10,
+  "semilla": 3
+ },
+ {
+  "pico": 42.0,
+  "sonido": "destello",
+  "ganancia": -14,
+  "semilla": 1
+ },
+ {
+  "pico": 43.1,
+  "sonido": "destello",
+  "ganancia": -14,
+  "semilla": 2
+ },
+ {
+  "pico": 45.2,
+  "sonido": "pop",
+  "ganancia": -12,
+  "semilla": 8
+ },
+ {
+  "pico": 46.53,
+  "sonido": "clic",
+  "ganancia": -12,
+  "semilla": 10
+ },
+ {
+  "pico": 48.45,
+  "sonido": "barrido",
+  "ganancia": -14,
+  "semilla": 4
+ },
+ {
+  "pico": 49.5,
+  "sonido": "campana",
+  "ganancia": -15,
+  "semilla": 4
+ },
+ {
+  "pico": 51.42,
+  "sonido": "falla",
+  "ganancia": -10,
+  "semilla": 2
+ },
+ {
+  "pico": 52.42,
+  "sonido": "pop",
+  "ganancia": -12,
+  "semilla": 9
+ },
+ {
+  "pico": 54.0,
+  "sonido": "golpe",
+  "ganancia": -14,
+  "semilla": 2
+ },
+ {
+  "pico": 55.35,
+  "sonido": "destello",
+  "ganancia": -12,
+  "semilla": 3
+ }
+]

@@ -1,6 +1,6 @@
 {
  "generado": "scripts/armar-biblioteca.mjs",
- "total": 223,
+ "total": 242,
  "items": [
   {
    "titulo": "Dirección: cómo no parecer generado",
@@ -22,6 +22,14 @@
    "titulo": "Sonido sin pagar",
    "desc": "Todo corre en tu computador. Pide internet Edge, en cada uso, y una vez lo que se baja: modelos de voz y de Whisper. Las rutas parten de la raíz del sistema: desde tu proyecto,…",
    "ruta": "library/guias/sonido.md",
+   "cat": "guias",
+   "catNombre": "Guías de la casa",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Material grabado: editar video que alguien ya filmó",
+   "desc": "Claqueta crea videos desde un guion. Esta guía es para el otro caso: la persona trae su propia grabación y tú la editas. Todo corre en local, sin llaves ni cuentas.",
+   "ruta": "library/guias/material.md",
    "cat": "guias",
    "catNombre": "Guías de la casa",
    "licencia": "MIT"
@@ -67,12 +75,108 @@
    "licencia": "MIT"
   },
   {
+   "titulo": "Kit de escenas: de un JSON a un proyecto",
+   "desc": "Escribes un `pieza.json` con los planos y sale un proyecto completo de HyperFrames: escenas editables, subtítulos, transiciones, efectos de sonido, fuentes y GSAP, sin bajar…",
+   "ruta": "engines/escenas/README.md",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
    "titulo": "Motor de pizarra",
    "desc": "Escritura a mano en tiza, con letra propia del español, dentro de una escena de HyperFrames. Probado en 0.8.150 y 0.9.9, en `check`, Studio y render: ir atrás y adelante da la…",
    "ruta": "engines/pizarra/README.md",
    "cat": "herramientas",
    "catNombre": "Herramientas gratis",
    "licencia": "MIT y OFL"
+  },
+  {
+   "titulo": "Motor isométrico",
+   "desc": "Un mundo isométrico con luz, sombras y objetos reconocibles, dentro de una escena de HyperFrames. Editas un solo archivo de datos y sale igual de bien en 9:16, 16:9, 1:1 y 4:5.…",
+   "ruta": "engines/isometrico/README.md",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "La pista en pocos comandos: voz, tiempos, música y mezcla",
+   "desc": "tools/pista.py",
+   "ruta": "tools/pista.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Toda la revisión en un comando",
+   "desc": "tools/qa/revisar.py",
+   "ruta": "tools/qa/revisar.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "De un reel que gusta, su gramática",
+   "desc": "tools/qa/referencia.py",
+   "ruta": "tools/qa/referencia.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "La carpeta final de una pieza",
+   "desc": "tools/entrega.py",
+   "ruta": "tools/entrega.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Imágenes, sonidos y video con licencia clara, sin llave",
+   "desc": "tools/medios/medios.py",
+   "ruta": "tools/medios/medios.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Fuentes incluidas, listas para copiar",
+   "desc": "tools/medios/fuentes.py",
+   "ruta": "tools/medios/fuentes.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Iconos incluidos",
+   "desc": "tools/medios/icono.py",
+   "ruta": "tools/medios/icono.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "De la toma en bruto a la toma limpia",
+   "desc": "tools/material/toma.py",
+   "ruta": "tools/material/toma.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "De un video largo a varios cortos",
+   "desc": "tools/material/cortos.py",
+   "ruta": "tools/material/cortos.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Reencuadrar siguiendo la cara",
+   "desc": "tools/material/reencuadre.py",
+   "ruta": "tools/material/reencuadre.py",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
   },
   {
    "titulo": "Música original con rejilla exacta",
@@ -230,6 +334,46 @@
    "titulo": "Genera el encargo sin abrir el panel",
    "desc": "tools/prompt.mjs",
    "ruta": "tools/prompt.mjs",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Formato de una plantilla",
+   "desc": "Una plantilla es la prueba de que un estilo funciona: una escena vertical de código, ya renderizada y mirada. Un estilo pasa a «probado» solo si tiene ficha completa, paleta…",
+   "ruta": "library/plantillas/FORMATO.md",
+   "cat": "plantillas",
+   "catNombre": "Plantillas de estilo",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Plantillas probadas: índice",
+   "desc": "Una plantilla es la prueba de que un estilo funciona: una escena vertical de código (1080×1920, 4 s), ya renderizada y mirada, que cualquier IA monta con sus textos y sus…",
+   "ruta": "library/plantillas/README.md",
+   "cat": "plantillas",
+   "catNombre": "Plantillas de estilo",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Inventario del registro de HyperFrames",
+   "desc": "Revisado en `heygen-com/hyperframes`, commit `fa1942d` del 2026-11-05. Trae 210 bloques, 239 componentes y 8 ejemplos. La licencia del repositorio es Apache-2.0. Los 36 bloques…",
+   "ruta": "docs/registro-hyperframes.md",
+   "cat": "plantillas",
+   "catNombre": "Plantillas de estilo",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "FFmpeg Skill: 42 herramientas para video grabado",
+   "desc": "Edit video and audio with local FFmpeg: cut, join, reframe, speed, captions, overlays, silence removal, sync, loudness, HDR to SDR, platform exports and checks. Use whenever the…",
+   "ruta": "library/ffmpeg-skill/SKILL.md",
+   "cat": "herramientas",
+   "catNombre": "Herramientas gratis",
+   "licencia": "MIT"
+  },
+  {
+   "titulo": "Origen de FFmpeg Skill",
+   "desc": "Es la caja de herramientas para **editar video que alguien ya grabó**: cortes, silencios, formato, subtítulos, loudness. Lo que decide qué cortar lo hacen `tools/material/` y tú;…",
+   "ruta": "library/ffmpeg-skill/ORIGEN.md",
    "cat": "herramientas",
    "catNombre": "Herramientas gratis",
    "licencia": "MIT"
@@ -1745,6 +1889,14 @@
    "cat": "propias",
    "catNombre": "Método de la casa",
    "licencia": "Propio"
+  },
+  {
+   "titulo": "Skill de entrada a Claqueta",
+   "desc": "Haz videos con código, gratis y en local, con Claqueta: voz, música, subtítulos, plantillas de estilo, kit de escenas, edición de grabaciones reales, revisión y entrega. Úsala…",
+   "ruta": "library/skills-propias/claqueta/SKILL.md",
+   "cat": "propias",
+   "catNombre": "Método de la casa",
+   "licencia": "MIT"
   },
   {
    "titulo": "Motion system: resumen",

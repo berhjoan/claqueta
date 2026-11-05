@@ -1,0 +1,82 @@
+[
+ {
+  "guion": "Este video cambia de estilo cada pocos segundos.",
+  "voz": "Este video cambia de estilo cada pocos segundos.",
+  "pausa_antes": 0
+ },
+ {
+  "guion": "Y nadie lo editó a mano.",
+  "voz": "Y nadie lo editó a mano.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Lo escribió una IA con código, siguiendo un encargo de Claqueta.",
+  "voz": "Lo escribió una IA con código, siguiendo un encargo de Claqueta.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Claqueta es un panel gratis para dirigir videos hechos con código.",
+  "voz": "Claqueta es un panel gratis para dirigir videos hechos con código.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Eliges el estilo, la cámara, la voz, la música y el montaje.",
+  "voz": "Eliges el estilo, la cámara, la voz, la música y el montaje.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Y el panel escribe el encargo completo.",
+  "voz": "Y el panel escribe el encargo completo.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Lo copias, lo pegas en tu IA, y ella construye el video.",
+  "voz": "Lo copias, lo pegas en tu IA, y ella construye el video.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "¿Cómo? Cada cuadro es una página web que se anima con el tiempo.",
+  "voz": "¿Cómo? Cada cuadro es una página web que se anima con el tiempo.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Se captura cuadro por cuadro, así que siempre sale igual.",
+  "voz": "Se captura cuadro por cuadro, así que siempre sale igual.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Trae 106 estilos.",
+  "voz": "Trae ciento seis estilos.",
+  "pausa_antes": 0.6
+ },
+ {
+  "guion": "De la tiza al neón, del cómic al vóxel.",
+  "voz": "De la tiza al neón, del cómic al vóxel.",
+  "pausa_antes": 0.3
+ },
+ {
+  "guion": "Y mezclas hasta tres a la vez.",
+  "voz": "Y mezclas hasta tres a la vez.",
+  "pausa_antes": 0.3
+ },
+ {
+  "guion": "21 voces gratis en español, música compuesta con código y efectos propios.",
+  "voz": "Veintiún voces gratis en español, música compuesta con código y efectos propios.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Y antes de entregar, la IA revisa zonas seguras, volumen y cada cuadro.",
+  "voz": "Y antes de entregar, la IA revisa zonas seguras, volumen y cada cuadro.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Sin pagar APIs, sin llaves.",
+  "voz": "Sin pagar APIs, sin llaves.",
+  "pausa_antes": 0.45
+ },
+ {
+  "guion": "Tú diriges. La IA filma.",
+  "voz": "Tú diriges. La IA filma.",
+  "pausa_antes": 0.6
+ }
+]

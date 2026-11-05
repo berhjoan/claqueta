@@ -10,12 +10,24 @@ Las skills de HyperFrames dicen que no se escriba música con código porque nad
 
 ## Orden
 
+`tools/pista.py` hace casi todo en tres comandos, dentro de tu proyecto:
+
+```bash
+python ../.claqueta/tools/pista.py voz --motor edge --voz es-CO-GonzaloNeural --guion guion.txt --por-oraciones --pausa 0.4
+python ../.claqueta/tools/pista.py musica --caracter calido
+python ../.claqueta/tools/pista.py mezcla --nivel-musica -22 --silencios 2
+```
+
+`voz` deja `assets/tiempos.json` (cada palabra con su tiempo afinado, las pausas medidas, los grupos de subtítulos y `dur`) y `renders/final.srt`. `musica` y `mezcla` leen de ahí la duración. `--silencios 2` calla música y efectos en las dos pausas más largas de la voz.
+
+Por debajo:
+
 1. Voz: `tools/tts/hablar.py`. Su duración real manda sobre la lista de planos.
-2. Tiempos de palabra: `tools/subtitulos/alinear.py`. Con Edge ya salen de `--palabras`.
-3. Música: `tools/audio/musica.py`, con la duración real.
-4. Efectos: `tools/audio/efecto.py`.
+2. Tiempos de palabra: `tools/subtitulos/alinear.py`. Con Edge ya salen de `--palabras`. Sin acceso a Hugging Face: `tools/subtitulos/tiempos_por_tramos.py`.
+3. Música: `tools/audio/musica.py`, con la duración real. Una pista con licencia: `tools/medios/medios.py audio`.
+4. Efectos: `tools/audio/efecto.py`. El kit de escenas los coloca solo, en `efectos.json`.
 5. Mezcla y máster: `tools/audio/mezcla.py`.
-6. Render. Mide el archivo final con `tools/qa/verificar_video.py`.
+6. Render. Mide el archivo final con `tools/qa/revisar.py`.
 
 Claude no oye, y otras IA tampoco. Mide todo y entrega una muestra para que una persona la escuche antes de un render largo.
 
@@ -65,7 +77,7 @@ python tools/audio/efecto.py barrido --dur 0.4 --salida assets/audio/barrido.wav
 python tools/audio/efecto.py golpe --tomas 3 --salida assets/audio/golpe.wav
 ```
 
-Grabados y gratis: `git clone --depth 1 https://github.com/wyzowl/sfx-kit.git` (CC0, 320 efectos, unos 67 MB). Su `sounds.json` permite elegir por lo que pasa en pantalla sin oír.
+Grabados y gratis: `git clone --depth 1 https://github.com/wyzowl/sfx-kit.git` (CC0, 320 efectos, unos 67 MB). Su `sounds.json` permite elegir por lo que pasa en pantalla sin oír. O busca uno concreto: `python tools/medios/medios.py audio "paper tear" --licencia libre --max-seg 5`.
 
 Sonido continuo de tiza a partir de los trazos: `tools/audio/tiza.py`, con los eventos de `engines/pizarra/eventos.mjs`.
 
@@ -97,6 +109,6 @@ python tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musi
 ## Revisar sin oído
 
 - `mezcla.py` imprime el `pico_s` de cada efecto. `npx hyperframes@0.9.9 audio` confirma los golpes secos en tiempo de película, pero no ve los barridos.
-- `tools/qa/verificar_video.py` mide volumen y pico del archivo final.
+- `tools/qa/revisar.py` mide volumen, pico, energía bajo 120 Hz (un teléfono no la suena), voz contra música, densidad de efectos y silencios reales, en el archivo final.
 - `python tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt` transcribe y compara con el guion. Si coincide, la música no tapa la voz.
 - `ffmpeg -i mezcla.wav -lavfi showspectrumpic=s=1600x600 espectro.png` muestra si algo tapa la voz.

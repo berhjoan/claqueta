@@ -4,15 +4,23 @@ Regla: un solo motor ensambla. Se abre otro solo cuando el material lo exige, y 
 
 | Necesidad | Motor | Costo | Estado en este sistema |
 |---|---|---|---|
+| Explicar con voz: títulos, cifras, gráficos, pasos, fotos, en 6 materiales | Kit de escenas, `engines/escenas` | Gratis, MIT | Probado en 4 formatos: `check`, render y cuadros mirados. **Empieza aquí** |
+| Un estilo concreto del catálogo | Plantillas de `library/plantillas` | Gratis | Las de esa carpeta están probadas una a una |
 | Texto, diagramas, subtítulos, ensamblado final | HyperFrames 0.9.9 | Gratis, Apache-2.0 | Probado: `check`, render y medición |
+| Maqueta isométrica con objetos | `engines/isometrico` | Gratis, MIT | Probado |
+| Editar una grabación: cortar, limpiar, reencuadrar | `tools/material`, `library/ffmpeg-skill` | Gratis, MIT | Probado en Windows; mira `library/guias/material.md` |
 | Tiza, material dibujado | Canvas 2D dentro de HyperFrames, `engines/pizarra` | Gratis | Probado |
-| Terminal, isométrico, tinta, recorte | Motores de `library/lemo-opuscar` | Gratis, MIT | Motor probado en 1080p; en vertical hay que recomponer |
+| Terminal, tinta, recorte de cine | Motores de `library/lemo-opuscar` | Gratis, MIT | Motor probado en 1080p; en vertical hay que recomponer |
 | 3D ligero: maquetas, órbitas, anillos | three.js dentro de una escena | Gratis, MIT | Probado |
 | React y plantillas de datos | Remotion | Gratis hasta 3 personas | Sin probar aquí. Mira la licencia abajo |
 | Personajes con rig y labios sincronizados | Remotion con `library/skills-propias/video-con-codigo` | Igual que Remotion | Sin probar en este repositorio |
 | Diagramas animados con código | Motion Canvas | Gratis, MIT | Sin probar |
 | Matemática | Manim Community | Gratis, MIT | Sin probar |
 | Corte, filtros, mezcla, medición | ffmpeg | Gratis | Probado |
+
+## Bloques del registro
+
+HyperFrames trae unos 450 bloques editables, gratis, con licencia Apache-2.0: títulos, gráficos, transiciones, subtítulos. Lo probado y copiado aquí está en `library/hyperframes-registro/`; lo demás se busca con `npx hyperframes@0.9.9 catalog --query "..." --json` y se instala con `add`. Casi todos vienen en 1920×1080: recomponlos para vertical, nunca recortes a ciegas. Lo que imita una marca o una interfaz real queda fuera: `docs/registro-hyperframes.md`.
 
 ## HyperFrames
 

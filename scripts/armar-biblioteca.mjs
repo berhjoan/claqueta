@@ -56,6 +56,7 @@ for (const [archivo, titulo] of [
   ["direccion.md", "Dirección: cómo no parecer generado"],
   ["motores.md", "Motores: qué usar para cada video"],
   ["sonido.md", "Sonido sin pagar"],
+  ["material.md", "Material grabado: editar video que alguien ya filmó"],
   ["aprendizajes.md", "Aprendizajes de producción"],
   ["diccionario.md", "Diccionario de opciones"],
 ]) if (fs.existsSync(a("library", "guias", archivo)) || archivo === "diccionario.md") { if (archivo !== "diccionario.md") poner(a("library", "guias", archivo), "guias", "Guías de la casa", "MIT", titulo); }
@@ -65,12 +66,24 @@ poner(a("docs", "radar.md"), "guias", "Guías de la casa", "MIT", "Radar: herram
 
 // Herramientas.
 poner(a("tools", "tts", "README.md"), "herramientas", "Herramientas gratis", "MIT", "Voces gratis en español");
+poner(a("engines", "escenas", "README.md"), "herramientas", "Herramientas gratis", "MIT", "Kit de escenas: de un JSON a un proyecto");
 poner(a("engines", "pizarra", "README.md"), "herramientas", "Herramientas gratis", "MIT y OFL", "Motor de pizarra");
-const docTool = { "tools/audio/musica.py": "Música original con rejilla exacta", "tools/audio/efecto.py": "Efectos sintetizados", "tools/audio/pausas.py": "Pausas reales de una voz", "tools/audio/mezcla.py": "Mezcla con la música cediendo bajo la voz", "tools/audio/masterizar.py": "Máster a -14 LUFS", "tools/audio/tiza.py": "Sonido de tiza trazo a trazo", "tools/audio/sfx.py": "Biblioteca de síntesis de efectos", "tools/audio/pluck.py": "Cuerdas por modelo físico", "tools/imagen/grano.py": "Grano fino con semilla fija", "tools/audio/notas.py": "Música escasa, nota por nota", "tools/qa/comparar_voz.py": "Comprueba que se oye lo que dice el guion", "tools/subtitulos/tiempos.py": "Afina tiempos de palabra contra el audio", "tools/subtitulos/srt.py": "SRT con frases y el texto exacto del guion", "tools/tts/hablar.py": "Narración gratis, un comando para tres motores", "tools/subtitulos/alinear.py": "Tiempos de palabra pegados al guion", "tools/qa/verificar_video.py": "Mide formato, duración y volumen del MP4", "tools/qa/hoja_cuadros.py": "Hoja de cuadros de un video", "tools/qa/saltos.py": "Busca saltos y cuadros negros", "tools/doctor.py": "Revisa qué falta en este computador", "tools/prompt.mjs": "Genera el encargo sin abrir el panel" };
+if (fs.existsSync(a("engines", "isometrico", "README.md"))) poner(a("engines", "isometrico", "README.md"), "herramientas", "Herramientas gratis", "MIT", "Motor isométrico");
+const docTool = { "tools/pista.py": "La pista en pocos comandos: voz, tiempos, música y mezcla", "tools/qa/revisar.py": "Toda la revisión en un comando", "tools/qa/referencia.py": "De un reel que gusta, su gramática", "tools/entrega.py": "La carpeta final de una pieza", "tools/medios/medios.py": "Imágenes, sonidos y video con licencia clara, sin llave", "tools/medios/fuentes.py": "Fuentes incluidas, listas para copiar", "tools/medios/icono.py": "Iconos incluidos", "tools/material/toma.py": "De la toma en bruto a la toma limpia", "tools/material/cortos.py": "De un video largo a varios cortos", "tools/material/reencuadre.py": "Reencuadrar siguiendo la cara", "tools/audio/musica.py": "Música original con rejilla exacta", "tools/audio/efecto.py": "Efectos sintetizados", "tools/audio/pausas.py": "Pausas reales de una voz", "tools/audio/mezcla.py": "Mezcla con la música cediendo bajo la voz", "tools/audio/masterizar.py": "Máster a -14 LUFS", "tools/audio/tiza.py": "Sonido de tiza trazo a trazo", "tools/audio/sfx.py": "Biblioteca de síntesis de efectos", "tools/audio/pluck.py": "Cuerdas por modelo físico", "tools/imagen/grano.py": "Grano fino con semilla fija", "tools/audio/notas.py": "Música escasa, nota por nota", "tools/qa/comparar_voz.py": "Comprueba que se oye lo que dice el guion", "tools/subtitulos/tiempos.py": "Afina tiempos de palabra contra el audio", "tools/subtitulos/srt.py": "SRT con frases y el texto exacto del guion", "tools/tts/hablar.py": "Narración gratis, un comando para tres motores", "tools/subtitulos/alinear.py": "Tiempos de palabra pegados al guion", "tools/qa/verificar_video.py": "Mide formato, duración y volumen del MP4", "tools/qa/hoja_cuadros.py": "Hoja de cuadros de un video", "tools/qa/saltos.py": "Busca saltos y cuadros negros", "tools/doctor.py": "Revisa qué falta en este computador", "tools/prompt.mjs": "Genera el encargo sin abrir el panel" };
 for (const [ruta, titulo] of Object.entries(docTool)) {
   const lic = /sfx|pluck/.test(ruta) ? "MIT (lemo-opuscar)" : "MIT";
   poner(a(ruta), "herramientas", "Herramientas gratis", lic, titulo, ruta);
 }
+
+// Plantillas y código listo.
+poner(a("library", "plantillas", "FORMATO.md"), "plantillas", "Plantillas de estilo", "MIT", "Formato de una plantilla");
+if (fs.existsSync(a("library", "plantillas", "README.md"))) poner(a("library", "plantillas", "README.md"), "plantillas", "Plantillas de estilo", "MIT", "Plantillas probadas: índice");
+if (fs.existsSync(a("library", "hyperframes-registro", "README.md"))) poner(a("library", "hyperframes-registro", "README.md"), "plantillas", "Plantillas de estilo", "Apache-2.0 y MIT", "Bloques del registro de HyperFrames");
+poner(a("docs", "registro-hyperframes.md"), "plantillas", "Plantillas de estilo", "MIT", "Inventario del registro de HyperFrames");
+
+// FFmpeg Skill.
+poner(a("library", "ffmpeg-skill", "SKILL.md"), "herramientas", "Herramientas gratis", "MIT", "FFmpeg Skill: 42 herramientas para video grabado");
+poner(a("library", "ffmpeg-skill", "ORIGEN.md"), "herramientas", "Herramientas gratis", "MIT", "Origen de FFmpeg Skill");
 
 // HyperFrames: cada skill y sus referencias.
 for (const p of caminar(a("library", "hyperframes", "skills")).filter((x) => x.endsWith(".md")).sort()) {
@@ -102,6 +115,7 @@ for (const [archivo, titulo] of [["ORIGEN.md", "Origen y avisos de lemo-opuscar"
 
 // Método propio y marca.
 poner(a("library", "skills-propias", "LEEME.md"), "propias", "Método de la casa", "Propio", "Skills de la casa");
+poner(a("library", "skills-propias", "claqueta", "SKILL.md"), "propias", "Método de la casa", "MIT", "Skill de entrada a Claqueta");
 poner(a("library", "skills-propias", "motion-system", "SKILL.md"), "propias", "Método de la casa", "Propio", "Motion system: resumen");
 poner(a("library", "skills-propias", "motion-system", "GUIA-MAESTRA.md"), "propias", "Método de la casa", "Propio", "Motion system: guía completa");
 poner(a("library", "skills-propias", "video-con-codigo", "SKILL.md"), "propias", "Método de la casa", "Propio", "Video con personajes en Remotion");

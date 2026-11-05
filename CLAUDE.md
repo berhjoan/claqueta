@@ -17,3 +17,5 @@ cp -r ../.claqueta/library/hyperframes/skills/* .claude/skills/
 - Toda opción lleva `n: [es, en]` y `p: [es, en]`. Lo literal en español nunca se traduce.
 - El texto del usuario entra por propiedades del DOM, nunca como HTML.
 - Mira `docs/mantener.md` antes de actualizar lo copiado de otros repositorios.
+- `data/styles.json` trae la paleta, la piel y la plantilla de cada estilo. Si agregas una plantilla, corre `node scripts/unir-estilos.mjs`.
+- Si agregas una fuente, mídela con `CHROME=<ruta> node scripts/medir-fuentes.mjs` y sumala a `PESOS`: el kit de escenas la necesita para saber si un texto cabe.

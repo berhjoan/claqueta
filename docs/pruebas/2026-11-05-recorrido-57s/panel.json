@@ -1,0 +1,8 @@
+{
+ "guion": {"titulo": "Claqueta: dirige videos hechos con código", "tipo": "explicador", "estructura": "pasos", "gancho": "contraintuitivo", "tono": "energico", "final": "responde"},
+ "arte": {"estilos": {"base": "S28", "secundario": "S16", "acento": "S04"}, "intensidad": "alta"},
+ "montaje": {"ritmo": "vivo", "transiciones": ["corte", "latigo", "glitch", "coincidencia"]},
+ "sonido": {"voz": "kokoro:em_alex", "animo": "electronico", "bpm": 120},
+ "motor": {"modo": "autonomo"},
+ "entrega": {"duracion": 60}
+}

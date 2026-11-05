@@ -43,13 +43,13 @@ Estilo, sujeto, movimiento, cámara, tiempos, estado final y restricciones. Ejem
 
 ## Lectura
 
-- Tiempo de lectura: letras ÷ 15 + 1,5 s desde que el texto termina de aparecer.
+- Tiempo de lectura: letras ÷ 15 + 1,5 s desde que el texto termina de aparecer. Excepción: un lema de cierre basta con 2 s en pantalla, y por eso el cierre sube a 2,5 s cuando lo hay.
 - Subtítulo: mínimo 1,8 s. Si la voz no deja tiempo, junta la frase corta con la siguiente cuando quepan en 2 líneas. Si no caben, manda la voz: el subtítulo cambia cuando empieza la frase siguiente. `tools/subtitulos/srt.py` hace esto y lista en `muy_rapidos` los que quedan apurados.
 - Usa los grupos de `srt.py` o define las frases a mano. El agrupador automático de HyperFrames deja fragmentos como «a empezar,» o «de 2024,».
 
 ## Sonido
 
-- Cada acción importante suena. Un efecto por segundo como máximo, y nunca encima de una palabra clave.
+- Un efecto por segundo como máximo: esa cifra manda. Si hay más acciones que segundos, suena la más importante y las demás van en silencio. Nunca encima de una palabra clave.
 - Dos silencios reales como mínimo. El más importante, justo antes del dato.
 - El pico de cada efecto cae un cuadro después de su imagen: primero se ve y luego se oye.
 - La música es el reloj cuando hay música. Afina la rejilla sobre lo medido, no sobre lo pedido.
@@ -58,11 +58,13 @@ Estilo, sujeto, movimiento, cámara, tiempos, estado final y restricciones. Ejem
 
 Todo entra igual. Todo flota sin causa. Tarjetas en fila. Logo flotante. Bordes con esquineras. Resplandor sin razón. Partículas decorativas. Texto que se mueve mientras se lee. El mismo sonido en cada corte. Títulos que siguen derivando después de aterrizar.
 
+## Un estilo por plano
+
+En un recorrido de estilos, lo que cambia es el material, y lo que se mantiene es la lectura. La misma caja de subtítulos en toda la pieza. Una gramática de 3 a 5 transiciones. Dos rasgos propios del estilo en cada plano. Un corte por cambio de idea, sobre un pulso. Cada estilo con sus colores: recoloreados a una paleta, se vuelven el mismo.
+
 ## Antes de decir que está listo
 
 1. `check` o su equivalente, y confirma en un cuadro los avisos de solape antes de cambiar nada.
-2. Mira cuadros reales: texto dentro de las zonas seguras, tildes correctas, nada cortado, sujeto grande, primer cuadro con imagen.
-3. Tiras cada 0,2 s en las acciones clave.
-4. Mide el archivo final: formato, duración, −14 LUFS, pico verdadero bajo −1 dBTP.
-5. Transcribe la mezcla final y compárala con el guion.
-6. Una ronda de correcciones. Di qué mediste y qué no pudiste comprobar. Si no oyes, dilo y pide que alguien escuche.
+2. `tools/qa/revisar.py` sobre el archivo final: mide formato, duración, volumen, cuadros negros o congelados, ritmo de planos, graves, voz contra música y silencios, y compara la voz con el guion.
+3. Abre la hoja y las tiras que deja, y responde sus preguntas: texto dentro de las zonas seguras, tildes correctas, nada cortado, sujeto grande, primer cuadro con imagen. Ninguna medida reemplaza a mirar.
+4. Una ronda de correcciones. Di qué mediste y qué no pudiste comprobar. Si no oyes, dilo y pide que alguien escuche.
