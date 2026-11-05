@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { agregarPlano, cambiarPlano, estado, enlaceCompartir, fijar, iniciarEstado, quitarPlano } from "../app/estado.js";
+import { agregarPlano, cambiarPlano, estado, enlaceCompartir, fijar, iniciarEstado, quitarPlano, reiniciar, repartirRecorrido, agregarRafaga, valoresSanos, planosSanos, exportarProyecto, importarProyecto } from "../app/estado.js";
 import { duracionPlanos } from "../app/planos.js";
 import { valoresPorDefecto } from "../app/catalogo.js";
 import { construirPrompt } from "../app/prompt.js";
@@ -156,4 +156,79 @@ test("un proyecto que llega por enlace queda marcado para avisar", () => {
   ponerUrl();
   iniciarEstado();
   assert.equal(estado.desdeEnlace, false);
+});
+
+test("el enlace conserva el recorrido, el estilo de cada plano y la ráfaga", () => {
+  const v = valoresSanos({ arte: { modo: "recorrido", recorrido: ["S04", "S04", "S16", "<script>", 7, "L-whiteboard"] } });
+  assert.equal(v.arte.modo, "recorrido");
+  assert.deepEqual(v.arte.recorrido, ["S04", "S16", "L-whiteboard"]);
+  const planos = planosSanos([
+    { id: "a", titulo: "Uno", texto: "", dur: 3, cam: "fija", tr: "corte", nota: "", estilo: "S04" },
+    { id: "b", titulo: "Dos", texto: "", dur: 2, cam: "fija", tr: "corte", nota: "", estilo: "<img src=x>", tipo: "rafaga", rafaga: { cadencia: 99, mosaico: "si", paradas: ["S16", "<b>"] } },
+  ], v);
+  assert.equal(planos[0].estilo, "S04");
+  assert.equal(planos[1].estilo, undefined);
+  assert.equal(planos[1].tipo, "rafaga");
+  assert.deepEqual(planos[1].rafaga, { cadencia: 2, mosaico: false, paradas: ["S16"] });
+});
+
+test("elegir un tipo de video trae su estructura natural, y sigue siendo editable", () => {
+  reiniciar();
+  fijar("guion.tipo", "historia");
+  assert.equal(estado.valores.guion.estructura, "historia");
+  fijar("guion.estructura", "tiempo");
+  assert.equal(estado.valores.guion.estructura, "tiempo");
+  fijar("guion.tipo", "tipografico");
+  assert.equal(estado.valores.guion.estructura, "tiempo", "un tipo sin estructura natural no la cambia");
+});
+
+test("repartir el recorrido asigna en orden y avisa de los que no caben", () => {
+  reiniciar();
+  fijar("entrega.duracion", 12);
+  const n = estado.planos.length;
+  fijar("arte.recorrido", Array.from({ length: n + 3 }, (_, i) => `S${String(i + 1).padStart(2, "0")}`));
+  const sobran = repartirRecorrido();
+  assert.equal(estado.planos[0].estilo, "S01");
+  assert.equal(sobran.length, 3);
+  const id = agregarRafaga(sobran);
+  const r = estado.planos.find((p) => p.id === id);
+  assert.equal(r.tipo, "rafaga");
+  assert.deepEqual(r.rafaga.paradas, sobran);
+  reiniciar();
+});
+
+test("un proyecto exportado se importa igual, y lo importado pasa por la aduana", () => {
+  reiniciar();
+  fijar("guion.titulo", "Un tema con ñ");
+  fijar("arte.modo", "recorrido");
+  fijar("arte.recorrido", ["S04", "S16"]);
+  const datos = JSON.parse(JSON.stringify(exportarProyecto()));
+  assert.equal(datos.guion.titulo, "Un tema con ñ");
+  reiniciar();
+  importarProyecto(datos);
+  assert.equal(estado.valores.guion.titulo, "Un tema con ñ");
+  assert.deepEqual(estado.valores.arte.recorrido, ["S04", "S16"]);
+  assert.equal(estado.planos[0].estilo, "S04");
+  importarProyecto({ arte: { modo: "nada", recorrido: "x" }, "__proto__": { contaminado: true }, planos: "no" });
+  assert.equal(estado.valores.arte.modo, "mezcla");
+  assert.deepEqual(estado.valores.arte.recorrido, []);
+  assert.equal({}.contaminado, undefined);
+  assert.throws(() => importarProyecto([]), /No es un proyecto/);
+  reiniciar();
+});
+
+test("un proyecto importado no conserva estilos que no existen", async () => {
+  const { estado, importarProyecto, quitarEstilosDesconocidos } = await import("../app/estado.js");
+  importarProyecto({
+    arte: { modo: "recorrido", recorrido: ["S07", "NO-EXISTE", "S18"], estilos: { base: "TAMPOCO" } },
+    planos: [{ titulo: "uno", dur: 3, estilo: "NO-EXISTE" }, { titulo: "dos", dur: 3, estilo: "S18" }, { titulo: "ráfaga", dur: 2, tipo: "rafaga", rafaga: { cadencia: 2, paradas: ["S07", "FALSO"] } }],
+  });
+  assert.deepEqual(estado.valores.arte.recorrido, ["S07", "NO-EXISTE", "S18"], "sin catálogo no se puede saber");
+  const quitados = quitarEstilosDesconocidos([{ id: "S07" }, { id: "S18" }]);
+  assert.equal(quitados, 4);
+  assert.deepEqual(estado.valores.arte.recorrido, ["S07", "S18"]);
+  assert.notEqual(estado.valores.arte.estilos.base, "TAMPOCO");
+  assert.equal(estado.planos[0].estilo, undefined);
+  assert.equal(estado.planos[1].estilo, "S18");
+  assert.deepEqual(estado.planos[2].rafaga.paradas, ["S07"]);
 });

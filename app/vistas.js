@@ -33,6 +33,7 @@ export function control(depto, c) {
     case "paleta": cuerpo = paleta(ruta, c); break;
     case "voces": cuerpo = selectorVoces(ruta); break;
     case "galeria": cuerpo = ctx.galeria(ruta); break;
+    case "lista-estilos": return document.createComment("La lista del recorrido se edita en la galería");
     default: cuerpo = opciones(ruta, c);
   }
   return h("div", { class: `ct ct-${c.t}` }, titulo, ayuda, cuerpo);
@@ -151,6 +152,9 @@ function miniCamara(o) {
   return { el, empezar: () => { ini = 0; cancelAnimationFrame(id); id = requestAnimationFrame(paso); }, parar: () => { cancelAnimationFrame(id); pintar(0); } };
 }
 
+// Una paleta propia solo guarda sus cinco colores.
+const nombresDe = (p) => ({ fondo: p.fondo, tinta: p.tinta, acento: p.acento, segundo: p.segundo, superficie: p.superficie });
+
 function paleta(ruta, c) {
   const cont = h("div", { class: "paletas" });
   const nombres = { fondo: "Fondo", tinta: "Tinta", acento: "Acento", segundo: "Secundario", superficie: "Superficie" };
@@ -160,13 +164,15 @@ function paleta(ruta, c) {
   };
   for (const o of c.opciones) {
     cont.append(h("button", { type: "button", class: "paleta", "data-id": o.id, "aria-pressed": String(leer(ruta) === o.id), onclick: () => { fijar(ruta, o.id); pintarSel(); } },
-      h("span", { class: "tiras" }, Object.values(o.c).map((col) => { const s = h("i", {}); s.style.background = col; return s; })),
+      o.propia
+        ? h("span", { class: "tiras tiras-propias", "aria-hidden": "true" }, ["#D62828", "#F2B705", "#1D4E89", "#2EC4B6", "#111111"].map((col) => { const s = h("i", {}); s.style.background = col; return s; }))
+        : h("span", { class: "tiras" }, Object.values(o.c).map((col) => { const s = h("i", {}); s.style.background = col; return s; })),
       h("b", {}, o.n[0]), h("small", {}, o.d ?? "")));
   }
   const propia = h("div", { class: "paleta-propia" });
   const pintarPropia = () => {
-    const actual = paletaActual(estado.valores);
-    propia.replaceChildren(...Object.entries(nombres).map(([k, n]) => h("label", {}, n, h("input", { type: "color", value: actual[k], oninput: (e) => { fijar(ruta, { ...paletaActual(estado.valores), [k]: e.target.value }); for (const b of cont.querySelectorAll("[data-id]")) b.setAttribute("aria-pressed", "false"); } }))));
+    const actual = paletaActual(estado.valores, ctx.estilos);
+    propia.replaceChildren(...Object.entries(nombres).map(([k, n]) => h("label", {}, n, h("input", { type: "color", value: actual[k], oninput: (e) => { fijar(ruta, { ...nombresDe(paletaActual(estado.valores, ctx.estilos)), [k]: e.target.value }); for (const b of cont.querySelectorAll("[data-id]")) b.setAttribute("aria-pressed", "false"); } }))));
   };
   pintarPropia();
   return h("div", {}, cont, h("div", { class: "ct-titulo" }, "Colores exactos"), propia);

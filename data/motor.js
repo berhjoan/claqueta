@@ -2,6 +2,11 @@
 export const VERSION_HF = "0.9.9";
 
 export const motores = [
+  { id: "auto", n: ["Según el estilo", "By style"], d: "Usa lo que ya está probado para tu estilo: kit de escenas, plantilla o motor propio. Si no hay, HyperFrames a mano.", gratis: "Gratis y local", docs: [], paso: ["", ""] },
+  { id: "escenas", n: ["Kit de escenas", "Scene kit"], d: "De un JSON a un proyecto editable: planos anclados a la voz, subtítulos, transiciones y efectos.", gratis: "Gratis y local", docs: ["engines/escenas/README.md"],
+    paso: [`Motor: kit de escenas, sobre HyperFrames ${VERSION_HF}. Escribe pieza.json y corre engines/escenas/armar.mjs: genera index.html, compositions/, subtítulos, transiciones y efectos.json. Cada plano se ancla a una palabra de la voz. Si un plano necesita algo que el kit no trae, edita su archivo en compositions/ después del último armado.`, `Engine: scene kit, on HyperFrames ${VERSION_HF}. Write pieza.json and run engines/escenas/armar.mjs: it generates index.html, compositions/, captions, transitions and efectos.json. Each shot is anchored to a word of the voice. If a shot needs something the kit lacks, edit its file in compositions/ after the last build.`] },
+  { id: "isometrico", n: ["Motor isométrico", "Isometric engine"], d: "Maqueta isométrica con objetos listos, anclada a la voz.", gratis: "Gratis y local", docs: ["engines/isometrico/README.md"],
+    paso: [`Motor: engines/isometrico, dentro de HyperFrames ${VERSION_HF}. Sigue su README tal cual y edita solo assets/isometrico/film.js: no escribas tu propio mundo. Pon los colores del encargo en PALETA y ancla todo a la voz con W('palabra'). Antes de renderizar, node ../.claqueta/engines/isometrico/zonas.mjs assets/isometrico/film.js debe terminar sin avisos, y eventos.mjs debe dejar efectos.json antes de pista.py mezcla.`, `Engine: engines/isometrico, inside HyperFrames ${VERSION_HF}. Follow its README as written and edit only assets/isometrico/film.js: do not write your own world. Put the brief's colors in PALETA and anchor everything to the voice with W('palabra'). Before rendering, node ../.claqueta/engines/isometrico/zonas.mjs assets/isometrico/film.js must finish with no warnings, and eventos.mjs must leave efectos.json before pista.py mezcla.`] },
   { id: "hyperframes", n: ["HyperFrames", "HyperFrames"], d: "HTML a video. El recomendado: probado en esta casa, Apache-2.0.", gratis: "Gratis y local", docs: ["library/hyperframes/skills/hyperframes/SKILL.md"],
     paso: [`Motor: HyperFrames ${VERSION_HF}. Crea el proyecto con npx hyperframes@${VERSION_HF} init. Usa siempre esa versión exacta, aunque avise de una más nueva, y cumple el contrato de library/hyperframes/skills/hyperframes/SKILL.md.`, `Engine: HyperFrames ${VERSION_HF}. Create the project with npx hyperframes@${VERSION_HF} init. Always use that exact version, even if it reports a newer one, and follow the contract in library/hyperframes/skills/hyperframes/SKILL.md.`] },
   { id: "remotion", n: ["Remotion", "Remotion"], d: "React a video. Gratis para personas y equipos de hasta 3; mira su licencia.", gratis: "Gratis con límites", docs: ["library/guias/motores.md"],
@@ -68,7 +73,7 @@ export const motor = {
   id: "motor", nombre: "Motor e IA", titulo: ["Motor y trabajo", "Engine and workflow"],
   grupos: [
     { id: "motor", titulo: "Motor de video", ayuda: "Todos gratis. HyperFrames es el que está probado de punta a punta.", controles: [
-        { k: "motor", t: "opciones", vista: "tarjetas", def: "hyperframes", label: ["Motor", "Engine"], opciones: motores },
+        { k: "motor", t: "opciones", vista: "tarjetas", def: "auto", label: ["Motor", "Engine"], opciones: motores },
       ] },
     { id: "ia", titulo: "Quién lo hace", controles: [
         { k: "destino", t: "opciones", vista: "chips", titulo: "IA de destino", def: "cualquiera", label: ["IA de destino", "Target AI"], opciones: destinos },

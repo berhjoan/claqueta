@@ -1,5 +1,5 @@
 // Línea de tiempo: planos con duración proporcional, arrastrar para ordenar, borde para cambiar duración, inspector del plano.
-import { estado, cambiarPlano, moverPlano, agregarPlano, quitarPlano, rehacerPlanos } from "./estado.js";
+import { estado, cambiarPlano, moverPlano, agregarPlano, quitarPlano, rehacerPlanos, rafagaSana } from "./estado.js";
 import { opcion } from "./catalogo.js";
 import { movimientos } from "../data/camara.js";
 import { transiciones } from "../data/montaje.js";
@@ -7,9 +7,10 @@ import { tiempo, duracionPlanos } from "./planos.js";
 import { h } from "./vistas.js";
 
 export class LineaTiempo {
-  constructor(raiz, { alBuscar }) {
+  constructor(raiz, { alBuscar, estilos = [] }) {
     this.raiz = raiz;
     this.alBuscar = alBuscar;
+    this.estilos = estilos;
     this.sel = null;
     this.regla = h("div", { class: "regla", "aria-hidden": "true" });
     this.pista = h("div", { class: "pista", role: "list", "aria-label": "Planos del video" });
@@ -46,13 +47,16 @@ export class LineaTiempo {
     this.pista.replaceChildren();
     planos.forEach((p, i) => {
       const cam = opcion("camara", "movs", p.cam);
+      const estiloDe = this.estilos.find((e) => e.id === p.estilo);
       const el = h("button", { type: "button", class: "plano", role: "listitem", draggable: false, "aria-current": String(this.sel === p.id), title: `${p.titulo}: ${p.dur} s` , onclick: () => {
         if (this.arrastrado) return;
         this.sel = this.sel === p.id ? null : p.id;
         this.pintar();
         if (this.sel) this.alBuscar(planos.slice(0, i).reduce((suma, x) => suma + x.dur, 0) + 0.01);
       } },
-        h("b", {}, String(i + 1)), h("span", {}, p.titulo), h("small", {}, cam ? cam.n[0] : p.cam));
+        h("b", {}, String(i + 1)), h("span", {}, p.titulo), h("small", {}, p.tipo === "rafaga" ? "Ráfaga" : estiloDe?.name.es ?? (cam ? cam.n[0] : p.cam)));
+      // El color propio del estilo se ve en la línea de tiempo: así se lee el recorrido de un vistazo.
+      if (estiloDe?.palette) { const tira = h("i", { class: "plano-color", "aria-hidden": "true" }); tira.style.background = estiloDe.palette.acento; tira.style.borderColor = estiloDe.palette.fondo; el.append(tira); }
       el.style.flexGrow = String(p.dur);
       el.style.flexBasis = "0";
       el.addEventListener("pointerdown", (e) => this.iniciarArrastre(e, i, el));
@@ -120,6 +124,13 @@ export class LineaTiempo {
     this.inspector.replaceChildren(
       campo("Parte", h("input", { class: "campo", type: "text", value: p.titulo, oninput: (e) => { cambiarPlano(p.id, { titulo: e.target.value }); this.pista.children[i].querySelector("span").textContent = e.target.value; } })),
       campo("Texto en pantalla", h("input", { class: "campo ancho", type: "text", value: p.texto ?? "", placeholder: "Literal, en español. Vacío: según el guion", oninput: (e) => cambiarPlano(p.id, { texto: e.target.value }) })),
+      campo("Estilo", h("select", { class: "campo", onchange: (e) => { cambiarPlano(p.id, { estilo: e.target.value || undefined }); this.pintar(); } },
+        h("option", { value: "", selected: !p.estilo }, "El de toda la pieza"),
+        this.estilos.map((e) => h("option", { value: e.id, selected: p.estilo === e.id }, `${e.name.es}${e.plantilla ? " ✓" : ""}`)))),
+      campo("Tipo de plano", h("select", { class: "campo", onchange: (e) => { cambiarPlano(p.id, e.target.value === "rafaga" ? { tipo: "rafaga", rafaga: rafagaSana(p.rafaga) } : { tipo: undefined, rafaga: undefined }); this.pintar(); } },
+        h("option", { value: "", selected: p.tipo !== "rafaga" }, "Normal"), h("option", { value: "rafaga", selected: p.tipo === "rafaga" }, "Ráfaga de estilos"))),
+      p.tipo === "rafaga" ? campo("Cuadros por imagen", h("input", { class: "campo corto", type: "number", min: 1, max: 12, step: 1, value: p.rafaga?.cadencia ?? 2, onchange: (e) => cambiarPlano(p.id, { rafaga: rafagaSana({ ...p.rafaga, cadencia: Number(e.target.value) }) }) })) : null,
+      p.tipo === "rafaga" ? h("label", { class: "linea-chk" }, h("input", { type: "checkbox", checked: Boolean(p.rafaga?.mosaico), onchange: (e) => cambiarPlano(p.id, { rafaga: rafagaSana({ ...p.rafaga, mosaico: e.target.checked }) }) }), "Mosaico con contador") : null,
       campo("Cámara", h("select", { class: "campo", onchange: (e) => { cambiarPlano(p.id, { cam: e.target.value }); this.pintar(); } }, movimientos.map((m) => h("option", { value: m.id, selected: p.cam === m.id }, m.n[0])))),
       campo("Sale con", h("select", { class: "campo", onchange: (e) => cambiarPlano(p.id, { tr: e.target.value }) }, transiciones.map((m) => h("option", { value: m.id, selected: p.tr === m.id }, m.n[0])))),
       campo("Duración", h("input", { class: "campo corto", type: "number", min: 0.3, step: 0.1, value: p.dur, onchange: (e) => { cambiarPlano(p.id, { dur: Math.max(0.3, Number(e.target.value) || p.dur) }); this.pintar(); } })),

@@ -361,3 +361,57 @@ body.prompt-grande .app { grid-template-columns: 208px minmax(0, 1fr) minmax(520
 @media (prefers-reduced-motion: reduce) {
   .palo, .aviso { animation: none !important; transition: none !important; }
 }
+
+/* Recorrido de estilos */
+.elegidos[hidden], .bandeja[hidden] { display: none; }
+.bandeja { background: var(--panel); border: 1px solid var(--oro); border-radius: var(--radio); padding: 8px 10px; margin-bottom: 10px; }
+.b-cabeza { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 6px; }
+.b-cabeza b { font-weight: 600; font-size: 13px; margin-right: auto; }
+.b-fichas { display: flex; flex-wrap: wrap; gap: 6px; }
+.b-ficha { position: relative; display: flex; align-items: center; gap: 6px; background: var(--ink); border: 1px solid var(--linea-fuerte); border-radius: var(--radio); padding: 3px 4px 3px 3px; cursor: grab; max-width: 240px; }
+.b-ficha.moviendo { opacity: .5; }
+.b-ficha.destino { border-color: var(--oro); }
+.b-ficha img { width: 28px; height: 32px; object-fit: cover; border-radius: 2px; }
+.b-num { font: 500 11px/1 var(--mono); color: var(--oro-claro); min-width: 16px; text-align: center; }
+.b-nombre { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; flex: 1; }
+.b-acc { display: inline-flex; }
+.bt-ico { background: none; border: 0; color: var(--polvo); width: 22px; height: 24px; font-size: 13px; cursor: pointer; border-radius: 2px; }
+.bt-ico:hover:not(:disabled) { color: var(--hueso); background: var(--alzado); }
+.bt-ico:disabled { opacity: .3; cursor: default; }
+/* Galería por secciones */
+.seccion-estilos { margin-bottom: 14px; }
+.seccion-estilos h4 { display: flex; align-items: baseline; gap: 6px; font-size: 12.5px; font-weight: 600; color: var(--polvo); margin: 0 0 6px; }
+.seccion-estilos h4 small { font: 400 11px var(--mono); color: var(--tenue); }
+.tiras-estilo { display: flex; height: 6px; }
+.tiras-estilo i { flex: 1; }
+.ficha-paleta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; font-size: 11.5px; color: var(--polvo); }
+.ficha-paleta span { display: inline-flex; align-items: center; gap: 4px; }
+.ficha-paleta i { width: 14px; height: 14px; border-radius: 2px; border: 1px solid var(--linea-fuerte); }
+.tiras-propias { opacity: .9; }
+/* Revisión antes de copiar */
+.revision { border-bottom: 1px solid var(--linea); }
+.rev-ok { font-size: 12px; color: var(--polvo); padding: 5px 10px; margin: 0; }
+.rev-cabeza { display: flex; width: 100%; justify-content: space-between; gap: 8px; background: none; border: 0; color: var(--hueso); font-size: 12.5px; padding: 6px 10px; cursor: pointer; text-align: left; }
+.rev-cabeza b { font-weight: 500; }
+.rev-cabeza span { color: var(--polvo); font-size: 12px; }
+.revision[data-nivel="alto"] .rev-cabeza { background: color-mix(in srgb, #E5533D 22%, transparent); }
+.revision[data-nivel="medio"] .rev-cabeza { background: color-mix(in srgb, var(--oro) 18%, transparent); }
+.rev-lista { list-style: none; margin: 0; padding: 4px 10px 8px; max-height: 240px; overflow: auto; display: grid; gap: 6px; }
+.rev-lista li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12.5px; line-height: 1.35; padding-left: 8px; border-left: 3px solid var(--linea-fuerte); }
+.rev-lista li span { flex: 1 1 200px; }
+.rev-alto { border-left-color: #E5533D !important; }
+.rev-medio { border-left-color: var(--oro) !important; }
+.cuenta.largo { color: var(--oro-claro); }
+/* Línea de tiempo */
+.plano-color { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; border-top: 1px solid; }
+.linea-chk { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+/* Proyectos */
+.proy-lista { display: grid; gap: 6px; margin-top: 8px; }
+.proy { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 6px 9px; }
+.proy-txt { flex: 1 1 180px; min-width: 0; }
+.proy-txt b { display: block; font-weight: 500; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.proy-txt small { color: var(--tenue); font-size: 11px; }
+@media (max-width: 720px) {
+  .b-ficha { max-width: 100%; flex: 1 1 100%; }
+  .rev-lista { max-height: 200px; }
+}

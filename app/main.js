@@ -1,11 +1,13 @@
 // Arranque del panel: arma la claqueta, el equipo, la mesa de trabajo, la cabina y la línea de tiempo.
 import { DEPTOS, opcion, medidas } from "./catalogo.js";
-import { estado, iniciarEstado, alCambiar, fijar, leer, aplicarReceta, reiniciar, enlaceCompartir } from "./estado.js";
+import { estado, iniciarEstado, alCambiar, fijar, leer, aplicarReceta, reiniciar, enlaceCompartir, rehacerPlanos, agregarRafaga, quitarEstilosDesconocidos } from "./estado.js";
 import { construirPrompt } from "./prompt.js";
 import { Monitor } from "./monitor.js";
 import { LineaTiempo } from "./linea.js";
 import { pintarNotaLectura, h, control, configurarVistas } from "./vistas.js";
 import { crearGaleria } from "./galeria.js";
+import { revisar, LARGO_RECOMENDADO } from "./revision.js";
+import { vistaProyectos } from "./proyectos.js";
 import { vistaBiblioteca, vistaRadar, vistaAyuda } from "./biblioteca.js";
 import { traducirNotas } from "./traducir.js";
 import { textoASvg } from "./tiza.js";
@@ -21,6 +23,7 @@ let monitor;
 const reduceMovimiento = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const ESPECIALES = [
+  { id: "proyectos", nombre: "Proyectos", resumen: "Guardar, exportar, importar", vista: () => vistaProyectos({ alAbrir: () => { quitarEstilosDesconocidos(estilos); refrescarTodo(); }, avisar }), titulo: "Proyectos", ayuda: "Guarda este encargo con un nombre para volver a él, o llévalo a otro lado como archivo." },
   { id: "biblioteca", nombre: "Biblioteca", resumen: "Skills, motores y guías", vista: vistaBiblioteca, titulo: "Biblioteca", ayuda: "Lo que recibe la IA junto con el prompt. Todo es público y gratuito." },
   { id: "radar", nombre: "Radar de GitHub", resumen: "Repos revisados", vista: vistaRadar, titulo: "Radar de GitHub", ayuda: "Repositorios revisados para este sistema, con su licencia y un veredicto." },
   { id: "ayuda", nombre: "Cómo se usa", resumen: "En tres pasos", vista: vistaAyuda, titulo: "Cómo se usa", ayuda: "" },
@@ -30,7 +33,11 @@ function resumen(id) {
   const v = estado.valores, n = (d, k, val = v[d][k]) => opcion(d, k, val)?.n[0] ?? "";
   switch (id) {
     case "guion": return (v.guion.titulo ?? "").trim() || n("guion", "estructura");
-    case "arte": { const e = estilos.find((x) => x.id === v.arte.estilos?.base); return e ? e.name.es : "Sin estilo"; }
+    case "arte": {
+      if (v.arte.modo === "recorrido") return `Recorrido de ${v.arte.recorrido?.length ?? 0} estilos`;
+      const e = estilos.find((x) => x.id === v.arte.estilos?.base);
+      return e ? e.name.es : "Sin estilo";
+    }
     case "camara": return `${v.camara.movs?.length ?? 0} movimientos, ${v.camara.lente === "macro" || v.camara.lente === "tilt" ? n("camara", "lente") : `${v.camara.lente} mm`}`;
     case "profundidad": return n("profundidad", "modo");
     case "movimiento": return n("movimiento", "curva");
@@ -205,7 +212,33 @@ const textoPrompt = () => construirPrompt(estado, { lang: idioma, estilos, tradu
 function pintarPrompt() {
   const t = textoPrompt();
   promptTexto.textContent = t;
-  cuenta.textContent = `${t.trim().split(/\s+/).length.toLocaleString("es")} palabras`;
+  const palabras = t.trim().split(/\s+/).length;
+  cuenta.textContent = `${palabras.toLocaleString("es")} palabras`;
+  cuenta.classList.toggle("largo", palabras > LARGO_RECOMENDADO && !compacto);
+  pintarRevision(palabras);
+}
+
+// Revisión antes de copiar: lo que se contradice, con su arreglo a un clic.
+const revisionRaiz = h("div", { class: "revision", "aria-live": "polite" });
+let revisionAbierta = false;
+function aplicarArreglo(a) {
+  if (a.cambios) for (const [ruta, valor] of Object.entries(a.cambios)) fijar(ruta, valor);
+  if (a.accion === "rehacer-planos") rehacerPlanos();
+  if (a.accion === "agregar-rafaga") agregarRafaga(a.datos ?? []);
+  if (a.accion === "compacto") { compacto = true; btCompacto.setAttribute("aria-pressed", "true"); }
+  refrescarTodo();
+  avisar("Arreglado.");
+}
+function pintarRevision(palabras) {
+  const avisos = revisar(estado, { estilos, palabras, compacto });
+  const graves = avisos.filter((a) => a.nivel !== "info").length;
+  revisionRaiz.dataset.nivel = avisos.some((a) => a.nivel === "alto") ? "alto" : graves ? "medio" : avisos.length ? "info" : "ok";
+  if (!avisos.length) { revisionRaiz.replaceChildren(h("p", { class: "rev-ok" }, "Revisado: nada se contradice.")); return; }
+  const cabeza = h("button", { type: "button", class: "rev-cabeza", "aria-expanded": String(revisionAbierta), onclick: () => { revisionAbierta = !revisionAbierta; pintarRevision(palabras); } },
+    h("b", {}, `Revisar antes de copiar: ${avisos.length} ${avisos.length === 1 ? "aviso" : "avisos"}`), h("span", {}, revisionAbierta ? "Ocultar" : "Ver"));
+  const lista = revisionAbierta ? h("ul", { class: "rev-lista" }, avisos.map((a) => h("li", { class: `rev-${a.nivel}` }, h("span", {}, a.texto),
+    a.arreglo ? h("button", { type: "button", class: "bt-mini", onclick: () => aplicarArreglo(a.arreglo) }, a.arreglo.etiqueta) : null))) : null;
+  revisionRaiz.replaceChildren(cabeza, lista ?? "");
 }
 
 const cabina = h("aside", { class: "cabina" },
@@ -214,6 +247,7 @@ const cabina = h("aside", { class: "cabina" },
     h("div", { class: "transporte" }, btPlay, h("div", { class: "tr-centro" }, barraT, h("div", { class: "tr-info" }, reloj, nombrePlano)), btBucle, btGuias)),
   h("div", { class: "cabina-prompt" },
     h("div", { class: "prompt-barra", role: "tablist", "aria-label": "Idioma del prompt" }, tabEs, tabEn, cuenta, btCompacto, btAmpliar),
+    revisionRaiz,
     promptTexto,
     h("div", { class: "prompt-pie" }, btBajar, btEnlace)));
 
@@ -250,23 +284,28 @@ function pintarVivo(que) {
   }
   pintarEquipo();
   clearTimeout(tPintado);
-  tPintado = setTimeout(() => { pintarPrompt(); monitor.configurar(estado); pintarClaqueta(); }, 90);
+  tPintado = setTimeout(() => { pintarPrompt(); monitor.configurar(estado, estilos); pintarClaqueta(); }, 90);
   if (que === "planos" || que === "receta") linea.pintar();
-  if (["entrega.duracion", "guion.estructura", "montaje.ritmo", "montaje.patron", "camara.movs", "montaje.transiciones"].includes(que)) linea.pintar();
+  if (["entrega.duracion", "guion.tipo", "guion.estructura", "montaje.ritmo", "montaje.patron", "camara.movs", "montaje.transiciones", "arte.modo", "arte.recorrido"].includes(que)) linea.pintar();
 }
-function refrescarTodo() { pintarClaqueta(); pintarEquipo(); pintarMesa(); pintarPrompt(); monitor.configurar(estado); linea.pintar(); }
+function refrescarTodo() { pintarClaqueta(); pintarEquipo(); pintarMesa(); pintarPrompt(); monitor.configurar(estado, estilos); linea.pintar(); }
 
 let linea;
 const fuentesCargadas = new Set(["Sora", "JetBrains Mono", "EMS Delight"]);
 function cargarFuenteWeb(nombre) {
   if (fuentesCargadas.has(nombre)) return;
   fuentesCargadas.add(nombre);
-  document.head.append(h("link", { rel: "stylesheet", href: `https://fonts.googleapis.com/css2?family=${encodeURIComponent(nombre).replace(/%20/g, "+")}:wght@400;700;800&display=swap` }));
+  // Las muestras de tipografía usan las mismas fuentes que recibirá el video, sin pedir nada a otro servidor.
+  fetch("assets/fonts/fuentes.json").then((r) => r.json()).then(({ familias }) => {
+    const css = (familias[nombre]?.archivos ?? []).map((a) => `@font-face{font-family:"${nombre}";src:url("assets/fonts/${a.archivo}");font-weight:${a.pesos};font-display:swap}`).join("");
+    if (css) document.head.append(h("style", {}, css));
+  }).catch(() => { /* sin la muestra, queda la fuente de respaldo */ });
 }
 
 async function iniciar() {
   iniciarEstado();
   try { estilos = await (await fetch("data/styles.json")).json(); } catch { estilos = []; }
+  quitarEstilosDesconocidos(estilos);
   const { formatos } = await import("../data/motor.js");
   campoFormato.append(...formatos.map((f) => h("option", { value: f.id }, f.id)));
 
@@ -278,9 +317,9 @@ async function iniciar() {
     if (p) nombrePlano.textContent = `Plano ${monitor.indice + 1}: ${p.titulo}`;
   });
   monitor.alParar = pintarPlay;
-  configurarVistas({ monitor, galeria: crearGaleria(estilos, { monitor: () => monitor }), cargarFuente: cargarFuenteWeb, refrescarDepto: pintarEquipo });
+  configurarVistas({ monitor, estilos, galeria: crearGaleria(estilos, { monitor: () => monitor, avisar, alCambiarPlanos: () => linea?.pintar() }), cargarFuente: cargarFuenteWeb, refrescarDepto: pintarEquipo });
 
-  linea = new LineaTiempo(lineaRaiz, { alBuscar: (t) => { monitor.pausar(); monitor.ir(t); pintarPlay(); } });
+  linea = new LineaTiempo(lineaRaiz, { alBuscar: (t) => { monitor.pausar(); monitor.ir(t); pintarPlay(); }, estilos });
   if (estado.desdeEnlace) {
     const banda = h("div", { class: "banda-enlace", role: "status" },
       h("span", {}, "Este proyecto llegó por un enlace. Revisa el guion, las notas y los textos de los planos antes de copiar: tu IA los va a leer."),
@@ -296,7 +335,7 @@ async function iniciar() {
   pintarMesa();
   pintarPrompt();
   linea.pintar();
-  monitor.configurar(estado);
+  monitor.configurar(estado, estilos);
   alCambiar(pintarVivo);
   alCambiar((q) => { if (q === "arte.tipografia") { const t = opcion("arte", "tipografia", leer("arte.tipografia")); if (t?.display) cargarFuenteWeb(t.display); } });
 

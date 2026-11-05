@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 // El catálogo es la materia prima: cada opción debe poder mostrarse en el panel y pedirse en los dos idiomas.
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -87,7 +88,7 @@ test("cada voz y cada carácter musical tienen muestra", () => {
     assert.ok(motoresVoz[v.motor]?.instalar, `motor sin instalación: ${v.motor}`);
     if (v.motor !== "edge") assert.ok(v.licencia, `${v.id} sin licencia`);
   }
-  for (const a of animos) assert.ok(existe(a.muestra), `falta ${a.muestra}`);
+  for (const a of animos.filter((x) => x.id !== "auto")) assert.ok(existe(a.muestra), `falta ${a.muestra}`);
 });
 
 test("el panel no ofrece motores de música con pesos no comerciales", () => {
@@ -112,4 +113,13 @@ test("el radar tiene los campos que el panel lee", () => {
     assert.ok(x.es && x.en && x.why, x.repo);
     assert.ok(["adoptar", "probar", "vigilar", "descartar"].includes(x.verdict), x.repo);
   }
+});
+
+test("lo propio se guarda con finales de línea LF", { skip: !fs.existsSync(path.join(raiz, ".git")) && "sin repositorio" }, () => {
+  // Un CRLF rompe un script de shell al clonarlo, y cambia los hashes. Lo copiado de otros repositorios queda como vino.
+  const ajeno = /^(library\/(ffmpeg-skill|hyperframes|hyperframes-clasico|hyperframes-registro|lemo-opuscar|estilos-40)\/|tools\/lib\/)|(^|\/)(LICENSE[^/]*|OFL-[^/]*)$/;
+  const binario = /\.(jpe?g|png|webp|woff2?|ttf|otf|mp3|wav|mp4|gif|ico|pdf|zip)$/i;
+  const archivos = execFileSync("git", ["ls-files"], { cwd: raiz, encoding: "utf8", maxBuffer: 1 << 26 }).split("\n").filter((f) => f && !ajeno.test(f) && !binario.test(f));
+  const conCrlf = archivos.filter((f) => { const r = path.join(raiz, f); return fs.existsSync(r) && fs.readFileSync(r).includes("\r\n"); });
+  assert.deepEqual(conCrlf, []);
 });

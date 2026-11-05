@@ -32,7 +32,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S01",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S01.webp"
+  "thumb": "assets/thumbs/S01.webp",
+  "palette": {
+   "fondo": "#1A0B2E",
+   "tinta": "#F7E9FF",
+   "acento": "#FF6FB5",
+   "segundo": "#9B5DE5",
+   "superficie": "#2A1446"
+  },
+  "plantilla": false
  },
  {
   "id": "S02",
@@ -67,7 +75,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S02",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S02.webp"
+  "thumb": "assets/thumbs/S02.webp",
+  "palette": {
+   "fondo": "#160C2F",
+   "tinta": "#E6ADF9",
+   "acento": "#D08FFB",
+   "segundo": "#B36AF8",
+   "superficie": "#281E41"
+  }
  },
  {
   "id": "S03",
@@ -105,7 +120,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S03",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S03.webp"
+  "thumb": "assets/thumbs/S03.webp",
+  "palette": {
+   "fondo": "#0A0B12",
+   "tinta": "#80FEC5",
+   "acento": "#D98EF1",
+   "segundo": "#82F7D4",
+   "superficie": "#1C1D24"
+  },
+  "plantilla": false
  },
  {
   "id": "S04",
@@ -140,7 +163,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S04",
   "status": "marca",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S04.webp"
+  "thumb": "assets/thumbs/propias/S04.webp",
+  "palette": {
+   "fondo": "#07040F",
+   "tinta": "#FDF6FF",
+   "acento": "#19F6FF",
+   "segundo": "#FF2BD6",
+   "superficie": "#140A24"
+  },
+  "plantilla": true
  },
  {
   "id": "S05",
@@ -175,7 +206,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S05",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S05.webp"
+  "thumb": "assets/thumbs/S05.webp",
+  "palette": {
+   "fondo": "#050A12",
+   "tinta": "#E6F1FF",
+   "acento": "#00E5FF",
+   "segundo": "#7A5CFF",
+   "superficie": "#0D1726"
+  },
+  "plantilla": false
  },
  {
   "id": "S06",
@@ -210,7 +249,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S06",
   "status": "marca",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S06.webp"
+  "thumb": "assets/thumbs/propias/S06.webp",
+  "palette": {
+   "fondo": "#140F2E",
+   "tinta": "#FFFFFF",
+   "acento": "#7B5CFF",
+   "segundo": "#00C2A8",
+   "superficie": "#2A2250"
+  },
+  "plantilla": true
  },
  {
   "id": "S07",
@@ -245,7 +292,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S07",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S07.webp"
+  "thumb": "assets/thumbs/S07.webp",
+  "palette": {
+   "fondo": "#0E0E0E",
+   "tinta": "#F5F5F0",
+   "acento": "#FF3B30",
+   "segundo": "#FFD60A",
+   "superficie": "#1C1C1C"
+  },
+  "piel": "cartel",
+  "plantilla": false
  },
  {
   "id": "S08",
@@ -283,7 +339,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S08",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S08.webp"
+  "thumb": "assets/thumbs/S08.webp",
+  "palette": {
+   "fondo": "#F2EFE8",
+   "tinta": "#1E2A3A",
+   "acento": "#FF6B4A",
+   "segundo": "#3A86FF",
+   "superficie": "#E2DDD2"
+  },
+  "motorListo": "isometrico"
  },
  {
   "id": "S09",
@@ -318,7 +382,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S09",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S09.webp"
+  "thumb": "assets/thumbs/S09.webp",
+  "palette": {
+   "fondo": "#E8D9C3",
+   "tinta": "#111111",
+   "acento": "#C0610E",
+   "segundo": "#F4A967",
+   "superficie": "#DACBB5"
+  }
  },
  {
   "id": "S10",
@@ -353,7 +424,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S10",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S10.webp"
+  "thumb": "assets/thumbs/propias/S10.webp",
+  "palette": {
+   "fondo": "#020A05",
+   "tinta": "#46FF78",
+   "acento": "#B6FFC9",
+   "segundo": "#1E8C3A",
+   "superficie": "#06210F"
+  },
+  "piel": "terminal",
+  "plantilla": true
  },
  {
   "id": "S11",
@@ -388,7 +468,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S11",
   "status": "marca",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S11.webp"
+  "thumb": "assets/thumbs/S11.webp",
+  "palette": {
+   "fondo": "#1B1145",
+   "tinta": "#FFFFFF",
+   "acento": "#FF7AC6",
+   "segundo": "#5EE7FF",
+   "superficie": "#2D1F6B"
+  },
+  "plantilla": false
  },
  {
   "id": "S12",
@@ -421,9 +509,17 @@
   },
   "engine": "hyperframes",
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S12",
-  "status": "adaptar",
+  "status": "prueba",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S12.webp"
+  "thumb": "assets/thumbs/propias/S12.webp",
+  "palette": {
+   "fondo": "#FFD72E",
+   "tinta": "#111111",
+   "acento": "#E4352B",
+   "segundo": "#1F6FEB",
+   "superficie": "#FFFFFF"
+  },
+  "plantilla": true
  },
  {
   "id": "S13",
@@ -458,7 +554,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S13",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S13.webp"
+  "thumb": "assets/thumbs/S13.webp",
+  "palette": {
+   "fondo": "#121212",
+   "tinta": "#F2F2F2",
+   "acento": "#FFC300",
+   "segundo": "#3A3A3A",
+   "superficie": "#1E1E1E"
+  },
+  "plantilla": false
  },
  {
   "id": "S14",
@@ -491,9 +595,17 @@
   },
   "engine": "webgl",
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S14",
-  "status": "adaptar",
+  "status": "prueba",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S14.webp"
+  "thumb": "assets/thumbs/propias/S14.webp",
+  "palette": {
+   "fondo": "#0A1A8C",
+   "tinta": "#FFFFFF",
+   "acento": "#05D9E8",
+   "segundo": "#FF2A6D",
+   "superficie": "#1C0F70"
+  },
+  "plantilla": true
  },
  {
   "id": "S15",
@@ -528,7 +640,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S15",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S15.webp"
+  "thumb": "assets/thumbs/S15.webp",
+  "palette": {
+   "fondo": "#F4F0E4",
+   "tinta": "#293067",
+   "acento": "#6C6F8E",
+   "segundo": "#1C2661",
+   "superficie": "#E6E2D6"
+  },
+  "piel": "collage",
+  "plantilla": false
  },
  {
   "id": "S16",
@@ -563,7 +684,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S16",
   "status": "marca",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S16.webp"
+  "thumb": "assets/thumbs/propias/S16.webp",
+  "palette": {
+   "fondo": "#EFE6D2",
+   "tinta": "#111111",
+   "acento": "#D62828",
+   "segundo": "#1D4E89",
+   "superficie": "#E3D8C0"
+  },
+  "piel": "cartel",
+  "plantilla": true
  },
  {
   "id": "S17",
@@ -596,9 +726,17 @@
   },
   "engine": "canvas2d",
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S17",
-  "status": "adaptar",
+  "status": "prueba",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S17.webp"
+  "thumb": "assets/thumbs/propias/S17.webp",
+  "palette": {
+   "fondo": "#7CC4EF",
+   "tinta": "#1B1030",
+   "acento": "#FFD23F",
+   "segundo": "#3FBF4F",
+   "superficie": "#8A5A2B"
+  },
+  "plantilla": true
  },
  {
   "id": "S18",
@@ -633,7 +771,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S18",
   "status": "marca",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S18.webp"
+  "thumb": "assets/thumbs/propias/S18.webp",
+  "palette": {
+   "fondo": "#0E3A8A",
+   "tinta": "#EAF4FF",
+   "acento": "#FFE066",
+   "segundo": "#7FB2E8",
+   "superficie": "#13489F"
+  },
+  "piel": "infografia",
+  "plantilla": true
  },
  {
   "id": "S19",
@@ -668,7 +815,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S19",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S19.webp"
+  "thumb": "assets/thumbs/S19.webp",
+  "palette": {
+   "fondo": "#0F1A17",
+   "tinta": "#F3E7C9",
+   "acento": "#D4AF37",
+   "segundo": "#1F6F5B",
+   "superficie": "#16261F"
+  }
  },
  {
   "id": "S20",
@@ -703,7 +857,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S20",
   "status": "marca",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S20.webp"
+  "thumb": "assets/thumbs/propias/S20.webp",
+  "palette": {
+   "fondo": "#FFDE59",
+   "tinta": "#111111",
+   "acento": "#FF5C8A",
+   "segundo": "#7BDFF2",
+   "superficie": "#FFFFFF"
+  },
+  "plantilla": true
  },
  {
   "id": "S21",
@@ -738,7 +900,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S21",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S21.webp"
+  "thumb": "assets/thumbs/propias/S21.webp",
+  "palette": {
+   "fondo": "#F5F2EB",
+   "tinta": "#111111",
+   "acento": "#D62828",
+   "segundo": "#6B6B6B",
+   "superficie": "#FFFFFF"
+  },
+  "piel": "archivo",
+  "plantilla": true
  },
  {
   "id": "S22",
@@ -773,7 +944,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S22",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S22.webp"
+  "thumb": "assets/thumbs/S22.webp",
+  "palette": {
+   "fondo": "#EDE3D1",
+   "tinta": "#1F1B16",
+   "acento": "#E4572E",
+   "segundo": "#3D5A80",
+   "superficie": "#F7F0E3"
+  },
+  "piel": "collage",
+  "plantilla": false
  },
  {
   "id": "S23",
@@ -811,7 +991,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S23",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S23.webp"
+  "thumb": "assets/thumbs/S23.webp",
+  "palette": {
+   "fondo": "#EEF3F6",
+   "tinta": "#164151",
+   "acento": "#548994",
+   "segundo": "#7A99A3",
+   "superficie": "#E0E5E8"
+  }
  },
  {
   "id": "S24",
@@ -846,7 +1033,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S24",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S24.webp"
+  "thumb": "assets/thumbs/S24.webp",
+  "palette": {
+   "fondo": "#FAF7F0",
+   "tinta": "#1D1D1F",
+   "acento": "#FF4F3F",
+   "segundo": "#2F80ED",
+   "superficie": "#FFFFFF"
+  },
+  "plantilla": false
  },
  {
   "id": "S25",
@@ -881,7 +1076,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S25",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S25.webp"
+  "thumb": "assets/thumbs/S25.webp",
+  "palette": {
+   "fondo": "#EFF3F6",
+   "tinta": "#111111",
+   "acento": "#156D76",
+   "segundo": "#4F9199",
+   "superficie": "#E1E5E8"
+  }
  },
  {
   "id": "S26",
@@ -916,7 +1118,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S26",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S26.webp"
+  "thumb": "assets/thumbs/S26.webp",
+  "palette": {
+   "fondo": "#F7F4EC",
+   "tinta": "#1B1B1B",
+   "acento": "#FF6B35",
+   "segundo": "#2EC4B6",
+   "superficie": "#FFFFFF"
+  },
+  "piel": "infografia",
+  "plantilla": false
  },
  {
   "id": "S27",
@@ -951,7 +1162,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S27",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S27.webp"
+  "thumb": "assets/thumbs/propias/S27.webp",
+  "palette": {
+   "fondo": "#031421",
+   "tinta": "#D9F9FF",
+   "acento": "#3DE8FF",
+   "segundo": "#FFB347",
+   "superficie": "#062236"
+  },
+  "plantilla": true
  },
  {
   "id": "S28",
@@ -986,7 +1205,15 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S28",
   "status": "marca",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S28.webp"
+  "thumb": "assets/thumbs/propias/S28.webp",
+  "palette": {
+   "fondo": "#050507",
+   "tinta": "#FFFFFF",
+   "acento": "#00E5FF",
+   "segundo": "#FF1F5A",
+   "superficie": "#111117"
+  },
+  "plantilla": true
  },
  {
   "id": "S29",
@@ -1019,9 +1246,17 @@
   },
   "engine": "threejs",
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S29",
-  "status": "adaptar",
+  "status": "prueba",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S29.webp"
+  "thumb": "assets/thumbs/propias/S29.webp",
+  "palette": {
+   "fondo": "#291440",
+   "tinta": "#FFFFFF",
+   "acento": "#FF6AD5",
+   "segundo": "#FF2975",
+   "superficie": "#12002B"
+  },
+  "plantilla": true
  },
  {
   "id": "S30",
@@ -1054,9 +1289,18 @@
   },
   "engine": "webgl",
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S30",
-  "status": "adaptar",
+  "status": "prueba",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S30.webp"
+  "thumb": "assets/thumbs/propias/S30.webp",
+  "palette": {
+   "fondo": "#1D130B",
+   "tinta": "#F3E6C8",
+   "acento": "#C0392B",
+   "segundo": "#8A6A48",
+   "superficie": "#EAD8B2"
+  },
+  "piel": "archivo",
+  "plantilla": true
  },
  {
   "id": "S31",
@@ -1091,7 +1335,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S31",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S31.webp"
+  "thumb": "assets/thumbs/S31.webp",
+  "palette": {
+   "fondo": "#D7E2E7",
+   "tinta": "#111111",
+   "acento": "#D05C34",
+   "segundo": "#D77452",
+   "superficie": "#C9D4D9"
+  }
  },
  {
   "id": "S32",
@@ -1126,7 +1377,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S32",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S32.webp"
+  "thumb": "assets/thumbs/S32.webp",
+  "palette": {
+   "fondo": "#EFF3F6",
+   "tinta": "#215561",
+   "acento": "#308F99",
+   "segundo": "#236270",
+   "superficie": "#E1E5E8"
+  }
  },
  {
   "id": "S33",
@@ -1164,7 +1422,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S33",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S33.webp"
+  "thumb": "assets/thumbs/S33.webp",
+  "palette": {
+   "fondo": "#EFF3F6",
+   "tinta": "#111111",
+   "acento": "#235366",
+   "segundo": "#4D7F8D",
+   "superficie": "#E1E5E8"
+  }
  },
  {
   "id": "S34",
@@ -1199,7 +1464,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S34",
   "status": "marca",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S34.webp"
+  "thumb": "assets/thumbs/S34.webp",
+  "palette": {
+   "fondo": "#A7D8F0",
+   "tinta": "#1F2937",
+   "acento": "#C2410C",
+   "segundo": "#22C55E",
+   "superficie": "#FDE68A"
+  }
  },
  {
   "id": "S35",
@@ -1234,7 +1506,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S35",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S35.webp"
+  "thumb": "assets/thumbs/S35.webp",
+  "palette": {
+   "fondo": "#EFF3F6",
+   "tinta": "#111111",
+   "acento": "#54969A",
+   "segundo": "#9EC8CA",
+   "superficie": "#E1E5E8"
+  }
  },
  {
   "id": "S36",
@@ -1272,7 +1551,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S36",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S36.webp"
+  "thumb": "assets/thumbs/S36.webp",
+  "palette": {
+   "fondo": "#17232D",
+   "tinta": "#C9DEE0",
+   "acento": "#536F80",
+   "segundo": "#405562",
+   "superficie": "#29353F"
+  }
  },
  {
   "id": "S37",
@@ -1310,7 +1596,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S37",
   "status": "marca",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/S37.webp"
+  "thumb": "assets/thumbs/S37.webp",
+  "palette": {
+   "fondo": "#FF7A3D",
+   "tinta": "#1A0E14",
+   "acento": "#FFD166",
+   "segundo": "#8E2C48",
+   "superficie": "#2B1320"
+  }
  },
  {
   "id": "S38",
@@ -1345,7 +1638,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S38",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S38.webp"
+  "thumb": "assets/thumbs/S38.webp",
+  "palette": {
+   "fondo": "#EFF3F6",
+   "tinta": "#111111",
+   "acento": "#447C83",
+   "segundo": "#B2C4C8",
+   "superficie": "#E1E5E8"
+  }
  },
  {
   "id": "S39",
@@ -1380,7 +1680,14 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S39",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/S39.webp"
+  "thumb": "assets/thumbs/S39.webp",
+  "palette": {
+   "fondo": "#EFF3F6",
+   "tinta": "#26556A",
+   "acento": "#AE853D",
+   "segundo": "#295C73",
+   "superficie": "#E1E5E8"
+  }
  },
  {
   "id": "S40",
@@ -1415,7 +1722,16 @@
   "doc": "library/estilos-40/GUIA_ESTILOS_CLAUDE.md#S40",
   "status": "prueba",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/S40.webp"
+  "thumb": "assets/thumbs/propias/S40.webp",
+  "palette": {
+   "fondo": "#1F2E27",
+   "tinta": "#F3F1E8",
+   "acento": "#FF8F42",
+   "segundo": "#FAD86F",
+   "superficie": "#2C4036"
+  },
+  "motorListo": "pizarra",
+  "plantilla": true
  },
  {
   "id": "L-caption-news",
@@ -1456,7 +1772,15 @@
   "doc": "library/lemo-opuscar/styles/caption-news/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-caption-news.webp"
+  "thumb": "assets/thumbs/L-caption-news.webp",
+  "palette": {
+   "fondo": "#42332D",
+   "tinta": "#CBC6C3",
+   "acento": "#DDAC2F",
+   "segundo": "#BE443B",
+   "superficie": "#54453F"
+  },
+  "piel": "noticia"
  },
  {
   "id": "L-newsreel",
@@ -1497,7 +1821,15 @@
   "doc": "library/lemo-opuscar/styles/newsreel/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-newsreel.webp"
+  "thumb": "assets/thumbs/L-newsreel.webp",
+  "palette": {
+   "fondo": "#000000",
+   "tinta": "#D0C9BD",
+   "acento": "#A09A90",
+   "segundo": "#77726A",
+   "superficie": "#121212"
+  },
+  "piel": "noticia"
  },
  {
   "id": "L-countdown",
@@ -1538,7 +1870,15 @@
   "doc": "library/lemo-opuscar/styles/countdown/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-countdown.webp"
+  "thumb": "assets/thumbs/L-countdown.webp",
+  "palette": {
+   "fondo": "#0C0E11",
+   "tinta": "#DCD7CA",
+   "acento": "#DE5E31",
+   "segundo": "#A89588",
+   "superficie": "#1E2023"
+  },
+  "piel": "cartel"
  },
  {
   "id": "L-city-symphony",
@@ -1579,7 +1919,14 @@
   "doc": "library/lemo-opuscar/styles/city-symphony/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-city-symphony.webp"
+  "thumb": "assets/thumbs/L-city-symphony.webp",
+  "palette": {
+   "fondo": "#C4C5C7",
+   "tinta": "#060506",
+   "acento": "#666B74",
+   "segundo": "#9EA2AA",
+   "superficie": "#B6B7B9"
+  }
  },
  {
   "id": "L-visual-investigation",
@@ -1620,7 +1967,15 @@
   "doc": "library/lemo-opuscar/styles/visual-investigation/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-visual-investigation.webp"
+  "thumb": "assets/thumbs/L-visual-investigation.webp",
+  "palette": {
+   "fondo": "#0C0C0E",
+   "tinta": "#BCBCBC",
+   "acento": "#AA3726",
+   "segundo": "#872C1E",
+   "superficie": "#1E1E20"
+  },
+  "piel": "archivo"
  },
  {
   "id": "L-kino-montage",
@@ -1661,7 +2016,15 @@
   "doc": "library/lemo-opuscar/styles/kino-montage/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-kino-montage.webp"
+  "thumb": "assets/thumbs/L-kino-montage.webp",
+  "palette": {
+   "fondo": "#E8DBC7",
+   "tinta": "#201713",
+   "acento": "#CE2C1F",
+   "segundo": "#CF3326",
+   "superficie": "#DACDB9"
+  },
+  "piel": "cartel"
  },
  {
   "id": "L-telestrator",
@@ -1702,7 +2065,15 @@
   "doc": "library/lemo-opuscar/styles/telestrator/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-telestrator.webp"
+  "thumb": "assets/thumbs/L-telestrator.webp",
+  "palette": {
+   "fondo": "#36411F",
+   "tinta": "#D7D2AC",
+   "acento": "#F5D90A",
+   "segundo": "#7F7925",
+   "superficie": "#485331"
+  },
+  "piel": "infografia"
  },
  {
   "id": "L-news-package",
@@ -1743,7 +2114,15 @@
   "doc": "library/lemo-opuscar/styles/news-package/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-news-package.webp"
+  "thumb": "assets/thumbs/L-news-package.webp",
+  "palette": {
+   "fondo": "#141318",
+   "tinta": "#DCD9D0",
+   "acento": "#D1B530",
+   "segundo": "#7A6A23",
+   "superficie": "#26252A"
+  },
+  "piel": "noticia"
  },
  {
   "id": "L-satellite-briefing",
@@ -1784,7 +2163,14 @@
   "doc": "library/lemo-opuscar/styles/satellite-briefing/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-satellite-briefing.webp"
+  "thumb": "assets/thumbs/L-satellite-briefing.webp",
+  "palette": {
+   "fondo": "#444444",
+   "tinta": "#F7F4EE",
+   "acento": "#979A98",
+   "segundo": "#0A0E0F",
+   "superficie": "#565656"
+  }
  },
  {
   "id": "L-briefing-board",
@@ -1825,7 +2211,15 @@
   "doc": "library/lemo-opuscar/styles/briefing-board/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-briefing-board.webp"
+  "thumb": "assets/thumbs/L-briefing-board.webp",
+  "palette": {
+   "fondo": "#EFEAE2",
+   "tinta": "#4F4D4A",
+   "acento": "#C46D56",
+   "segundo": "#DCA89A",
+   "superficie": "#E1DCD4"
+  },
+  "piel": "noticia"
  },
  {
   "id": "L-lidar-survey",
@@ -1866,7 +2260,14 @@
   "doc": "library/lemo-opuscar/styles/lidar-survey/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-lidar-survey.webp"
+  "thumb": "assets/thumbs/L-lidar-survey.webp",
+  "palette": {
+   "fondo": "#9D958B",
+   "tinta": "#141313",
+   "acento": "#FFFFFF",
+   "segundo": "#3A3631",
+   "superficie": "#AFA79D"
+  }
  },
  {
   "id": "L-white-model",
@@ -1907,7 +2308,14 @@
   "doc": "library/lemo-opuscar/styles/white-model/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-white-model.webp"
+  "thumb": "assets/thumbs/L-white-model.webp",
+  "palette": {
+   "fondo": "#5F595D",
+   "tinta": "#FFFFFF",
+   "acento": "#E6C8AD",
+   "segundo": "#899DD8",
+   "superficie": "#716B6F"
+  }
  },
  {
   "id": "L-data-physical",
@@ -1948,7 +2356,14 @@
   "doc": "library/lemo-opuscar/styles/data-physical/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-data-physical.webp"
+  "thumb": "assets/thumbs/L-data-physical.webp",
+  "palette": {
+   "fondo": "#E9DACA",
+   "tinta": "#4A3524",
+   "acento": "#A57227",
+   "segundo": "#946C36",
+   "superficie": "#DBCCBC"
+  }
  },
  {
   "id": "L-teardown",
@@ -1989,7 +2404,14 @@
   "doc": "library/lemo-opuscar/styles/teardown/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-teardown.webp"
+  "thumb": "assets/thumbs/L-teardown.webp",
+  "palette": {
+   "fondo": "#0A0A0C",
+   "tinta": "#EDE8E4",
+   "acento": "#D8402F",
+   "segundo": "#1C1B1F",
+   "superficie": "#1C1C1E"
+  }
  },
  {
   "id": "L-microscope",
@@ -2030,7 +2452,14 @@
   "doc": "library/lemo-opuscar/styles/microscope/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-microscope.webp"
+  "thumb": "assets/thumbs/L-microscope.webp",
+  "palette": {
+   "fondo": "#3A2230",
+   "tinta": "#FFFFFF",
+   "acento": "#A8E6A1",
+   "segundo": "#C77D9B",
+   "superficie": "#54324A"
+  }
  },
  {
   "id": "L-archive-lighttable",
@@ -2071,7 +2500,15 @@
   "doc": "library/lemo-opuscar/styles/archive-lighttable/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-archive-lighttable.webp"
+  "thumb": "assets/thumbs/L-archive-lighttable.webp",
+  "palette": {
+   "fondo": "#B8B6B4",
+   "tinta": "#2A2826",
+   "acento": "#63605D",
+   "segundo": "#C7C5C3",
+   "superficie": "#AAA8A6"
+  },
+  "piel": "archivo"
  },
  {
   "id": "L-crayon-book",
@@ -2112,7 +2549,14 @@
   "doc": "library/lemo-opuscar/styles/crayon-book/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-crayon-book.webp"
+  "thumb": "assets/thumbs/L-crayon-book.webp",
+  "palette": {
+   "fondo": "#3C3F64",
+   "tinta": "#F7F4EE",
+   "acento": "#D0AA43",
+   "segundo": "#A0473A",
+   "superficie": "#4E5176"
+  }
  },
  {
   "id": "L-watercolor",
@@ -2153,7 +2597,14 @@
   "doc": "library/lemo-opuscar/styles/watercolor/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-watercolor.webp"
+  "thumb": "assets/thumbs/L-watercolor.webp",
+  "palette": {
+   "fondo": "#EDE2D4",
+   "tinta": "#111111",
+   "acento": "#BA6C4F",
+   "segundo": "#DCBA96",
+   "superficie": "#DFD4C6"
+  }
  },
  {
   "id": "L-ink-wash",
@@ -2194,7 +2645,14 @@
   "doc": "library/lemo-opuscar/styles/ink-wash/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-ink-wash.webp"
+  "thumb": "assets/thumbs/L-ink-wash.webp",
+  "palette": {
+   "fondo": "#E5DBCA",
+   "tinta": "#494339",
+   "acento": "#A77229",
+   "segundo": "#F5E8D6",
+   "superficie": "#D7CDBC"
+  }
  },
  {
   "id": "L-impasto",
@@ -2235,7 +2693,14 @@
   "doc": "library/lemo-opuscar/styles/impasto/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-impasto.webp"
+  "thumb": "assets/thumbs/L-impasto.webp",
+  "palette": {
+   "fondo": "#4C3D49",
+   "tinta": "#F0D3B6",
+   "acento": "#E9B783",
+   "segundo": "#9D6E4D",
+   "superficie": "#5E4F5B"
+  }
  },
  {
   "id": "L-one-line",
@@ -2276,7 +2741,14 @@
   "doc": "library/lemo-opuscar/styles/one-line/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-one-line.webp"
+  "thumb": "assets/thumbs/L-one-line.webp",
+  "palette": {
+   "fondo": "#E9E2D7",
+   "tinta": "#111111",
+   "acento": "#98794A",
+   "segundo": "#EEE7DC",
+   "superficie": "#DBD4C9"
+  }
  },
  {
   "id": "L-whiteboard",
@@ -2317,7 +2789,14 @@
   "doc": "library/lemo-opuscar/styles/whiteboard/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-whiteboard.webp"
+  "thumb": "assets/thumbs/L-whiteboard.webp",
+  "palette": {
+   "fondo": "#F7F7F5",
+   "tinta": "#535353",
+   "acento": "#C6795B",
+   "segundo": "#D7A28D",
+   "superficie": "#E9E9E7"
+  }
  },
  {
   "id": "L-urban-sketch",
@@ -2358,7 +2837,14 @@
   "doc": "library/lemo-opuscar/styles/urban-sketch/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-urban-sketch.webp"
+  "thumb": "assets/thumbs/L-urban-sketch.webp",
+  "palette": {
+   "fondo": "#EDE5D6",
+   "tinta": "#111111",
+   "acento": "#86854D",
+   "segundo": "#B1B077",
+   "superficie": "#DFD7C8"
+  }
  },
  {
   "id": "L-chalkboard",
@@ -2399,7 +2885,15 @@
   "doc": "library/lemo-opuscar/styles/chalkboard/STYLE.md",
   "status": "prueba",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-chalkboard.webp"
+  "thumb": "assets/thumbs/L-chalkboard.webp",
+  "palette": {
+   "fondo": "#1F2E27",
+   "tinta": "#F3F1E8",
+   "acento": "#FF8F42",
+   "segundo": "#FAD86F",
+   "superficie": "#2C4036"
+  },
+  "motorListo": "pizarra"
  },
  {
   "id": "L-shadow-puppet",
@@ -2440,7 +2934,14 @@
   "doc": "library/lemo-opuscar/styles/shadow-puppet/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-shadow-puppet.webp"
+  "thumb": "assets/thumbs/L-shadow-puppet.webp",
+  "palette": {
+   "fondo": "#130503",
+   "tinta": "#FEF8D4",
+   "acento": "#994523",
+   "segundo": "#803A1D",
+   "superficie": "#251715"
+  }
  },
  {
   "id": "L-ukiyoe",
@@ -2481,7 +2982,14 @@
   "doc": "library/lemo-opuscar/styles/ukiyoe/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-ukiyoe.webp"
+  "thumb": "assets/thumbs/L-ukiyoe.webp",
+  "palette": {
+   "fondo": "#BEA580",
+   "tinta": "#1B2A47",
+   "acento": "#8E1F1A",
+   "segundo": "#243C63",
+   "superficie": "#D0B792"
+  }
  },
  {
   "id": "L-papercut-red",
@@ -2522,7 +3030,15 @@
   "doc": "library/lemo-opuscar/styles/papercut-red/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-papercut-red.webp"
+  "thumb": "assets/thumbs/L-papercut-red.webp",
+  "palette": {
+   "fondo": "#841227",
+   "tinta": "#F1D2C7",
+   "acento": "#E4675A",
+   "segundo": "#E15445",
+   "superficie": "#962439"
+  },
+  "piel": "collage"
  },
  {
   "id": "L-paper-lantern",
@@ -2563,7 +3079,14 @@
   "doc": "library/lemo-opuscar/styles/paper-lantern/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-paper-lantern.webp"
+  "thumb": "assets/thumbs/L-paper-lantern.webp",
+  "palette": {
+   "fondo": "#031035",
+   "tinta": "#CFAF88",
+   "acento": "#345BBF",
+   "segundo": "#DAB381",
+   "superficie": "#152247"
+  }
  },
  {
   "id": "L-risograph",
@@ -2604,7 +3127,15 @@
   "doc": "library/lemo-opuscar/styles/risograph/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-risograph.webp"
+  "thumb": "assets/thumbs/L-risograph.webp",
+  "palette": {
+   "fondo": "#E3D632",
+   "tinta": "#343974",
+   "acento": "#E02C2C",
+   "segundo": "#F1A1A1",
+   "superficie": "#D5C824"
+  },
+  "piel": "collage"
  },
  {
   "id": "L-halftone-dossier",
@@ -2645,7 +3176,15 @@
   "doc": "library/lemo-opuscar/styles/halftone-dossier/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-halftone-dossier.webp"
+  "thumb": "assets/thumbs/L-halftone-dossier.webp",
+  "palette": {
+   "fondo": "#E2DBCC",
+   "tinta": "#2E2D40",
+   "acento": "#C06321",
+   "segundo": "#DE8240",
+   "superficie": "#D4CDBE"
+  },
+  "piel": "collage"
  },
  {
   "id": "L-woodcut",
@@ -2686,7 +3225,14 @@
   "doc": "library/lemo-opuscar/styles/woodcut/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-woodcut.webp"
+  "thumb": "assets/thumbs/L-woodcut.webp",
+  "palette": {
+   "fondo": "#1C1B1A",
+   "tinta": "#F5EEE1",
+   "acento": "#D2CBC1",
+   "segundo": "#EFE6D9",
+   "superficie": "#2E2D2C"
+  }
  },
  {
   "id": "L-engraving",
@@ -2727,7 +3273,15 @@
   "doc": "library/lemo-opuscar/styles/engraving/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-engraving.webp"
+  "thumb": "assets/thumbs/L-engraving.webp",
+  "palette": {
+   "fondo": "#DECFAE",
+   "tinta": "#483824",
+   "acento": "#6B4B22",
+   "segundo": "#877253",
+   "superficie": "#D0C1A0"
+  },
+  "piel": "archivo"
  },
  {
   "id": "L-silkscreen-poster",
@@ -2768,7 +3322,15 @@
   "doc": "library/lemo-opuscar/styles/silkscreen-poster/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-silkscreen-poster.webp"
+  "thumb": "assets/thumbs/L-silkscreen-poster.webp",
+  "palette": {
+   "fondo": "#1B234D",
+   "tinta": "#E0D9CF",
+   "acento": "#EBBC58",
+   "segundo": "#D0A756",
+   "superficie": "#2D355F"
+  },
+  "piel": "cartel"
  },
  {
   "id": "L-printed-long-take",
@@ -2809,7 +3371,15 @@
   "doc": "library/lemo-opuscar/styles/printed-long-take/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-printed-long-take.webp"
+  "thumb": "assets/thumbs/L-printed-long-take.webp",
+  "palette": {
+   "fondo": "#504942",
+   "tinta": "#ECE5D7",
+   "acento": "#C89A53",
+   "segundo": "#AF9873",
+   "superficie": "#625B54"
+  },
+  "piel": "archivo"
  },
  {
   "id": "L-swiss-motion",
@@ -2850,7 +3420,15 @@
   "doc": "library/lemo-opuscar/styles/swiss-motion/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-swiss-motion.webp"
+  "thumb": "assets/thumbs/L-swiss-motion.webp",
+  "palette": {
+   "fondo": "#EAE8E6",
+   "tinta": "#201717",
+   "acento": "#E10714",
+   "segundo": "#DC0A16",
+   "superficie": "#DCDAD8"
+  },
+  "piel": "cartel"
  },
  {
   "id": "L-spy-titles",
@@ -2891,7 +3469,15 @@
   "doc": "library/lemo-opuscar/styles/spy-titles/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-spy-titles.webp"
+  "thumb": "assets/thumbs/L-spy-titles.webp",
+  "palette": {
+   "fondo": "#C83923",
+   "tinta": "#FFFFFF",
+   "acento": "#F2B9B1",
+   "segundo": "#A92F1D",
+   "superficie": "#DA4B35"
+  },
+  "piel": "cartel"
  },
  {
   "id": "L-art-deco",
@@ -2932,7 +3518,14 @@
   "doc": "library/lemo-opuscar/styles/art-deco/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-art-deco.webp"
+  "thumb": "assets/thumbs/L-art-deco.webp",
+  "palette": {
+   "fondo": "#060302",
+   "tinta": "#AA9567",
+   "acento": "#6C5835",
+   "segundo": "#3B301D",
+   "superficie": "#181514"
+  }
  },
  {
   "id": "L-blueprint",
@@ -2973,7 +3566,15 @@
   "doc": "library/lemo-opuscar/styles/blueprint/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-blueprint.webp"
+  "thumb": "assets/thumbs/L-blueprint.webp",
+  "palette": {
+   "fondo": "#1E3D79",
+   "tinta": "#F7F4EE",
+   "acento": "#6188D8",
+   "segundo": "#1C3871",
+   "superficie": "#304F8B"
+  },
+  "piel": "infografia"
  },
  {
   "id": "L-stained-glass",
@@ -3014,7 +3615,14 @@
   "doc": "library/lemo-opuscar/styles/stained-glass/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-stained-glass.webp"
+  "thumb": "assets/thumbs/L-stained-glass.webp",
+  "palette": {
+   "fondo": "#090909",
+   "tinta": "#F7F4EE",
+   "acento": "#81612F",
+   "segundo": "#294298",
+   "superficie": "#1B1B1B"
+  }
  },
  {
   "id": "L-pictogram-motion",
@@ -3055,7 +3663,14 @@
   "doc": "library/lemo-opuscar/styles/pictogram-motion/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-pictogram-motion.webp"
+  "thumb": "assets/thumbs/L-pictogram-motion.webp",
+  "palette": {
+   "fondo": "#077468",
+   "tinta": "#FFFFFF",
+   "acento": "#D0BE49",
+   "segundo": "#B8A630",
+   "superficie": "#19867A"
+  }
  },
  {
   "id": "L-ascii-crt",
@@ -3096,7 +3711,15 @@
   "doc": "library/lemo-opuscar/styles/ascii-crt/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-ascii-crt.webp"
+  "thumb": "assets/thumbs/L-ascii-crt.webp",
+  "palette": {
+   "fondo": "#090605",
+   "tinta": "#B8A330",
+   "acento": "#7A5615",
+   "segundo": "#755214",
+   "superficie": "#1B1817"
+  },
+  "piel": "terminal"
  },
  {
   "id": "L-dataviz",
@@ -3137,7 +3760,15 @@
   "doc": "library/lemo-opuscar/styles/dataviz/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-dataviz.webp"
+  "thumb": "assets/thumbs/L-dataviz.webp",
+  "palette": {
+   "fondo": "#F4F1EB",
+   "tinta": "#111111",
+   "acento": "#AA844B",
+   "segundo": "#F7F3ED",
+   "superficie": "#E6E3DD"
+  },
+  "piel": "infografia"
  },
  {
   "id": "L-iso-infographic",
@@ -3178,7 +3809,15 @@
   "doc": "library/lemo-opuscar/styles/iso-infographic/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-iso-infographic.webp"
+  "thumb": "assets/thumbs/L-iso-infographic.webp",
+  "palette": {
+   "fondo": "#F2E5D0",
+   "tinta": "#111111",
+   "acento": "#A47B2E",
+   "segundo": "#D7B36F",
+   "superficie": "#E4D7C2"
+  },
+  "piel": "infografia"
  },
  {
   "id": "L-dark-keynote",
@@ -3219,7 +3858,15 @@
   "doc": "library/lemo-opuscar/styles/dark-keynote/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-dark-keynote.webp"
+  "thumb": "assets/thumbs/L-dark-keynote.webp",
+  "palette": {
+   "fondo": "#09090D",
+   "tinta": "#A7A6A8",
+   "acento": "#DFAA7B",
+   "segundo": "#9EC0E4",
+   "superficie": "#1B1B1F"
+  },
+  "plantilla": false
  },
  {
   "id": "L-living-screencast",
@@ -3260,7 +3907,14 @@
   "doc": "library/lemo-opuscar/styles/living-screencast/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-living-screencast.webp"
+  "thumb": "assets/thumbs/L-living-screencast.webp",
+  "palette": {
+   "fondo": "#FBF9F7",
+   "tinta": "#111111",
+   "acento": "#C18150",
+   "segundo": "#E6CCB8",
+   "superficie": "#EDEBE9"
+  }
  },
  {
   "id": "L-hologram-hud",
@@ -3301,7 +3955,14 @@
   "doc": "library/lemo-opuscar/styles/hologram-hud/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-hologram-hud.webp"
+  "thumb": "assets/thumbs/L-hologram-hud.webp",
+  "palette": {
+   "fondo": "#020609",
+   "tinta": "#7FD8DD",
+   "acento": "#49969F",
+   "segundo": "#7ADADF",
+   "superficie": "#14181B"
+  }
  },
  {
   "id": "L-transit-map",
@@ -3342,7 +4003,15 @@
   "doc": "library/lemo-opuscar/styles/transit-map/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-transit-map.webp"
+  "thumb": "assets/thumbs/L-transit-map.webp",
+  "palette": {
+   "fondo": "#EEE9E2",
+   "tinta": "#1E1C1E",
+   "acento": "#CD645B",
+   "segundo": "#D67F77",
+   "superficie": "#E0DBD4"
+  },
+  "piel": "infografia"
  },
  {
   "id": "L-isometric-picture-book",
@@ -3383,7 +4052,15 @@
   "doc": "library/lemo-opuscar/styles/isometric-picture-book/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-isometric-picture-book.webp"
+  "thumb": "assets/thumbs/L-isometric-picture-book.webp",
+  "palette": {
+   "fondo": "#EAE1D3",
+   "tinta": "#364D40",
+   "acento": "#9B7927",
+   "segundo": "#D8B665",
+   "superficie": "#DCD3C5"
+  },
+  "motorListo": "isometrico"
  },
  {
   "id": "L-circuit-board",
@@ -3424,7 +4101,14 @@
   "doc": "library/lemo-opuscar/styles/circuit-board/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-circuit-board.webp"
+  "thumb": "assets/thumbs/L-circuit-board.webp",
+  "palette": {
+   "fondo": "#22553C",
+   "tinta": "#DFEBE2",
+   "acento": "#D8E297",
+   "segundo": "#D08C65",
+   "superficie": "#34674E"
+  }
  },
  {
   "id": "L-rubber-hose",
@@ -3465,7 +4149,14 @@
   "doc": "library/lemo-opuscar/styles/rubber-hose/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-rubber-hose.webp"
+  "thumb": "assets/thumbs/L-rubber-hose.webp",
+  "palette": {
+   "fondo": "#010101",
+   "tinta": "#DDDCDA",
+   "acento": "#8D8A84",
+   "segundo": "#787570",
+   "superficie": "#131313"
+  }
  },
  {
   "id": "L-cel-anime-80s",
@@ -3506,7 +4197,14 @@
   "doc": "library/lemo-opuscar/styles/cel-anime-80s/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-cel-anime-80s.webp"
+  "thumb": "assets/thumbs/L-cel-anime-80s.webp",
+  "palette": {
+   "fondo": "#130C20",
+   "tinta": "#D1CDE5",
+   "acento": "#E59E89",
+   "segundo": "#553E7D",
+   "superficie": "#251E32"
+  }
  },
  {
   "id": "L-scifi-toon",
@@ -3547,7 +4245,14 @@
   "doc": "library/lemo-opuscar/styles/scifi-toon/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": null
+  "thumb": null,
+  "palette": {
+   "fondo": "#10233F",
+   "tinta": "#F4F7FF",
+   "acento": "#FF9F1C",
+   "segundo": "#2EC4B6",
+   "superficie": "#1A3256"
+  }
  },
  {
   "id": "L-midcentury-toon",
@@ -3588,7 +4293,14 @@
   "doc": "library/lemo-opuscar/styles/midcentury-toon/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-midcentury-toon.webp"
+  "thumb": "assets/thumbs/L-midcentury-toon.webp",
+  "palette": {
+   "fondo": "#F4E8D5",
+   "tinta": "#4F4639",
+   "acento": "#B37928",
+   "segundo": "#D4953E",
+   "superficie": "#E6DAC7"
+  }
  },
  {
   "id": "L-pixel-rpg",
@@ -3629,7 +4341,14 @@
   "doc": "library/lemo-opuscar/styles/pixel-rpg/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-pixel-rpg.webp"
+  "thumb": "assets/thumbs/L-pixel-rpg.webp",
+  "palette": {
+   "fondo": "#272B45",
+   "tinta": "#FCFBF0",
+   "acento": "#E7CD86",
+   "segundo": "#145B96",
+   "superficie": "#393D57"
+  }
  },
  {
   "id": "L-hd-2d",
@@ -3670,7 +4389,14 @@
   "doc": "library/lemo-opuscar/styles/hd-2d/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-hd-2d.webp"
+  "thumb": "assets/thumbs/L-hd-2d.webp",
+  "palette": {
+   "fondo": "#0F0408",
+   "tinta": "#ECBD5E",
+   "acento": "#B7490D",
+   "segundo": "#C06525",
+   "superficie": "#21161A"
+  }
  },
  {
   "id": "L-microgame",
@@ -3711,7 +4437,14 @@
   "doc": "library/lemo-opuscar/styles/microgame/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-microgame.webp"
+  "thumb": "assets/thumbs/L-microgame.webp",
+  "palette": {
+   "fondo": "#4C176E",
+   "tinta": "#E2DBCC",
+   "acento": "#E0C34A",
+   "segundo": "#CE4477",
+   "superficie": "#5E2980"
+  }
  },
  {
   "id": "L-game-show",
@@ -3752,7 +4485,14 @@
   "doc": "library/lemo-opuscar/styles/game-show/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-game-show.webp"
+  "thumb": "assets/thumbs/L-game-show.webp",
+  "palette": {
+   "fondo": "#6C50BA",
+   "tinta": "#FFFFFF",
+   "acento": "#F3A89F",
+   "segundo": "#EB6C5E",
+   "superficie": "#7E62CC"
+  }
  },
  {
   "id": "L-silent-film",
@@ -3793,7 +4533,14 @@
   "doc": "library/lemo-opuscar/styles/silent-film/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-silent-film.webp"
+  "thumb": "assets/thumbs/L-silent-film.webp",
+  "palette": {
+   "fondo": "#0D0606",
+   "tinta": "#E3E1E2",
+   "acento": "#C9B99B",
+   "segundo": "#9C9895",
+   "superficie": "#1F1818"
+  }
  },
  {
   "id": "L-backrooms",
@@ -3834,7 +4581,14 @@
   "doc": "library/lemo-opuscar/styles/backrooms/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-backrooms.webp"
+  "thumb": "assets/thumbs/L-backrooms.webp",
+  "palette": {
+   "fondo": "#7B6625",
+   "tinta": "#FFFFFF",
+   "acento": "#D2BE6E",
+   "segundo": "#8D7A2C",
+   "superficie": "#8D7837"
+  }
  },
  {
   "id": "L-brick-toy",
@@ -3875,7 +4629,14 @@
   "doc": "library/lemo-opuscar/styles/brick-toy/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": null
+  "thumb": null,
+  "palette": {
+   "fondo": "#F4F1EA",
+   "tinta": "#1A1A1A",
+   "acento": "#D7263D",
+   "segundo": "#1B98E0",
+   "superficie": "#FFFFFF"
+  }
  },
  {
   "id": "L-paper-popup",
@@ -3916,7 +4677,15 @@
   "doc": "library/lemo-opuscar/styles/paper-popup/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": null
+  "thumb": null,
+  "palette": {
+   "fondo": "#F6EFE3",
+   "tinta": "#2B2B2B",
+   "acento": "#E07A5F",
+   "segundo": "#3D405B",
+   "superficie": "#FFFFFF"
+  },
+  "piel": "collage"
  },
  {
   "id": "L-tilt-shift",
@@ -3957,7 +4726,14 @@
   "doc": "library/lemo-opuscar/styles/tilt-shift/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-tilt-shift.webp"
+  "thumb": "assets/thumbs/L-tilt-shift.webp",
+  "palette": {
+   "fondo": "#71524F",
+   "tinta": "#FFFFFF",
+   "acento": "#D89E7B",
+   "segundo": "#C77442",
+   "superficie": "#836461"
+  }
  },
  {
   "id": "L-lowpoly-island",
@@ -3998,7 +4774,14 @@
   "doc": "library/lemo-opuscar/styles/lowpoly-island/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-lowpoly-island.webp"
+  "thumb": "assets/thumbs/L-lowpoly-island.webp",
+  "palette": {
+   "fondo": "#070F3C",
+   "tinta": "#B1A1A0",
+   "acento": "#A67F39",
+   "segundo": "#784133",
+   "superficie": "#19214E"
+  }
  },
  {
   "id": "L-glass-product",
@@ -4039,7 +4822,14 @@
   "doc": "library/lemo-opuscar/styles/glass-product/STYLE.md",
   "status": "adaptar",
   "blackGold": "alto",
-  "thumb": "assets/thumbs/L-glass-product.webp"
+  "thumb": "assets/thumbs/L-glass-product.webp",
+  "palette": {
+   "fondo": "#010103",
+   "tinta": "#DCE3F2",
+   "acento": "#9FB4DC",
+   "segundo": "#353C47",
+   "superficie": "#131315"
+  }
  },
  {
   "id": "L-memphis-diorama",
@@ -4080,7 +4870,14 @@
   "doc": "library/lemo-opuscar/styles/memphis-diorama/STYLE.md",
   "status": "adaptar",
   "blackGold": "bajo",
-  "thumb": "assets/thumbs/L-memphis-diorama.webp"
+  "thumb": "assets/thumbs/L-memphis-diorama.webp",
+  "palette": {
+   "fondo": "#FEFAF5",
+   "tinta": "#5B5156",
+   "acento": "#CB7C21",
+   "segundo": "#E4A357",
+   "superficie": "#F0ECE7"
+  }
  },
  {
   "id": "L-desktop-flythrough",
@@ -4121,6 +4918,13 @@
   "doc": "library/lemo-opuscar/styles/desktop-flythrough/STYLE.md",
   "status": "adaptar",
   "blackGold": "medio",
-  "thumb": "assets/thumbs/L-desktop-flythrough.webp"
+  "thumb": "assets/thumbs/L-desktop-flythrough.webp",
+  "palette": {
+   "fondo": "#DCD6DE",
+   "tinta": "#493D3B",
+   "acento": "#6173D0",
+   "segundo": "#8290DA",
+   "superficie": "#CEC8D0"
+  }
  }
 ]

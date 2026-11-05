@@ -1,6 +1,6 @@
 // Estado del panel: valores, planos, guardado local y enlace para compartir.
 import { DEPTOS, opcion, valoresPorDefecto } from "./catalogo.js";
-import { duracionPlanos, generarPlanos } from "./planos.js";
+import { duracionPlanos, generarPlanos, repartirEstilos } from "./planos.js";
 import { recetas } from "../data/recetas.js";
 import { voces } from "../data/voces.js";
 
@@ -19,13 +19,18 @@ function avisar(que) {
 
 export const leer = (ruta) => ruta.split(".").reduce((o, k) => o?.[k], estado.valores);
 
-const AFECTAN_PLANOS = new Set(["entrega.duracion", "guion.estructura", "montaje.ritmo", "montaje.patron", "camara.movs", "montaje.transiciones"]);
+const AFECTAN_PLANOS = new Set(["entrega.duracion", "guion.estructura", "montaje.ritmo", "montaje.patron", "camara.movs", "montaje.transiciones", "arte.modo", "arte.recorrido"]);
 
 export function fijar(ruta, valor) {
   const partes = ruta.split(".");
   const ultimo = partes.pop();
   const obj = partes.reduce((o, k) => o[k], estado.valores);
   obj[ultimo] = valor;
+  // Cada tipo de video trae su estructura natural, para que no salgan dos a la vez. Sigue siendo editable.
+  if (ruta === "guion.tipo") {
+    const natural = opcion("guion", "tipo", valor)?.estructura;
+    if (natural && opcion("guion", "estructura", natural)) { estado.valores.guion.estructura = natural; if (!estado.planosManuales) estado.planos = generarPlanos(estado.valores); }
+  }
   if (AFECTAN_PLANOS.has(ruta) && !estado.planosManuales) estado.planos = generarPlanos(estado.valores);
   if (ruta === "entrega.duracion" && estado.planosManuales) reescalarPlanos(Number(valor));
   avisar(ruta);
@@ -85,6 +90,29 @@ export function cambiarPlano(id, cambios) {
   avisar("planos");
 }
 
+// Reparte los estilos del recorrido en los planos actuales, en orden. Devuelve los que no cupieron.
+export function repartirRecorrido() {
+  const lista = estado.valores.arte.recorrido ?? [];
+  const { planos, sobran } = repartirEstilos(estado.planos, lista);
+  estado.planos = planos;
+  estado.planosManuales = true;
+  avisar("planos");
+  return sobran;
+}
+
+// Un plano de ráfaga voltea miniaturas reales del catálogo. Se agrega después del gancho, salvo que digas dónde.
+export function agregarRafaga(estilos, despuesDe) {
+  const i = despuesDe ? estado.planos.findIndex((x) => x.id === despuesDe) : 0;
+  const base = estado.planos[Math.max(0, i)];
+  const nuevo = { ...base, id: `p${Date.now().toString(36)}r`, titulo: "Ráfaga de estilos", texto: "", nota: "", dur: 2, tipo: "rafaga", rafaga: rafagaSana({ paradas: estilos }), estilo: undefined };
+  delete nuevo.estilo;
+  estado.planos.splice(Math.max(0, i) + 1, 0, nuevo);
+  estado.planosManuales = true;
+  duracionDesdePlanos();
+  avisar("planos");
+  return nuevo.id;
+}
+
 export function moverPlano(desde, hasta) {
   const [p] = estado.planos.splice(desde, 1);
   estado.planos.splice(hasta, 0, p);
@@ -109,6 +137,45 @@ export function quitarPlano(id) {
   estado.planosManuales = true;
   duracionDesdePlanos();
   avisar("planos");
+}
+
+// Un proyecto como archivo: solo lo que difiere de lo normal, más los planos. Es el mismo formato de tools/prompt.mjs.
+export function exportarProyecto() {
+  return { ...diferencias(estado.valores), planos: estado.planos };
+}
+
+// Lo que entra de un archivo o de un proyecto guardado pasa por la misma aduana que un enlace.
+export function importarProyecto(datos) {
+  if (!datos || typeof datos !== "object" || Array.isArray(datos)) throw new Error("No es un proyecto");
+  const { planos, ...valores } = datos;
+  estado.valores = valoresSanos(valores);
+  const sanos = planosSanos(planos, estado.valores);
+  estado.planos = sanos ?? generarPlanos(estado.valores);
+  estado.planosManuales = Boolean(sanos);
+  estado.receta = null;
+  estado.desdeEnlace = false;
+  avisar("receta");
+}
+export const abrirProyecto = importarProyecto;
+
+// Un enlace o un archivo pueden traer estilos que no existen. Con el catálogo a la vista se quitan: un estilo fantasma no llega al encargo.
+export function quitarEstilosDesconocidos(estilos) {
+  if (!estilos?.length) return 0;
+  const hay = new Set(estilos.map((e) => e.id));
+  const arte = estado.valores.arte, antes = JSON.stringify([arte.recorrido, arte.estilos, estado.planos]);
+  let quitados = 0;
+  const vale = (id) => hay.has(id) || ((quitados += 1), false);
+  arte.recorrido = (arte.recorrido ?? []).filter(vale);
+  const porDefecto = valoresPorDefecto().arte.estilos ?? {};
+  for (const k of Object.keys(arte.estilos ?? {})) if (arte.estilos[k] && !vale(arte.estilos[k])) arte.estilos[k] = porDefecto[k] ?? "";
+  estado.planos = estado.planos.map((p) => {
+    const q = { ...p };
+    if (q.estilo && !vale(q.estilo)) delete q.estilo;
+    if (q.rafaga?.paradas) q.rafaga = { ...q.rafaga, paradas: q.rafaga.paradas.filter(vale) };
+    return q;
+  });
+  if (JSON.stringify([arte.recorrido, arte.estilos, estado.planos]) !== antes) avisar("planos");
+  return quitados;
 }
 
 // Guardado local. Puede fallar en modo privado: el panel sigue funcionando sin él.
@@ -142,6 +209,8 @@ function valorSano(c, val, def) {
       return typeof val === "boolean" ? val : def;
     case "voces":
       return voces.some((v) => v.id === val) ? val : def;
+    case "lista-estilos":
+      return Array.isArray(val) ? [...new Set(val.filter((x) => typeof x === "string" && ID_ESTILO.test(x)))].slice(0, 200) : def;
     case "galeria": {
       if (!val || typeof val !== "object") return def;
       const salida = {};
@@ -179,6 +248,15 @@ export function valoresSanos(extra) {
   return base;
 }
 
+export function rafagaSana(r) {
+  const cadencia = Number(r?.cadencia);
+  return {
+    cadencia: Number.isInteger(cadencia) && cadencia >= 1 && cadencia <= 12 ? cadencia : 2,
+    mosaico: r?.mosaico === true,
+    paradas: Array.isArray(r?.paradas) ? [...new Set(r.paradas.filter((x) => typeof x === "string" && ID_ESTILO.test(x)))].slice(0, 20) : [],
+  };
+}
+
 export function planosSanos(lista, valores) {
   if (!Array.isArray(lista) || !lista.length) return null;
   const texto = (x, largo) => (typeof x === "string" ? x.slice(0, largo) : "");
@@ -192,6 +270,8 @@ export function planosSanos(lista, valores) {
       cam: opcion("camara", "movs", p?.cam) ? p.cam : valores.camara.movs[0] ?? "fija",
       tr: opcion("montaje", "transiciones", p?.tr) ? p.tr : "corte",
       nota: texto(p?.nota, 2000),
+      ...(typeof p?.estilo === "string" && ID_ESTILO.test(p.estilo) ? { estilo: p.estilo } : {}),
+      ...(p?.tipo === "rafaga" ? { tipo: "rafaga", rafaga: rafagaSana(p.rafaga) } : {}),
     };
   });
 }

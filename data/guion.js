@@ -1,17 +1,17 @@
 // Proyecto, historia y guion. El texto del guion nunca se traduce: siempre se conserva en español.
 export const tipos = [
-  { id: "explicador", n: ["Explicador", "Explainer"], d: "Enseña una idea con claridad.", p: ["Explicador educativo: una sola idea, entendida al final.", "Educational explainer: one idea, understood by the end."] },
-  { id: "noticia", n: ["Noticia", "News brief"], d: "Qué pasó y por qué importa.", p: ["Noticia breve: qué pasó, por qué importa y qué hacer con eso. Cada dato con fuente.", "News brief: what happened, why it matters and what to do about it. Every fact sourced."] },
-  { id: "negocios", n: ["Caso de negocio", "Business case"], d: "Un problema real y cómo se resuelve.", p: ["Caso de negocio: un problema real, la decisión y el resultado medible, sin inventar cifras.", "Business case: a real problem, the decision and the measurable result, with no invented figures."] },
-  { id: "tutorial", n: ["Tutorial", "Tutorial"], d: "Paso a paso para hacer algo.", p: ["Tutorial: pasos concretos, cada uno comprobable, con capturas reales de pantalla.", "Tutorial: concrete steps, each verifiable, with real screen captures."] },
-  { id: "promo", n: ["Promo de producto", "Product promo"], d: "Muestra qué hace y por qué quererlo.", p: ["Promo de producto: el producto real en acción, un beneficio por escena y un llamado claro.", "Product promo: the real product in action, one benefit per scene and a clear call to action."] },
+  { id: "explicador", n: ["Explicador", "Explainer"], d: "Enseña una idea con claridad.", estructura: "concepto", p: ["Explicador educativo: una sola idea, entendida al final.", "Educational explainer: one idea, understood by the end."] },
+  { id: "noticia", n: ["Noticia", "News brief"], d: "Qué pasó y por qué importa.", estructura: "noticia", p: ["Noticia breve: cada dato con fuente.", "News brief: every fact sourced."] },
+  { id: "negocios", n: ["Caso de negocio", "Business case"], d: "Un problema real y cómo se resuelve.", estructura: "problema", p: ["Caso de negocio: un problema real, la decisión y el resultado medible, sin inventar cifras.", "Business case: a real problem, the decision and the measurable result, with no invented figures."] },
+  { id: "tutorial", n: ["Tutorial", "Tutorial"], d: "Paso a paso para hacer algo.", estructura: "pasos", p: ["Tutorial: pasos concretos, cada uno comprobable, con capturas reales de pantalla.", "Tutorial: concrete steps, each verifiable, with real screen captures."] },
+  { id: "promo", n: ["Promo de producto", "Product promo"], d: "Muestra qué hace y por qué quererlo.", estructura: "problema", p: ["Promo de producto: el producto real en acción, un beneficio por escena y un llamado claro.", "Product promo: the real product in action, one benefit per scene and a clear call to action."] },
   { id: "lanzamiento", n: ["Lanzamiento", "Launch film"], d: "Anuncio con energía de película.", p: ["Lanzamiento: anuncio con arco de tensión y remate de marca al final.", "Launch film: an announcement with a tension arc and a brand payoff at the end."] },
-  { id: "historia", n: ["Historia o minidocumental", "Story or mini-doc"], d: "Personajes, tensión y giro.", p: ["Historia: inicio, tensión, giro, resolución y lección. Cada plano causa el siguiente.", "Story: setup, tension, turn, resolution and lesson. Each shot causes the next."] },
-  { id: "datos", n: ["Historia con datos", "Data story"], d: "Las cifras cuentan algo.", p: ["Historia con datos: escalas primero, luego valores y al final la conclusión; solo cifras con fuente.", "Data story: scales first, then values, then the conclusion; sourced figures only."] },
+  { id: "historia", n: ["Historia o minidocumental", "Story or mini-doc"], d: "Personajes, tensión y giro.", estructura: "historia", p: ["Historia o minidocumental: cada plano causa el siguiente.", "Story or mini-doc: each shot causes the next."] },
+  { id: "datos", n: ["Historia con datos", "Data story"], d: "Las cifras cuentan algo.", estructura: "concepto", p: ["Historia con datos: escalas primero, luego valores y al final la conclusión; solo cifras con fuente.", "Data story: scales first, then values, then the conclusion; sourced figures only."] },
   { id: "musical", n: ["Video musical o arte", "Music or art film"], d: "La música manda la imagen.", p: ["Pieza musical: la pista es el reloj y la imagen responde a su energía.", "Music piece: the track is the clock and the picture answers its energy."] },
   { id: "tipografico", n: ["Anuncio tipográfico", "Type-only spot"], d: "Solo palabras en movimiento.", p: ["Anuncio solo con tipografía en movimiento; la palabra es la imagen.", "Type-only spot; the word is the image."] },
   { id: "recorte", n: ["Reedición de un video", "Re-edit of footage"], d: "Mejorar una toma propia con gráficos.", p: ["Reedición de material existente: conserva voz, identidad y hechos; solo agrega lo pedido y nunca tapes el rostro.", "Re-edit of existing footage: keep voice, identity and facts; add only what was asked and never cover the face."] },
-  { id: "cita", n: ["Reel de opinión", "Opinion reel"], d: "Una frase fuerte y su argumento.", p: ["Reel de opinión: una afirmación fuerte, su argumento y una pregunta al final.", "Opinion reel: a strong claim, its argument and a closing question."] },
+  { id: "cita", n: ["Reel de opinión", "Opinion reel"], d: "Una frase fuerte y su argumento.", p: ["Reel de opinión: una afirmación fuerte y su argumento.", "Opinion reel: a strong claim and its argument."] },
 ];
 
 export const estructuras = [
@@ -68,6 +68,14 @@ export const finales = [
   { id: "bucle", n: ["Vuelve al inicio", "Loops back"], p: ["Cierre en bucle: la última frase empalma con la primera.", "Looping close: the last line leads back into the first."] },
 ];
 
+// De qué se parte. Nunca se escribe una ruta de la persona en un comando: el archivo se deja en material/ con un nombre fijo.
+export const materiales = [
+  { id: "tema", n: ["Un tema o un guion", "A topic or a script"], d: "Todo se hace con código." },
+  { id: "toma", n: ["Mi toma en bruto", "My raw take"], d: "Grabaste varios intentos: sale una toma limpia con subtítulos y gráficos.", p: ["Se parte de una grabación de la persona, hablando a cámara, con varios intentos de cada frase. Debe estar en `material/toma.mp4`. Si no está, pídela. Limpia la toma antes de todo lo demás y revisa `cortes.json` y `hoja-aprobacion.jpg`. Se conservan su voz, sus hechos y su cara: nunca tapes el rostro.", "This starts from the person's own recording, speaking to camera, with several takes of each sentence. It must be in `material/toma.mp4`. If it is not there, ask for it. Clean the take before anything else and review `cortes.json` and `hoja-aprobacion.jpg`. Keep their voice, facts and face: never cover the face."] },
+  { id: "largo", n: ["Un video largo", "A long video"], d: "Una entrevista o clase: salen varios cortos verticales.", p: ["Se parte de un video largo de la persona, en `material/largo.mp4`. Si no está, pídelo. Transcribe, elige los mejores momentos con la rúbrica de `cortos.py`, y entrega cada corto reencuadrado, con subtítulos.", "This starts from the person's long video, in `material/largo.mp4`. If it is not there, ask for it. Transcribe, pick the best moments with the rubric in `cortos.py`, and deliver each short reframed, with captions."] },
+  { id: "pantalla", n: ["Una grabación de pantalla", "A screen recording"], d: "Un tutorial con tu interfaz real.", p: ["Se parte de una grabación de pantalla de la persona, en `material/pantalla.mp4`. Si no está, pídela. La interfaz es real: no la redibujes ni la inventes.", "This starts from the person's screen recording, in `material/pantalla.mp4`. If it is not there, ask for it. The interface is real: do not redraw or invent it."] },
+];
+
 export const guion = {
   id: "guion", nombre: "Guion", titulo: ["Proyecto y guion", "Project and script"],
   grupos: [
@@ -76,6 +84,8 @@ export const guion = {
         { k: "objetivo", t: "texto", titulo: "Qué debe sentir o hacer quien lo ve", holder: "Entender la diferencia y guardar el video", def: "", label: ["Objetivo", "Goal"], traducible: true },
         { k: "audiencia", t: "texto", titulo: "Para quién es", holder: "Dueños de pequeños negocios sin experiencia técnica", def: "", label: ["Audiencia", "Audience"], traducible: true },
         { k: "tipo", t: "opciones", vista: "chips", titulo: "Tipo de video", def: "explicador", label: ["Tipo", "Type"], opciones: tipos },
+        { k: "material", t: "opciones", vista: "chips", titulo: "De qué partes", def: "tema", label: ["Material", "Footage"], opciones: materiales },
+        { k: "referencia", t: "interruptor", titulo: "Tengo un reel de referencia", ayuda: "Se mide su ritmo y su estructura, nunca se copia su contenido.", def: false, p: ["Hay un video de referencia en `material/referencia.mp4`. Si no está, pídelo. Mide su gramática antes de escribir el tratamiento, y conserva su ritmo, su tipo de gancho y su escala. No copies sus imágenes, música, textos, marca ni personas: el tema y el material son otros.", "There is a reference video in `material/referencia.mp4`. If it is not there, ask for it. Measure its grammar before writing the treatment, and keep its rhythm, hook type and scale. Do not copy its images, music, text, brand or people: the topic and the material are different."] },
       ] },
     { id: "historia", titulo: "Cómo se cuenta", controles: [
         { k: "estructura", t: "opciones", vista: "tarjetas", titulo: "Estructura", def: "concepto", label: ["Estructura", "Structure"], opciones: estructuras },

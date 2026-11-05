@@ -1,5 +1,9 @@
 // Recetas: combinaciones completas para partir rápido. Cada una cambia solo los ajustes que nombra.
 export const recetas = [
+  { id: "recorrido", nombre: "Recorrido de estilos", d: "Un estilo por idea, cada uno con sus colores. La misma caja de subtítulos.", cambios: {
+    "arte.modo": "recorrido", "arte.recorrido": ["S07", "S18", "S22", "S10", "L-caption-news", "S21"], "arte.paleta": "propios", "montaje.ritmo": "vivo", "montaje.transiciones": ["corte", "latigo", "glitch", "coincidencia"], "sonido.animo": "electronico", "entrega.duracion": 30 } },
+  { id: "marca", nombre: "Tu marca: negro y oro", d: "BG System IA con su paleta, su emblema y su lema.", cambios: {
+    "arte.marca": "bg", "arte.paleta": "bg", "arte.tipografia": "marca", "arte.estilos": { base: "S26", secundario: "S18", acento: null } } },
   { id: "pizarra", nombre: "Pizarra que corrige", d: "Mito y verdad a tiza. Enseña desmintiendo.", cambios: {
     "guion.estructura": "mito", "guion.gancho": "pregunta", "arte.estilos": { base: "S40", secundario: null, acento: null }, "arte.formas": ["trazos"], "arte.pantalla": "mundo", "arte.textura": "tiza", "arte.tipografia": "tiza",
     "camara.movs": ["pull", "fija", "push"], "camara.lente": "50", "camara.desenfoque": "no", "profundidad.modo": "plano", "profundidad.foco": "no", "movimiento.curva": "suave", "movimiento.texto": ["mano"], "movimiento.elementos": ["trazar"],

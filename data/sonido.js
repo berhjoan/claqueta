@@ -9,7 +9,22 @@ export const musicas = [
   { id: "propia", n: ["Mi propia pista", "My own track"], d: "Indica la ruta en las notas.", p: ["Usa la pista indicada en las notas. Entra en su compás más fuerte y termina en una línea de compás.", "Use the track named in the notes. Enter at its strongest bar and end on a bar line."] },
 ];
 
+// Sin elegir, la música sale del estilo, no de un valor por defecto que se cuela.
+export function caracterPara(estilo) {
+  const t = `${estilo?.sound?.es ?? ""} ${estilo?.name?.es ?? ""} ${estilo?.family?.es ?? ""}`.toLowerCase();
+  const reglas = [
+    [/sintetiz|neón|neon|synth|glitch|digital|hud|holo|vhs|píxel|pixel|videojuego|terminal/, "electronico"],
+    [/orquest|cine|épic|trailer|crescendo/, "cine"],
+    [/misterio|investig|noir|sombra|espía|tensión/, "misterio"],
+    [/golpe|bombo|cinétic|cartel|impacto|neobrutal/, "energia"],
+    [/lofi|papel|acuarela|cuaderno|lápiz|crayón|dibujo|boceto/, "lofi"],
+    [/cuerda|madera|cálid|acústic|aula|pizarra|tiza/, "calido"],
+  ];
+  return (reglas.find(([re]) => re.test(t)) ?? [null, "minimal"])[1];
+}
+
 export const animos = [
+  { id: "auto", n: ["Según el estilo", "By style"], d: "El carácter y el tempo salen del estilo elegido." },
   { id: "minimal", muestra: "assets/music/minimal.mp3", n: ["Pulso mínimo", "Minimal pulse"], p: ["pulso mínimo y tenso", "tense minimal pulse"] },
   { id: "calido", muestra: "assets/music/calido.mp3", n: ["Cálido y acústico", "Warm acoustic"], p: ["cálido y acústico", "warm and acoustic"] },
   { id: "electronico", muestra: "assets/music/electronico.mp3", n: ["Electrónico limpio", "Clean electronic"], p: ["electrónico limpio", "clean electronic"] },
@@ -23,7 +38,7 @@ export const animos = [
 export const densidadSfx = [
   { id: "cero", n: ["Sin efectos", "No effects"], p: ["Sin efectos de sonido.", "No sound effects."] },
   { id: "minimo", n: ["Solo en los cambios", "Scene changes only"], p: ["Efectos solo en cambios de escena y en el remate.", "Effects only on scene changes and the payoff."] },
-  { id: "accion", n: ["Por cada acción", "Every visible action"], p: ["Cada acción visible importante suena, con un máximo de 1 efecto por segundo y sin tapar una palabra clave: si un golpe cae junto a ella, adelántalo o bájalo. Cada efecto tiene su causa en pantalla.", "Every important visible action sounds, at most 1 effect per second and without covering a key word: if a hit falls next to one, move it earlier or lower it. Each effect has a cause on screen."] },
+  { id: "accion", n: ["Por cada acción", "Every visible action"], p: ["Máximo 1 efecto por segundo: esa cifra manda. Si hay más acciones que segundos, suena la más importante y las demás van en silencio. Sin tapar una palabra clave: si un golpe cae junto a ella, adelántalo o bájalo. Cada efecto tiene su causa en pantalla.", "Every important visible action sounds, at most 1 effect per second and without covering a key word: if a hit falls next to one, move it earlier or lower it. Each effect has a cause on screen."] },
   { id: "foley", n: ["El material suena siempre", "The material always sounds"], p: ["El material suena de forma continua, como tiza, papel o teclas, sincronizado con cada trazo o elemento. No cuenta como efecto suelto.", "The material sounds continuously, like chalk, paper or keys, synced to each stroke or element. It does not count as a separate effect."] },
 ];
 
@@ -55,7 +70,7 @@ export const sonido = {
       ] },
     { id: "musica", titulo: "Música", controles: [
         { k: "musica", t: "opciones", vista: "tarjetas", def: "codigo", label: ["Música", "Music"], opciones: musicas },
-        { k: "animo", t: "opciones", vista: "chips", titulo: "Carácter", ayuda: "Toca el botón para oír cómo suena cada uno. Se compuso con la herramienta gratis de este sistema.", def: "calido", label: ["Carácter musical", "Music character"], opciones: animos },
+        { k: "animo", t: "opciones", vista: "chips", titulo: "Carácter", ayuda: "Toca el botón para oír cómo suena cada uno. Se compuso con la herramienta gratis de este sistema.", def: "auto", label: ["Carácter musical", "Music character"], opciones: animos },
         { k: "bpm", t: "rango", titulo: "Tempo", min: 60, max: 170, paso: 1, def: 96, unidad: "BPM", label: ["Tempo", "Tempo"] },
         { k: "nivel", t: "rango", titulo: "Música bajo la voz", min: -30, max: -10, paso: 1, def: -22, unidad: "dB", label: ["Música bajo la voz", "Music under voice"] },
       ] },

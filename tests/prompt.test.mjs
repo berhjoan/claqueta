@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { DEPTOS, valoresPorDefecto } from "../app/catalogo.js";
 import { generarPlanos } from "../app/planos.js";
 import { construirPrompt, REPO, SITIO } from "../app/prompt.js";
+import { revisar } from "../app/revision.js";
 import { recetas } from "../data/recetas.js";
 import { voces } from "../data/voces.js";
 import { musicas } from "../data/sonido.js";
@@ -85,15 +86,16 @@ test("cada motor, destino y fuente de música generan un prompt válido", () => 
 test("cada voz trae su comando exacto", () => {
   for (const v of voces) {
     const t = texto(armar({ "sonido.voz": v.id, "sonido.narracion": true }));
-    assert.ok(t.includes(`--motor ${v.motor} --voz ${v.voz}`), v.id);
-    if (v.motor !== "edge") assert.ok(t.includes("tools/subtitulos/alinear.py"), `${v.id}: faltan tiempos de palabra`);
+    assert.ok(t.includes(`tools/pista.py voz --motor ${v.motor} --voz ${v.voz}`), v.id);
+    assert.ok(t.includes("assets/tiempos.json"), `${v.id}: faltan tiempos de palabra`);
   }
 });
 
 test("la música compuesta aquí trae el comando con los valores elegidos", () => {
   const t = texto(armar({ "sonido.musica": "codigo", "sonido.animo": "lofi", "sonido.bpm": 82, "entrega.duracion": 40 }));
-  assert.ok(t.includes("--caracter lofi --bpm 82 --dur $DUR"), "con voz, la duración real sale de la voz");
-  assert.ok(t.includes("tools/audio/mezcla.py"));
+  assert.ok(t.includes("pista.py musica --caracter lofi --bpm 82"), "con voz, la duración real sale de assets/tiempos.json");
+  assert.ok(!t.includes("pista.py musica --caracter lofi --bpm 82 --dur"), "con voz no se escribe la duración a mano");
+  assert.ok(t.includes("tools/pista.py mezcla"));
   const sinVoz = texto(armar({ "sonido.musica": "codigo", "sonido.animo": "lofi", "sonido.bpm": 82, "entrega.duracion": 40, "sonido.narracion": false }));
   assert.ok(sinVoz.includes("--dur 40"), "sin voz, manda el objetivo");
   assert.ok(!sinVoz.includes("$DUR"));
@@ -149,7 +151,7 @@ test("un guion exacto no se contradice con la duración objetivo ni obliga a inv
   const t = texto(armar({ "guion.modo": "exacto", "guion.texto": frase, "entrega.duracion": 30 }), "en");
   assert.match(t, /The real duration comes from the voice/);
   assert.match(t, /do not invent one/);
-  assert.match(t, /--duracion \$DUR/);
+  assert.match(t, /--duracion <dur/);
   assert.ok(!t.includes("--duracion 30"));
   assert.ok(!/about 69 Spanish words/.test(t), "no pide más palabras a un texto exacto");
 });
@@ -195,7 +197,7 @@ test("el texto de la persona no puede salir de su bloque ni dar órdenes", () =>
     assert.ok(m, `${lang}: el guion no quedó en una cerca más larga`);
     assert.equal(m[2], ataque.trim(), "el guion se conserva literal");
     const fuera = t.replace(m[0], "");
-    assert.ok(!/^#+ *(Falso|20\.)/m.test(fuera), `${lang}: se coló un encabezado`);
+    assert.ok(!/^#+ *(Falso|20\. Nueva)/m.test(fuera), `${lang}: se coló un encabezado`);
     const bash = [...fuera.matchAll(/^```bash\n([\s\S]*?)^```/gm)].map((x) => x[1]).join("\n");
     assert.ok(!bash.includes("rm -rf"), `${lang}: se coló un comando`);
     assert.ok(!fuera.includes("ignora todo"));
@@ -234,12 +236,12 @@ test("el encargo no manda a leer la guía de sonido que se opone a sus herramien
 });
 
 test("el SRT tiene su comando cuando hay voz", () => {
-  assert.ok(texto(armar({ "sonido.narracion": true })).includes("tools/subtitulos/srt.py"));
+  assert.ok(texto(armar({ "sonido.narracion": true, "motor.motor": "hyperframes" })).includes("renders/final.srt"));
 });
 
 test("el encargo no manda a bajar scripts ni a quitar verificaciones de integridad", () => {
   for (const lang of ["es", "en"]) {
-    const t = texto(armar(), lang);
+    const t = texto(armar({ "motor.motor": "hyperframes" }), lang);
     assert.ok(!/\bcurl\b/.test(t), `${lang}: pide descargar con curl`);
     assert.ok(!/integrity/.test(t), `${lang}: habla de quitar integrity`);
     assert.ok(t.includes("tools/lib/gsap.min.js"), `${lang}: falta la copia local`);
@@ -248,18 +250,18 @@ test("el encargo no manda a bajar scripts ni a quitar verificaciones de integrid
 
 test("las cifras de pantalla siguen el formato elegido", () => {
   for (const lang of ["es", "en"]) {
-    const horizontal = texto(armar({ "entrega.formato": "16:9", "entrega.plataforma": "youtube" }), lang);
+    const horizontal = texto(armar({ "entrega.formato": "16:9", "entrega.plataforma": "youtube", "motor.motor": "hyperframes" }), lang);
     for (const mala of [/1080×1920/, /y 1300/, /y 1640/, /28 (caracteres|characters)/, /1080 (de ancho|wide)/, /franja que tapa|strip the app/]) assert.ok(!mala.test(horizontal), `${lang} 16:9: ${mala}`);
-    for (const buena of ["1920×1080", "y 842", "--ancho 42 --max 84", "36 px"]) assert.ok(horizontal.includes(buena), `${lang} 16:9: falta ${buena}`);
+    for (const buena of ["1920×1080", "y 842", "--formato 16:9", "36 px"]) assert.ok(horizontal.includes(buena), `${lang} 16:9: falta ${buena}`);
 
     const retrato = texto(armar({ "entrega.formato": "4:5" }), lang);
     for (const mala of [/y 1300/, /y 1640/, /1080×1920/]) assert.ok(!mala.test(retrato), `${lang} 4:5: ${mala}`);
     assert.ok(retrato.includes("1080×1350"), `${lang} 4:5: falta su tamaño`);
 
-    const vertical = texto(armar(), lang);
+    const vertical = texto(armar({ "motor.motor": "hyperframes" }), lang);
     for (const buena of ["y 1300", "1080×1920", "44 px"]) assert.ok(vertical.includes(buena), `${lang} 9:16: falta ${buena}`);
     assert.ok(/28 (caracteres|characters)/.test(vertical), `${lang} 9:16: faltan los 28 caracteres`);
-    assert.ok(!/srt\.py[^\n]*--ancho/.test(vertical), `${lang} 9:16: srt.py no necesita --ancho`);
+    assert.ok(vertical.includes("--formato 9:16"), `${lang} 9:16: falta el formato en la voz`);
   }
 });
 
@@ -281,7 +283,9 @@ test("una ficha de estilo no contradice al encargo", () => {
     const plana = texto(armar({}, recetas.find((r) => r.id === "pizarra")), lang);
     assert.ok(!/50 mm|altura de los ojos|Eye-level/.test(plana), `${lang}: lente o ángulo en una composición plana`);
     assert.ok(/Proyección isométrica, sin lente|Isometric projection, with no lens/.test(t), `${lang}: falta la nota de proyección`);
-    assert.ok(/mandan la paleta de abajo y la sección 8|the palette below and section 8 win/.test(t), `${lang}: falta quién manda sobre la ficha`);
+    const conPaleta = texto(armar({ "arte.paleta": "papel" }, iso), lang);
+    assert.ok(/mandan la paleta de abajo y la sección 8|the palette below and section 8 win/.test(conPaleta), `${lang}: falta quién manda sobre la ficha`);
+    assert.ok(!/mandan la paleta de abajo|the palette below and/.test(t), `${lang}: con los colores del estilo, la ficha no choca`);
   }
 });
 
@@ -291,7 +295,7 @@ test("$DUR sale de donde termina la última palabra, no del largo del archivo", 
     assert.ok(t.includes("fin_voz"), `${lang}: falta fin_voz`);
     assert.ok(!t.includes("ffprobe"), `${lang}: el largo del archivo incluye la cola en silencio`);
     const grabada = texto(armar({ "sonido.voz_propia": "grabada" }), lang);
-    assert.ok(grabada.includes("alinear.py"), `${lang}: una voz grabada también necesita sus tiempos`);
+    assert.ok(grabada.includes("pista.py voz --audio"), `${lang}: una voz grabada también necesita sus tiempos`);
   }
 });
 
@@ -305,13 +309,13 @@ test("mito y verdad, y antes y después, conservan la misma cámara en sus tres 
   }
 });
 
-test("saltos.py ignora la banda fija de subtítulos, y solo esa", () => {
-  const conBanda = texto(armar({ "entrega.formato": "16:9" }), "es");
-  assert.ok(conBanda.includes("saltos.py renders/final.mp4 --ignorar 842-994"));
-  const vertical = texto(armar(), "es");
-  assert.ok(vertical.includes("saltos.py renders/final.mp4 --ignorar 1300-1540"));
-  const centro = texto(armar({ "subtitulos.posicion": "centro" }), "es");
-  assert.ok(!/saltos\.py[^\n]*--ignorar/.test(centro));
+test("la revisión ignora la banda fija de subtítulos, y solo esa", () => {
+  const con = texto(armar());
+  assert.ok(/revisar\.py [^\n]*--ignorar 1300-1540/.test(con));
+  for (const cambios of [{ "subtitulos.activos": false }, { "subtitulos.posicion": "centro" }, { "subtitulos.estilo": "mundo" }]) {
+    assert.ok(!/revisar\.py [^\n]*--ignorar/.test(texto(armar(cambios))), JSON.stringify(cambios));
+  }
+  assert.ok(/revisar\.py [^\n]*--ignorar 842-994/.test(texto(armar({ "entrega.formato": "16:9" }))));
 });
 
 test("en un guion exacto, el gancho es solo para la imagen", () => {
@@ -324,10 +328,10 @@ test("en un guion exacto, el gancho es solo para la imagen", () => {
 });
 
 test("el encargo pide escribir la versión fija de HyperFrames y estima con el ritmo medido", () => {
-  const t = texto(armar({ "guion.modo": "exacto", "guion.texto": Array(32).fill("palabra").join(" ") }), "es");
+  const t = texto(armar({ "guion.modo": "exacto", "guion.texto": Array(32).fill("palabra").join(" "), "motor.motor": "hyperframes" }), "es");
   assert.ok(t.includes("escribe siempre `npx hyperframes@"), "falta la versión fija");
   assert.ok(t.includes("estas voces lo leen en unos 10 s"), "32 palabras a 3,2 por segundo son 10 s");
-  assert.ok(t.includes("tools/audio/pausas.py"), "falta cómo medir las pausas");
+  assert.ok(t.includes("--silencios 2"), "falta el silencio real medido en la voz");
   assert.ok(t.indexOf("`guion.txt`, genera la voz") < t.indexOf("`SPEC.md`"), "SPEC.md necesita los tiempos reales");
 });
 
@@ -346,4 +350,245 @@ test("en una pieza larga, la misma cámara queda solo en la unión del mito con 
   assert.equal(de("La verdad")[0].cam, "fija");
   const seguidos = planos.reduce((m, p) => { m.ahora = p.cam === "fija" ? m.ahora + p.dur : 0; m.max = Math.max(m.max, m.ahora); return m; }, { ahora: 0, max: 0 }).max;
   assert.ok(seguidos < 39, `cámara fija seguida durante ${seguidos} s`);
+});
+
+// ── Lo que encontró la prueba con videos reales (traspaso del 2026-11-05).
+test("una parte que ya trae número no sale como «Paso 1 1»", () => {
+  const { planos } = armar({ "guion.estructura": "pasos", "entrega.duracion": 60 });
+  assert.ok(planos.length > 6, "esta prueba necesita varias tomas por parte");
+  for (const p of planos) assert.ok(!/\d \d/.test(p.titulo), p.titulo);
+  assert.ok(planos.some((p) => /Paso 1, toma 2/.test(p.titulo)));
+  const { planos: otros } = armar({ "guion.estructura": "concepto", "entrega.duracion": 90 });
+  assert.ok(otros.some((p) => /^Qué es 2$/.test(p.titulo)), "lo que no trae número se numera normal");
+});
+
+test("con partículas en el estilo no se pide aire sin partículas", () => {
+  for (const lang of ["es", "en"]) {
+    const conAcento = texto(armar({ "arte.estilos": { base: "S26", secundario: null, acento: "S01" }, "profundidad.atmosfera": "limpia", "motor.motor": "hyperframes" }), lang);
+    assert.ok(!/sin partículas|no particles/.test(conAcento), `${lang}: contradicción con el acento de partículas`);
+    const sin = texto(armar({ "arte.estilos": { base: "S26", secundario: null, acento: null }, "profundidad.atmosfera": "limpia", "motor.motor": "hyperframes" }), lang);
+    assert.ok(/Aire limpio, sin partículas|Clean air, no particles/.test(sin), `${lang}: sin partículas elegidas, la regla sigue`);
+  }
+});
+
+test("el tipo de video no impone una segunda estructura", () => {
+  const t = texto(armar({ "guion.tipo": "historia", "guion.estructura": "concepto" }));
+  assert.ok(!t.includes("inicio, tensión, giro, resolución y lección. Cada plano"), "el tipo describía otra estructura");
+  assert.equal((t.match(/^- Estructura /gm) ?? []).length, 1);
+});
+
+test("una pieza corta no se llena de planos que no se alcanzan a ver", () => {
+  for (const estructura of ["concepto", "pasos", "mito", "lista"]) {
+    const { planos } = armar({ "guion.estructura": estructura, "entrega.duracion": 10 });
+    assert.ok(planos.every((p) => p.dur >= 1.8), `${estructura}: ${planos.map((p) => p.dur)}`);
+    assert.ok(planos.length >= 3, `${estructura}: quedan ${planos.length} planos`);
+    assert.equal(Math.round(planos.reduce((a, p) => a + p.dur, 0) * 10) / 10, 10);
+  }
+  const { planos: frenetico } = armar({ "montaje.ritmo": "frenetico", "entrega.duracion": 10 });
+  assert.ok(frenetico.length > 6, "el ritmo frenético sí puede hacer ráfagas");
+});
+
+test("el lema tiene su excepción y el cierre le da tiempo", () => {
+  for (const lang of ["es", "en"]) {
+    const t = texto(armar({ "arte.marca": "bg" }), lang);
+    assert.ok(t.includes("--cierre 2.5"), `${lang}: con lema, el cierre sube`);
+    assert.ok(/excepción a esa fórmula|exception to that formula/.test(t), `${lang}: falta la excepción del lema`);
+    const sin = texto(armar(), lang);
+    assert.ok(sin.includes("--cierre 1.2") && !/excepción a esa fórmula|exception to that formula/.test(sin), `${lang}: sin lema no hay excepción`);
+  }
+});
+
+test("el máximo de efectos manda sobre «cada acción suena»", () => {
+  const t = texto(armar({ "sonido.sfx": "accion" }));
+  assert.ok(t.includes("esa cifra manda"));
+});
+
+test("el respaldo de Edge es Kokoro, y el render se corre en primer plano", () => {
+  const t = texto(armar({ "motor.motor": "hyperframes" }));
+  assert.ok(t.includes("--motor kokoro --voz em_alex"), "Piper también baja de Hugging Face");
+  assert.ok(t.includes("render_cancelled_parent_exited"));
+  assert.ok(t.includes("HYPERFRAMES_BROWSER_PATH"));
+});
+
+// ── Colores de cada estilo y marca aparte.
+test("por defecto no se impone negro y oro ni una marca", () => {
+  for (const lang of ["es", "en"]) {
+    const t = texto(armar(), lang);
+    assert.ok(!t.includes("#0B0806"), `${lang}: se coló el negro de la marca`);
+    assert.ok(!t.includes("La IA, explicada con claridad"), `${lang}: se coló el lema`);
+    assert.ok(!t.includes("bg-system-ia/MOTION.md"), `${lang}: se coló el manual de la marca`);
+    assert.ok(!/diagramas que crecen|growing diagrams/.test(t), `${lang}: se coló el lenguaje de formas`);
+    assert.ok(!/cálido y acústico, 96 BPM|warm and acoustic, 96 BPM/.test(t), `${lang}: se coló la música por defecto`);
+  }
+});
+
+test("los colores de cada estilo salen del estilo, y la música también", () => {
+  const neon = estilos.find((e) => e.id === "S04");
+  const t = texto(armar({ "arte.estilos": { base: "S04", secundario: null, acento: null }, "motor.motor": "hyperframes" }));
+  assert.ok(t.includes(neon.palette.acento), "falta su acento");
+  assert.ok(/pista\.py musica --caracter electronico/.test(t), "el neón no pide música acústica");
+  assert.ok(!t.includes("Paleta exacta"));
+  const elegida = texto(armar({ "arte.paleta": "papel" }));
+  assert.ok(elegida.includes("Paleta exacta") && elegida.includes("#C8341E"), "una paleta elegida sigue mandando");
+});
+
+test("todos los estilos tienen su paleta, y se lee", () => {
+  const lum = (h) => { const c = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
+  const contraste = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+  for (const e of estilos) {
+    assert.ok(e.palette, `${e.id}: sin paleta`);
+    for (const k of ["fondo", "tinta", "acento", "segundo", "superficie"]) assert.match(e.palette[k], /^#[0-9A-Fa-f]{6}$/, `${e.id}.${k}`);
+    assert.ok(contraste(e.palette.tinta, e.palette.fondo) >= 4.5, `${e.id}: la tinta no se lee sobre el fondo`);
+  }
+});
+
+test("la marca con otra paleta lleva solo emblema y lema", () => {
+  for (const lang of ["es", "en"]) {
+    const otra = texto(armar({ "arte.marca": "bg", "arte.paleta": "papel" }), lang);
+    assert.ok(otra.includes("emblema.png"), `${lang}: falta el emblema`);
+    assert.ok(!otra.includes("`../.claqueta/library/marca/bg-system-ia/MOTION.md`\n"), `${lang}: no debe leer el manual de color`);
+    assert.ok(/no aplican|do not/.test(otra), `${lang}: debe decir que las reglas de color no aplican`);
+    const propia = texto(armar({ "arte.marca": "bg", "arte.paleta": "bg" }), lang);
+    assert.ok(propia.includes("library/marca/bg-system-ia/MOTION.md"), `${lang}: con su paleta, sí lee el manual`);
+  }
+});
+
+// ── Recorrido de estilos.
+const RECORRIDO = ["S40", "S12", "S04", "S16", "S14", "S17"];
+const enRecorrido = (extra = {}) => armar({ "arte.modo": "recorrido", "arte.recorrido": RECORRIDO, "entrega.duracion": 30, ...extra });
+
+test("en recorrido no hay reparto 70/20/10 y cada plano trae su estilo", () => {
+  for (const lang of ["es", "en"]) {
+    const estado = enRecorrido();
+    const t = texto(estado, lang);
+    assert.ok(!/\(70 %\)|Nunca mezcles|Never mix in other/.test(t), `${lang}: quedó el modo mezcla`);
+    assert.ok(!/Paleta exacta|Exact palette/.test(t), `${lang}: cada estilo lleva sus colores`);
+    assert.ok(!t.includes("#0B0806"), `${lang}: sin negro de marca`);
+    assert.ok(/\| (Estilo|Style) \|/.test(t), `${lang}: falta la columna Estilo`);
+    for (const id of RECORRIDO) assert.ok(t.includes(id), `${lang}: falta ${id}`);
+    for (const id of RECORRIDO) assert.ok(t.includes(estilos.find((e) => e.id === id).palette.acento), `${lang}: falta el color de ${id}`);
+    assert.ok(/misma caja de subtítulos|same caption box/.test(t), `${lang}: faltan las reglas de continuidad`);
+    assert.ok(estado.planos.every((p) => p.estilo), "cada plano lleva estilo");
+    sinBasura(t, "recorrido");
+    rutasExisten(t, "recorrido");
+  }
+});
+
+test("el recorrido reparte los estilos en orden, y un plano de ráfaga los voltea", () => {
+  const { planos } = enRecorrido();
+  assert.deepEqual([...new Set(planos.map((p) => p.estilo))], RECORRIDO, "todos, en orden y sin volver atrás");
+  const estado = enRecorrido();
+  estado.planos.splice(1, 0, { id: "r", titulo: "Ráfaga", texto: "", dur: 2, cam: "fija", tr: "corte", nota: "", tipo: "rafaga", rafaga: { cadencia: 2, mosaico: true, paradas: ["S04"] } });
+  const t = texto(estado);
+  assert.ok(t.includes("Ráfaga cada 2 cuadros"));
+  assert.ok(t.includes("library/plantillas/rafaga/"));
+});
+
+test("el modo mezcla sigue con su reparto", () => {
+  const t = texto(armar({ "arte.estilos": { base: "S26", secundario: "S18", acento: "S01" } }));
+  assert.ok(t.includes("70 %") && t.includes("20 %") && t.includes("10 %"));
+  assert.ok(t.includes("Nunca mezcles"));
+  assert.ok(!/\| Estilo \|/.test(t));
+});
+
+// ── El kit de escenas en el encargo.
+test("un estilo con piel usa el kit, con un pieza.json que se puede armar", () => {
+  const t = texto(armar({ "arte.estilos": { base: "S22", secundario: null, acento: null } }));
+  assert.ok(t.includes("engines/escenas/armar.mjs pieza.json"));
+  const json = /```json\n([\s\S]*?)```/.exec(t)?.[1];
+  assert.ok(json, "falta pieza.json");
+  const pieza = JSON.parse(json);
+  assert.equal(pieza.piel, "collage");
+  assert.ok(pieza.planos.length >= 3);
+  const sinPiel = texto(armar({ "arte.estilos": { base: "L-ukiyoe", secundario: null, acento: null } }));
+  assert.ok(!sinPiel.includes("armar.mjs pieza.json"), "un estilo sin piel ni plantilla se construye a mano");
+});
+
+// ── Revisión antes de copiar.
+const avisosDe = (cambios = {}, extra = {}) => revisar(armar(cambios), { estilos, ...extra });
+const ids = (lista) => lista.map((a) => a.id);
+
+test("la revisión encuentra lo que se contradice, y cada arreglo es real", () => {
+  const casos = [
+    [{ "guion.tipo": "historia", "guion.estructura": "concepto" }, "tipo-estructura"],
+    [{ "sonido.narracion": false }, "sin-voz-sincronia"],
+    [{ "sonido.narracion": false }, "sin-voz-subtitulos"],
+    [{ "sonido.musica": "sin", "montaje.sincronia": "pulso" }, "sin-musica-pulso"],
+    [{ "arte.paleta": "bg", "arte.estilos": { base: "S04", secundario: null, acento: null } }, null],
+    [{ "arte.modo": "recorrido", "arte.recorrido": [] }, "recorrido-vacio"],
+    [{ "arte.modo": "recorrido", "arte.recorrido": ["S04", "S16"], "arte.paleta": "bg" }, "recorrido-una-paleta"],
+    [{ "guion.modo": "exacto", "guion.texto": "" }, "sin-texto"],
+    [{ "montaje.ritmo": "contemplativo", "entrega.duracion": 12 }, "ritmo-corto"],
+    [{ "arte.marca": "bg", "arte.paleta": "papel" }, "marca-otra-paleta"],
+    [{ "arte.marca": "propia" }, "marca-sin-notas"],
+    [{ "guion.final": "enlace" }, "enlace-sin-notas"],
+    [{ "guion.titulo": "", "guion.texto": "" }, "tema"],
+  ];
+  for (const [cambios, id] of casos) {
+    const lista = avisosDe(cambios);
+    if (id) assert.ok(ids(lista).includes(id), `${id} no salió con ${JSON.stringify(cambios)}`);
+    for (const a of lista) {
+      if (!a.arreglo?.cambios) continue;
+      const estado = armar(cambios);
+      for (const [ruta, val] of Object.entries(a.arreglo.cambios)) { const [d, k] = ruta.split("."); estado.valores[d][k] = val; }
+      assert.ok(!ids(revisar(estado, { estilos })).includes(a.id), `el arreglo de ${a.id} no lo arregla`);
+    }
+  }
+});
+
+test("la revisión detecta lo que le faltó a la prueba real", () => {
+  const conTema = { "guion.titulo": "Un tema" };
+  const estado = armar(conTema);
+  assert.deepEqual(ids(revisar(estado, { estilos })).filter((x) => x !== "estilos-sin-probar"), [], "lo normal no avisa");
+  const cortos = armar(conTema);
+  cortos.planos[1].dur = 0.8;
+  assert.ok(ids(revisar(cortos, { estilos })).includes("planos-cortos"));
+  assert.ok(ids(revisar(armar(conTema), { estilos, palabras: 3956 })).includes("largo"), "un encargo largo recomienda Compacto");
+  assert.ok(!ids(revisar(armar(conTema), { estilos, palabras: 3956, compacto: true })).includes("largo"));
+  const recorrido = armar({ ...conTema, "arte.modo": "recorrido", "arte.recorrido": estilos.slice(0, 40).map((e) => e.id), "entrega.duracion": 20 });
+  const a = revisar(recorrido, { estilos }).find((x) => x.id === "estilos-sin-plano");
+  assert.ok(a, "sobran estilos");
+  assert.equal(a.arreglo.accion, "agregar-rafaga");
+  assert.ok(a.arreglo.datos.length > 0);
+});
+
+test("un encargo termina con lo que no se negocia", () => {
+  for (const lang of ["es", "en"]) {
+    const t = texto(armar(), lang);
+    assert.ok(/## 20\. (Lo que no se negocia|What is not negotiable)/.test(t), lang);
+    assert.ok(t.trim().split("\n").length > 100);
+  }
+});
+
+// ── Material real y referencia.
+test("con material real el encargo trae sus comandos, y nunca una ruta de la persona", () => {
+  for (const lang of ["es", "en"]) {
+    const toma = texto(armar({ "guion.material": "toma" }), lang);
+    assert.ok(toma.includes("tools/material/toma.py analizar material/toma.mp4"), lang);
+    assert.ok(!toma.includes("pista.py voz --motor"), `${lang}: la voz es la de la toma`);
+    assert.ok(toma.includes("library/guias/material.md"));
+    const largo = texto(armar({ "guion.material": "largo", "entrega.formato": "1:1" }), lang);
+    assert.ok(largo.includes("--segmentos segmentos.json --formato 1:1"), lang);
+    const ref = texto(armar({ "guion.referencia": true }), lang);
+    assert.ok(ref.includes("tools/qa/referencia.py material/referencia.mp4"), lang);
+    assert.ok(/No copies sus imágenes|Do not copy its images/.test(ref), `${lang}: se mide, no se copia`);
+    assert.ok(!texto(armar(), lang).includes("material/"), `${lang}: sin material no se nombra`);
+    sinBasura(toma, "toma"); rutasExisten(toma, "toma"); rutasExisten(largo, "largo"); rutasExisten(ref, "referencia");
+  }
+});
+
+test("la revisión y la entrega son un comando", () => {
+  const t = texto(armar());
+  assert.ok(t.includes("tools/qa/revisar.py renders/final.mp4"));
+  assert.ok(t.includes("tools/entrega.py renders/final.mp4"));
+  assert.ok(t.includes("--ignorar 1300-1540"), "ignora la banda de subtítulos");
+  assert.ok(/Abre esas imágenes/.test(t), "una máquina no decide si se ve bien");
+  const sinVoz = texto(armar({ "sonido.narracion": false, "entrega.duracion": 20 }));
+  assert.ok(sinVoz.includes("--duracion 20"));
+});
+
+test("la música de cuerdas no deja variables sin definir en su comando", () => {
+  const t = texto(armar({ "sonido.narracion": true, "sonido.musica": "cuerdas" }), "es");
+  assert.doesNotMatch(t, /\$DUR/);
+  assert.match(t, /notas\.py partitura\.json --dur <dur de assets\/tiempos\.json>/);
 });

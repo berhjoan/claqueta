@@ -127,11 +127,12 @@ export class Monitor {
     return { el, mundo: el.firstChild, sub: el.lastChild, plano: -1 };
   }
 
-  configurar(estado) {
+  configurar(estado, estilos = this.estilos ?? []) {
     this.estado = estado;
+    this.estilos = estilos;
     const v = estado.valores, m = medidas(v);
     this.medidas = m;
-    const pal = paletaActual(v);
+    const pal = paletaActual(v, estilos);
     const st = this.raiz.style;
     st.setProperty("--m-fondo", pal.fondo); st.setProperty("--m-tinta", pal.tinta); st.setProperty("--m-acento", pal.acento);
     st.setProperty("--m-segundo", pal.segundo); st.setProperty("--m-superficie", pal.superficie);
@@ -154,6 +155,11 @@ export class Monitor {
 
   armar(ranura, i) {
     const v = this.estado.valores, p = this.estado.planos[i], { w: W, h: H } = this.medidas;
+    // En un recorrido, cada plano se ve en los colores de su estilo.
+    const propia = v.arte.paleta === "propios" ? this.estilos?.find((e) => e.id === p.estilo)?.palette : null;
+    for (const [k, nombre] of [["fondo", "--m-fondo"], ["tinta", "--m-tinta"], ["acento", "--m-acento"], ["segundo", "--m-segundo"], ["superficie", "--m-superficie"]]) {
+      if (propia) ranura.el.style.setProperty(nombre, propia[k]); else ranura.el.style.removeProperty(nombre);
+    }
     const modo = opcion("profundidad", "modo", v.profundidad.modo)?.esc ?? { capas: 1, sep: 0 };
     const listaFormas = v.arte.formas?.length ? v.arte.formas : ["diagrama"];
     const dib = formas(listaFormas[i % listaFormas.length], W, H, i + 1);

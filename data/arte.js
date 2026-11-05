@@ -1,5 +1,7 @@
 // Dirección de arte: galería de estilos, formas, color y tipografía.
+// «propios» no trae colores: cada estilo usa los suyos, de data/styles.json.
 export const paletas = [
+  { id: "propios", n: ["Colores de cada estilo", "Each style's own colors"], d: "Cada estilo con su paleta propia. Sin imponer un color.", propia: true, c: { fondo: "#F5F2EB", tinta: "#111111", acento: "#D62828", segundo: "#6B6B6B", superficie: "#FFFFFF" } },
   { id: "bg", n: ["Negro y oro", "Warm black and gold"], d: "La marca BG System IA.", c: { fondo: "#0B0806", tinta: "#F7EBD3", acento: "#E9A93B", segundo: "#B8692E", superficie: "#1A120A" } },
   { id: "papel", n: ["Tinta y papel", "Ink on paper"], d: "Editorial, cálido, impreso.", c: { fondo: "#F2ECDF", tinta: "#16130F", acento: "#C8341E", segundo: "#6B5B45", superficie: "#E5DCC8" } },
   { id: "pizarra", n: ["Pizarra verde", "Green slate"], d: "Aula clásica.", c: { fondo: "#0F1C15", tinta: "#F2F0E6", acento: "#FF8F42", segundo: "#FAD86F", superficie: "#17281F" } },
@@ -13,14 +15,15 @@ export const paletas = [
 ];
 
 export const tipografias = [
+  { id: "auto", n: ["Según el estilo", "By style"], d: "La que pida el estilo, de las que trae el sistema.", display: "Sora", cuerpo: "Sora", css: "Sora", p: ["Tipografía según el estilo, de las que trae el sistema: `python ../.claqueta/tools/medios/fuentes.py --listar`. Las copias con su CSS con `python ../.claqueta/tools/medios/fuentes.py <nombre>`.", "Typography by style, from those the system includes: `python ../.claqueta/tools/medios/fuentes.py --listar`. Copy them with their CSS using `python ../.claqueta/tools/medios/fuentes.py <name>`."] },
   { id: "marca", n: ["Sora", "Sora"], d: "La de tu marca. Geométrica y clara.", display: "Sora", cuerpo: "Sora", css: "Sora", p: ["Títulos y texto en Sora 600 y 700; datos en JetBrains Mono 500. Ambas con licencia OFL, en assets/fonts del sistema.", "Titles and body in Sora 600 and 700; data in JetBrains Mono 500. Both OFL, in the system's assets/fonts."] },
-  { id: "impacto", n: ["Archivo Black", "Archivo Black"], d: "Peso máximo para frases cortas.", display: "Archivo Black", cuerpo: "Archivo", css: "Sora", peso: 800, p: ["Títulos en Archivo Black y texto en Archivo. Ambas OFL de Google Fonts: bájalas a assets/fonts con @font-face.", "Titles in Archivo Black, body in Archivo. Both OFL from Google Fonts: download to assets/fonts with @font-face."] },
-  { id: "cartel", n: ["Bebas Neue y Barlow", "Bebas Neue and Barlow"], d: "Condensada de cartel, muy grande.", display: "Bebas Neue", cuerpo: "Barlow", css: "Sora", peso: 700, cond: true, p: ["Títulos en Bebas Neue, muy grandes, y texto en Barlow. OFL de Google Fonts.", "Titles in Bebas Neue, very large, body in Barlow. OFL from Google Fonts."] },
-  { id: "editorial", n: ["Fraunces y Source Sans 3", "Fraunces and Source Sans 3"], d: "Serifa cálida con carácter.", display: "Fraunces", cuerpo: "Source Sans 3", css: "Georgia, serif", peso: 600, p: ["Títulos en Fraunces y texto en Source Sans 3. OFL de Google Fonts.", "Titles in Fraunces, body in Source Sans 3. OFL from Google Fonts."] },
-  { id: "dm", n: ["DM Serif Display y DM Sans", "DM Serif Display and DM Sans"], d: "Elegante y contrastada.", display: "DM Serif Display", cuerpo: "DM Sans", css: "Georgia, serif", peso: 500, p: ["Títulos en DM Serif Display y texto en DM Sans. OFL de Google Fonts.", "Titles in DM Serif Display, body in DM Sans. OFL from Google Fonts."] },
-  { id: "syne", n: ["Syne y Manrope", "Syne and Manrope"], d: "Contemporánea, de galería.", display: "Syne", cuerpo: "Manrope", css: "Sora", peso: 800, p: ["Títulos en Syne 800 y texto en Manrope. OFL de Google Fonts.", "Titles in Syne 800, body in Manrope. OFL from Google Fonts."] },
-  { id: "unbounded", n: ["Unbounded y Onest", "Unbounded and Onest"], d: "Redonda y ancha, muy gráfica.", display: "Unbounded", cuerpo: "Onest", css: "Sora", peso: 700, p: ["Títulos en Unbounded y texto en Onest. OFL de Google Fonts.", "Titles in Unbounded, body in Onest. OFL from Google Fonts."] },
-  { id: "deco", n: ["Poiret One y Josefin Sans", "Poiret One and Josefin Sans"], d: "Art déco.", display: "Poiret One", cuerpo: "Josefin Sans", css: "Sora", peso: 400, p: ["Títulos en Poiret One y texto en Josefin Sans. OFL de Google Fonts.", "Titles in Poiret One, body in Josefin Sans. OFL from Google Fonts."] },
+  { id: "impacto", n: ["Archivo Black", "Archivo Black"], d: "Peso máximo para frases cortas.", display: "Archivo Black", cuerpo: "Archivo", css: "Sora", peso: 800, p: ["Títulos en Archivo Black y texto en Archivo. OFL, incluidas: tools/medios/fuentes.py.", "Titles in Archivo Black, body in Archivo. Both OFL from Google Fonts: download to assets/fonts with @font-face."] },
+  { id: "cartel", n: ["Bebas Neue y Barlow", "Bebas Neue and Barlow"], d: "Condensada de cartel, muy grande.", display: "Bebas Neue", cuerpo: "Barlow", css: "Sora", peso: 700, cond: true, p: ["Títulos en Bebas Neue, muy grandes, y texto en Barlow. OFL, incluidas: tools/medios/fuentes.py.", "Titles in Bebas Neue, very large, body in Barlow. OFL, included: tools/medios/fuentes.py."] },
+  { id: "editorial", n: ["Fraunces y Source Sans 3", "Fraunces and Source Sans 3"], d: "Serifa cálida con carácter.", display: "Fraunces", cuerpo: "Source Sans 3", css: "Georgia, serif", peso: 600, p: ["Títulos en Fraunces y texto en Source Sans 3. OFL, incluidas: tools/medios/fuentes.py.", "Titles in Fraunces, body in Source Sans 3. OFL, included: tools/medios/fuentes.py."] },
+  { id: "dm", n: ["DM Serif Display y DM Sans", "DM Serif Display and DM Sans"], d: "Elegante y contrastada.", display: "DM Serif Display", cuerpo: "DM Sans", css: "Georgia, serif", peso: 500, p: ["Títulos en DM Serif Display y texto en DM Sans. OFL, incluidas: tools/medios/fuentes.py.", "Titles in DM Serif Display, body in DM Sans. OFL, included: tools/medios/fuentes.py."] },
+  { id: "syne", n: ["Syne y Manrope", "Syne and Manrope"], d: "Contemporánea, de galería.", display: "Syne", cuerpo: "Manrope", css: "Sora", peso: 800, p: ["Títulos en Syne 800 y texto en Manrope. OFL, incluidas: tools/medios/fuentes.py.", "Titles in Syne 800, body in Manrope. OFL, included: tools/medios/fuentes.py."] },
+  { id: "unbounded", n: ["Unbounded y Onest", "Unbounded and Onest"], d: "Redonda y ancha, muy gráfica.", display: "Unbounded", cuerpo: "Onest", css: "Sora", peso: 700, p: ["Títulos en Unbounded y texto en Onest. OFL, incluidas: tools/medios/fuentes.py.", "Titles in Unbounded, body in Onest. OFL, included: tools/medios/fuentes.py."] },
+  { id: "deco", n: ["Poiret One y Josefin Sans", "Poiret One and Josefin Sans"], d: "Art déco.", display: "Poiret One", cuerpo: "Josefin Sans", css: "Sora", peso: 400, p: ["Títulos en Poiret One y texto en Josefin Sans. OFL, incluidas: tools/medios/fuentes.py.", "Titles in Poiret One, body in Josefin Sans. OFL, included: tools/medios/fuentes.py."] },
   { id: "terminal", n: ["VT323 y JetBrains Mono", "VT323 and JetBrains Mono"], d: "Terminal y código.", display: "VT323", cuerpo: "JetBrains Mono", css: "'JetBrains Mono', monospace", peso: 500, p: ["Títulos en VT323 y texto en JetBrains Mono. OFL.", "Titles in VT323, body in JetBrains Mono. OFL."] },
   { id: "tiza", n: ["Letra de tiza", "Chalk handwriting"], d: "Trazo a mano real con EMS Delight.", display: "EMS Delight", cuerpo: "Sora", css: "Sora", tiza: true, p: ["Texto del mundo escrito con EMS Delight, fuente de una sola línea en engines/pizarra, trazo a trazo; subtítulos en Sora.", "World text written with EMS Delight, the single-line font in engines/pizarra, stroke by stroke; captions in Sora."] },
 ];
@@ -61,8 +64,13 @@ export const texturas = [
 export const arte = {
   id: "arte", nombre: "Estilo y arte", titulo: ["Dirección de arte", "Art direction"],
   grupos: [
-    { id: "estilo", titulo: "Estilo", ayuda: "Toca una imagen y elige su papel: principal (70 %), secundario (20 %) o acento (10 %).", controles: [
+    { id: "estilo", titulo: "Estilo", ayuda: "Mezcla: elige hasta tres estilos para toda la pieza. Recorrido: un estilo por plano, tantos como quieras.", controles: [
+        { k: "modo", t: "opciones", vista: "chips", titulo: "Cómo se usan los estilos", def: "mezcla", label: ["Uso de estilos", "Style use"], opciones: [
+          { id: "mezcla", n: ["Mezcla", "Blend"], d: "Hasta tres estilos para toda la pieza: 70, 20 y 10 %." },
+          { id: "recorrido", n: ["Recorrido", "Style tour"], d: "Un estilo por plano, de uno en uno, con un plano de ráfaga si quieres." },
+        ] },
         { k: "estilos", t: "galeria", def: { base: "S26", secundario: null, acento: null }, label: ["Estilo", "Style"] },
+        { k: "recorrido", t: "lista-estilos", def: [], label: ["Recorrido", "Style tour"] },
         { k: "intensidad", t: "opciones", vista: "chips", titulo: "Intensidad del estilo", def: "media", label: ["Intensidad", "Intensity"], opciones: [
           { id: "baja", n: ["Baja", "Low"], d: "Para contenido hablado.", p: ["Intensidad baja: el estilo acompaña y no compite con la voz.", "Low intensity: the style supports and does not compete with the voice."] },
           { id: "media", n: ["Media", "Medium"], d: "Para explicar con gráficos.", p: ["Intensidad media: el estilo se reconoce en al menos dos rasgos propios en cada plano.", "Medium intensity: the style reads through at least two of its own traits in each shot."] },
@@ -70,15 +78,15 @@ export const arte = {
         ] },
       ] },
     { id: "formas", titulo: "Formas", ayuda: "De qué está hecho lo que se ve y cómo ocupa la pantalla.", controles: [
-        { k: "formas", t: "opciones", vista: "formas", multi: 2, def: ["diagrama"], titulo: "Lenguaje de formas", label: ["Formas", "Shapes"], opciones: formas },
+        { k: "formas", t: "opciones", vista: "formas", multi: 2, def: [], titulo: "Lenguaje de formas (opcional: si no eliges, manda el estilo)", label: ["Formas", "Shapes"], opciones: formas },
         { k: "pantalla", t: "opciones", vista: "tarjetas", def: "capitulos", titulo: "Uso de la pantalla", label: ["Pantalla", "Screen use"], opciones: pantallas },
       ] },
     { id: "color", titulo: "Color", controles: [
-        { k: "paleta", t: "paleta", def: "bg", label: ["Paleta", "Palette"], opciones: paletas },
+        { k: "paleta", t: "paleta", def: "propios", label: ["Paleta", "Palette"], opciones: paletas },
         { k: "textura", t: "opciones", vista: "chips", titulo: "Acabado", def: "grano", label: ["Acabado", "Finish"], opciones: texturas },
       ] },
     { id: "tipo", titulo: "Tipografía", controles: [
-        { k: "tipografia", t: "opciones", vista: "tipo", def: "marca", label: ["Tipografía", "Typography"], opciones: tipografias },
+        { k: "tipografia", t: "opciones", vista: "tipo", def: "auto", label: ["Tipografía", "Typography"], opciones: tipografias },
         { k: "tamano", t: "rango", titulo: "Tamaño de los títulos", min: 3, max: 15, paso: 0.5, def: 6, unidad: "% de la altura", label: ["Tamaño de títulos", "Title size"], p: ["Títulos de cerca de {v} % de la altura del cuadro. Nada que deba leerse por debajo de {min} px.", "Titles around {v}% of the frame height. Nothing meant to be read under {min} px."] },
         { k: "caja", t: "opciones", vista: "chips", titulo: "Mayúsculas y minúsculas", def: "oracion", label: ["Caja", "Case"], opciones: [
           { id: "oracion", n: ["Oración", "Sentence case"], p: ["Caja de oración: solo la primera en mayúscula.", "Sentence case: only the first letter capitalized."] },
@@ -87,9 +95,9 @@ export const arte = {
         ] },
       ] },
     { id: "marca", titulo: "Marca y referencia", controles: [
-        { k: "marca", t: "opciones", vista: "chips", titulo: "Marca", def: "bg", label: ["Marca", "Brand"], opciones: [
+        { k: "marca", t: "opciones", vista: "chips", titulo: "Marca (aparte de la paleta)", def: "ninguna", label: ["Marca", "Brand"], opciones: [
           { id: "ninguna", n: ["Sin marca", "No brand"], p: ["Sin marca ni logos.", "No brand or logos."] },
-          { id: "bg", n: ["BG System IA", "BG System IA"], p: ["Marca BG System IA, con la frase «La IA, explicada con claridad». Lee library/marca/bg-system-ia/MOTION.md y cúmplelo. Su emblema real es library/marca/bg-system-ia/emblema.png, un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes. Sin resplandor añadido. Emblema y lema son la única excepción a los rótulos en esquinas; el lema va fuera de la banda de subtítulos o después del último.", "BG System IA brand, with the line «La IA, explicada con claridad». Read library/marca/bg-system-ia/MOTION.md and follow it. Its real emblem is library/marca/bg-system-ia/emblema.png, a square with its own background: crop it to a circle with border-radius and do not redraw it. No added glow. Emblem and tagline are the only exception to corner labels; the tagline goes outside the caption band or after the last caption."] },
+          { id: "bg", n: ["BG System IA", "BG System IA"], p: ["Marca BG System IA: su emblema real, library/marca/bg-system-ia/emblema.png, es un cuadrado con fondo propio: recórtalo en círculo con border-radius y no lo redibujes. Su frase de cierre es «La IA, explicada con claridad»: cierra con ella solo si el tema es de IA.", "BG System IA brand: its real emblem, library/marca/bg-system-ia/emblema.png, is a square with its own ground: crop it to a circle with border-radius and do not redraw it. Its closing line is «La IA, explicada con claridad»: close with it only if the topic is AI."] },
           { id: "propia", n: ["Otra marca", "Another brand"], p: ["Usa la marca descrita en las notas. Solo logos, colores y fuentes reales, nunca inventados. Si tiene sitio web, extrae sus datos con npx hyperframes capture.", "Use the brand described in the notes. Real logos, colors and fonts only, never invented. If it has a website, extract its data with npx hyperframes capture."] },
         ] },
         { k: "referencia", t: "texto", titulo: "Referencia visual (enlace o descripción)", holder: "Un video o imagen que te guste", def: "", label: ["Referencia", "Reference"], traducible: true, nota: ["Toma de la referencia su gramática: duración de planos, entradas, transiciones y escala. Nunca su contenido.", "Take the reference's grammar: shot lengths, entrances, transitions and scale. Never its content."] },
