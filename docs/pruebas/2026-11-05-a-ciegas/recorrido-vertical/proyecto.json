@@ -1,0 +1,29 @@
+{
+ "guion": {
+  "titulo": "Tres reglas para una buena foto con el celular",
+  "objetivo": "Que quien lo vea tome hoy una foto mejor",
+  "publico": "Personas que toman fotos con su teléfono, sin saber de fotografía"
+ },
+ "arte": {
+  "modo": "recorrido",
+  "recorrido": [
+   "S12",
+   "S18",
+   "S27",
+   "L-woodcut",
+   "S29",
+   "S21"
+  ],
+  "paleta": "propios"
+ },
+ "entrega": {
+  "formato": "9:16",
+  "duracion": 20
+ },
+ "sonido": {
+  "voz": "edge:es-AR-TomasNeural"
+ },
+ "motor": {
+  "modo": "autonomo"
+ }
+}

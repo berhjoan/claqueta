@@ -1,0 +1,26 @@
+{
+ "guion": {
+  "titulo": "Por qué el pan se pone duro",
+  "objetivo": "Entender qué le pasa al pan y guardarlo mejor",
+  "publico": "Personas curiosas que compran pan en casa"
+ },
+ "arte": {
+  "modo": "mezcla",
+  "estilos": {
+   "base": "L-risograph",
+   "secundario": "S26",
+   "acento": ""
+  },
+  "paleta": "propios"
+ },
+ "entrega": {
+  "formato": "1:1",
+  "duracion": 25
+ },
+ "sonido": {
+  "voz": "piper:es_AR-daniela-high"
+ },
+ "motor": {
+  "modo": "autonomo"
+ }
+}

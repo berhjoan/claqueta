@@ -614,7 +614,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Copia liviana | Light copy | Copia liviana de menos de 30 MB para revisar en el teléfono, si el máster pesa más. |
 | Portada | Cover | Portada PNG tomada de un cuadro real y legible. |
 | Subtítulos SRT | SRT captions | Archivo SRT con el guion exacto. |
-| Proyecto editable | Editable project | Proyecto editable completo con sus fuentes, audio y assets. |
+| Proyecto editable | Editable project | Proyecto editable completo con sus fuentes, audio y assets, sin `.hyperframes/` ni `renders/revision/`, que se pueden borrar. |
 | Textos para cada red | Copy for each network | Título, descripción y etiquetas por red, en español. |
 | Fuentes y créditos | Sources and credits | FUENTES.md con URL y cita de cada dato, y CREDITOS.md con cada licencia. |
 | Versión cuadrada y horizontal | Square and horizontal versions | Versiones 1:1 y 16:9 recompuestas por escena, nunca con recorte ciego. |

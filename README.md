@@ -40,7 +40,7 @@ Lo que más le cambia la vida a una IA son las piezas ya probadas: no tiene que 
 | Ruta | Qué hay |
 |---|---|
 | `engines/escenas/` | **Kit de escenas.** De un JSON a un proyecto completo, con los planos anclados a las palabras de la voz, en 6 materiales y 4 formatos |
-| `library/plantillas/` | **Plantillas de estilo probadas**, una por estilo, con sus colores y sus textos como variables |
+| `library/plantillas/` | **Plantillas de estilo probadas**, con sus colores y sus textos como variables. Montadas con el kit, cada texto llega cuando la voz lo dice |
 | `tools/pista.py` | Voz, tiempos de palabra, música y mezcla, en pocos comandos |
 | `tools/qa/revisar.py` | Toda la revisión de una vez: formato, volumen, cuadros vacíos o congelados, ritmo, graves, voz contra música, silencios. Y dice qué mirar |
 | `tools/entrega.py` | La carpeta final: máster, portada, subtítulos, créditos e informe |
@@ -49,7 +49,7 @@ Lo que más le cambia la vida a una IA son las piezas ya probadas: no tiene que 
 | `tools/medios/` | Fotos, sonidos y video real con licencia clara y su crédito, sin llaves. Fuentes e iconos incluidos |
 | `engines/pizarra/`, `engines/isometrico/` | Tiza escrita a mano en español, y maquetas isométricas con objetos |
 | `library/ffmpeg-skill/` | 42 herramientas para editar video ya grabado |
-| `library/hyperframes-registro/` | Bloques con código del registro de HyperFrames, en copia fija y probados |
+| `library/hyperframes-registro/` | Del registro de HyperFrames, en copia fija y probados: 36 shaders, 10 transiciones y 6 estilos de subtítulos |
 | `library/hyperframes/`, `library/hyperframes-clasico/` | Skills de HyperFrames 0.9.9 y 0.8.150 |
 | `library/lemo-opuscar/`, `library/estilos-40/` | 66 estilos de película y atlas de 40 estilos |
 | `library/guias/` | Dirección, motores, sonido, material grabado, aprendizajes y diccionario de opciones |
@@ -97,7 +97,7 @@ El kit de escenas, en sus 6 materiales. Un mismo guion, un estilo por plano, cua
 
 ![Recorrido de estilos hecho con el kit: cartel, plano técnico, collage, terminal, noticiero y editorial, con la misma caja de subtítulos](docs/muestra-recorrido.jpg)
 
-IA nuevas, de un modelo más modesto que el que construyó esto y sin más contexto que el encargo, hicieron videos con él. Sus encargos, notas y defectos guían lo que se arregla; los de otra línea de pruebas, con dos videos reales, están en `docs/pruebas/`.
+IA nuevas, de un modelo más modesto que el que construyó esto y sin más contexto que el encargo, hicieron videos con él. Sus encargos, defectos y cuadros están en `docs/pruebas/`, junto con los de otra línea de pruebas, y guían lo que se arregla.
 
 También probado, en Windows 11 con un i5-11400T sin GPU dedicada: el panel en escritorio y teléfono, HyperFrames 0.9.9 de `check` a `render`, los cuatro motores de voz, y las herramientas de `tools/`. `npm test` corre las comprobaciones automáticas.
 
