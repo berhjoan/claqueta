@@ -68,8 +68,8 @@ test("hay muchos movimientos de cámara, y cada uno se puede previsualizar", () 
 
 test("cada estilo tiene datos en los dos idiomas y su documento", () => {
   const estilos = JSON.parse(fs.readFileSync(path.join(raiz, "data/styles.json"), "utf8"));
-  assert.equal(estilos.length, 106);
-  assert.equal(new Set(estilos.map((e) => e.id)).size, 106);
+  assert.ok(estilos.length >= 111, `${estilos.length} estilos: ¿se perdió alguno?`);
+  assert.equal(new Set(estilos.map((e) => e.id)).size, estilos.length);
   for (const e of estilos) {
     assert.ok(e.name.es && e.name.en, `${e.id} sin nombre`);
     assert.ok(e.traits.es && e.traits.en, `${e.id} sin rasgos`);

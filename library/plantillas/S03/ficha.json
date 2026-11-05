@@ -1,0 +1,65 @@
+{
+  "id": "S03",
+  "nombre": "Holográfico",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Efecto iridiscente",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Brilla con la luz",
+      "max": 18
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Colores que cambian al moverte",
+      "max": 32
+    }
+  ],
+  "paleta": {
+    "fondo": "#ECEDF3",
+    "tinta": "#14151F",
+    "acento": "#7A5CFF",
+    "segundo": "#00B8A0",
+    "superficie": "#FFFFFF"
+  },
+  "fuentes": [
+    "Syne",
+    "DM Sans"
+  ],
+  "rasgos": [
+    "Anillo de película fina (burbuja) con bandas arcoíris",
+    "Fondo claro: el shader se funde con la hoja por mezcla multiplicada",
+    "Quieto desde los 3 s"
+  ],
+  "sonidos": [
+    {
+      "t": 0.2,
+      "sonido": "destello",
+      "ganancia": -18
+    },
+    {
+      "t": 0.9,
+      "sonido": "campana",
+      "ganancia": -18
+    }
+  ],
+  "requiere": [
+    "webgpu",
+    "assets/lib/shaders.iife.js"
+  ],
+  "origen": "registro:thin-film",
+  "licencia": "Apache-2.0 AND MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

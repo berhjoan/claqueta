@@ -1,5 +1,7 @@
 # Registro de HyperFrames: estilos y efectos con código listo
 
+Lo que ya se copió y se probó está en `library/hyperframes-registro/` y `library/plantillas/`. Este inventario queda como guía de lo que falta.
+
 Revisado en `heygen-com/hyperframes`, commit `fa1942d` del 2026-11-05. Trae 210 bloques, 239 componentes y 8 ejemplos. La licencia del repositorio es Apache-2.0. Los 36 bloques de shaders suman MIT (librería shaders.com) y traen su `THIRD-PARTY-LICENSES`. `weight-wave` es OFL-1.1.
 
 Cada bloque cumple el contrato de HyperFrames: es determinista y se puede buscar cualquier instante. En la práctica es una «skill completa» con código listo, no solo una descripción.

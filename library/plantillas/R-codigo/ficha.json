@@ -1,0 +1,108 @@
+{
+  "id": "R-codigo",
+  "nombre": "Código vivo",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Código vivo",
+      "max": 20
+    },
+    {
+      "id": "archivo",
+      "etiqueta": "Nombre del archivo",
+      "defecto": "video.js",
+      "max": 18
+    },
+    {
+      "id": "l1",
+      "etiqueta": "Línea 1",
+      "defecto": "// un video hecho con código",
+      "max": 30
+    },
+    {
+      "id": "l2",
+      "etiqueta": "Línea 2",
+      "defecto": "const video = crear({",
+      "max": 30
+    },
+    {
+      "id": "l3",
+      "etiqueta": "Línea 3",
+      "defecto": "  formato: \"9:16\",",
+      "max": 30
+    },
+    {
+      "id": "l4",
+      "etiqueta": "Línea 4",
+      "defecto": "  duracion: 4,",
+      "max": 30
+    },
+    {
+      "id": "l5",
+      "etiqueta": "Línea 5",
+      "defecto": "});",
+      "max": 30
+    },
+    {
+      "id": "l6",
+      "etiqueta": "Línea 6 (con + o - al inicio es un cambio)",
+      "defecto": "+ renderizar(video);",
+      "max": 30
+    },
+    {
+      "id": "pie",
+      "etiqueta": "Pie",
+      "defecto": "Todo es función del tiempo",
+      "max": 28
+    }
+  ],
+  "paleta": {
+    "fondo": "#0A0F1C",
+    "tinta": "#D6E1F5",
+    "acento": "#7CF4C8",
+    "segundo": "#FFB86B",
+    "superficie": "#121A2D"
+  },
+  "fuentes": [
+    "JetBrains Mono",
+    "Sora"
+  ],
+  "rasgos": [
+    "Código que se teclea carácter a carácter, función pura del tiempo",
+    "Resaltado de sintaxis propio: comentarios, cadenas, números, palabras reservadas y llamadas",
+    "Líneas de cambio con + o - al inicio",
+    "Esqueleto de líneas tenues que llena el pie del cuadro"
+  ],
+  "sonidos": [
+    {
+      "t": 0.35,
+      "sonido": "tecla",
+      "ganancia": -18
+    },
+    {
+      "t": 0.8,
+      "sonido": "tecla",
+      "ganancia": -18
+    },
+    {
+      "t": 1.25,
+      "sonido": "tecla",
+      "ganancia": -18
+    },
+    {
+      "t": 1.75,
+      "sonido": "campana",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

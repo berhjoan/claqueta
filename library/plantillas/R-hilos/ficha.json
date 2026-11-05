@@ -1,0 +1,65 @@
+{
+  "id": "R-hilos",
+  "nombre": "Hilos de luz",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "señal / 08 hilos",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Todo conectado",
+      "max": 22
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Líneas que se cruzan y se aclaran",
+      "max": 34
+    }
+  ],
+  "paleta": {
+    "fondo": "#03050D",
+    "tinta": "#E8EEFF",
+    "acento": "#4DE1FF",
+    "segundo": "#B07CFF",
+    "superficie": "#0A0F22"
+  },
+  "fuentes": [
+    "Sora",
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Nueve cintas de luz de WebGPU que se cruzan",
+    "Color por posición, sin marcas ni interfaz",
+    "Título en Sora extrabold sobre fondo casi negro"
+  ],
+  "sonidos": [
+    {
+      "t": 0.2,
+      "sonido": "barrido",
+      "ganancia": -18
+    },
+    {
+      "t": 0.8,
+      "sonido": "clic",
+      "ganancia": -16
+    }
+  ],
+  "requiere": [
+    "webgpu",
+    "assets/lib/shaders.iife.js"
+  ],
+  "origen": "registro:strands",
+  "licencia": "Apache-2.0 AND MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

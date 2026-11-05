@@ -1,0 +1,66 @@
+{
+  "id": "R-aurora",
+  "nombre": "Aurora",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Luz del norte",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Cortinas de luz",
+      "max": 22
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Un cielo que nunca se repite",
+      "max": 34
+    }
+  ],
+  "paleta": {
+    "fondo": "#04060C",
+    "tinta": "#EEF7F3",
+    "acento": "#5EEAB0",
+    "segundo": "#8F6BFF",
+    "superficie": "#0B1220"
+  },
+  "fuentes": [
+    "Fraunces",
+    "Manrope"
+  ],
+  "rasgos": [
+    "Aurora de WebGPU con los colores de la paleta",
+    "Tiempo del shader atado a la escena y quieto desde los 3 s",
+    "Estrellas y bosque de pinos con semilla fija",
+    "Título en serif sobre el cielo"
+  ],
+  "sonidos": [
+    {
+      "t": 0.1,
+      "sonido": "rumor",
+      "ganancia": -20
+    },
+    {
+      "t": 0.3,
+      "sonido": "subida",
+      "ganancia": -18
+    }
+  ],
+  "requiere": [
+    "webgpu",
+    "assets/lib/shaders.iife.js"
+  ],
+  "origen": "registro:aurora",
+  "licencia": "Apache-2.0 AND MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

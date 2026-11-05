@@ -85,7 +85,10 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - GSAP no interpola `color-mix()`: calcula el color y pásalo en hexadecimal.
 - En un barrido, la escena que entra lleva la raíz transparente: si no, tapa a la que sale. Con `mix-blend-mode` entre escenas, los anfitriones van sin `z-index`.
 - Rotar un `<g>` de SVG: usa `svgOrigin: "x y"` en el tween. `transform-origin` en CSS no sirve.
-- El aviso `line_unread` salta en una ráfaga con nombres de 2 cuadros: pon nombre solo en las paradas.
+- El aviso `line_unread` salta en una ráfaga con textos de 2 cuadros, y tiene razón: nadie los lee. Pon nombre solo en las paradas, y el avance como barra.
+- `data-requires-webgpu` hace que HyperFrames abra WebGPU con un límite de 10 s antes de empezar. En una pieza con muchas escenas se pasa aunque haya GPU, y dice «a usable WebGPU device could not be created». Sin el atributo, la misma pieza se renderiza bien.
+- Una escena montada hereda las variables CSS de la pieza, así que `var(--fondo, #propio)` toma el color de la pieza y no su respaldo. `--fondo:initial` en el anfitrión corta la herencia y el respaldo vuelve a valer.
+- Una escena que entra desde cero deja casi vacío su primer cuadro, y ese cuadro es la portada en el feed. Para abrir una pieza, adelanta su línea de tiempo 0,7 s con un tween proxy: el kit lo hace solo.
 
 ## Material dibujado
 

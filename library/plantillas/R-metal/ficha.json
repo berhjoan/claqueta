@@ -1,0 +1,66 @@
+{
+  "id": "R-metal",
+  "nombre": "Metal líquido",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Material nuevo",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Fluido y firme",
+      "max": 20
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Metal que fluye con la luz",
+      "max": 32
+    }
+  ],
+  "paleta": {
+    "fondo": "#06070A",
+    "tinta": "#F3F4F6",
+    "acento": "#FF9F43",
+    "segundo": "#8FA3C7",
+    "superficie": "#14161B"
+  },
+  "fuentes": [
+    "Unbounded",
+    "Manrope"
+  ],
+  "rasgos": [
+    "Esfera de metal líquido de WebGPU sobre negro",
+    "Reflejos que cambian con la luz y quedan quietos desde los 3 s",
+    "Título ancho en mayúsculas",
+    "Un solo acento cobre"
+  ],
+  "sonidos": [
+    {
+      "t": 0.2,
+      "sonido": "barrido",
+      "ganancia": -18
+    },
+    {
+      "t": 1.0,
+      "sonido": "destello",
+      "ganancia": -18
+    }
+  ],
+  "requiere": [
+    "webgpu",
+    "assets/lib/shaders.iife.js"
+  ],
+  "origen": "registro:liquid-metal",
+  "licencia": "Apache-2.0 AND MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

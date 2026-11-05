@@ -1,0 +1,62 @@
+<template>
+  <style>
+
+    #pl-rmet { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #06070A); color: var(--tinta, #F3F4F6); }
+    /* Si el shader no llega a cargarse, esta capa deja un cuadro digno con la misma paleta */
+    #pl-rmet-reserva { position: absolute; inset: 0; background: radial-gradient(40% 20% at 50% 34%, color-mix(in srgb, var(--tinta, #F3F4F6) 28%, transparent), transparent 80%), var(--fondo, #06070A); }
+    #pl-rmet-shader { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; display: block;  }
+    #pl-rmet-suelo { position: absolute; left: 140px; top: 900px; width: 800px; height: 120px; background: radial-gradient(closest-side, color-mix(in srgb, var(--tinta, #F3F4F6) 22%, transparent), transparent); opacity: .7; }
+    #pl-rmet-kicker { position: absolute; left: 72px; right: 72px; top: 262px; text-align: center; font-family: var(--cuerpo, "Manrope"), sans-serif; font-weight: 700; font-size: 44px; letter-spacing: .26em; text-transform: uppercase; color: var(--segundo, #8FA3C7); white-space: nowrap; }
+    #pl-rmet-titulo { position: absolute; left: 72px; right: 72px; top: 1010px; text-align: center; font-family: var(--display, "Unbounded"), sans-serif; font-weight: 700; font-size: 78px; line-height: 1.1; letter-spacing: -.01em; text-transform: uppercase; text-wrap: balance; }
+    #pl-rmet-sub { position: absolute; left: 72px; right: 72px; top: 1214px; text-align: center; font-family: var(--cuerpo, "Manrope"), sans-serif; font-weight: 600; font-size: 46px; line-height: 1.2; color: var(--acento, #FF9F43); }
+  </style>
+
+  <div id="pl-rmet" data-composition-id="R-metal" data-start="0" data-duration="4" data-width="1080" data-height="1920" data-requires-webgpu
+    data-composition-variables='[{"id": "kicker", "type": "string", "label": "Rótulo", "default": "Material nuevo", "maxLength": 24}, {"id": "titulo", "type": "string", "label": "Título", "default": "Fluido y firme", "maxLength": 20}, {"id": "subtitulo", "type": "string", "label": "Subtítulo", "default": "Metal que fluye con la luz", "maxLength": 32}]'>
+    <div id="pl-rmet-reserva"></div>
+    <canvas id="pl-rmet-shader" data-shader="LiquidMetal" width="1080" height="1920"></canvas>
+    <div id="pl-rmet-suelo"></div>
+    <div id="pl-rmet-kicker" data-var-text="kicker">Material nuevo</div>
+    <div id="pl-rmet-titulo" data-var-text="titulo">Fluido y firme</div>
+    <div id="pl-rmet-sub" data-var-text="subtitulo">Metal que fluye con la luz</div>
+  </div>
+
+  <script>
+    (function () {
+      var cv = document.getElementById("pl-rmet-shader");
+      var raiz = cv.closest("[data-composition-id]");
+      function cor(css) { var s = document.createElement("span"); s.style.color = css; raiz.appendChild(s); var c = getComputedStyle(s).color; raiz.removeChild(s); return c; }
+      function hex(css) { var m = cor(css).match(/[\d.]+/g); return "#" + [0, 1, 2].map(function (i) { return ("0" + Math.round(+m[i]).toString(16)).slice(-2); }).join(""); }
+      function mezcla(a, b, t) { var A = a.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }), B = b.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }); return "#" + A.map(function (v, i) { return ("0" + Math.round(v + (B[i] - v) * t).toString(16)).slice(-2); }).join(""); }
+
+      // Propiedades del shader tomadas de la paleta (hex), calculadas una vez al montar
+      var C = { fondo: hex("var(--fondo, #06070A)"), tinta: hex("var(--tinta, #F3F4F6)"), acento: hex("var(--acento, #FF9F43)"), segundo: hex("var(--segundo, #8FA3C7)"), superficie: hex("var(--superficie, #14161B)") };
+      cv.setAttribute("data-shader-props", JSON.stringify({ lightColor: mezcla(C.tinta, "#ffffff", 0.2), darkColor: mezcla(C.fondo, "#000000", 0.3), center: { x: 0.5, y: 0.35 }, scale: 0.5, speed: 0.5, ripple: 4, warp: 1.5, environment: 1.5 }));
+
+      // Tiempo del shader = tiempo local de la escena + un desfase que elige un buen primer cuadro; se queda quieto tras 3.0 s
+      var host = raiz.parentElement ? raiz.parentElement.closest("[data-composition-src]") : null;
+      cv.__mapTime = function (tg) { var st = host ? (parseFloat(host.getAttribute("data-start")) || 0) : 0; return 0.6 + Math.min(Math.max(0, tg - st), 3.0); };
+
+      // El motor se carga una vez; cada escena le pasa su canvas y espera a que termine de arrancar
+      window.__hfShaderManual = true;
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady["pl-rmet"] = new Promise(function (res) {
+        function montar() {
+          try { window.__hfShaderMount(cv); Promise.resolve(window.__hf.buildReady["shaders" + window.__hfShaderN]).then(res, res); } catch (e) { res(); }
+        }
+        if (window.__hfShaderMount) { montar(); return; }
+        var s = document.createElement("script"); s.src = "assets/lib/shaders.iife.js"; s.async = false;
+        s.onload = montar; s.onerror = function () { res(); };
+        document.head.appendChild(s);
+      });
+
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#pl-rmet-kicker", { y: -18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.05);
+      tl.fromTo("#pl-rmet-titulo", { y: 36, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "power3.out" }, 0.3);
+      tl.fromTo("#pl-rmet-sub", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" }, 0.65);
+      tl.fromTo("#pl-rmet-suelo", { opacity: 0, scaleX: 0.6 }, { opacity: 0.7, scaleX: 1, duration: 0.8, ease: "power3.out" }, 0.1);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["R-metal"] = tl;
+    })();
+  </script>
+</template>

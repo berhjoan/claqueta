@@ -1,0 +1,132 @@
+{
+  "id": "S26",
+  "nombre": "Infografía animada",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titular",
+      "etiqueta": "Titular con el mensaje",
+      "defecto": "Titular: lo que quieres que se entienda",
+      "max": 48
+    },
+    {
+      "id": "cifra",
+      "etiqueta": "Cifra principal (solo número)",
+      "defecto": "72",
+      "max": 7
+    },
+    {
+      "id": "unidad",
+      "etiqueta": "Unidad de la cifra",
+      "defecto": "%",
+      "max": 3
+    },
+    {
+      "id": "cifra_et",
+      "etiqueta": "Qué mide la cifra",
+      "defecto": "Cifra de ejemplo",
+      "max": 28
+    },
+    {
+      "id": "e1",
+      "etiqueta": "Etiqueta barra 1",
+      "defecto": "Dato A",
+      "max": 16
+    },
+    {
+      "id": "v1",
+      "etiqueta": "Valor barra 1 (solo número)",
+      "defecto": "40",
+      "max": 6
+    },
+    {
+      "id": "e2",
+      "etiqueta": "Etiqueta barra 2",
+      "defecto": "Dato B",
+      "max": 16
+    },
+    {
+      "id": "v2",
+      "etiqueta": "Valor barra 2 (solo número)",
+      "defecto": "65",
+      "max": 6
+    },
+    {
+      "id": "e3",
+      "etiqueta": "Etiqueta barra 3",
+      "defecto": "Dato C",
+      "max": 16
+    },
+    {
+      "id": "v3",
+      "etiqueta": "Valor barra 3 (solo número)",
+      "defecto": "90",
+      "max": 6
+    },
+    {
+      "id": "conclusion",
+      "etiqueta": "Conclusión",
+      "defecto": "La conclusión va aquí",
+      "max": 30
+    },
+    {
+      "id": "fuente",
+      "etiqueta": "Fuente",
+      "defecto": "Fuente: cita aquí tu fuente",
+      "max": 34
+    }
+  ],
+  "paleta": {
+    "fondo": "#F7F4EC",
+    "tinta": "#1B1B1B",
+    "acento": "#FF6B35",
+    "segundo": "#2EC4B6",
+    "superficie": "#FFFFFF"
+  },
+  "fuentes": [
+    "Archivo Black",
+    "Archivo"
+  ],
+  "rasgos": [
+    "Primero los ejes, luego los valores, al final la conclusión",
+    "Escala constante calculada con 1, 2 o 5 por potencia de diez",
+    "Cifras que cuentan hasta su valor",
+    "Barra mayor en el color de acento",
+    "Silueta de barras al pie"
+  ],
+  "sonidos": [
+    {
+      "t": 0.3,
+      "sonido": "subida",
+      "ganancia": -16
+    },
+    {
+      "t": 0.7,
+      "sonido": "pop",
+      "ganancia": -14
+    },
+    {
+      "t": 0.95,
+      "sonido": "pop",
+      "ganancia": -14
+    },
+    {
+      "t": 1.2,
+      "sonido": "pop",
+      "ganancia": -14
+    },
+    {
+      "t": 1.7,
+      "sonido": "campana",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

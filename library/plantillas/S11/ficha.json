@@ -1,0 +1,64 @@
+{
+  "id": "S11",
+  "nombre": "Malla de gradientes",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Color en movimiento",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Un degradado que respira",
+      "max": 26
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Manchas de color suaves",
+      "max": 30
+    }
+  ],
+  "paleta": {
+    "fondo": "#1B1145",
+    "tinta": "#FFFFFF",
+    "acento": "#FF7AC6",
+    "segundo": "#5EE7FF",
+    "superficie": "#2D1F6B"
+  },
+  "fuentes": [
+    "Onest"
+  ],
+  "rasgos": [
+    "Malla de gradientes de WebGPU con rosa sobre violeta",
+    "Tarjeta de cristal con desenfoque",
+    "Manchas que derivan y se quedan quietas desde los 3 s"
+  ],
+  "sonidos": [
+    {
+      "t": 0.15,
+      "sonido": "barrido",
+      "ganancia": -18
+    },
+    {
+      "t": 0.8,
+      "sonido": "pop",
+      "ganancia": -16
+    }
+  ],
+  "requiere": [
+    "webgpu",
+    "assets/lib/shaders.iife.js"
+  ],
+  "origen": "registro:mesh-gradient",
+  "licencia": "Apache-2.0 AND MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

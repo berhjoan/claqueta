@@ -1,0 +1,68 @@
+<template>
+  <style>
+
+    #pl-recl { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #02020A); color: var(--tinta, #F4F4FF); }
+    /* Si el shader no llega a cargarse, esta capa deja un cuadro digno con la misma paleta */
+    #pl-recl-reserva { position: absolute; inset: 0; background: radial-gradient(40% 22% at 50% 40%, color-mix(in srgb, var(--segundo, #7B2FF7) 30%, transparent), transparent 80%), var(--fondo, #02020A); }
+    #pl-recl-shader { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; display: block;  }
+    #pl-recl-kicker { position: absolute; left: 72px; right: 72px; top: 262px; text-align: center; font-family: var(--cuerpo, "Barlow"), sans-serif; font-weight: 700; font-size: 46px; letter-spacing: .3em; text-transform: uppercase; color: var(--acento, #00E0FF); white-space: nowrap; }
+    #pl-recl-titulo { position: absolute; left: 270px; right: 270px; top: 640px; height: 260px; display: flex; align-items: center; justify-content: center; font-family: var(--display, "Bebas Neue"), sans-serif; font-size: 220px; line-height: 1; letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; text-shadow: 0 0 60px color-mix(in srgb, var(--acento, #00E0FF) 45%, transparent); }
+    #pl-recl-sub { position: absolute; left: 72px; right: 72px; top: 1186px; text-align: center; font-family: var(--cuerpo, "Barlow"), sans-serif; font-weight: 600; font-size: 46px; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, var(--tinta, #F4F4FF) 84%, transparent); }
+  </style>
+
+  <div id="pl-recl" data-composition-id="R-eclipse" data-start="0" data-duration="4" data-width="1080" data-height="1920" data-requires-webgpu
+    data-composition-variables='[{"id": "kicker", "type": "string", "label": "Rótulo", "default": "Cuenta atrás", "maxLength": 24}, {"id": "titulo", "type": "string", "label": "Palabra del centro", "default": "ECLIPSE", "maxLength": 10}, {"id": "subtitulo", "type": "string", "label": "Subtítulo", "default": "Todo gira en torno a una idea", "maxLength": 32}]'>
+    <div id="pl-recl-reserva"></div>
+    <canvas id="pl-recl-shader" data-shader="LightEdge" width="1080" height="1920"></canvas>
+    <div id="pl-recl-kicker" data-var-text="kicker">Cuenta atrás</div>
+    <div id="pl-recl-titulo" data-var-text="titulo">ECLIPSE</div>
+    <div id="pl-recl-sub" data-var-text="subtitulo">Todo gira en torno a una idea</div>
+  </div>
+
+  <script>
+    (function () {
+      var cv = document.getElementById("pl-recl-shader");
+      var raiz = cv.closest("[data-composition-id]");
+      function cor(css) { var s = document.createElement("span"); s.style.color = css; raiz.appendChild(s); var c = getComputedStyle(s).color; raiz.removeChild(s); return c; }
+      function hex(css) { var m = cor(css).match(/[\d.]+/g); return "#" + [0, 1, 2].map(function (i) { return ("0" + Math.round(+m[i]).toString(16)).slice(-2); }).join(""); }
+      function mezcla(a, b, t) { var A = a.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }), B = b.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }); return "#" + A.map(function (v, i) { return ("0" + Math.round(v + (B[i] - v) * t).toString(16)).slice(-2); }).join(""); }
+
+      // Propiedades del shader tomadas de la paleta (hex), calculadas una vez al montar
+      var C = { fondo: hex("var(--fondo, #02020A)"), tinta: hex("var(--tinta, #F4F4FF)"), acento: hex("var(--acento, #00E0FF)"), segundo: hex("var(--segundo, #7B2FF7)"), superficie: hex("var(--superficie, #0A0A18)") };
+      cv.setAttribute("data-shader-props", JSON.stringify({ colorA: C.segundo, colorB: C.acento, center: { x: 0.5, y: 0.4 }, scale: 0.6, thickness: 0.25, intensity: 0.75, bloom: 0.4, smoke: 0.35, speed: 1 }));
+
+      // Tiempo del shader = tiempo local de la escena + un desfase que elige un buen primer cuadro; se queda quieto tras 3.0 s
+      var host = raiz.parentElement ? raiz.parentElement.closest("[data-composition-src]") : null;
+      cv.__mapTime = function (tg) { var st = host ? (parseFloat(host.getAttribute("data-start")) || 0) : 0; return 0.4 + Math.min(Math.max(0, tg - st), 3.0); };
+
+      // El motor se carga una vez; cada escena le pasa su canvas y espera a que termine de arrancar
+      window.__hfShaderManual = true;
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady["pl-recl"] = new Promise(function (res) {
+        function montar() {
+          try { window.__hfShaderMount(cv); Promise.resolve(window.__hf.buildReady["shaders" + window.__hfShaderN]).then(res, res); } catch (e) { res(); }
+        }
+        if (window.__hfShaderMount) { montar(); return; }
+        var s = document.createElement("script"); s.src = "assets/lib/shaders.iife.js"; s.async = false;
+        s.onload = montar; s.onerror = function () { res(); };
+        document.head.appendChild(s);
+      });
+
+      // La palabra del centro se ajusta al disco, con la fuente ya cargada
+      var tit = document.getElementById("pl-recl-titulo");
+      function ajustar() {
+        var m = document.createElement("canvas").getContext("2d");
+        m.font = "400 100px " + (getComputedStyle(tit).fontFamily || "Bebas Neue");
+        var w = Math.max(1, m.measureText(tit.textContent.toUpperCase()).width);
+        tit.style.fontSize = Math.min(220, 520 * 100 / w) + "px";
+      }
+      ajustar(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar);
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#pl-recl-kicker", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.05);
+      tl.fromTo("#pl-recl-titulo", { opacity: 0, scale: 0.86, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }, 0.25);
+      tl.fromTo("#pl-recl-sub", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 0.8);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["R-eclipse"] = tl;
+    })();
+  </script>
+</template>

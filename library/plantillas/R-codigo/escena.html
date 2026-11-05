@@ -1,0 +1,133 @@
+<template>
+  <style>
+
+    #pl-rco { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #0A0F1C); color: var(--tinta, #D6E1F5); font-family: var(--datos, "JetBrains Mono"), monospace; }
+    #pl-rco-fondo { position: absolute; inset: 0; background:
+      radial-gradient(70% 38% at 50% 30%, color-mix(in srgb, var(--acento, #7CF4C8) 12%, transparent) 0%, transparent 72%),
+      linear-gradient(180deg, color-mix(in srgb, var(--fondo, #0A0F1C) 88%, #2a3a66) 0%, var(--fondo, #0A0F1C) 55%); }
+    #pl-rco-esqueleto { position: absolute; left: 0; right: 0; top: 1280px; height: 640px; overflow: hidden; }
+    .pl-rco-esq { position: absolute; height: 22px; border-radius: 11px; background: color-mix(in srgb, var(--tinta, #D6E1F5) 9%, transparent); transform-origin: 0 50%; }
+    #pl-rco-titulo { position: absolute; left: 72px; right: 72px; top: 262px; font-family: var(--display, "Sora"), sans-serif; font-weight: 800; font-size: 84px; line-height: 1.25; letter-spacing: -.025em; white-space: nowrap; }
+
+    #pl-rco-editor { position: absolute; left: 72px; top: 400px; width: 936px; height: 770px; border-radius: 26px; overflow: hidden; background: var(--superficie, #121A2D); box-shadow: 0 0 0 2px color-mix(in srgb, var(--tinta, #D6E1F5) 16%, transparent), 0 50px 110px rgba(0,0,0,.65), 0 0 90px color-mix(in srgb, var(--acento, #7CF4C8) 9%, transparent); }
+    #pl-rco-pestana { position: absolute; left: 0; right: 0; top: 0; height: 92px; display: flex; align-items: center; gap: 22px; padding: 0 34px; background: color-mix(in srgb, var(--superficie, #121A2D) 70%, #000); border-bottom: 2px solid color-mix(in srgb, var(--tinta, #D6E1F5) 12%, transparent); }
+    .pl-rco-punto { width: 18px; height: 18px; border-radius: 50%; background: color-mix(in srgb, var(--tinta, #D6E1F5) 30%, transparent); }
+    #pl-rco-archivo { margin-left: 18px; font-size: 44px; font-weight: 600; color: var(--acento, #7CF4C8); white-space: nowrap; overflow: hidden; }
+    #pl-rco-codigo { position: absolute; left: 0; right: 0; top: 112px; }
+    .pl-rco-linea { position: relative; height: 96px; display: flex; align-items: center; font-size: 44px; line-height: 1; white-space: pre; }
+    .pl-rco-num { width: 72px; flex: 0 0 auto; text-align: right; padding-right: 18px; color: color-mix(in srgb, var(--tinta, #D6E1F5) 32%, transparent); }
+    .pl-rco-signo { width: 34px; flex: 0 0 auto; font-weight: 800; }
+    .pl-rco-texto { flex: 1 1 auto; }
+    .pl-rco-linea.pl-rco-mas { background: color-mix(in srgb, var(--acento, #7CF4C8) 16%, transparent); box-shadow: inset 6px 0 0 var(--acento, #7CF4C8); }
+    .pl-rco-linea.pl-rco-menos { background: color-mix(in srgb, #ff6b6b 16%, transparent); box-shadow: inset 6px 0 0 #ff6b6b; }
+    .pl-rco-kw { color: var(--acento, #7CF4C8); font-weight: 700; }
+    .pl-rco-st { color: var(--segundo, #FFB86B); }
+    .pl-rco-nu { color: color-mix(in srgb, var(--segundo, #FFB86B) 55%, var(--acento, #7CF4C8)); }
+    .pl-rco-fn { color: color-mix(in srgb, var(--tinta, #D6E1F5) 70%, #ffffff); font-weight: 600; }
+    .pl-rco-co { color: color-mix(in srgb, var(--tinta, #D6E1F5) 48%, transparent); font-style: italic; }
+    .pl-rco-cursor { display: inline-block; width: 22px; height: 52px; margin-left: 3px; background: var(--acento, #7CF4C8); vertical-align: middle; }
+    #pl-rco-pie { position: absolute; left: 72px; right: 72px; top: 1196px; font-size: 44px; font-weight: 600; color: var(--segundo, #FFB86B); white-space: nowrap; overflow: hidden; }
+  </style>
+
+  <div id="pl-rco" data-composition-id="R-codigo" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[
+      {"id":"titulo","type":"string","label":"Título","default":"Código vivo","maxLength":20},
+      {"id":"archivo","type":"string","label":"Nombre del archivo","default":"video.js","maxLength":18},
+      {"id":"l1","type":"string","label":"Línea 1","default":"// un video hecho con código","maxLength":30},
+      {"id":"l2","type":"string","label":"Línea 2","default":"const video = crear({","maxLength":30},
+      {"id":"l3","type":"string","label":"Línea 3","default":"  formato: \"9:16\",","maxLength":30},
+      {"id":"l4","type":"string","label":"Línea 4","default":"  duracion: 4,","maxLength":30},
+      {"id":"l5","type":"string","label":"Línea 5","default":"});","maxLength":30},
+      {"id":"l6","type":"string","label":"Línea 6 (con + o - al inicio es un cambio)","default":"+ renderizar(video);","maxLength":30},
+      {"id":"pie","type":"string","label":"Pie","default":"Todo es función del tiempo","maxLength":28}
+    ]'>
+    <div id="pl-rco-fondo"></div><div id="pl-rco-esqueleto"></div>
+    <div id="pl-rco-titulo" data-var-text="titulo">Código vivo</div>
+    <div id="pl-rco-editor">
+      <div id="pl-rco-pestana"><i class="pl-rco-punto"></i><i class="pl-rco-punto"></i><i class="pl-rco-punto"></i><div id="pl-rco-archivo" data-var-text="archivo">video.js</div></div>
+      <div id="pl-rco-codigo"></div>
+    </div>
+    <div id="pl-rco-pie" data-var-text="pie">Todo es función del tiempo</div>
+    <div class="pl-rco-lectura" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">
+      <span data-var-text="l1">// un video hecho con código</span><span data-var-text="l2">const video = crear({</span><span data-var-text="l3">  formato: "9:16",</span>
+      <span data-var-text="l4">  duracion: 4,</span><span data-var-text="l5">});</span><span data-var-text="l6">+ renderizar(video);</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var vars = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+      var DEF = ["// un video hecho con código", "const video = crear({", "  formato: \"9:16\",", "  duracion: 4,", "});", "+ renderizar(video);"];
+      var lineas = DEF.map(function (d, i) { var x = vars["l" + (i + 1)]; return typeof x === "string" ? x : d; });
+      var KW = /^(const|let|var|function|return|if|else|for|while|import|from|export|await|async|new|class|def|fn|true|false|null|undefined|in|of)$/;
+      // Mini resaltador: comentarios, cadenas, números, palabras reservadas y llamadas
+      function trocear(s) {
+        var out = [], re = /(\/\/.*|#.*)|("[^"]*"|'[^']*'|`[^`]*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_ÁÉÍÓÚáéíóúñÑ]\w*)(?=\()|([A-Za-z_]\w*)|(\s+|.)/g, m;
+        while ((m = re.exec(s)) !== null) {
+          var cl = m[1] ? "co" : m[2] ? "st" : m[3] ? "nu" : m[4] ? "fn" : (m[5] && KW.test(m[5])) ? "kw" : "";
+          out.push({ t: m[0], c: cl });
+        }
+        return out;
+      }
+      var datos = lineas.map(function (s) {
+        var signo = "", txt = s;
+        if (/^[+-]\s/.test(s)) { signo = s.charAt(0); txt = s.slice(2); }
+        return { signo: signo, txt: txt, tokens: trocear(txt) };
+      });
+      var caja = document.getElementById("pl-rco-codigo"), els = [];
+      datos.forEach(function (d, i) {
+        var l = document.createElement("div"); l.className = "pl-rco-linea" + (d.signo === "+" ? " pl-rco-mas" : d.signo === "-" ? " pl-rco-menos" : "");
+        var n = document.createElement("div"); n.className = "pl-rco-num"; n.textContent = String(i + 1);
+        var sg = document.createElement("div"); sg.className = "pl-rco-signo"; sg.textContent = d.signo; sg.style.color = d.signo === "-" ? "#ff6b6b" : "var(--acento, #7CF4C8)";
+        var tx = document.createElement("div"); tx.className = "pl-rco-texto";
+        l.appendChild(n); l.appendChild(sg); l.appendChild(tx); caja.appendChild(l); els.push({ fila: l, tx: tx, signo: sg });
+      });
+      // El título se ajusta al ancho con la fuente cargada
+      var tit = document.getElementById("pl-rco-titulo");
+      function ajustarTitulo() {
+        var m = document.createElement("canvas").getContext("2d");
+        m.font = "800 100px " + (getComputedStyle(tit).fontFamily || "Sora");
+        var w = Math.max(1, m.measureText(tit.textContent).width);
+        tit.style.fontSize = Math.min(84, 930 * 100 / w) + "px";
+      }
+      ajustarTitulo();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarTitulo);
+      // Coste de tipeo: letras + una pausa corta al cambiar de línea
+      var coste = datos.map(function (d) { return d.txt.length + 4; }), total = coste.reduce(function (a, b) { return a + b; }, 0);
+      function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+      function pintar(t) {
+        var u = Math.max(0, Math.min(1, (t - 0.35) / 1.4)) * total, acu = 0, cursorEn = -1;
+        datos.forEach(function (d, i) {
+          var hechas = Math.max(0, Math.min(d.txt.length, u - acu)); acu += coste[i];
+          var n = Math.floor(hechas), html = "", usado = 0;
+          for (var k = 0; k < d.tokens.length && usado < n; k++) {
+            var tk = d.tokens[k], parte = tk.t.slice(0, n - usado); usado += parte.length;
+            html += tk.c ? '<span class="pl-rco-' + tk.c + '">' + esc(parte) + "</span>" : esc(parte);
+          }
+          var enCurso = (u > acu - coste[i] && u <= acu) && !(i === datos.length - 1 && u >= total - 0.001) ;
+          var ultimo = i === datos.length - 1 && u >= total - 0.001;
+          if (enCurso || ultimo) { html += '<span class="pl-rco-cursor"></span>'; cursorEn = i; }
+          els[i].tx.innerHTML = html;
+          els[i].fila.style.opacity = (d.signo && u < acu - coste[i] + 1) ? "0.0" : "1";
+        });
+      }
+      // Esqueleto de código en la parte baja: barras tenues que llenan los 1920 px, sin texto
+      var esq = document.getElementById("pl-rco-esqueleto"), s0 = 5;
+      function rnd() { s0 = (Math.imul(1664525, s0) + 1013904223) >>> 0; return s0 / 4294967296; }
+      for (var k = 0; k < 14; k++) { var b = document.createElement("div"); b.className = "pl-rco-esq"; b.style.top = (24 + k * 44) + "px"; b.style.left = (72 + Math.floor(rnd() * 3) * 40) + "px"; b.style.width = (140 + rnd() * 640) + "px"; esq.appendChild(b); }
+      var barras = esq.querySelectorAll(".pl-rco-esq");
+
+      var reloj = 0, rel = {};
+      Object.defineProperty(rel, "t", { configurable: true, get: function () { return reloj; }, set: function (x) { reloj = x; pintar(x); } });
+      var tl = gsap.timeline({ paused: true });
+      tl.to(rel, { t: 4, duration: 4, ease: "none" }, 0);
+      tl.fromTo("#pl-rco-titulo", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0);
+      tl.fromTo("#pl-rco-editor", { opacity: 0.4, y: 50, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, 0);
+      tl.fromTo(barras, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.5, stagger: 0.05, ease: "power2.out" }, 0.4);
+      tl.fromTo("#pl-rco-pie", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 1.75);
+      pintar(0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["R-codigo"] = tl;
+    })();
+  </script>
+</template>

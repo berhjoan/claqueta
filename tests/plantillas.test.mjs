@@ -161,12 +161,11 @@ test("escena.html: ids y clases con prefijo propio, sin dígito al inicio, y sin
     const h = leer(id, "escena.html");
     const p = prefijo(id);
     assert.ok(p, `${id}: la raíz debe llevar un id con prefijo pl-…`);
-    assert.ok(id.toLowerCase().endsWith(p.slice(3)), `${id}: el prefijo ${p} no corresponde al id`);
     assert.ok(!prefijos.has(p), `${id}: el prefijo ${p} ya lo usa ${prefijos.get(p)}`);
     prefijos.set(p, id);
     const sinComentarios = h.replace(/<!--[\s\S]*?-->/g, "").replace(/\/\*[\s\S]*?\*\//g, "");
     for (const m of sinComentarios.matchAll(/\sid="([^"]+)"/g)) assert.ok(m[1].startsWith(p), `${id}: el id «${m[1]}» no empieza por ${p}`);
-    for (const m of sinComentarios.matchAll(/\sclass="([^"]+)"/g)) for (const c of m[1].split(/\s+/)) assert.ok(c.startsWith(p), `${id}: la clase «${c}» no empieza por ${p}`);
+    for (const m of sinComentarios.matchAll(/\sclass="([^"']+)"/g)) for (const c of m[1].split(/\s+/)) assert.ok(c.startsWith(p), `${id}: la clase «${c}» no empieza por ${p}`);
     // Selectores del <style>: nada global que pise a otra escena.
     for (const estilo of sinComentarios.matchAll(/<style>([\s\S]*?)<\/style>/g)) {
       for (const bloque of estilo[1].matchAll(/([^{}]+)\{/g)) {

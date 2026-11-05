@@ -1,0 +1,79 @@
+{
+  "id": "L-dark-keynote",
+  "nombre": "Keynote tecnológico oscuro",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Presentamos",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Espacio para pensar",
+      "max": 24
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Una interfaz, una idea",
+      "max": 30
+    },
+    {
+      "id": "etiqueta",
+      "etiqueta": "Etiqueta de la ficha elegida",
+      "defecto": "Esta ficha",
+      "max": 16
+    }
+  ],
+  "paleta": {
+    "fondo": "#09090D",
+    "tinta": "#A7A6A8",
+    "acento": "#DFAA7B",
+    "segundo": "#9EC0E4",
+    "superficie": "#1B1B1F"
+  },
+  "fuentes": [
+    "Sora",
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Retícula fina de 60 px y luz suave",
+    "Interfaz genérica de fichas, sin marca ni producto real",
+    "Paso de 0,5 s: cada movimiento sale un pulso antes",
+    "Un solo sobreimpulso corto (back 1,3)",
+    "Un solo acento"
+  ],
+  "sonidos": [
+    {
+      "t": 0.25,
+      "sonido": "barrido",
+      "ganancia": -16
+    },
+    {
+      "t": 0.5,
+      "sonido": "clic",
+      "ganancia": -18
+    },
+    {
+      "t": 1.0,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 1.7,
+      "sonido": "pop",
+      "ganancia": -14
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

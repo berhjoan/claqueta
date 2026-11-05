@@ -1,0 +1,148 @@
+<template>
+  <style>
+
+    #pl-s26 { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #F7F4EC); color: var(--tinta, #1B1B1B); font-family: var(--cuerpo, "Archivo"), sans-serif; }
+    /* Papel cuadriculado que llena los 1920 px */
+    #pl-s26-papel { position: absolute; inset: 0; background-image:
+      linear-gradient(color-mix(in srgb, var(--tinta, #1B1B1B) 7%, transparent) 2px, transparent 2px),
+      linear-gradient(90deg, color-mix(in srgb, var(--tinta, #1B1B1B) 7%, transparent) 2px, transparent 2px);
+      background-size: 60px 60px; background-position: 12px 18px; }
+    #pl-s26-viñeta { position: absolute; inset: 0; background: radial-gradient(120% 70% at 50% 40%, transparent 55%, color-mix(in srgb, var(--fondo, #F7F4EC) 78%, #8a8470) 100%); opacity: .55; }
+
+    #pl-s26-titular { position: absolute; left: 72px; right: 72px; top: 262px; font-family: var(--display, "Archivo Black"), sans-serif; font-size: 60px; line-height: 1.1; letter-spacing: -.01em; text-wrap: balance; }
+    #pl-s26-kpi { position: absolute; left: 72px; width: 936px; top: 420px; height: 290px; border-radius: 28px; background: var(--superficie, #FFFFFF); box-shadow: 0 0 0 3px var(--tinta, #1B1B1B), 10px 10px 0 0 var(--tinta, #1B1B1B); }
+    #pl-s26-fila-cifra { position: absolute; left: 44px; top: 20px; display: flex; align-items: baseline; gap: 10px; white-space: nowrap; color: color-mix(in srgb, var(--acento, #FF6B35) 78%, #000); }
+    #pl-s26-cifra { font-family: var(--display, "Archivo Black"), sans-serif; font-size: 190px; line-height: 1.05; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+    #pl-s26-unidad { font-family: var(--display, "Archivo Black"), sans-serif; font-size: 100px; line-height: 1.05; }
+    #pl-s26-cifra-et { position: absolute; left: 48px; right: 40px; bottom: 26px; font-weight: 700; font-size: 46px; line-height: 1.1; white-space: nowrap; overflow: hidden; }
+
+    #pl-s26-grafico { position: absolute; left: 72px; width: 936px; top: 740px; height: 380px; }
+    .pl-s26-grid { position: absolute; top: 0; width: 3px; height: 335px; background: color-mix(in srgb, var(--tinta, #1B1B1B) 18%, transparent); transform-origin: 50% 0; }
+    .pl-s26-fila { position: absolute; left: 0; width: 936px; height: 108px; }
+    .pl-s26-etq { position: absolute; left: 0; top: 0; font-weight: 700; font-size: 44px; line-height: 1; white-space: nowrap; color: color-mix(in srgb, var(--tinta, #1B1B1B) 82%, transparent); }
+    .pl-s26-pista { position: absolute; left: 0; top: 52px; width: 700px; height: 44px; border-radius: 6px; background: color-mix(in srgb, var(--tinta, #1B1B1B) 8%, transparent); }
+    .pl-s26-barra { position: absolute; left: 0; top: 52px; height: 44px; border-radius: 6px; transform-origin: 0 50%; background: var(--segundo, #2EC4B6); }
+    .pl-s26-barra.pl-s26-max { background: var(--acento, #FF6B35); }
+    .pl-s26-valor { opacity: 0; position: absolute; left: 722px; top: 40px; width: 214px; font-family: var(--display, "Archivo Black"), sans-serif; font-size: 58px; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .pl-s26-eje { position: absolute; top: 340px; font-weight: 600; font-size: 44px; line-height: 1; color: color-mix(in srgb, var(--tinta, #1B1B1B) 60%, transparent); }
+
+    #pl-s26-conclusion { position: absolute; left: 72px; width: 936px; top: 1136px; font-weight: 800; font-size: 50px; line-height: 1.1; white-space: nowrap; overflow: hidden; }
+    #pl-s26-marca { position: absolute; left: 72px; top: 1196px; height: 8px; background: var(--acento, #FF6B35); width: 0; }
+    #pl-s26-fuente { position: absolute; left: 72px; width: 936px; top: 1214px; font-weight: 500; font-size: 44px; line-height: 1.1; white-space: nowrap; overflow: hidden; color: color-mix(in srgb, var(--tinta, #1B1B1B) 62%, transparent); }
+    #pl-s26-skyline { position: absolute; left: 0; right: 0; bottom: 0; height: 330px; }
+    #pl-s26-skyline i { position: absolute; bottom: 0; width: 38px; background: color-mix(in srgb, var(--segundo, #2EC4B6) 38%, transparent); transform-origin: 50% 100%; }
+    .pl-s26-lectura { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  </style>
+
+  <div id="pl-s26" data-composition-id="S26" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[
+      {"id":"titular","type":"string","label":"Titular con el mensaje","default":"Titular: lo que quieres que se entienda","maxLength":48},
+      {"id":"cifra","type":"string","label":"Cifra principal (solo número)","default":"72","maxLength":7},
+      {"id":"unidad","type":"string","label":"Unidad de la cifra","default":"%","maxLength":3},
+      {"id":"cifra_et","type":"string","label":"Qué mide la cifra","default":"Cifra de ejemplo","maxLength":28},
+      {"id":"e1","type":"string","label":"Etiqueta barra 1","default":"Dato A","maxLength":16},
+      {"id":"v1","type":"string","label":"Valor barra 1 (solo número)","default":"40","maxLength":6},
+      {"id":"e2","type":"string","label":"Etiqueta barra 2","default":"Dato B","maxLength":16},
+      {"id":"v2","type":"string","label":"Valor barra 2 (solo número)","default":"65","maxLength":6},
+      {"id":"e3","type":"string","label":"Etiqueta barra 3","default":"Dato C","maxLength":16},
+      {"id":"v3","type":"string","label":"Valor barra 3 (solo número)","default":"90","maxLength":6},
+      {"id":"conclusion","type":"string","label":"Conclusión","default":"La conclusión va aquí","maxLength":30},
+      {"id":"fuente","type":"string","label":"Fuente","default":"Fuente: cita aquí tu fuente","maxLength":34}
+    ]'>
+    <div id="pl-s26-papel"></div><div id="pl-s26-viñeta"></div>
+    <div id="pl-s26-skyline"></div>
+    <div id="pl-s26-titular" data-var-text="titular">Titular: lo que quieres que se entienda</div>
+    <div id="pl-s26-kpi"><div id="pl-s26-fila-cifra"><div id="pl-s26-cifra">0</div><div id="pl-s26-unidad" data-var-text="unidad">%</div></div><div id="pl-s26-cifra-et" data-var-text="cifra_et">Cifra de ejemplo</div></div>
+    <div id="pl-s26-grafico"></div>
+    <div id="pl-s26-conclusion" data-var-text="conclusion">La conclusión va aquí</div>
+    <div id="pl-s26-marca"></div>
+    <div id="pl-s26-fuente" data-var-text="fuente">Fuente: cita aquí tu fuente</div>
+    <div class="pl-s26-lectura" data-var-text="cifra">72</div>
+    <div class="pl-s26-lectura" data-var-text="e1">Dato A</div><div class="pl-s26-lectura" data-var-text="v1">40</div>
+    <div class="pl-s26-lectura" data-var-text="e2">Dato B</div><div class="pl-s26-lectura" data-var-text="v2">65</div>
+    <div class="pl-s26-lectura" data-var-text="e3">Dato C</div><div class="pl-s26-lectura" data-var-text="v3">90</div>
+  </div>
+
+  <script>
+    (function () {
+      var vars = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+      function v(id, def) { var x = vars[id]; return (typeof x === "string" && x.length) ? x : def; }
+      function num(s) { var n = parseFloat(String(s).replace(",", ".")); return isFinite(n) ? n : 0; }
+      function dec(s) { var m = String(s).match(/[.,](\d+)/); return m ? m[1].length : 0; }
+      function fmt(n, d) { return n.toFixed(d).replace(".", ","); }
+
+      var cifra = v("cifra", "72"), cifraN = num(cifra), cifraD = dec(cifra);
+      var filas = [[v("e1", "Dato A"), v("v1", "40")], [v("e2", "Dato B"), v("v2", "65")], [v("e3", "Dato C"), v("v3", "90")]];
+      var valores = filas.map(function (f) { return num(f[1]); });
+      // Escala constante: el eje llega al siguiente 1, 2 o 5 por potencia de diez por encima del mayor valor
+      var mayor = Math.max.apply(null, valores.concat([1])), eje = 1;
+      (function () { var pot = Math.pow(10, Math.floor(Math.log10(mayor))); [1, 2, 5, 10].some(function (k) { eje = k * pot; return eje >= mayor; }); })();
+      var iMax = valores.indexOf(Math.max.apply(null, valores));
+
+      var graf = document.getElementById("pl-s26-grafico");
+      var PISTA = 700;
+      [0, 0.25, 0.5, 0.75, 1].forEach(function (f, i) { var g = document.createElement("div"); g.className = "pl-s26-grid"; g.id = "pl-s26-g" + i; g.style.left = (f * PISTA - (f === 1 ? 3 : 0)) + "px"; graf.appendChild(g); });
+      var barras = [], textos = [];
+      filas.forEach(function (f, i) {
+        var fila = document.createElement("div"); fila.className = "pl-s26-fila"; fila.style.top = (i * 112) + "px";
+        var et = document.createElement("div"); et.className = "pl-s26-etq"; et.textContent = f[0];
+        var pista = document.createElement("div"); pista.className = "pl-s26-pista";
+        var b = document.createElement("div"); b.className = "pl-s26-barra" + (i === iMax ? " pl-s26-max" : ""); b.id = "pl-s26-b" + i; b.style.width = (valores[i] / eje * PISTA) + "px";
+        var val = document.createElement("div"); val.className = "pl-s26-valor"; val.id = "pl-s26-v" + i; val.textContent = "0";
+        fila.appendChild(et); fila.appendChild(pista); fila.appendChild(b); fila.appendChild(val); graf.appendChild(fila);
+        barras.push(b); textos.push(val);
+      });
+      var e0 = document.createElement("div"); e0.className = "pl-s26-eje"; e0.style.left = "0px"; e0.textContent = "0";
+      var e1 = document.createElement("div"); e1.className = "pl-s26-eje"; e1.style.left = (PISTA - 150) + "px"; e1.style.width = "150px"; e1.style.textAlign = "right"; e1.textContent = fmt(eje, 0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      graf.appendChild(e0); graf.appendChild(e1);
+
+      // Silueta de barras al pie: mundo del estilo, con semilla fija
+      var sk = document.getElementById("pl-s26-skyline"), s = 7;
+      function rnd() { s = (Math.imul(1664525, s) + 1013904223) >>> 0; return s / 4294967296; }
+      for (var k = 0; k < 24; k++) { var bi = document.createElement("i"); bi.style.left = (k * 45 + 4) + "px"; bi.style.height = (60 + rnd() * 250) + "px"; sk.appendChild(bi); }
+      var sky = sk.querySelectorAll("i");
+
+      // Unidad pegada a la cifra: se mide con la fuente cargada y se recoloca al terminar de cargar
+      var cifraEl = document.getElementById("pl-s26-cifra"), uniEl = document.getElementById("pl-s26-unidad");
+      // La cifra y su unidad se encogen juntas si no caben en la tarjeta (se mide la cifra final con la fuente cargada)
+      function ajustarCifra() {
+        var m = document.createElement("canvas").getContext("2d");
+        m.font = "400 190px " + (getComputedStyle(cifraEl).fontFamily || "Archivo Black");
+        var wn = m.measureText(fmt(cifraN, cifraD)).width;
+        m.font = "400 100px " + (getComputedStyle(uniEl).fontFamily || "Archivo Black");
+        var wu = m.measureText(uniEl.textContent).width + 10;
+        var k = Math.min(1, 830 / Math.max(1, wn + wu));
+        cifraEl.style.fontSize = (190 * k) + "px"; uniEl.style.fontSize = (100 * k) + "px";
+      }
+      ajustarCifra(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarCifra);
+      var estado = { c: 0 };
+      function pintar() {
+        var p = estado.c;
+        cifraEl.textContent = fmt(cifraN * p, cifraD);
+      }
+      var rel = { b0: 0, b1: 0, b2: 0 };
+      function valor(i, p) { textos[i].textContent = fmt(valores[i] * p, dec(filas[i][1])); }
+
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#pl-s26-titular", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0);
+      tl.fromTo("#pl-s26-kpi", { y: 40, scale: 0.97 }, { y: 0, scale: 1, duration: 0.55, ease: "power3.out" }, 0);
+      tl.to(estado, { c: 1, duration: 1.1, ease: "power2.out", onUpdate: pintar }, 0.3);
+      // Primero los ejes, después los valores, al final la conclusión
+      tl.fromTo(".pl-s26-grid", { scaleY: 0 }, { scaleY: 1, duration: 0.5, stagger: 0.05, ease: "power2.out" }, 0.35);
+      tl.fromTo(".pl-s26-pista, .pl-s26-etq, .pl-s26-eje", { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.04 }, 0.55);
+      barras.forEach(function (b, i) {
+        var p = { x: 0 };
+        tl.fromTo(textos[i], { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.7 + i * 0.25);
+        tl.fromTo(b, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power3.out" }, 0.7 + i * 0.25);
+        tl.to(p, { x: 1, duration: 0.7, ease: "power3.out", onUpdate: function () { valor(i, p.x); } }, 0.7 + i * 0.25);
+      });
+      tl.fromTo("#pl-s26-conclusion", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 1.7);
+      tl.fromTo("#pl-s26-marca", { width: 0 }, { width: 220, duration: 0.45, ease: "power3.out" }, 1.95);
+      tl.fromTo("#pl-s26-fuente", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 1.85);
+      tl.fromTo(sky, { scaleY: 0 }, { scaleY: 1, duration: 0.6, stagger: 0.04, ease: "power3.out" }, 1.4);
+      pintar();
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S26"] = tl;
+    })();
+  </script>
+</template>

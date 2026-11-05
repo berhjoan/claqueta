@@ -1,0 +1,156 @@
+<template>
+  <style>
+
+    #pl-s13 { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #121212); color: var(--tinta, #F2F2F2); font-family: var(--datos, "JetBrains Mono"), monospace; }
+
+    /* Pared: chapa oscura con juntas de paneles, luz que cae desde arriba y rejilla de ventilación abajo. Llena los 1920 px. */
+    #pl-s13-pared { position: absolute; inset: 0; background:
+      radial-gradient(90% 55% at 50% 30%, color-mix(in srgb, var(--superficie, #1E1E1E) 70%, #ffffff 12%) 0%, transparent 70%),
+      linear-gradient(180deg, color-mix(in srgb, var(--fondo, #121212) 92%, #ffffff) 0%, var(--fondo, #121212) 55%, color-mix(in srgb, var(--fondo, #121212) 88%, #000) 100%); }
+    #pl-s13-juntas { position: absolute; inset: 0; opacity: .55; background-image:
+      linear-gradient(90deg, transparent 0, transparent 538px, rgba(0,0,0,.55) 538px, rgba(0,0,0,.55) 542px, rgba(255,255,255,.05) 542px, rgba(255,255,255,.05) 544px, transparent 544px),
+      linear-gradient(180deg, transparent 0, transparent 1268px, rgba(0,0,0,.6) 1268px, rgba(0,0,0,.6) 1272px, rgba(255,255,255,.05) 1272px, rgba(255,255,255,.05) 1274px, transparent 1274px); }
+    #pl-s13-rejilla { position: absolute; left: 0; right: 0; top: 1330px; height: 520px; opacity: .8;
+      background: repeating-linear-gradient(180deg, rgba(0,0,0,.65) 0, rgba(0,0,0,.65) 14px, color-mix(in srgb, var(--superficie, #1E1E1E) 80%, #ffffff 6%) 14px, color-mix(in srgb, var(--superficie, #1E1E1E) 80%, #ffffff 6%) 30px);
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 82%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 82%, transparent 100%); }
+    #pl-s13-tornillo-izq, #pl-s13-tornillo-der { position: absolute; width: 26px; height: 26px; border-radius: 50%; top: 1296px; background: radial-gradient(circle at 35% 30%, #6b6b6b, #222 70%); box-shadow: 0 2px 4px rgba(0,0,0,.6); }
+    #pl-s13-tornillo-izq { left: 76px; } #pl-s13-tornillo-der { right: 76px; }
+
+    /* Rótulo superior */
+    #pl-s13-kick { position: absolute; left: 56px; right: 56px; top: 262px; height: 92px; display: flex; align-items: center; gap: 26px; padding: 0 32px;
+      border-radius: 14px; background: linear-gradient(180deg, color-mix(in srgb, var(--superficie, #1E1E1E) 88%, #ffffff 5%), var(--superficie, #1E1E1E)); box-shadow: 0 0 0 1px rgba(255,255,255,.07), 0 16px 34px rgba(0,0,0,.55); }
+    #pl-s13-lampara { flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; background: var(--acento, #FFC300); box-shadow: 0 0 22px var(--acento, #FFC300); }
+    #pl-s13-kick-texto { font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 800; font-size: 46px; letter-spacing: .14em; text-transform: uppercase; color: var(--acento, #FFC300); white-space: nowrap; overflow: hidden; text-overflow: clip; }
+
+    /* Tablero */
+    #pl-s13-panel { position: absolute; left: 56px; top: 372px; width: 968px; height: 678px; border-radius: 22px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--superficie, #1E1E1E) 80%, #000) 0%, color-mix(in srgb, var(--superficie, #1E1E1E) 55%, #000) 100%);
+      box-shadow: 0 0 0 4px var(--segundo, #3A3A3A), 0 0 0 6px rgba(0,0,0,.7), 0 36px 80px rgba(0,0,0,.65), inset 0 0 40px rgba(0,0,0,.7); }
+    #pl-s13-tablero { position: absolute; left: 20px; top: 32px; width: 928px; display: flex; flex-direction: column; gap: 14px; }
+    .pl-s13-fila { display: flex; gap: 8px; }
+    .pl-s13-celda { position: relative; flex: 0 0 auto; perspective: 900px; border-radius: 9px; background: #09090a; box-shadow: 0 10px 18px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.05); }
+    .pl-s13-cara { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; background: linear-gradient(180deg, #2a2a2f 0%, #1b1b1f 100%); }
+    .pl-s13-sup, .pl-s13-hoja-a { top: 0; border-radius: 9px 9px 0 0; }
+    .pl-s13-inf, .pl-s13-hoja-b { top: 50%; border-radius: 0 0 9px 9px; background: linear-gradient(180deg, #1a1a1e 0%, #26262b 100%); }
+    .pl-s13-hoja-a { transform-origin: 50% 100%; z-index: 3; backface-visibility: hidden; }
+    .pl-s13-hoja-b { transform-origin: 50% 0%; z-index: 3; backface-visibility: hidden; }
+    .pl-s13-glifo { position: absolute; left: 0; width: 100%; display: block; text-align: center; font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 800; color: var(--tinta, #F2F2F2); white-space: pre; }
+    .pl-s13-fila.pl-s13-ultima .pl-s13-glifo { color: var(--acento, #FFC300); }
+    .pl-s13-costura { position: absolute; left: 0; top: 50%; width: 100%; height: 3px; margin-top: -1.5px; background: #050506; z-index: 4; }
+
+    /* Pie */
+    #pl-s13-pie { position: absolute; left: 56px; right: 56px; top: 1086px; height: 96px; display: flex; align-items: center; padding: 0 32px; border-radius: 14px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--superficie, #1E1E1E) 88%, #ffffff 5%), var(--superficie, #1E1E1E)); box-shadow: 0 0 0 1px rgba(255,255,255,.07), 0 16px 34px rgba(0,0,0,.55);
+      font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 700; font-size: 44px; letter-spacing: .04em; color: var(--tinta, #F2F2F2); white-space: nowrap; overflow: hidden; }
+    .pl-s13-lectura { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  </style>
+
+  <div id="pl-s13" data-composition-id="S13" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[
+      {"id":"kicker","type":"string","label":"Rótulo superior","default":"Aviso","maxLength":18},
+      {"id":"l1","type":"string","label":"Línea 1 del panel","default":"TU TÍTULO","maxLength":9},
+      {"id":"l2","type":"string","label":"Línea 2 del panel","default":"VA AQUÍ","maxLength":9},
+      {"id":"l3","type":"string","label":"Línea 3 del panel","default":"EN CADA","maxLength":9},
+      {"id":"l4","type":"string","label":"Línea 4 del panel","default":"LÁMINA","maxLength":9},
+      {"id":"pie","type":"string","label":"Pie del panel","default":"Escribe aquí tu pie","maxLength":28}
+    ]'>
+    <div id="pl-s13-pared"></div>
+    <div id="pl-s13-juntas"></div>
+    <div id="pl-s13-rejilla"></div>
+    <div id="pl-s13-tornillo-izq"></div><div id="pl-s13-tornillo-der"></div>
+    <div id="pl-s13-kick"><div id="pl-s13-lampara"></div><div id="pl-s13-kick-texto" data-var-text="kicker">Aviso</div></div>
+    <div id="pl-s13-panel"><div id="pl-s13-tablero"></div></div>
+    <div id="pl-s13-pie" data-var-text="pie">Escribe aquí tu pie</div>
+    <div class="pl-s13-lectura" data-var-text="l1">TU TÍTULO</div>
+    <div class="pl-s13-lectura" data-var-text="l2">VA AQUÍ</div>
+    <div class="pl-s13-lectura" data-var-text="l3">EN CADA</div>
+    <div class="pl-s13-lectura" data-var-text="l4">LÁMINA</div>
+  </div>
+
+  <script>
+    (function () {
+      var DEG = Math.PI / 180;
+      var vars = (window.__hyperframes && window.__hyperframes.getVariables) ? window.__hyperframes.getVariables() : {};
+      function v(id, def) { var x = vars[id]; return (typeof x === "string") ? x : def; }
+      var COLS = 9, ROWS = 4, CW = 96, CH = 140, GAP = 8;
+      var lineas = [v("l1", "TU TÍTULO"), v("l2", "VA AQUÍ"), v("l3", "EN CADA"), v("l4", "LÁMINA")]
+        .map(function (s) { return String(s).toUpperCase().slice(0, COLS); });
+
+      // Tambor: se recorre en orden, como en un panel real. Los caracteres que no estén se añaden al final.
+      var alfabeto = " ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ0123456789.,¿?¡!:-";
+      lineas.forEach(function (s) { for (var i = 0; i < s.length; i++) if (alfabeto.indexOf(s[i]) < 0) alfabeto += s[i]; });
+      var N = alfabeto.length;
+
+      // Destino de cada casilla, con la línea centrada
+      var celdas = [], maxPasos = 0, inicioMax = 0;
+      var filas = document.querySelector("#pl-s13-tablero");
+      var ultima = -1;
+      lineas.forEach(function (s, r) { if (s.trim().length) ultima = r; });
+      for (var r = 0; r < ROWS; r++) {
+        var fila = document.createElement("div");
+        fila.className = "pl-s13-fila" + (r === ultima ? " pl-s13-ultima" : "");
+        var s = lineas[r], lead = Math.floor((COLS - s.length) / 2);
+        for (var c = 0; c < COLS; c++) {
+          var ch = (c >= lead && c < lead + s.length) ? s.charAt(c - lead) : " ";
+          var pasos = Math.max(0, alfabeto.indexOf(ch));
+          var inicio = 0.2 + c * 0.045 + r * 0.12;
+          maxPasos = Math.max(maxPasos, pasos); inicioMax = Math.max(inicioMax, inicio);
+          var celda = document.createElement("div");
+          celda.className = "pl-s13-celda"; celda.id = "pl-s13-c-" + r + "-" + c;
+          celda.style.width = CW + "px"; celda.style.height = CH + "px";
+          // El mecanismo son hojas apiladas y giratorias: el auditor de capas no puede leerlas, así que no las audita.
+          celda.setAttribute("data-layout-ignore", "");
+          function cara(cls, top) {
+            var f = document.createElement("div"); f.className = "pl-s13-cara " + cls;
+            var g = document.createElement("span"); g.className = "pl-s13-glifo";
+            g.style.height = CH + "px"; g.style.lineHeight = CH + "px"; g.style.fontSize = Math.round(CW * 0.8) + "px"; g.style.top = top + "px";
+            f.appendChild(g); return f;
+          }
+          var sup = cara("pl-s13-sup", 0), inf = cara("pl-s13-inf", -Math.round(CH / 2)), ha = cara("pl-s13-hoja-a", 0), hb = cara("pl-s13-hoja-b", -Math.round(CH / 2));
+          var costura = document.createElement("div"); costura.className = "pl-s13-costura";
+          celda.appendChild(sup); celda.appendChild(inf); celda.appendChild(ha); celda.appendChild(hb); celda.appendChild(costura);
+          fila.appendChild(celda);
+          celdas.push({ pasos: pasos, inicio: inicio, sup: sup.firstChild, inf: inf.firstChild, ha: ha, hb: hb, ga: ha.firstChild, gb: hb.firstChild });
+        }
+        filas.appendChild(fila);
+      }
+      // Cada casilla gira como máximo hasta 3,05 s; el panel queda quieto y legible hasta el final.
+      var FIN = 3.05;
+      var flip = Math.max(0.03, Math.min(0.075, (FIN - inicioMax) / Math.max(1, maxPasos)));
+
+      function limpiar(hoja, glifo) { hoja.style.opacity = "0"; hoja.style.transform = ""; hoja.style.filter = ""; glifo.textContent = ""; }
+      function mostrar(hoja, glifo, ch, ang, sombra) { glifo.textContent = ch; hoja.style.opacity = "1"; hoja.style.transform = "rotateX(" + ang.toFixed(2) + "deg)"; hoja.style.filter = "brightness(" + sombra + ")"; }
+
+      function pintar(t) {
+        for (var i = 0; i < celdas.length; i++) {
+          var c = celdas[i];
+          var tl = t - c.inicio;
+          var raw = tl <= 0 ? 0 : tl / flip;
+          var cuenta = Math.floor(raw), p = raw - cuenta;
+          if (cuenta >= c.pasos) { cuenta = c.pasos; p = 0; }
+          var sale = alfabeto.charAt(cuenta % N), entra = alfabeto.charAt((cuenta + 1) % N);
+          var girando = cuenta < c.pasos && p > 0;
+          if (!girando) { c.sup.textContent = sale; c.inf.textContent = sale; limpiar(c.ha, c.ga); limpiar(c.hb, c.gb); continue; }
+          c.sup.textContent = entra; c.inf.textContent = sale;
+          var th = 180 * p * p, sombra = (1 - 0.5 * Math.sin(th * DEG)).toFixed(3);
+          if (th < 90) { mostrar(c.ha, c.ga, sale, -th, sombra); limpiar(c.hb, c.gb); }
+          else { limpiar(c.ha, c.ga); mostrar(c.hb, c.gb, entra, 180 - th, sombra); }
+        }
+      }
+      var reloj = 0, rel = {};
+      Object.defineProperty(rel, "t", { configurable: true, get: function () { return reloj; }, set: function (x) { reloj = x; pintar(x); } });
+
+      var tl = gsap.timeline({ paused: true });
+      tl.to(rel, { t: 4, duration: 4, ease: "none" }, 0);
+      tl.fromTo("#pl-s13-kick", { y: -26 }, { y: 0, duration: 0.45, ease: "power3.out" }, 0);
+      tl.fromTo("#pl-s13-panel", { scale: 0.975 }, { scale: 1, duration: 0.5, ease: "power3.out" }, 0);
+      tl.fromTo("#pl-s13-pie", { y: 30 }, { y: 0, duration: 0.5, ease: "power3.out" }, 0.1);
+      tl.fromTo("#pl-s13-lampara", { opacity: 0.25 }, { opacity: 1, duration: 0.06, ease: "none" }, 0.5);
+      tl.to("#pl-s13-lampara", { opacity: 0.25, duration: 0.06, ease: "none" }, 0.9);
+      tl.to("#pl-s13-lampara", { opacity: 1, duration: 0.06, ease: "none" }, 1.3);
+      pintar(0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S13"] = tl;
+    })();
+  </script>
+</template>

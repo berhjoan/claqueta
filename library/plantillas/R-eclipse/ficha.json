@@ -1,0 +1,65 @@
+{
+  "id": "R-eclipse",
+  "nombre": "Eclipse",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Cuenta atrás",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Palabra del centro",
+      "defecto": "ECLIPSE",
+      "max": 10
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Todo gira en torno a una idea",
+      "max": 32
+    }
+  ],
+  "paleta": {
+    "fondo": "#02020A",
+    "tinta": "#F4F4FF",
+    "acento": "#00E0FF",
+    "segundo": "#7B2FF7",
+    "superficie": "#0A0A18"
+  },
+  "fuentes": [
+    "Bebas Neue",
+    "Barlow"
+  ],
+  "rasgos": [
+    "Disco negro con borde de luz de WebGPU (violeta y cian)",
+    "La palabra del centro se ajusta al disco",
+    "Humo y destellos en el borde que se quedan quietos desde los 3 s"
+  ],
+  "sonidos": [
+    {
+      "t": 0.2,
+      "sonido": "subida",
+      "ganancia": -16
+    },
+    {
+      "t": 0.8,
+      "sonido": "impacto",
+      "ganancia": -16
+    }
+  ],
+  "requiere": [
+    "webgpu",
+    "assets/lib/shaders.iife.js"
+  ],
+  "origen": "registro:light-edge",
+  "licencia": "Apache-2.0 AND MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

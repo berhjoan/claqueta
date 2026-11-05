@@ -1,0 +1,60 @@
+{
+  "id": "S01",
+  "nombre": "Partículas",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Nube de puntos",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título (hasta dos líneas)",
+      "defecto": "Del caos nace la forma",
+      "max": 22
+    }
+  ],
+  "paleta": {
+    "fondo": "#1A0B2E",
+    "tinta": "#F7E9FF",
+    "acento": "#FF6FB5",
+    "segundo": "#9B5DE5",
+    "superficie": "#2A1446"
+  },
+  "fuentes": [
+    "Sora"
+  ],
+  "rasgos": [
+    "Más de 2.500 puntos con semilla fija",
+    "Se concentran en una bola y se abren en anillos y radios",
+    "El título se forma con puntos y luego se vuelve texto nítido",
+    "Estrellas de fondo que derivan y se frenan"
+  ],
+  "sonidos": [
+    {
+      "t": 0.1,
+      "sonido": "subida",
+      "ganancia": -16
+    },
+    {
+      "t": 1.1,
+      "sonido": "destello",
+      "ganancia": -14
+    },
+    {
+      "t": 1.6,
+      "sonido": "campana",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

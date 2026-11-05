@@ -1,0 +1,59 @@
+<template>
+  <style>
+
+    #pl-rhil { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #03050D); color: var(--tinta, #E8EEFF); }
+    /* Si el shader no llega a cargarse, esta capa deja un cuadro digno con la misma paleta */
+    #pl-rhil-reserva { position: absolute; inset: 0; background: linear-gradient(180deg, color-mix(in srgb, var(--segundo, #B07CFF) 14%, transparent), transparent 55%), var(--fondo, #03050D); }
+    #pl-rhil-shader { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; display: block;  }
+    #pl-rhil-kicker { position: absolute; left: 72px; right: 72px; top: 262px; font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 700; font-size: 44px; letter-spacing: .12em; text-transform: uppercase; color: var(--acento, #4DE1FF); white-space: nowrap; }
+    #pl-rhil-titulo { position: absolute; left: 72px; right: 72px; top: 1000px; font-family: var(--display, "Sora"), sans-serif; font-weight: 800; font-size: 100px; line-height: 1.04; letter-spacing: -.035em; text-wrap: balance; text-shadow: 0 4px 30px rgba(0,0,0,.7); }
+    #pl-rhil-sub { position: absolute; left: 72px; right: 72px; top: 1232px; font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 500; font-size: 44px; line-height: 1.2; color: var(--segundo, #B07CFF); filter: brightness(1.35); white-space: nowrap; overflow: hidden; }
+  </style>
+
+  <div id="pl-rhil" data-composition-id="R-hilos" data-start="0" data-duration="4" data-width="1080" data-height="1920" data-requires-webgpu
+    data-composition-variables='[{"id": "kicker", "type": "string", "label": "Rótulo", "default": "señal / 08 hilos", "maxLength": 24}, {"id": "titulo", "type": "string", "label": "Título", "default": "Todo conectado", "maxLength": 22}, {"id": "subtitulo", "type": "string", "label": "Subtítulo", "default": "Líneas que se cruzan y se aclaran", "maxLength": 34}]'>
+    <div id="pl-rhil-reserva"></div>
+    <canvas id="pl-rhil-shader" data-shader="Strands" width="1080" height="1920"></canvas>
+    <div id="pl-rhil-kicker" data-var-text="kicker">señal / 08 hilos</div>
+    <div id="pl-rhil-titulo" data-var-text="titulo">Todo conectado</div>
+    <div id="pl-rhil-sub" data-var-text="subtitulo">Líneas que se cruzan y se aclaran</div>
+  </div>
+
+  <script>
+    (function () {
+      var cv = document.getElementById("pl-rhil-shader");
+      var raiz = cv.closest("[data-composition-id]");
+      function cor(css) { var s = document.createElement("span"); s.style.color = css; raiz.appendChild(s); var c = getComputedStyle(s).color; raiz.removeChild(s); return c; }
+      function hex(css) { var m = cor(css).match(/[\d.]+/g); return "#" + [0, 1, 2].map(function (i) { return ("0" + Math.round(+m[i]).toString(16)).slice(-2); }).join(""); }
+      function mezcla(a, b, t) { var A = a.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }), B = b.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }); return "#" + A.map(function (v, i) { return ("0" + Math.round(v + (B[i] - v) * t).toString(16)).slice(-2); }).join(""); }
+
+      // Propiedades del shader tomadas de la paleta (hex), calculadas una vez al montar
+      var C = { fondo: hex("var(--fondo, #03050D)"), tinta: hex("var(--tinta, #E8EEFF)"), acento: hex("var(--acento, #4DE1FF)"), segundo: hex("var(--segundo, #B07CFF)"), superficie: hex("var(--superficie, #0A0F22)") };
+      cv.setAttribute("data-shader-props", JSON.stringify({ start: { x: 0, y: 0.27 }, end: { x: 1, y: 0.27 }, lineCount: 9, amplitude: 1.7, lineWidth: 0.045, speed: 0.5, spread: 0.22 }));
+
+      // Tiempo del shader = tiempo local de la escena + un desfase que elige un buen primer cuadro; se queda quieto tras 3.0 s
+      var host = raiz.parentElement ? raiz.parentElement.closest("[data-composition-src]") : null;
+      cv.__mapTime = function (tg) { var st = host ? (parseFloat(host.getAttribute("data-start")) || 0) : 0; return 1.2 + Math.min(Math.max(0, tg - st), 3.0); };
+
+      // El motor se carga una vez; cada escena le pasa su canvas y espera a que termine de arrancar
+      window.__hfShaderManual = true;
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady["pl-rhil"] = new Promise(function (res) {
+        function montar() {
+          try { window.__hfShaderMount(cv); Promise.resolve(window.__hf.buildReady["shaders" + window.__hfShaderN]).then(res, res); } catch (e) { res(); }
+        }
+        if (window.__hfShaderMount) { montar(); return; }
+        var s = document.createElement("script"); s.src = "assets/lib/shaders.iife.js"; s.async = false;
+        s.onload = montar; s.onerror = function () { res(); };
+        document.head.appendChild(s);
+      });
+
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#pl-rhil-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.05);
+      tl.fromTo("#pl-rhil-titulo", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" }, 0.3);
+      tl.fromTo("#pl-rhil-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.65);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["R-hilos"] = tl;
+    })();
+  </script>
+</template>

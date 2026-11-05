@@ -1,0 +1,73 @@
+{
+  "id": "S24",
+  "nombre": "Anotación dibujada (doodle)",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Frase",
+      "defecto": "Lo importante es una sola cosa",
+      "max": 34
+    },
+    {
+      "id": "clave",
+      "etiqueta": "Palabra clave (se rodea)",
+      "defecto": "clave",
+      "max": 12
+    },
+    {
+      "id": "nota1",
+      "etiqueta": "Nota 1",
+      "defecto": "empieza aquí",
+      "max": 22
+    },
+    {
+      "id": "nota2",
+      "etiqueta": "Nota 2",
+      "defecto": "no lo olvides",
+      "max": 22
+    }
+  ],
+  "paleta": {
+    "fondo": "#FAF7F0",
+    "tinta": "#1D1D1F",
+    "acento": "#FF4F3F",
+    "segundo": "#2F80ED",
+    "superficie": "#FFFFFF"
+  },
+  "fuentes": [
+    "Archivo Black",
+    "Fraunces"
+  ],
+  "rasgos": [
+    "Trazos que se dibujan en 0,4 s con semilla fija",
+    "Tres versiones de cada trazo a 10 imágenes por segundo (temblor de lápiz)",
+    "Círculo con vuelta de más, subrayado ondulado y flechas con punta",
+    "Hoja de cuaderno con margen y agujeros"
+  ],
+  "sonidos": [
+    {
+      "t": 1.0,
+      "sonido": "chasquido",
+      "ganancia": -16
+    },
+    {
+      "t": 1.85,
+      "sonido": "chasquido",
+      "ganancia": -16
+    },
+    {
+      "t": 2.55,
+      "sonido": "chasquido",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

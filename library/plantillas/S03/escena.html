@@ -1,0 +1,59 @@
+<template>
+  <style>
+
+    #pl-s03 { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #ECEDF3); color: var(--tinta, #14151F); }
+    /* Si el shader no llega a cargarse, esta capa deja un cuadro digno con la misma paleta */
+    #pl-s03-reserva { position: absolute; inset: 0; background: radial-gradient(60% 16% at 50% 90%, color-mix(in srgb, var(--acento, #7A5CFF) 26%, transparent), transparent 75%), radial-gradient(40% 12% at 12% 74%, color-mix(in srgb, var(--segundo, #00B8A0) 22%, transparent), transparent 75%), radial-gradient(40% 12% at 90% 82%, color-mix(in srgb, #ff7ac6 24%, transparent), transparent 75%), var(--fondo, #ECEDF3); }
+    #pl-s03-shader { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; display: block; filter: invert(1) hue-rotate(180deg); mix-blend-mode: multiply; }
+    #pl-s03-kicker { position: absolute; left: 72px; right: 72px; top: 262px; text-align: center; font-family: var(--cuerpo, "DM Sans"), sans-serif; font-weight: 700; font-size: 44px; letter-spacing: .22em; text-transform: uppercase; color: var(--acento, #7A5CFF); white-space: nowrap; }
+    #pl-s03-titulo { position: absolute; left: 72px; right: 72px; top: 1000px; text-align: center; font-family: var(--display, "Syne"), sans-serif; font-weight: 800; font-size: 90px; line-height: 1.02; letter-spacing: -.03em; text-wrap: balance; }
+    #pl-s03-sub { position: absolute; left: 72px; right: 72px; top: 1224px; text-align: center; font-family: var(--cuerpo, "DM Sans"), sans-serif; font-weight: 500; font-size: 46px; line-height: 1.2; color: color-mix(in srgb, var(--tinta, #14151F) 72%, transparent); }
+  </style>
+
+  <div id="pl-s03" data-composition-id="S03" data-start="0" data-duration="4" data-width="1080" data-height="1920" data-requires-webgpu
+    data-composition-variables='[{"id": "kicker", "type": "string", "label": "Rótulo", "default": "Efecto iridiscente", "maxLength": 24}, {"id": "titulo", "type": "string", "label": "Título", "default": "Brilla con la luz", "maxLength": 18}, {"id": "subtitulo", "type": "string", "label": "Subtítulo", "default": "Colores que cambian al moverte", "maxLength": 32}]'>
+    <div id="pl-s03-reserva"></div>
+    <canvas id="pl-s03-shader" data-shader="ThinFilm" width="1080" height="1920"></canvas>
+    <div id="pl-s03-kicker" data-var-text="kicker">Efecto iridiscente</div>
+    <div id="pl-s03-titulo" data-var-text="titulo">Brilla con la luz</div>
+    <div id="pl-s03-sub" data-var-text="subtitulo">Colores que cambian al moverte</div>
+  </div>
+
+  <script>
+    (function () {
+      var cv = document.getElementById("pl-s03-shader");
+      var raiz = cv.closest("[data-composition-id]");
+      function cor(css) { var s = document.createElement("span"); s.style.color = css; raiz.appendChild(s); var c = getComputedStyle(s).color; raiz.removeChild(s); return c; }
+      function hex(css) { var m = cor(css).match(/[\d.]+/g); return "#" + [0, 1, 2].map(function (i) { return ("0" + Math.round(+m[i]).toString(16)).slice(-2); }).join(""); }
+      function mezcla(a, b, t) { var A = a.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }), B = b.match(/\w\w/g).map(function (x) { return parseInt(x, 16); }); return "#" + A.map(function (v, i) { return ("0" + Math.round(v + (B[i] - v) * t).toString(16)).slice(-2); }).join(""); }
+
+      // Propiedades del shader tomadas de la paleta (hex), calculadas una vez al montar
+      var C = { fondo: hex("var(--fondo, #ECEDF3)"), tinta: hex("var(--tinta, #14151F)"), acento: hex("var(--acento, #7A5CFF)"), segundo: hex("var(--segundo, #00B8A0)"), superficie: hex("var(--superficie, #FFFFFF)") };
+      cv.setAttribute("data-shader-props", JSON.stringify({ center: { x: 0.5, y: 0.34 }, scale: 0.5, intensity: 1, rimWidth: 1, thickness: 0.5, dispersion: 0.6, saturation: 1, speed: 0.1 }));
+
+      // Tiempo del shader = tiempo local de la escena + un desfase que elige un buen primer cuadro; se queda quieto tras 3.0 s
+      var host = raiz.parentElement ? raiz.parentElement.closest("[data-composition-src]") : null;
+      cv.__mapTime = function (tg) { var st = host ? (parseFloat(host.getAttribute("data-start")) || 0) : 0; return 0.8 + Math.min(Math.max(0, tg - st), 3.0); };
+
+      // El motor se carga una vez; cada escena le pasa su canvas y espera a que termine de arrancar
+      window.__hfShaderManual = true;
+      window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+      window.__hf.buildReady["pl-s03"] = new Promise(function (res) {
+        function montar() {
+          try { window.__hfShaderMount(cv); Promise.resolve(window.__hf.buildReady["shaders" + window.__hfShaderN]).then(res, res); } catch (e) { res(); }
+        }
+        if (window.__hfShaderMount) { montar(); return; }
+        var s = document.createElement("script"); s.src = "assets/lib/shaders.iife.js"; s.async = false;
+        s.onload = montar; s.onerror = function () { res(); };
+        document.head.appendChild(s);
+      });
+
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#pl-s03-kicker", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.05);
+      tl.fromTo("#pl-s03-titulo", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" }, 0.3);
+      tl.fromTo("#pl-s03-sub", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, 0.65);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S03"] = tl;
+    })();
+  </script>
+</template>

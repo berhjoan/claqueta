@@ -1,0 +1,77 @@
+{
+  "id": "S07",
+  "nombre": "Tipografía cinética",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "p1",
+      "etiqueta": "Palabra 1",
+      "defecto": "Una",
+      "max": 12
+    },
+    {
+      "id": "p2",
+      "etiqueta": "Palabra 2",
+      "defecto": "idea",
+      "max": 12
+    },
+    {
+      "id": "p3",
+      "etiqueta": "Palabra 3",
+      "defecto": "por",
+      "max": 12
+    },
+    {
+      "id": "p4",
+      "etiqueta": "Palabra 4",
+      "defecto": "golpe",
+      "max": 12
+    }
+  ],
+  "paleta": {
+    "fondo": "#0E0E0E",
+    "tinta": "#F5F5F0",
+    "acento": "#FF3B30",
+    "segundo": "#FFD60A",
+    "superficie": "#1C1C1C"
+  },
+  "fuentes": [
+    "Anton"
+  ],
+  "rasgos": [
+    "Una palabra por golpe, ajustada al ancho",
+    "Placa de color por palabra que entra en 0,2 s",
+    "Contorno fantasma antes del golpe",
+    "Eco decreciente de la última palabra"
+  ],
+  "sonidos": [
+    {
+      "t": 0.5,
+      "sonido": "golpe",
+      "ganancia": -12
+    },
+    {
+      "t": 0.95,
+      "sonido": "golpe",
+      "ganancia": -12
+    },
+    {
+      "t": 1.4,
+      "sonido": "golpe",
+      "ganancia": -12
+    },
+    {
+      "t": 1.85,
+      "sonido": "impacto",
+      "ganancia": -10
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

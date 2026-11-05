@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/lib/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #hostA, #hostB, #montaje { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      #montaje { z-index: 9; container-type: size; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="4.4" data-width="1080" data-height="1920">
+      <!-- escena A y escena B: dos subcomposiciones vivas (aqui, las de prueba) -->
+      <div id="hostA" data-layout-allow-occlusion data-layout-allow-overlap style="z-index:1" data-composition-id="escA" data-composition-src="compositions/escA.html" data-start="0" data-duration="2.2" data-track-index="1" data-width="1080" data-height="1920"></div>
+      <div id="hostB" data-layout-allow-occlusion data-layout-allow-overlap style="z-index:2" data-composition-id="escB" data-composition-src="compositions/escB.html" data-start="2.2" data-duration="2.2" data-track-index="2" data-width="1080" data-height="1920"></div>
+      <!-- cuadricula: pegada dentro de la raiz, encima de las escenas (z-index 999 propio) -->
+      <div
+        id="grid-pixelate-overlay"
+        style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 999;
+          display: grid;
+        "
+      ></div>
+      
+      <style>
+        #grid-pixelate-overlay {
+          --grid-color: black;
+        }
+      
+        #grid-pixelate-overlay .grid-cell {
+          background: var(--grid-color);
+          transform-origin: center center; /* el scale(0) inicial lo pone el fromTo del timeline (evita gsap_css_transform_conflict) */
+        }
+      </style>
+      
+      <script>
+        (function () {
+          const COLS = 9;
+          const ROWS = 16;
+          const overlay = document.getElementById("grid-pixelate-overlay");
+          if (!overlay) return;
+      
+          overlay.style.gridTemplateColumns = `repeat(${COLS}, 1fr)`;
+          overlay.style.gridTemplateRows = `repeat(${ROWS}, 1fr)`;
+      
+          for (let i = 0; i < COLS * ROWS; i++) {
+            const cell = document.createElement("div");
+            cell.className = "grid-cell";
+            overlay.appendChild(cell);
+          }
+        })();
+      </script>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      var T = 1.6; // instante en que empieza a cubrir
+      tl.fromTo('#grid-pixelate-overlay .grid-cell', { scale: 0 }, { scale: 1.06, duration: 0.5, stagger: { amount: 0.5, from: 'center' }, ease: 'power2.inOut' }, T);
+      tl.to('#grid-pixelate-overlay .grid-cell', { scale: 0, duration: 0.5, stagger: { amount: 0.5, from: 'edges' }, ease: 'power2.inOut' }, T + 0.6);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

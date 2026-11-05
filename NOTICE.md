@@ -10,6 +10,9 @@ El código propio de Claqueta va bajo MIT (`LICENSE`). Lo siguiente pertenece a 
 | Texturas y modelos Poly Haven | `library/lemo-opuscar/core/assets/polyhaven` | https://polyhaven.com | CC0 |
 | Motor de tiza, partes | `engines/pizarra/chalk.js`, `r2d.js`, `lib.js`, `board.js` | lemo-opuscar | MIT |
 | Síntesis de efectos y cuerdas | `tools/audio/sfx.py`, `tools/audio/pluck.py` | lemo-opuscar | MIT |
+| Registro de HyperFrames: shaders, bloque, transiciones y subtítulos | `library/hyperframes-registro/` | HeyGen, https://github.com/heygen-com/hyperframes, commit `fa1942d` | Apache-2.0 |
+| Motor de los 36 shaders y sus dependencias | `library/hyperframes-registro/shaders/lib/` | Shader Effects Inc. (`shaders` 4.0.0), Software Mansion (`typegpu` 0.12.3), `tinyest`, `typed-binary`, `tsover-runtime` | MIT |
+| Plantillas con código del registro | `library/plantillas/S13`, `S03`, `S11`, `R-aurora`, `R-metal`, `R-eclipse`, `R-hilos` | Bloques `split-flap-board`, `thin-film`, `mesh-gradient`, `aurora`, `liquid-metal`, `light-edge`, `strands` | Apache-2.0, y MIT en los shaders |
 | EMS Delight | `engines/pizarra/ems-delight.js` | Sheldon B. Michaels, Evil Mad Scientist | SIL OFL 1.1 |
 | Sora, JetBrains Mono | `assets/fonts` | Sora Project, JetBrains | SIL OFL 1.1 |
 | Archivo, Archivo Black, Barlow, Bebas Neue, Anton, Fraunces, Source Sans 3, DM Serif Display, DM Sans, Syne, Manrope, Unbounded, Onest, Poiret One, Josefin Sans, VT323 | `assets/fonts`, con sus avisos en `OFL-fuentes.txt` | Sus autores, empaquetadas por Fontsource | SIL OFL 1.1 |

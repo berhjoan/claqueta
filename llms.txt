@@ -35,7 +35,7 @@ If you cannot run commands: read the files below through their raw URLs, write e
 ## Styles
 
 - [40-style atlas](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/estilos-40/GUIA_ESTILOS_CLAUDE.md)
-- [Style catalog as data](https://raw.githubusercontent.com/berhjoan/claqueta/main/data/styles.json): 106 styles, bilingual
+- [Style catalog as data](https://raw.githubusercontent.com/berhjoan/claqueta/main/data/styles.json): 111 styles, bilingual
 - [lemo-opuscar notes](https://raw.githubusercontent.com/berhjoan/claqueta/main/library/lemo-opuscar/ORIGEN.md)
 
 ## Tools

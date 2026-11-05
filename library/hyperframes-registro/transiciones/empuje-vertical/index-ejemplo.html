@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/lib/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #hostA, #hostB, #montaje { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      #montaje { z-index: 9; container-type: size; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="4.4" data-width="1080" data-height="1920">
+      <!-- escena A y escena B: dos subcomposiciones vivas (aqui, las de prueba) -->
+      <div id="hostA" data-layout-allow-occlusion data-layout-allow-overlap style="z-index:1" data-composition-id="escA" data-composition-src="compositions/escA.html" data-start="0" data-duration="2.15" data-track-index="1" data-width="1080" data-height="1920"></div>
+      <div id="hostB" data-layout-allow-occlusion data-layout-allow-overlap style="z-index:2" data-composition-id="escB" data-composition-src="compositions/escB.html" data-start="1.6" data-duration="2.8" data-track-index="2" data-width="1080" data-height="1920"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      var T = 1.6; // instante del corte
+      // Empuje vertical: A sale hacia arriba, B entra desde abajo. Receta de la galeria transitions-push, ajustada a 1920 de alto.
+      tl.to('#hostA', { y: -1920, duration: 0.55, ease: 'power3.inOut' }, T);
+      tl.fromTo('#hostB', { y: 1920 }, { y: 0, duration: 0.55, ease: 'power3.inOut' }, T);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,340 @@
+<template>
+  <style>
+      @font-face { font-family: "Archivo"; src: url("assets/fonts/Archivo-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: block; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      
+      #root {
+        pointer-events: none;
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: transparent;
+      }
+      .gl-overlay {
+        position: absolute;
+        top: 1240px; height: 360px;
+        z-index: 1;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.08) 0%,
+          rgba(0, 0, 0, 0.16) 54%,
+          rgba(0, 0, 0, 0.5) 100%
+        );
+        pointer-events: none;
+      }
+      .gl-scanlines {
+        position: absolute;
+        top: 1240px; height: 360px;
+        z-index: 5;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0px,
+          transparent 3px,
+          rgba(0, 0, 0, 0.16) 3px,
+          rgba(0, 0, 0, 0.16) 4px
+        );
+        opacity: 0.55;
+      }
+      #gl-container {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        pointer-events: none;
+      }
+      .gl-group {
+        position: absolute;
+        top: 1300px; height: 240px; align-content: center;
+        left: 0;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 0 72px;
+        opacity: 0;
+        visibility: hidden;
+      }
+      .gl-word {
+        font-family: "Archivo", sans-serif;
+        font-weight: 700;
+        font-size: 88px;
+        text-transform: uppercase;
+        color: #ffffff;
+        display: inline-block;
+        letter-spacing: 0.03em;
+        line-height: 0.96;
+        text-shadow: 0 5px 18px rgba(0, 0, 0, 0.52);
+        will-change: transform, text-shadow;
+      }
+    
+  </style>
+  <div id="root" data-composition-id="caption-glitch-rgb" data-width="1080" data-height="1920">
+      <div class="gl-overlay"></div>
+      <div class="gl-scanlines"></div>
+      <div id="gl-container"></div>
+  </div>
+  <script>
+      // ---- Claqueta: palabras desde palabras.json ({palabra, inicio, fin}) o {text, start, end} ----
+      // Pega el contenido de palabras.json en el index.html, en un script suelto: window.PALABRAS = [ ... ];
+      // Sin eso se usa la frase de demostracion que trae cada archivo.
+      window.__cq = window.__cq || {};
+      window.__cq.palabras = function (demo) {
+        var raw = window.PALABRAS && window.PALABRAS.length ? window.PALABRAS : demo;
+        return raw
+          .map(function (p) {
+            var a = p.inicio != null ? p.inicio : p.start != null ? p.start : 0;
+            var b = p.fin != null ? p.fin : p.end != null ? p.end : a;
+            return { text: String(p.palabra || p.text || p.word || "").trim(), start: Number(a) || 0, end: Number(b) || 0 };
+          })
+          .filter(function (w) { return w.text.length > 0; });
+      };
+      window.__cq.duracion = function (def) {
+        if (!(window.PALABRAS && window.PALABRAS.length)) return def;
+        var m = 0;
+        window.__cq.palabras([]).forEach(function (w) { m = Math.max(m, w.end); });
+        return m + 0.7;
+      };
+      // Grupos de hasta maxPal palabras y maxCar letras; corta en puntuacion o en pausa >= 0.28 s.
+      window.__cq.pares = function (words, maxPal, maxCar) {
+        var out = [], ini = 0, car = 0;
+        for (var i = 0; i < words.length; i++) {
+          car += words[i].text.length + 1;
+          var finFrase = /[.!?;:,]$/.test(words[i].text);
+          var hueco = i + 1 < words.length ? words[i + 1].start - words[i].end : 0;
+          var lleno = i - ini + 1 >= maxPal || (i + 1 < words.length && car + words[i + 1].text.length + 1 > maxCar);
+          if (finFrase || hueco >= 0.28 || lleno || i === words.length - 1) { out.push([ini, i]); ini = i + 1; car = 0; }
+        }
+        return out;
+      };
+      window.__cq.grupos = function (words, maxPal, maxCar) {
+        var p = window.__cq.pares(words, maxPal, maxCar);
+        return p.map(function (par, gi) {
+          var sig = gi + 1 < p.length ? words[p[gi + 1][0]].start : Infinity;
+          return { wordStart: par[0], wordEnd: par[1], start: words[par[0]].start, end: Math.min(words[par[1]].end + 0.5, sig - 0.05) };
+        });
+      };
+      // Palabras de enfasis: 8 letras o mas, o cierre de exclamacion/pregunta.
+      window.__cq.claves = function (words) {
+        var s = new Set();
+        words.forEach(function (w, i) {
+          var l = w.text.replace(/[^A-Za-zÀ-ſ0-9]/g, "").length;
+          if (l >= 8 || /[!?]$/.test(w.text)) s.add(i);
+        });
+        return s;
+      };
+      window.__cq.listo = function (id, fuentes, fn) {
+        window.__hf = window.__hf || {};
+        window.__hf.buildReady = window.__hf.buildReady || {};
+        window.__hf.buildReady[id] = Promise.all(fuentes.map(function (f) { return document.fonts.load(f, "AaÁáÉéÍíÓóÚúÑñ¿¡?!"); })).then(fn);
+      };
+      window.__cq.listo("caption-glitch-rgb", ["800 72px Archivo"], function () {
+      (function () {
+        window.__timelines = window.__timelines || {};
+
+        var TRANSCRIPT = window.__cq.palabras([
+          {"text": "¿Cuánto", "start": 0.3, "end": 0.6},
+          {"text": "cuesta?", "start": 0.65, "end": 0.95},
+          {"text": "¡Más", "start": 1.2, "end": 1.5},
+          {"text": "de", "start": 1.55, "end": 1.85},
+          {"text": "lo", "start": 1.9, "end": 2.2},
+          {"text": "que", "start": 2.25, "end": 2.55},
+          {"text": "piensas,", "start": 2.6, "end": 2.9},
+          {"text": "señor", "start": 3.15, "end": 3.45},
+          {"text": "Núñez!", "start": 3.5, "end": 3.8},
+          {"text": "Mañana", "start": 4.25, "end": 4.55},
+          {"text": "te", "start": 4.6, "end": 4.9},
+          {"text": "cuento", "start": 4.95, "end": 5.25},
+          {"text": "más,", "start": 5.3, "end": 5.6},
+          {"text": "¿vale?", "start": 5.85, "end": 6.15},
+        ]);
+
+        var _fitCanvas = document.createElement("canvas");
+        var _fitCtx = _fitCanvas.getContext("2d");
+        function fitFontSize(text, baseFontSize, fontWeight, fontFamily, maxWidth) {
+          var size = baseFontSize;
+          var minSize = Math.max(44, Math.floor(baseFontSize * 0.45));
+          while (size > minSize) {
+            _fitCtx.font = fontWeight + " " + size + "px " + fontFamily;
+            if (_fitCtx.measureText(text).width <= maxWidth) return size;
+            size -= 2;
+          }
+          return minSize;
+        }
+
+        function mulberry32(seed) {
+          return function () {
+            seed |= 0;
+            seed = (seed + 0x6d2b79f5) | 0;
+            var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          };
+        }
+
+        function buildGroups(words) {
+          var groups = [];
+          var start = 0;
+          var chars = 0;
+          for (var i = 0; i < words.length; i++) {
+            chars += words[i].text.length + 1;
+            var endsSentence = /[.!?]$/.test(words[i].text);
+            var nextGap = i + 1 < words.length ? words[i + 1].start - words[i].end : 0;
+            var full = i - start >= 3 || chars >= 21;
+            if (endsSentence || nextGap > 0.28 || full || i === words.length - 1) {
+              groups.push([start, i]);
+              start = i + 1;
+              chars = 0;
+            }
+          }
+          return groups;
+        }
+
+        function glitchPlan(word, nextWord) {
+          var nextStart = nextWord ? nextWord.start : word.end + 0.3;
+          var available = Math.min(word.end, nextStart) - word.start - 0.02;
+          var total = Math.min(0.24, Math.max(0.08, available));
+          return {
+            d1: total * 0.35,
+            d2: total * 0.65,
+          };
+        }
+
+        function shouldAftershock(word) {
+          return /\d|\$|%/.test(word.text) || word.text.replace(/[^\w]/g, "").length >= 7;
+        }
+
+        var RAW_GROUPS = buildGroups(TRANSCRIPT);
+        var GROUPS = RAW_GROUPS.map(function (pair, gi) {
+          var ws = pair[0];
+          var we = pair[1];
+          var nextStart =
+            gi + 1 < RAW_GROUPS.length ? TRANSCRIPT[RAW_GROUPS[gi + 1][0]].start : Infinity;
+          var end = Math.min(TRANSCRIPT[we].end + 0.24, nextStart - 0.04);
+          return { wordStart: ws, wordEnd: we, start: TRANSCRIPT[ws].start, end: end };
+        });
+
+        var BASE_FONT = 88;
+        var container = document.getElementById("gl-container");
+        var tl = gsap.timeline({ paused: true });
+
+        GROUPS.forEach(function (g, gi) {
+          var groupWords = TRANSCRIPT.slice(g.wordStart, g.wordEnd + 1);
+          var grp = document.createElement("div");
+          grp.className = "gl-group";
+          grp.id = "gl-grp-" + gi;
+
+          var groupText = groupWords
+            .map(function (w) {
+              return w.text.toUpperCase();
+            })
+            .join(" ");
+          var computedSize = fitFontSize(groupText, BASE_FONT, "700", "Archivo", 860);
+
+          groupWords.forEach(function (w, i) {
+            var wi = g.wordStart + i;
+            var span = document.createElement("span");
+            span.className = "gl-word";
+            span.id = "gl-w-" + wi;
+            span.textContent = w.text.toUpperCase();
+            span.style.fontSize = computedSize + "px";
+            grp.appendChild(span);
+          });
+
+          container.appendChild(grp);
+
+          tl.set(grp, { visibility: "visible" }, g.start);
+          tl.fromTo(
+            grp,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.12, ease: "power2.out" },
+            g.start,
+          );
+
+          groupWords.forEach(function (w, i) {
+            var wi = g.wordStart + i;
+            var wordEl = document.getElementById("gl-w-" + wi);
+            var plan = glitchPlan(w, TRANSCRIPT[wi + 1]);
+
+            var rng = mulberry32(wi * 777 + 13);
+            var travel = -(8 + rng() * 8);
+            var shadowMag = 5 + rng() * 7;
+            var sm = shadowMag.toFixed(1);
+            var nextWord = TRANSCRIPT[wi + 1];
+            var nextStart = nextWord ? nextWord.start : g.end;
+            var aftershockEnd = Math.min(g.end - 0.08, nextStart - 0.04);
+
+            tl.to(
+              wordEl,
+              {
+                x: travel,
+                textShadow:
+                  sm + "px 0 #ff003c, -" + sm + "px 0 #00e5ff, 0 5px 18px rgba(0,0,0,0.52)",
+                duration: plan.d1,
+                ease: "none",
+              },
+              w.start,
+            );
+            tl.to(
+              wordEl,
+              {
+                x: 0,
+                textShadow: "0 5px 18px rgba(0,0,0,0.52)",
+                duration: plan.d2,
+                ease: "power3.out",
+              },
+              w.start + plan.d1,
+            );
+
+            if (shouldAftershock(w) && aftershockEnd - w.end > 0.22) {
+              var pulseStart = w.end + 0.08;
+              var pulseIndex = 0;
+              while (pulseStart + 0.1 < aftershockEnd) {
+                var pulseTravel = -(3 + rng() * 5);
+                var pulseShadow = (3 + rng() * 5).toFixed(1);
+                tl.to(
+                  wordEl,
+                  {
+                    x: pulseTravel,
+                    textShadow:
+                      pulseShadow +
+                      "px 0 #ff003c, -" +
+                      pulseShadow +
+                      "px 0 #00e5ff, 0 5px 18px rgba(0,0,0,0.52)",
+                    duration: 0.045,
+                    ease: "none",
+                  },
+                  pulseStart,
+                );
+                tl.to(
+                  wordEl,
+                  {
+                    x: 0,
+                    textShadow: "0 5px 18px rgba(0,0,0,0.52)",
+                    duration: 0.075,
+                    ease: "power3.out",
+                  },
+                  pulseStart + 0.045,
+                );
+                pulseIndex++;
+                pulseStart += pulseIndex % 2 === 0 ? 0.18 : 0.24;
+              }
+            }
+          });
+
+          tl.to(grp, { opacity: 0, duration: 0.1, ease: "power2.in" }, g.end - 0.1);
+          tl.set(grp, { opacity: 0, visibility: "hidden" }, g.end);
+        });
+
+        tl.seek(0);
+        window.__timelines["caption-glitch-rgb"] = tl;
+      })();
+          });
+    </script>
+</template>

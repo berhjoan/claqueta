@@ -31,6 +31,7 @@ for (const e of estilos) {
       if (e.status === "adaptar") e.status = "prueba";
       // La paleta con la que se renderizó es la que se vio: manda sobre la que se sacó de una miniatura.
       if (ficha.paleta) e.palette = ficha.paleta;
+      if (ficha.requiere?.includes("webgpu")) e.gpu = true; else delete e.gpu;
     }
   } else delete e.plantilla;
   const propia = `assets/thumbs/propias/${e.id}.webp`;

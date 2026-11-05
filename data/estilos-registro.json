@@ -1,0 +1,247 @@
+[
+ {
+  "id": "R-aurora",
+  "source": "registro",
+  "family": {
+   "es": "Campos de color",
+   "en": "Color fields"
+  },
+  "name": {
+   "es": "Aurora boreal",
+   "en": "Aurora"
+  },
+  "traits": {
+   "es": "Cortinas de luz verde y violeta que ondulan sobre un cielo casi negro con estrellas y una línea de pinos al pie. Título en serif sobre el cielo.",
+   "en": "Curtains of green and violet light rippling over a near-black sky with stars and a line of pines at the bottom. Serif title over the sky."
+  },
+  "motion": {
+   "es": "Las cortinas derivan despacio durante 3 s y se quedan quietas; el título sube 40 px en 0,7 s y el bosque asciende al inicio.",
+   "en": "The curtains drift slowly for 3 s and then hold; the title rises 40 px in 0.7 s and the forest climbs in at the start."
+  },
+  "camera": {
+   "es": "Cámara fija; el cielo ocupa la mitad alta y el texto queda entre el cielo y los pinos.",
+   "en": "Locked camera; the sky takes the upper half and the text sits between sky and pines."
+  },
+  "sound": {
+   "es": "Un pad grave y lento (rumor) y una subida suave al entrar el título.",
+   "en": "A low slow pad (rumble) and a soft riser as the title enters."
+  },
+  "uses": {
+   "es": "Aperturas poéticas, ciencia, naturaleza, viajes y títulos de calma.",
+   "en": "Poetic openers, science, nature, travel and calm titles."
+  },
+  "avoid": {
+   "es": "Texto fino sobre las zonas claras de la aurora; más de un shader a la vez en un mismo video (cada uno repinta en cada cuadro).",
+   "en": "Thin text over the bright parts of the aurora; several shaders at once in one video (each one repaints every frame)."
+  },
+  "engine": "webgl",
+  "doc": "library/plantillas/R-aurora/",
+  "status": "prueba",
+  "blackGold": "medio",
+  "thumb": "assets/thumbs/propias/R-aurora.webp",
+  "palette": {
+   "fondo": "#04060C",
+   "tinta": "#EEF7F3",
+   "acento": "#5EEAB0",
+   "segundo": "#8F6BFF",
+   "superficie": "#0B1220"
+  },
+  "plantilla": true
+ },
+ {
+  "id": "R-metal",
+  "source": "registro",
+  "family": {
+   "es": "Materiales de shader",
+   "en": "Shader materials"
+  },
+  "name": {
+   "es": "Metal líquido",
+   "en": "Liquid metal"
+  },
+  "traits": {
+   "es": "Una esfera de metal líquido gris y blanco, con reflejos de estudio, sobre negro. Título ancho en mayúsculas y un solo acento cobre.",
+   "en": "A grey and white liquid-metal sphere with studio reflections on black. Wide uppercase title and a single copper accent."
+  },
+  "motion": {
+   "es": "Los reflejos cambian durante 3 s y quedan fijos; kicker, título y subtítulo entran con 0,3 s de diferencia.",
+   "en": "The reflections change for 3 s and then hold; kicker, title and subtitle enter 0.3 s apart."
+  },
+  "camera": {
+   "es": "Cámara fija sobre el objeto, centrado en el tercio superior.",
+   "en": "Locked camera on the object, centered in the upper third."
+  },
+  "sound": {
+   "es": "Barrido metálico al entrar y un destello agudo al asentarse.",
+   "en": "A metallic sweep on entry and a sharp glint as it settles."
+  },
+  "uses": {
+   "es": "Lanzamientos de producto, tecnología, marcas premium y títulos de impacto.",
+   "en": "Product launches, technology, premium brands and impact titles."
+  },
+  "avoid": {
+   "es": "Dos objetos de shader en la misma escena; colores saturados que compiten con el metal.",
+   "en": "Two shader objects in the same scene; saturated colors that fight the metal."
+  },
+  "engine": "webgl",
+  "doc": "library/plantillas/R-metal/",
+  "status": "prueba",
+  "blackGold": "alto",
+  "thumb": "assets/thumbs/propias/R-metal.webp",
+  "palette": {
+   "fondo": "#06070A",
+   "tinta": "#F3F4F6",
+   "acento": "#FF9F43",
+   "segundo": "#8FA3C7",
+   "superficie": "#14161B"
+  },
+  "plantilla": true
+ },
+ {
+  "id": "R-eclipse",
+  "source": "registro",
+  "family": {
+   "es": "Materiales de shader",
+   "en": "Shader materials"
+  },
+  "name": {
+   "es": "Eclipse",
+   "en": "Eclipse"
+  },
+  "traits": {
+   "es": "Un disco negro con un borde de luz violeta y cian que gira, con la palabra clave dentro y un subtítulo debajo.",
+   "en": "A black disc with a violet and cyan light rim that turns, with the key word inside and a subtitle below."
+  },
+  "motion": {
+   "es": "El borde gira y echa humo durante 3 s y se queda quieto; la palabra entra con un desenfoque de 12 px en 0,7 s.",
+   "en": "The rim turns and smokes for 3 s and then holds; the word enters from a 12 px blur in 0.7 s."
+  },
+  "camera": {
+   "es": "Cámara fija; el disco es el marco de la palabra.",
+   "en": "Locked camera; the disc frames the word."
+  },
+  "sound": {
+   "es": "Subida de tensión al abrir y un golpe grande al aparecer la palabra.",
+   "en": "A rising tension on opening and a big hit as the word appears."
+  },
+  "uses": {
+   "es": "Cuentas atrás, títulos de impacto de una palabra, revelaciones y cierres.",
+   "en": "Countdowns, one-word impact titles, reveals and closers."
+  },
+  "avoid": {
+   "es": "Frases largas dentro del disco; ponerle sombra de texto sobre el borde.",
+   "en": "Long phrases inside the disc; text overlapping the rim."
+  },
+  "engine": "webgl",
+  "doc": "library/plantillas/R-eclipse/",
+  "status": "prueba",
+  "blackGold": "alto",
+  "thumb": "assets/thumbs/propias/R-eclipse.webp",
+  "palette": {
+   "fondo": "#02020A",
+   "tinta": "#F4F4FF",
+   "acento": "#00E0FF",
+   "segundo": "#7B2FF7",
+   "superficie": "#0A0A18"
+  },
+  "plantilla": true
+ },
+ {
+  "id": "R-hilos",
+  "source": "registro",
+  "family": {
+   "es": "Campos de color",
+   "en": "Color fields"
+  },
+  "name": {
+   "es": "Hilos de luz",
+   "en": "Light strands"
+  },
+  "traits": {
+   "es": "Nueve cintas de luz cian, violeta y rosa que se cruzan sobre un fondo casi negro; título en Sora extrabold y un subtítulo en monoespaciada.",
+   "en": "Nine ribbons of cyan, violet and pink light crossing over a near-black ground; extra-bold Sora title and a monospaced subtitle."
+  },
+  "motion": {
+   "es": "Las cintas se mueven 3 s y quedan quietas; el texto entra uno tras otro en 0,6 s.",
+   "en": "The ribbons move for 3 s then hold; the text enters one after another in 0.6 s."
+  },
+  "camera": {
+   "es": "Cámara fija; las cintas cruzan el tercio superior.",
+   "en": "Locked camera; the ribbons cross the upper third."
+  },
+  "sound": {
+   "es": "Barrido electrónico al entrar y un clic seco al asentar.",
+   "en": "An electronic sweep on entry and a dry click as it settles."
+  },
+  "uses": {
+   "es": "Conexiones, redes, datos, integración y tecnología.",
+   "en": "Connections, networks, data, integration and technology."
+  },
+  "avoid": {
+   "es": "Títulos largos sobre las cintas; mezclarlo con otro fondo de luz.",
+   "en": "Long titles over the ribbons; mixing it with another light field."
+  },
+  "engine": "webgl",
+  "doc": "library/plantillas/R-hilos/",
+  "status": "prueba",
+  "blackGold": "medio",
+  "thumb": "assets/thumbs/propias/R-hilos.webp",
+  "palette": {
+   "fondo": "#03050D",
+   "tinta": "#E8EEFF",
+   "acento": "#4DE1FF",
+   "segundo": "#B07CFF",
+   "superficie": "#0A0F22"
+  },
+  "plantilla": true
+ },
+ {
+  "id": "R-codigo",
+  "source": "registro",
+  "family": {
+   "es": "Código vivo",
+   "en": "Live code"
+  },
+  "name": {
+   "es": "Código vivo",
+   "en": "Live code"
+  },
+  "traits": {
+   "es": "Un editor de código oscuro donde se teclea un programa corto con resaltado de sintaxis, líneas numeradas y un cambio marcado en verde o rojo, sobre un esqueleto de líneas tenues.",
+   "en": "A dark code editor where a short program types itself with syntax highlighting, line numbers and a change marked in green or red, over a skeleton of faint lines."
+  },
+  "motion": {
+   "es": "El código se teclea carácter a carácter entre 0,35 s y 1,75 s; después aparece el pie. Todo es función del tiempo.",
+   "en": "The code types itself character by character between 0.35 s and 1.75 s; then the footer appears. Everything is a function of time."
+  },
+  "camera": {
+   "es": "Cámara fija; el editor ocupa el centro y el esqueleto llena el pie del cuadro.",
+   "en": "Locked camera; the editor sits in the center and the skeleton fills the foot of the frame."
+  },
+  "sound": {
+   "es": "Teclas suaves a ráfagas y una campana corta cuando termina de teclear.",
+   "en": "Soft key bursts and a short bell when typing ends."
+  },
+  "uses": {
+   "es": "Tutoriales, automatización, explicaciones técnicas y videos hechos con código.",
+   "en": "Tutorials, automation, technical explainers and videos made with code."
+  },
+  "avoid": {
+   "es": "Código real con secretos o datos de personas; líneas de más de 30 letras.",
+   "en": "Real code with secrets or personal data; lines longer than 30 characters."
+  },
+  "engine": "hyperframes",
+  "doc": "library/plantillas/R-codigo/",
+  "status": "prueba",
+  "blackGold": "alto",
+  "thumb": "assets/thumbs/propias/R-codigo.webp",
+  "palette": {
+   "fondo": "#0A0F1C",
+   "tinta": "#D6E1F5",
+   "acento": "#7CF4C8",
+   "segundo": "#FFB86B",
+   "superficie": "#121A2D"
+  },
+  "plantilla": true
+ }
+]

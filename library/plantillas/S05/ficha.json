@@ -1,0 +1,62 @@
+{
+  "id": "S05",
+  "nombre": "Malla 3D",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "malla / nudo 2,3",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Estructura",
+      "max": 10
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "vértices y aristas",
+      "max": 26
+    }
+  ],
+  "paleta": {
+    "fondo": "#050A12",
+    "tinta": "#E6F1FF",
+    "acento": "#00E5FF",
+    "segundo": "#7A5CFF",
+    "superficie": "#0D1726"
+  },
+  "fuentes": [
+    "Sora",
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Nudo (2,3) con tubo de 12 líneas y anillos, proyección en perspectiva",
+    "Líneas más claras y gruesas cuanto más cerca",
+    "El hilo se dibuja a lo largo del nudo",
+    "Suelo cuadriculado hasta el borde inferior"
+  ],
+  "sonidos": [
+    {
+      "t": 0.1,
+      "sonido": "subida",
+      "ganancia": -16
+    },
+    {
+      "t": 1.6,
+      "sonido": "clic",
+      "ganancia": -14
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

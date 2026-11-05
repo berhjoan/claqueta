@@ -28,7 +28,26 @@ Entre paréntesis, el largo máximo de cada texto: con ese largo se probó que n
 | `rafaga` | Plano de ráfaga | `lista`, `paradas`, `cadencia`, `pausa`, `mosaico`, `etiqueta`, `carpeta` | Sora, JetBrains Mono | Mosaico de miniaturas reales con contador y volteo a la cadencia pedida, con una barra de avance y paradas que nombran el estilo. Ver más abajo |
 | `transicion-glitch` | Transición | `semilla`, `cuadros` | ninguna | Seis cuadros de bandas con `mix-blend-mode: difference`, con semilla fija. Ver más abajo |
 
-Todas son propias, con licencia MIT. Las fuentes son las de `assets/fonts/fuentes.json` (OFL).
+| `S01` | Partículas | `kicker` (24), `titulo` (22) | Sora | Más de 2.500 puntos con semilla fija; Se concentran en una bola y se abren en anillos y radios; El título se forma con puntos y luego se vuelve texto nítido |
+| `S03` | Holográfico | `kicker` (24), `titulo` (18), `subtitulo` (32) | Syne, DM Sans | Anillo de película fina (burbuja) con bandas arcoíris; Fondo claro: el shader se funde con la hoja por mezcla multiplicada; Quieto desde los 3 s. **Necesita GPU** |
+| `S05` | Malla 3D | `kicker` (24), `titulo` (10), `subtitulo` (26) | Sora, JetBrains Mono | Nudo (2,3) con tubo de 12 líneas y anillos, proyección en perspectiva; Líneas más claras y gruesas cuanto más cerca; El hilo se dibuja a lo largo del nudo |
+| `S07` | Tipografía cinética | `p1` (12), `p2` (12), `p3` (12), `p4` (12) | Anton | Una palabra por golpe, ajustada al ancho; Placa de color por palabra que entra en 0,2 s; Contorno fantasma antes del golpe |
+| `S11` | Malla de gradientes | `kicker` (24), `titulo` (26), `subtitulo` (30) | Onest | Malla de gradientes de WebGPU con rosa sobre violeta; Tarjeta de cristal con desenfoque; Manchas que derivan y se quedan quietas desde los 3 s. **Necesita GPU** |
+| `S13` | Panel de láminas | `kicker` (18), `l1` (9), `l2` (9), `l3` (9), `l4` (9), `pie` (28) | JetBrains Mono | Casillas con dos hojas que giran 180° sobre su bisagra; El tambor se recorre en orden, sin saltos; Desfase por columna y por fila |
+| `S15` | Semitono | `kicker` (24), `titulo` (22), `subtitulo` (32) | Archivo Black, Archivo | Dos retículas fijas a 15° y 75°, celda de 11 px; Tamaño de punto según luminosidad; Esfera roja y aro azul que pasa por delante y por detrás |
+| `S22` | Collage de papel | `titulo` (24), `subtitulo` (34), `etiqueta` (14) | DM Serif Display, DM Sans | Bordes rasgados con filo de fibra, semilla fija; Grano de papel pegado a cada pieza; Sombra que se acorta al asentarse |
+| `S24` | Anotación dibujada (doodle) | `titulo` (34), `clave` (12), `nota1` (22), `nota2` (22) | Archivo Black, Fraunces | Trazos que se dibujan en 0,4 s con semilla fija; Tres versiones de cada trazo a 10 imágenes por segundo (temblor de lápiz); Círculo con vuelta de más, subrayado ondulado y flechas con punta |
+| `S26` | Infografía animada | `titular` (48), `cifra` (7), `unidad` (3), `cifraEt` (28), `e1` (16), `v1` (6), `e2` (16), `v2` (6), `e3` (16), `v3` (6), `conclusion` (30), `fuente` (34) | Archivo Black, Archivo | Primero los ejes, luego los valores, al final la conclusión; Escala constante calculada con 1, 2 o 5 por potencia de diez; Cifras que cuentan hasta su valor |
+| `L-dark-keynote` | Keynote tecnológico oscuro | `kicker` (24), `titulo` (24), `subtitulo` (30), `etiqueta` (16) | Sora, JetBrains Mono | Retícula fina de 60 px y luz suave; Interfaz genérica de fichas, sin marca ni producto real; Paso de 0,5 s: cada movimiento sale un pulso antes |
+| `R-aurora` | Aurora boreal | `kicker` (24), `titulo` (22), `subtitulo` (34) | Fraunces, Manrope | Aurora de WebGPU con los colores de la paleta; Tiempo del shader atado a la escena y quieto desde los 3 s; Estrellas y bosque de pinos con semilla fija. **Necesita GPU** |
+| `R-codigo` | Código vivo | `titulo` (20), `archivo` (18), `l1` (30), `l2` (30), `l3` (30), `l4` (30), `l5` (30), `l6` (30), `pie` (28) | JetBrains Mono, Sora | Código que se teclea carácter a carácter, función pura del tiempo; Resaltado de sintaxis propio: comentarios, cadenas, números, palabras reservadas y llamadas; Líneas de cambio con + o - al inicio |
+| `R-eclipse` | Eclipse | `kicker` (24), `titulo` (10), `subtitulo` (32) | Bebas Neue, Barlow | Disco negro con borde de luz de WebGPU (violeta y cian); La palabra del centro se ajusta al disco; Humo y destellos en el borde que se quedan quietos desde los 3 s. **Necesita GPU** |
+| `R-hilos` | Hilos de luz | `kicker` (24), `titulo` (22), `subtitulo` (34) | Sora, JetBrains Mono | Nueve cintas de luz de WebGPU que se cruzan; Color por posición, sin marcas ni interfaz; Título en Sora extrabold sobre fondo casi negro. **Necesita GPU** |
+| `R-metal` | Metal líquido | `kicker` (24), `titulo` (20), `subtitulo` (32) | Unbounded, Manrope | Esfera de metal líquido de WebGPU sobre negro; Reflejos que cambian con la luz y quedan quietos desde los 3 s; Título ancho en mayúsculas. **Necesita GPU** |
+
+Son propias, con licencia MIT, salvo las que parten de un bloque o un shader del registro de HyperFrames: `S13`, `S03`, `S11`, `R-aurora`, `R-metal`, `R-eclipse` y `R-hilos` (Apache-2.0, y MIT en los shaders; mira `NOTICE.md`). Las fuentes son las de `assets/fonts/fuentes.json` (OFL).
+
+Las que llevan **Necesita GPU** cargan `assets/lib/shaders.iife.js`, una copia de `library/hyperframes-registro/shaders/lib/`. El kit de escenas la copia solo. Los ids `R-` son estilos nuevos, sin equivalente en el catálogo original.
 
 ## Cómo montar una plantilla en una pieza
 
@@ -144,6 +163,12 @@ node library/plantillas/probar.mjs --trabajo RUTA S21 corto --paleta '{"fondo":"
 El texto «max» se arma con palabras anchas, con tildes y eñes, hasta el largo exacto de cada variable. Las variables que mandan sobre la estructura (listas, rutas, cifras) conservan su valor.
 
 Lo medido con HyperFrames 0.9.9 en este equipo (i5, sin GPU dedicada): `check` unos 28 s y un render de 4 s a 1080×1920 y 30 fps, entre 22 y 41 s con `--workers 2`. Si lanzas el bucle de varias plantillas en segundo plano, el shell debe seguir vivo hasta el final.
+
+## Con shader
+
+Cada escena declara `data-requires-webgpu`. Con ese atributo, HyperFrames da 10 s para abrir WebGPU antes de empezar, y en una pieza con muchas escenas se pasa aunque haya GPU (medido: 8 escenas con una de shader fallan; sin el atributo, la misma pieza se ve bien y se renderiza). El mensaje es «a usable WebGPU device could not be created». Por eso el kit lo quita de sus copias. Si montas a mano, quítalo igual en tus piezas largas. Sin GPU no hay error: la escena se queda en su degradado de reserva, así que mira un cuadro.
+
+`check` da dos avisos `console_warning` con las escenas de shader: «Found duplicate TypeGPU version» y «powerPreference option is currently ignored». Salen en cada escena y no cambian la imagen: se probaron varios shaders seguidos en un mismo video, y cada uno se ve con sus colores.
 
 ## Lo aprendido
 

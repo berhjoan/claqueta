@@ -1,0 +1,128 @@
+<template>
+  <style>
+
+    #pl-s24 { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #FAF7F0); color: var(--tinta, #1D1D1F); }
+    /* Hoja de cuaderno: renglones azules, margen rojo y agujeros. Llena los 1920 px. */
+    #pl-s24-hoja { position: absolute; inset: 0; background-image: linear-gradient(color-mix(in srgb, var(--segundo, #2F80ED) 26%, transparent) 3px, transparent 3px); background-size: 100% 72px; background-position: 0 30px; }
+    #pl-s24-margen { position: absolute; left: 150px; top: 0; bottom: 0; width: 4px; background: color-mix(in srgb, var(--acento, #FF4F3F) 45%, transparent); }
+    .pl-s24-agujero { position: absolute; left: 44px; width: 46px; height: 46px; border-radius: 50%; background: color-mix(in srgb, var(--fondo, #FAF7F0) 60%, #8a8a8a); box-shadow: inset 0 3px 6px rgba(0,0,0,.28); }
+
+    #pl-s24-tarjeta { position: absolute; left: 100px; top: 500px; width: 880px; height: 600px; background: var(--superficie, #FFFFFF); border: 6px solid var(--tinta, #1D1D1F); border-radius: 14px; box-shadow: 14px 14px 0 0 var(--tinta, #1D1D1F); transform: rotate(-1.4deg); }
+    #pl-s24-titulo { position: absolute; left: 44px; right: 44px; top: 40px; font-family: var(--display, "Archivo Black"), sans-serif; font-size: 82px; line-height: 1.04; letter-spacing: -.01em; text-wrap: balance; }
+    #pl-s24-clave { position: absolute; left: 0; right: 0; bottom: 70px; text-align: center; font-family: var(--display, "Archivo Black"), sans-serif; font-size: 150px; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
+    #pl-s24-cinta { position: absolute; left: 330px; top: -34px; width: 230px; height: 62px; background: color-mix(in srgb, #E9D9A8 80%, transparent); transform: rotate(-3deg); box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+
+    .pl-s24-nota { position: absolute; font-family: var(--cuerpo, "Fraunces"), serif; font-weight: 700; font-style: italic; font-size: 54px; line-height: 1.1; white-space: nowrap; color: var(--tinta, #1D1D1F); }
+    #pl-s24-nota1 { left: 470px; top: 290px; transform: rotate(-3deg); }
+    #pl-s24-nota2 { left: 190px; top: 1190px; transform: rotate(2deg); }
+    #pl-s24-trazos { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+    #pl-s24-trazos path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+
+  <div id="pl-s24" data-composition-id="S24" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[
+      {"id":"titulo","type":"string","label":"Frase","default":"Lo importante es una sola cosa","maxLength":34},
+      {"id":"clave","type":"string","label":"Palabra clave (se rodea)","default":"clave","maxLength":12},
+      {"id":"nota1","type":"string","label":"Nota 1","default":"empieza aquí","maxLength":22},
+      {"id":"nota2","type":"string","label":"Nota 2","default":"no lo olvides","maxLength":22}
+    ]'>
+    <div id="pl-s24-hoja"></div><div id="pl-s24-margen"></div>
+    <div class="pl-s24-agujero" style="top:260px"></div><div class="pl-s24-agujero" style="top:940px"></div><div class="pl-s24-agujero" style="top:1620px"></div>
+    <div id="pl-s24-tarjeta">
+      <div id="pl-s24-cinta"></div>
+      <div id="pl-s24-titulo" data-var-text="titulo">Lo importante es una sola cosa</div>
+      <div id="pl-s24-clave" data-var-text="clave">clave</div>
+    </div>
+    <div id="pl-s24-nota1" class="pl-s24-nota" data-var-text="nota1">empieza aquí</div>
+    <div id="pl-s24-nota2" class="pl-s24-nota" data-var-text="nota2">no lo olvides</div>
+    <svg id="pl-s24-trazos" viewBox="0 0 1080 1920" width="1080" height="1920"></svg>
+  </div>
+
+  <script>
+    (function () {
+      var SVGNS = "http://www.w3.org/2000/svg";
+      function lcg(seed) { var s = (seed * 2654435761) >>> 0; return function () { s = (Math.imul(1664525, s) + 1013904223) >>> 0; return s / 4294967296; }; }
+      var svg = document.getElementById("pl-s24-trazos");
+      var AC = "var(--acento, #FF4F3F)", SE = "var(--segundo, #2F80ED)", TI = "var(--tinta, #1D1D1F)";
+
+      // Cada trazo tiene tres versiones con desvíos distintos; se alterna a 10 imágenes por segundo ("boil" de lápiz)
+      function poli(pts) { return "M" + pts.map(function (p) { return p[0].toFixed(1) + " " + p[1].toFixed(1); }).join("L"); }
+      var GEN = {
+        elipse: function (a, r) { var cx = a[0], cy = a[1], rx = a[2], ry = a[3], pts = [], n = 54, ini = -2.4, vuelta = 6.28 * 1.1;
+          for (var i = 0; i <= n; i++) { var u = ini + vuelta * i / n, k = 1 + (r() - 0.5) * 0.06 + 0.02 * i / n; pts.push([cx + Math.cos(u) * rx * k + (r() - 0.5) * 3.4, cy + Math.sin(u) * ry * k + (r() - 0.5) * 3.4]); }
+          return poli(pts); },
+        ondulada: function (a, r) { var x0 = a[0], x1 = a[1], y = a[2], amp = a[3], pts = [], n = 30;
+          for (var i = 0; i <= n; i++) { var u = i / n; pts.push([x0 + (x1 - x0) * u + (r() - 0.5) * 3, y + Math.sin(u * 6.28 * 5) * amp + (r() - 0.5) * 3]); }
+          return poli(pts); },
+        flecha: function (a, r) { var x0 = a[0], y0 = a[1], x1 = a[2], y1 = a[3], cu = a[4], pts = [], n = 22, mx = (x0 + x1) / 2 + cu[0], my = (y0 + y1) / 2 + cu[1];
+          for (var i = 0; i <= n; i++) { var u = i / n, x = (1 - u) * (1 - u) * x0 + 2 * (1 - u) * u * mx + u * u * x1, y = (1 - u) * (1 - u) * y0 + 2 * (1 - u) * u * my + u * u * y1; pts.push([x + (r() - 0.5) * 3.4, y + (r() - 0.5) * 3.4]); }
+          var tx = x1 - (0.9 * mx + 0.1 * x1), ty = y1 - (0.9 * my + 0.1 * y1), L = Math.hypot(tx, ty) || 1; tx /= L; ty /= L;
+          var h1 = [x1 - tx * 46 + ty * 24 + (r() - 0.5) * 3, y1 - ty * 46 - tx * 24 + (r() - 0.5) * 3], h2 = [x1 - tx * 46 - ty * 24 + (r() - 0.5) * 3, y1 - ty * 46 + tx * 24 + (r() - 0.5) * 3];
+          return poli(pts) + poli([h1, [x1, y1], h2]); },
+        chispa: function (a, r) { var cx = a[0], cy = a[1], R = a[2], d = ""; for (var i = 0; i < 4; i++) { var ang = i * Math.PI / 4 + (r() - 0.5) * 0.12; d += poli([[cx - Math.cos(ang) * R, cy - Math.sin(ang) * R], [cx + Math.cos(ang) * R + (r() - 0.5) * 3, cy + Math.sin(ang) * R + (r() - 0.5) * 3]]); } return d; },
+        espiral: function (a, r) { var cx = a[0], cy = a[1], R = a[2], pts = [], n = 90; for (var i = 0; i <= n; i++) { var u = i / n, ang = u * 6.28 * 3.2, rad = R * u; pts.push([cx + Math.cos(ang) * rad + (r() - 0.5) * 2.4, cy + Math.sin(ang) * rad + (r() - 0.5) * 2.4]); } return poli(pts); },
+        garabato: function (a, r) { var x0 = a[0], y0 = a[1], w = a[2], pts = [], n = 36; for (var i = 0; i <= n; i++) { var u = i / n; pts.push([x0 + u * w + (r() - 0.5) * 4, y0 + (i % 2 ? -26 : 26) * (0.7 + 0.5 * r())]); } return poli(pts); },
+        marca: function (a, r) { var x = a[0], y = a[1]; return poli([[x, y], [x + 34 + (r() - 0.5) * 4, y + 38 + (r() - 0.5) * 4], [x + 112 + (r() - 0.5) * 4, y - 58 + (r() - 0.5) * 4]]); }
+      };
+      var reloj = 0;
+      var TRAZOS = [];
+      function trazo(tipo, args, color, ancho, t0, dur, semilla) {
+        var p = document.createElementNS(SVGNS, "path");
+        p.setAttribute("pathLength", "1"); p.setAttribute("stroke", color); p.setAttribute("stroke-width", ancho);
+        p.setAttribute("stroke-dasharray", "1 1"); p.setAttribute("stroke-dashoffset", "1");
+        svg.appendChild(p);
+        var z = { el: p, v: [], t0: t0, dur: dur, i: -1, rebuild: function () {
+          var a = typeof args === "function" ? args() : args;
+          z.v = [0, 1, 2].map(function (k) { return GEN[tipo](a, lcg(semilla * 7 + k * 13)); }); z.i = -1;
+        } };
+        z.rebuild(); p.setAttribute("d", z.v[0]);
+        TRAZOS.push(z);
+      }
+      // Medida real de la palabra clave: la fuente se ajusta al ancho de la tarjeta y el círculo la rodea
+      var claveEl = document.getElementById("pl-s24-clave"), CLAVE = { w: 520, fs: 150 };
+      function ajustar() {
+        var m = document.createElement("canvas").getContext("2d");
+        m.font = "400 100px " + (getComputedStyle(claveEl).fontFamily || "Archivo Black");
+        var ancho100 = Math.max(1, m.measureText(claveEl.textContent).width);
+        CLAVE.fs = Math.min(150, 760 * 100 / ancho100); CLAVE.w = ancho100 * CLAVE.fs / 100;
+        claveEl.style.fontSize = CLAVE.fs + "px"; claveEl.style.lineHeight = "150px";
+        TRAZOS.forEach(function (z) { z.rebuild(); });
+        if (typeof reloj === "number") pintar(reloj);
+      }
+      // Orden de la idea: primero el círculo y el subrayado, luego las notas con su flecha, al final las chispas
+      trazo("elipse", function () { return [540, 955, CLAVE.w / 2 + 56, Math.max(84, CLAVE.fs * 0.64)]; }, AC, 9, 1.0, 0.45, 1);
+      trazo("ondulada", function () { return [540 - CLAVE.w / 2, 540 + CLAVE.w / 2, 955 + Math.max(84, CLAVE.fs * 0.64) + 24, 8]; }, SE, 8, 1.45, 0.4, 2);
+      trazo("flecha", [770, 372, 640, 524, [-70, 10]], TI, 7, 1.85, 0.4, 3);
+      trazo("flecha", [250, 1186, 340, 1070, [-70, -10]], TI, 7, 2.55, 0.4, 4);
+      trazo("chispa", [190, 392, 46], AC, 8, 2.95, 0.2, 5);
+      trazo("chispa", [940, 1130, 34], SE, 8, 3.05, 0.2, 6);
+      trazo("garabato", [800, 1222, 170], AC, 7, 2.9, 0.3, 8);
+      trazo("espiral", [230, 1690, 130], SE, 6, 1.2, 1.4, 9);
+      trazo("marca", [860, 1640], AC, 10, 2.4, 0.4, 10);
+      ajustar();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar);
+
+      // El texto de las notas entra como si se escribiera: barrido de izquierda a derecha
+      function pintar(t) {
+        var f = Math.floor(t * 10) % 3;
+        TRAZOS.forEach(function (z) {
+          var u = Math.min(1, Math.max(0, (t - z.t0) / z.dur));
+          z.el.setAttribute("stroke-dashoffset", String(1 - (1 - Math.pow(1 - u, 2))));
+          if (z.i !== f) { z.el.setAttribute("d", z.v[f]); z.i = f; }
+        });
+      }
+      var rel = {};
+      Object.defineProperty(rel, "t", { configurable: true, get: function () { return reloj; }, set: function (x) { reloj = x; pintar(x); } });
+      var tl = gsap.timeline({ paused: true });
+      tl.to(rel, { t: 4, duration: 4, ease: "none" }, 0);
+      tl.fromTo("#pl-s24-tarjeta", { scale: 0.94, y: 40, opacity: 0.2 }, { scale: 1, y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.5)" }, 0);
+      tl.fromTo("#pl-s24-titulo", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 0.3);
+      tl.fromTo("#pl-s24-clave", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 0.65);
+      tl.fromTo("#pl-s24-nota1", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.4, ease: "none" }, 1.55);
+      tl.fromTo("#pl-s24-nota2", { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.4, ease: "none" }, 2.25);
+      pintar(0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S24"] = tl;
+    })();
+  </script>
+</template>

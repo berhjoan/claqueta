@@ -25,6 +25,8 @@ library/plantillas/<id>/
 - **Zonas:** 72 px de margen lateral, nada clave antes de y 240, contenido hasta y 1280, sin texto en y 1300–1540 porque ahí van los subtítulos, y riel derecho libre. El mundo y sus texturas sí llenan los 1920 px. El sujeto ocupa al menos el 40 % del cuadro. Nada que deba leerse por debajo de 44 px.
 - **Sin nada ajeno:** sin marcas, logos, interfaces reales, personas ni personajes. Sin URL externas. Un archivo solo: los recursos van incrustados o se dibujan con código.
 
+Una escena con shader declara `"requiere": ["webgpu", "assets/lib/shaders.iife.js"]` en su ficha, lleva `data-requires-webgpu` en la raíz y un degradado de reserva: así el kit copia el motor, y sin él la escena sigue viéndose.
+
 ## `ficha.json`
 
 ```json

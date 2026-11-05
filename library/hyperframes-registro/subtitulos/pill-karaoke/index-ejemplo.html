@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/lib/gsap.min.js"></script>
+    <!-- Tiempos de palabra: pega aqui el contenido de palabras.json (salida de tools/subtitulos/alinear.py): [{"palabra","inicio","fin"}, ...] -->
+    <script>
+      window.PALABRAS = [{"palabra": "¿Cuánto", "inicio": 0.3, "fin": 0.6}, {"palabra": "cuesta?", "inicio": 0.65, "fin": 0.95}, {"palabra": "¡Más", "inicio": 1.2, "fin": 1.5}, {"palabra": "de", "inicio": 1.55, "fin": 1.85}, {"palabra": "lo", "inicio": 1.9, "fin": 2.2}, {"palabra": "que", "inicio": 2.25, "fin": 2.55}, {"palabra": "piensas,", "inicio": 2.6, "fin": 2.9}, {"palabra": "señor", "inicio": 3.15, "fin": 3.45}, {"palabra": "Núñez!", "inicio": 3.5, "fin": 3.8}, {"palabra": "Mañana", "inicio": 4.25, "fin": 4.55}, {"palabra": "te", "inicio": 4.6, "fin": 4.9}, {"palabra": "cuento", "inicio": 4.95, "fin": 5.25}, {"palabra": "más,", "inicio": 5.3, "fin": 5.6}, {"palabra": "¿vale?", "inicio": 5.85, "fin": 6.15}];
+    </script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      #fondo, #subs { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      #subs { z-index: 20; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="7.05" data-width="1080" data-height="1920">
+      <!-- el video de fondo: aqui una escena de prueba -->
+      <div id="fondo" style="z-index:1" data-composition-id="fondo-prueba" data-composition-src="compositions/fondo-prueba.html" data-start="0" data-duration="7.05" data-track-index="1" data-width="1080" data-height="1920"></div>
+      <!-- los subtitulos: dura lo que dura la voz -->
+      <div id="subs" data-composition-id="caption-pill-karaoke" data-composition-src="compositions/caption-pill-karaoke.html" data-start="0" data-duration="7.05" data-track-index="5" data-width="1080" data-height="1920"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

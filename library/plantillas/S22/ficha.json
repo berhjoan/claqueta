@@ -1,0 +1,68 @@
+{
+  "id": "S22",
+  "nombre": "Collage de papel",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Recortes sobre la mesa",
+      "max": 24
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Cada pieza llega y se pega",
+      "max": 34
+    },
+    {
+      "id": "etiqueta",
+      "etiqueta": "Etiqueta",
+      "defecto": "Nuevo",
+      "max": 14
+    }
+  ],
+  "paleta": {
+    "fondo": "#EDE3D1",
+    "tinta": "#1F1B16",
+    "acento": "#E4572E",
+    "segundo": "#3D5A80",
+    "superficie": "#F7F0E3"
+  },
+  "fuentes": [
+    "DM Serif Display",
+    "DM Sans"
+  ],
+  "rasgos": [
+    "Bordes rasgados con filo de fibra, semilla fija",
+    "Grano de papel pegado a cada pieza",
+    "Sombra que se acorta al asentarse",
+    "Paisaje de papel recortado en capas",
+    "Cinta de enmascarar"
+  ],
+  "sonidos": [
+    {
+      "t": 0.12,
+      "sonido": "chasquido",
+      "ganancia": -14
+    },
+    {
+      "t": 0.85,
+      "sonido": "chasquido",
+      "ganancia": -14
+    },
+    {
+      "t": 1.45,
+      "sonido": "pop",
+      "ganancia": -14
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

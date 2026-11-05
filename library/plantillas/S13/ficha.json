@@ -1,0 +1,79 @@
+{
+  "id": "S13",
+  "nombre": "Panel de láminas",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo superior",
+      "defecto": "Aviso",
+      "max": 18
+    },
+    {
+      "id": "l1",
+      "etiqueta": "Línea 1 del panel",
+      "defecto": "TU TÍTULO",
+      "max": 9
+    },
+    {
+      "id": "l2",
+      "etiqueta": "Línea 2 del panel",
+      "defecto": "VA AQUÍ",
+      "max": 9
+    },
+    {
+      "id": "l3",
+      "etiqueta": "Línea 3 del panel",
+      "defecto": "EN CADA",
+      "max": 9
+    },
+    {
+      "id": "l4",
+      "etiqueta": "Línea 4 del panel",
+      "defecto": "LÁMINA",
+      "max": 9
+    },
+    {
+      "id": "pie",
+      "etiqueta": "Pie del panel",
+      "defecto": "Escribe aquí tu pie",
+      "max": 28
+    }
+  ],
+  "paleta": {
+    "fondo": "#121212",
+    "tinta": "#F2F2F2",
+    "acento": "#FFC300",
+    "segundo": "#3A3A3A",
+    "superficie": "#1E1E1E"
+  },
+  "fuentes": [
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Casillas con dos hojas que giran 180° sobre su bisagra",
+    "El tambor se recorre en orden, sin saltos",
+    "Desfase por columna y por fila",
+    "Última línea en ámbar"
+  ],
+  "sonidos": [
+    {
+      "t": 0.25,
+      "sonido": "tecla",
+      "ganancia": -16
+    },
+    {
+      "t": 3.05,
+      "sonido": "clic",
+      "ganancia": -14
+    }
+  ],
+  "origen": "registro:split-flap-board",
+  "licencia": "Apache-2.0",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

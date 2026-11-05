@@ -1,0 +1,62 @@
+{
+  "id": "S15",
+  "nombre": "Semitono",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "kicker",
+      "etiqueta": "Rótulo",
+      "defecto": "Impreso en dos tintas",
+      "max": 24
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Puntos con volumen",
+      "max": 22
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Rojo y azul sobre papel crema",
+      "max": 32
+    }
+  ],
+  "paleta": {
+    "fondo": "#F2ECDC",
+    "tinta": "#1B2455",
+    "acento": "#D9342B",
+    "segundo": "#2B4FA8",
+    "superficie": "#E8E0CB"
+  },
+  "fuentes": [
+    "Archivo Black",
+    "Archivo"
+  ],
+  "rasgos": [
+    "Dos retículas fijas a 15° y 75°, celda de 11 px",
+    "Tamaño de punto según luminosidad",
+    "Esfera roja y aro azul que pasa por delante y por detrás",
+    "Velo de puntos que crece hacia el pie"
+  ],
+  "sonidos": [
+    {
+      "t": 0.1,
+      "sonido": "subida",
+      "ganancia": -16
+    },
+    {
+      "t": 1.5,
+      "sonido": "pop",
+      "ganancia": -14
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

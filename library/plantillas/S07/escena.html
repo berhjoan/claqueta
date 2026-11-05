@@ -1,0 +1,98 @@
+<template>
+  <style>
+    #pl-s07 { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #0E0E0E); font-family: var(--display, "Anton"), sans-serif; }
+
+    #pl-s07-mundo { position: absolute; inset: 0; }
+    .pl-s07-fila { position: absolute; left: -40px; width: 1160px; overflow: visible; }
+    .pl-s07-previo { position: absolute; inset: 0; background: var(--superficie, #1C1C1C); }
+    .pl-s07-placa { position: absolute; inset: 0; }
+    .pl-s07-fila .pl-s07-hueco, .pl-s07-fila .pl-s07-palabra, .pl-s07-eco { position: absolute; left: 0; width: 100%; text-align: center; white-space: nowrap; line-height: 1; text-transform: uppercase; letter-spacing: .005em; }
+    .pl-s07-hueco { color: transparent; -webkit-text-stroke: 3px color-mix(in srgb, var(--tinta, #F5F5F0) 36%, transparent); }
+    .pl-s07-fila .pl-s07-hueco, .pl-s07-fila .pl-s07-palabra { z-index: 6; }
+    .pl-s07-palabra { will-change: transform; }
+    .pl-s07-regla { position: absolute; left: -40px; width: 1160px; height: 6px; background: var(--acento, #FF3B30); opacity: 0; }
+    .pl-s07-eco { color: transparent; -webkit-text-stroke: 3px color-mix(in srgb, var(--tinta, #F5F5F0) 55%, transparent); opacity: 0; }
+  </style>
+
+  <div id="pl-s07" data-composition-id="S07" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[
+      {"id":"p1","type":"string","label":"Palabra 1","default":"Una","maxLength":12},
+      {"id":"p2","type":"string","label":"Palabra 2","default":"idea","maxLength":12},
+      {"id":"p3","type":"string","label":"Palabra 3","default":"por","maxLength":12},
+      {"id":"p4","type":"string","label":"Palabra 4","default":"golpe","maxLength":12}
+    ]'>
+    <div id="pl-s07-mundo">
+      <div id="pl-s07-f0" class="pl-s07-fila"><div class="pl-s07-previo"></div><div class="pl-s07-placa"></div><div class="pl-s07-hueco" data-var-text="p1">Una</div><div class="pl-s07-palabra" data-var-text="p1">Una</div></div>
+      <div id="pl-s07-f1" class="pl-s07-fila"><div class="pl-s07-previo"></div><div class="pl-s07-placa"></div><div class="pl-s07-hueco" data-var-text="p2">idea</div><div class="pl-s07-palabra" data-var-text="p2">idea</div></div>
+      <div id="pl-s07-f2" class="pl-s07-fila"><div class="pl-s07-previo"></div><div class="pl-s07-placa"></div><div class="pl-s07-hueco" data-var-text="p3">por</div><div class="pl-s07-palabra" data-var-text="p3">por</div></div>
+      <div id="pl-s07-f3" class="pl-s07-fila"><div class="pl-s07-previo"></div><div class="pl-s07-placa"></div><div class="pl-s07-hueco" data-var-text="p4">golpe</div><div class="pl-s07-palabra" data-var-text="p4">golpe</div></div>
+      <div id="pl-s07-eco1" class="pl-s07-eco" data-var-text="p4">golpe</div>
+      <div id="pl-s07-eco2" class="pl-s07-eco" data-var-text="p4">golpe</div>
+      <div id="pl-s07-r0" class="pl-s07-regla"></div><div id="pl-s07-r1" class="pl-s07-regla"></div><div id="pl-s07-r2" class="pl-s07-regla"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var TOP = 262, H = 250, PASO = 255;           // filas de texto dentro de la zona segura (y 262 a 1282)
+      var COLORES = [                                // [placa, tinta de la palabra]
+        ["var(--fondo, #0E0E0E)", "var(--tinta, #F5F5F0)"],
+        ["var(--acento, #FF3B30)", "var(--tinta, #F5F5F0)"],
+        ["var(--tinta, #F5F5F0)", "var(--fondo, #0E0E0E)"],
+        ["var(--segundo, #FFD60A)", "var(--fondo, #0E0E0E)"]
+      ];
+      var HITS = [0.5, 0.95, 1.4, 1.85];
+      var filas = [0, 1, 2, 3].map(function (i) { return document.getElementById("pl-s07-f" + i); });
+      var eco = [document.getElementById("pl-s07-eco1"), document.getElementById("pl-s07-eco2")];
+
+      // Geometría: cada placa llega al borde del cuadro (la primera sube a y 0 y la última baja a y 1920).
+      filas.forEach(function (f, i) {
+        var y0 = i === 0 ? 0 : TOP + i * PASO - 2;
+        var y1 = i === 3 ? 1920 : TOP + (i + 1) * PASO - 3;
+        f.style.top = y0 + "px"; f.style.height = (y1 - y0) + "px"; f.setAttribute("data-layout-allow-overflow", "");
+        f.querySelector(".pl-s07-placa").style.background = COLORES[i][0];
+        var cy = (TOP + i * PASO + H / 2) - y0;     // centro del texto dentro de la placa
+        [".pl-s07-hueco", ".pl-s07-palabra"].forEach(function (c) { var e = f.querySelector(c); e.style.top = (cy - H / 2) + "px"; e.style.height = H + "px"; });
+        f.querySelector(".pl-s07-palabra").style.color = COLORES[i][1];
+        // El golpe de cada palabra se pasa a la fila de al lado a propósito
+        [".pl-s07-hueco", ".pl-s07-palabra"].forEach(function (c) { var e = f.querySelector(c); e.setAttribute("data-layout-allow-overlap", ""); e.setAttribute("data-layout-allow-occlusion", ""); e.setAttribute("data-layout-allow-overflow", ""); });
+      });
+      eco.forEach(function (e, k) { e.style.top = (1560 + k * 190) + "px"; e.style.height = "180px"; e.setAttribute("data-layout-ignore", ""); });
+      [0, 1, 2].forEach(function (i) { var r = document.getElementById("pl-s07-r" + i); r.style.top = (TOP + (i + 1) * PASO - 5) + "px"; });
+
+      // Ajuste al ancho: el tamaño se calcula con la fuente cargada y se repite cuando termina de cargar.
+      function ajustar() {
+        filas.forEach(function (f) {
+          var pal = f.querySelector(".pl-s07-palabra"), hu = f.querySelector(".pl-s07-hueco");
+          var m = document.createElement("canvas").getContext("2d");
+          m.font = "400 100px " + (getComputedStyle(pal).fontFamily || "Anton");
+          var w = Math.max(1, m.measureText(pal.textContent.toUpperCase()).width) / 100;   // ancho por px de cuerpo
+          var tam = Math.min(H * 1.1, 936 / w);                                            // Anton: la mayúscula llena casi todo el cuerpo
+          [pal, hu].forEach(function (e) { e.style.fontSize = tam + "px"; e.style.lineHeight = H + "px"; });
+        });
+        var ult = filas[3].querySelector(".pl-s07-palabra");
+        eco.forEach(function (e) { e.style.fontSize = Math.min(150, parseFloat(ult.style.fontSize) * 0.72) + "px"; e.style.lineHeight = "180px"; });
+      }
+      ajustar();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar);
+
+      var tl = gsap.timeline({ paused: true });
+      filas.forEach(function (f, i) {
+        var t = HITS[i], pal = f.querySelector(".pl-s07-palabra"), hu = f.querySelector(".pl-s07-hueco"), placa = f.querySelector(".pl-s07-placa");
+        tl.fromTo(placa, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: 0.2, ease: "expo.out" }, t);
+        tl.fromTo(pal, { scale: 1.55, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "expo.out" }, t);
+        tl.set(hu, { opacity: 0 }, t + 0.05);
+        // golpe de cámara en cada impacto; las filas sobran 40 px por lado, así que no asoma el borde
+        tl.fromTo("#pl-s07-mundo", { x: 0, y: 0 }, { x: -14, y: 6, duration: 0.05, ease: "none" }, t);
+        tl.to("#pl-s07-mundo", { x: 10, y: -4, duration: 0.06, ease: "none" }, t + 0.05);
+        tl.to("#pl-s07-mundo", { x: 0, y: 0, duration: 0.12, ease: "power3.out" }, t + 0.11);
+      });
+      [0, 1, 2].forEach(function (i) { tl.fromTo("#pl-s07-r" + i, { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.25, ease: "power3.out" }, HITS[i + 1] + 0.1); });
+      // Repetición: la última palabra se repite hacia abajo, cada vez más tenue
+      tl.fromTo("#pl-s07-eco1", { opacity: 0, y: -30 }, { opacity: 0.8, y: 0, duration: 0.3, ease: "power3.out" }, 2.0);
+      tl.fromTo("#pl-s07-eco2", { opacity: 0, y: -30 }, { opacity: 0.45, y: 0, duration: 0.3, ease: "power3.out" }, 2.2);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S07"] = tl;
+    })();
+  </script>
+</template>

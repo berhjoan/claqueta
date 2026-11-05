@@ -1,6 +1,6 @@
 {
  "generado": "scripts/armar-biblioteca.mjs",
- "total": 242,
+ "total": 243,
  "items": [
   {
    "titulo": "Dirección: cómo no parecer generado",
@@ -355,8 +355,16 @@
    "licencia": "MIT"
   },
   {
+   "titulo": "Bloques del registro de HyperFrames",
+   "desc": "Código listo del registro de HyperFrames (Apache-2.0; los shaders, MIT), copiado del commit `fa1942d` y probado en vertical 1080×1920 en esta PC (i5-11400T, Intel UHD 730,…",
+   "ruta": "library/hyperframes-registro/README.md",
+   "cat": "plantillas",
+   "catNombre": "Plantillas de estilo",
+   "licencia": "Apache-2.0 y MIT"
+  },
+  {
    "titulo": "Inventario del registro de HyperFrames",
-   "desc": "Revisado en `heygen-com/hyperframes`, commit `fa1942d` del 2026-11-05. Trae 210 bloques, 239 componentes y 8 ejemplos. La licencia del repositorio es Apache-2.0. Los 36 bloques…",
+   "desc": "Lo que ya se copió y se probó está en `library/hyperframes-registro/` y `library/plantillas/`. Este inventario queda como guía de lo que falta.",
    "ruta": "docs/registro-hyperframes.md",
    "cat": "plantillas",
    "catNombre": "Plantillas de estilo",
