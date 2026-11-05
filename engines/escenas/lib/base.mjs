@@ -46,12 +46,12 @@ export const alturaMayuscula = (familia, peso) => fuenteDe(familia, peso).cap / 
 const CONECTORES = new Set("a al ante con de del e el en la las lo los o para por que se sin su sus u un una y".split(" "));
 
 // Parte un texto en líneas parejas: sin viudas y sin dejar un conector colgando al final de la línea.
-export function envolver(texto, familia, peso, px, anchoMax, tracking = 0) {
+export function envolver(texto, familia, peso, px, anchoMax, tracking = 0, porPalabra = 0) {
   const palabras = String(texto).trim().split(/\s+/);
   const n = palabras.length;
   const costo = new Array(n + 1).fill(Infinity), corte = new Array(n + 1).fill(0);
   costo[0] = 0;
-  const anchoDe = (i, j) => ancho(palabras.slice(i, j).join(" "), familia, peso, px, tracking);
+  const anchoDe = (i, j) => ancho(palabras.slice(i, j).join(" "), familia, peso, px, tracking) + (j - i) * porPalabra * px;
   for (let j = 1; j <= n; j++) {
     for (let i = j - 1; i >= 0; i--) {
       const a = anchoDe(i, j);
@@ -69,12 +69,14 @@ export function envolver(texto, familia, peso, px, anchoMax, tracking = 0) {
 }
 
 // El mayor tamaño con el que el texto cabe en la caja. Respeta los saltos forzados con «|».
-export function ajustarCaja(texto, familia, peso, caja, { lh = 1.05, min = 20, max = 400, tracking = 0, frases = false } = {}) {
+// «porPalabra» es lo que cada palabra ocupa de más, en em: los recortes de collage llevan su propio relleno.
+export function ajustarCaja(texto, familia, peso, caja, { lh = 1.05, min = 20, max = 400, tracking = 0, frases = false, porPalabra = 0 } = {}) {
   const partes = String(texto).split("|").map((s) => s.trim()).filter(Boolean);
-  const lineasCon = (px) => partes.flatMap((p) => envolver(p, familia, peso, px, caja.w, tracking));
+  const lineasCon = (px) => partes.flatMap((p) => envolver(p, familia, peso, px, caja.w, tracking, porPalabra));
+  const anchoLinea = (x, px) => ancho(x, familia, peso, px, tracking) + x.split(/\s+/).length * porPalabra * px;
   const cabe = (px) => {
     const l = lineasCon(px);
-    return l.length * px * lh <= caja.h && l.every((x) => ancho(x, familia, peso, px, tracking) <= caja.w);
+    return l.length * px * lh <= caja.h && l.every((x) => anchoLinea(x, px) <= caja.w);
   };
   if (!cabe(min)) return { px: min, lineas: lineasCon(min), desborda: true };
   let bajo = min, alto = max;
@@ -141,8 +143,38 @@ export class Reloj {
   }
 
   // Busca en un tramo la primera palabra de un texto, para que un elemento caiga cuando se nombra.
+  // Alinea lo escrito con lo que dice la voz en un tramo. Una palabra corta se repite mucho: primero se busca la frase exacta y seguida;
+  // si no está, la alineación en orden más apretada. Devuelve el inicio de cada palabra escrita, o null si la voz no la dice aquí.
+  alinear(escritas, t0, t1) {
+    const voz = this.palabras.filter((x) => x.inicio >= t0 - 0.05 && x.inicio < t1);
+    const nv = voz.map((x) => norm(x.palabra)), ne = escritas.map(norm);
+    if (!ne.length || !nv.length) return ne.map(() => null);
+    for (let i = 0; i + ne.length <= nv.length; i++) if (ne.every((w, k) => nv[i + k] === w)) return ne.map((_, k) => voz[i + k].inicio);
+    const enOrden = (a, b) => {
+      const m = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+      for (let i = a.length - 1; i >= 0; i--) for (let k = b.length - 1; k >= 0; k--) m[i][k] = a[i] === b[k] ? m[i + 1][k + 1] + 1 : Math.max(m[i + 1][k], m[i][k + 1]);
+      const pares = [];
+      let i = 0, k = 0;
+      while (i < a.length && k < b.length) {
+        if (a[i] === b[k] && m[i][k] === m[i + 1][k + 1] + 1) { pares.push([i, k]); i++; k++; } else if (m[i + 1][k] >= m[i][k + 1]) i++; else k++;
+      }
+      return pares;
+    };
+    const temprano = enOrden(ne, nv);
+    const tardio = enOrden([...ne].reverse(), [...nv].reverse()).map(([i, k]) => [ne.length - 1 - i, nv.length - 1 - k]).reverse();
+    const tramo = (p) => (p.length ? p[p.length - 1][1] - p[0][1] : Infinity);
+    const horas = ne.map(() => null);
+    for (const [i, k] of tramo(tardio) < tramo(temprano) ? tardio : temprano) horas[i] = voz[k].inicio;
+    return horas;
+  }
+
   enTramo(texto, t0, t1) {
     const todas = String(texto).split(/\s+/).map(norm).filter(Boolean);
+    // Varias palabras seguidas se reconocen como frase: «se pone duro» no es la primera vez que la voz dice «pone».
+    if (todas.length > 1) {
+      const voz = this.palabras.filter((x) => x.inicio >= t0 - 0.05 && x.inicio < t1), nv = voz.map((x) => norm(x.palabra));
+      for (let i = 0; i + todas.length <= nv.length; i++) if (todas.every((w, k) => nv[i + k] === w)) return voz[i].inicio;
+    }
     const largas = todas.filter((w) => w.length > 2);
     for (const w of largas.length ? largas : todas) {
       const p = this.palabras.find((x) => x.inicio >= t0 - 0.05 && x.inicio < t1 && norm(x.palabra) === w);

@@ -357,3 +357,81 @@ test("una plantilla que abre la pieza arranca adelantada, y solo esa", () => {
   assert.equal(correr(sin).status, 0);
   assert.ok(!leer(sin, "compositions/S12.html").includes("adelanto"));
 });
+
+const vozDe = (texto, paso = 0.4) => texto.split(" ").map((palabra, i) => ({ palabra, inicio: f3(i * paso), fin: f3(i * paso + paso - 0.05) }));
+const f3 = (x) => Math.round(x * 1000) / 1000;
+const conVoz = (texto, extra = {}) => { const palabras = vozDe(texto); const fin = palabras.at(-1).fin; return { palabras, dur: fin + 1.2, fin_voz: fin, pausas: [], grupos: [{ inicio: 0, fin, lineas: [texto], palabras }], ...extra }; };
+
+test("una palabra se alinea con su frase, no con la primera vez que la voz la dijo", () => {
+  const texto = "Así que el pan no se pone duro por perder humedad: se pone duro porque su almidón se reacomoda.";
+  const reloj = new Reloj(conVoz(texto), null);
+  const horas = reloj.alinear("se pone duro porque su almidón se reacomoda".split(" "), 0, 99);
+  const esperado = 11 * 0.4;
+  assert.ok(Math.abs(horas[0] - esperado) < 1e-6, `empieza en ${horas[0]}`);
+  assert.ok(horas.every((h, i) => i === 0 || h > horas[i - 1]), "en orden");
+  // Con una palabra distinta, sigue alineando en orden y marca lo que no se dice.
+  const casi = reloj.alinear("se pone duro porque su harina se reacomoda".split(" "), 0, 99);
+  assert.equal(casi[5], null);
+  assert.ok(casi[3] > casi[2]);
+  assert.ok(Math.abs(casi[0] - esperado) < 1e-6, `empieza en ${casi[0]}`);
+  assert.deepEqual(reloj.alinear(["nada"], 0, 99), [null]);
+  // Una línea de varias palabras también se reconoce como frase.
+  assert.ok(Math.abs(reloj.enTramo("se pone duro porque", 0, 99) - esperado) < 1e-6);
+});
+
+test("en collage el texto cabe con su relleno, también con muchas palabras por línea", () => {
+  const texto = "No es así. Al enfriarse, el agua sale del almidón.";
+  for (const px of [100, 120, 140]) {
+    const l = envolver(texto, "Archivo Black", 400, px, 918, 0, 0.44);
+    for (const x of l) assert.ok(ancho(x, "Archivo Black", 400, px) + x.split(" ").length * 0.44 * px <= 918 || x.split(" ").length === 1, `${px}: «${x}»`);
+  }
+  const a = ajustarCaja(texto, "Archivo Black", 400, { w: 918, h: 700 }, { lh: 1.2, porPalabra: 0.44, max: 200, min: 40 });
+  assert.equal(a.desborda, false);
+  for (const x of a.lineas) assert.ok(ancho(x, "Archivo Black", 400, a.px) + x.split(" ").length * 0.44 * a.px <= 918, x);
+  assert.ok(a.lineas.length * a.px * 1.2 <= 700);
+});
+
+test("el cierre calla el subtítulo solo mientras se dice lo que ya está escrito", () => {
+  const texto = "Así que el pan no se pone duro por perder humedad: se pone duro porque su almidón se reacomoda.";
+  const palabras = vozDe(texto);
+  const uno = palabras.slice(0, 11), dos = palabras.slice(11);
+  const tiempos = { palabras, dur: palabras.at(-1).fin + 1.2, fin_voz: palabras.at(-1).fin, pausas: [], grupos: [
+    { inicio: uno[0].inicio, fin: uno.at(-1).fin, lineas: ["Así que el pan no se pone", "duro por perder humedad:"], palabras: uno },
+    { inicio: dos[0].inicio, fin: dos.at(-1).fin, lineas: ["se pone duro porque su", "almidón se reacomoda."], palabras: dos },
+  ] };
+  const d = proyecto({ piel: "collage", paleta: "bg", planos: [{ tipo: "cierre", frase: "se pone duro porque su almidón se reacomoda" }] }, { tiempos });
+  const r = correr(d);
+  assert.equal(r.status, 0, r.stderr);
+  const sub = leer(d, "compositions/subtitulos.html");
+  assert.ok(sub.includes("perder"), "lo que no está escrito sigue en subtítulos");
+  assert.ok(!sub.includes("reacomoda"), "lo que ya está en pantalla no se repite");
+});
+
+test("avisa si un texto se dice después de que su plano termina, o si tarda en empezar", () => {
+  const texto = "Casi todos creemos que se seca. No es así. Al enfriarse sale el agua del almidón por dentro.";
+  const d = proyecto({ piel: "collage", paleta: "bg", planos: [
+    { tipo: "frase", texto: "Casi todos creemos que se seca. No es así." },
+    { tipo: "frase", desde: "@No", texto: "sale el agua del almidón por dentro" },
+  ] }, { tiempos: conVoz(texto) });
+  const r = correr(d);
+  assert.equal(r.status, 0, r.stderr);
+  const avisos = JSON.parse(r.stdout).avisos.join(" | ");
+  assert.match(avisos, /se dice después de que este plano termina/);
+  assert.match(avisos, /hasta entonces no hay texto/);
+});
+
+test("una plantilla con shader lleva su motor y no exige WebGPU por adelantado", () => {
+  const d = proyecto({ dur: 8, paleta: "propia", planos: [{ tipo: "plantilla", estilo: "S21", textos: {} }, { tipo: "plantilla", desde: 4, estilo: "R-eclipse", textos: {} }] });
+  const r = correr(d);
+  assert.equal(r.status, 0, r.stderr);
+  assert.ok(fs.existsSync(path.join(d, "assets", "lib", "shaders.iife.js")), "falta el motor");
+  assert.ok(fs.existsSync(path.join(d, "assets", "lib", "shaders.THIRD-PARTY-LICENSES.txt")), "falta su licencia");
+  assert.ok(!leer(d, "compositions/R-eclipse.html").includes("data-requires-webgpu"));
+  assert.ok(JSON.parse(r.stdout).avisos.some((a) => a.includes("WebGPU")));
+  assert.ok(!fs.existsSync(path.join(proyectoSinShader(), "assets", "lib", "shaders.iife.js")), "solo se copia si hace falta");
+});
+function proyectoSinShader() {
+  const d = proyecto({ dur: 4, paleta: "propia", planos: [{ tipo: "plantilla", estilo: "S21", textos: {} }] });
+  correr(d);
+  return d;
+}

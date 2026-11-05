@@ -119,6 +119,7 @@ planos.forEach((p, i) => {
     resp: (t) => Math.min(t, Math.max(0, dur - 0.5)),
     t(ancla, resp) { if (ancla === undefined || ancla === null) return resp; try { const v = reloj.resolver(ancla, T0) - T0; return v >= 0 && v < dur ? v : (c.aviso(`«${ancla}» cae fuera de este plano`), resp); } catch (e) { c.aviso(e.message); return resp; } },
     dicho(texto, resp) { const v = reloj.enTramo(texto, T0, T1); return v === null ? resp : v - T0; },
+    horas(texto) { return reloj.alinear(String(texto).split(/[\s|]+/).filter(Boolean), T0, T1).map((h) => (h === null ? null : h - T0)); },
     entrada(sel, t, o = {}) {
       if (i === 0 && t <= 0.2) return ""; // El primer cuadro es la portada: lo que abre la pieza ya está ahí.
       const tipo = o.tipo ?? piel.entrada;
@@ -143,6 +144,8 @@ planos.forEach((p, i) => {
     if (externas.some((x) => x.plantilla === ext.id)) salir(`plano ${i + 1}: la escena ${ext.id} ya se usa en otro plano. Cada una va una sola vez`);
     // El primer cuadro es la portada en el feed: una plantilla que abre la pieza arranca adelantada, con lo suyo ya en pantalla.
     let fuenteExt = fs.readFileSync(ext.archivo, "utf8");
+    // HyperFrames da 10 s para abrir WebGPU si una escena lo exige, y con muchas escenas se pasa aunque haya GPU. Sin exigirlo, el shader se ve igual; sin GPU, queda su degradado de reserva.
+    if (ext.ficha.requiere?.includes("webgpu")) fuenteExt = fuenteExt.replace(/\s+data-requires-webgpu(="[^"]*")?/g, "");
     const adelanto = Number(p.adelanto ?? (i === 0 && p.tipo === "plantilla" && ext.id !== "rafaga" ? 0.7 : 0));
     if (adelanto > 0) {
       const registro = new RegExp(`window\\.__timelines\\[(["'])${ext.id}\\1\\]\\s*=\\s*(\\w+);`);
@@ -206,6 +209,7 @@ planos.forEach((p, i) => {
   fs.writeFileSync(path.join("compositions", `${id}.html`), doc);
   escenas.push({ id, tipo: p.tipo, inicio: f(T0), fin: f(T1), suelo: c.suelo, acento: c.acento, pal: palP, sonidoTr: piel.sonidos.trans, transiciones: piel.transiciones, heroe: [f(ox, 0), f(oy, 0)] });
   if (b.sinSubtitulos || p.subtitulos === false) sinSub.push([T0, T1]);
+  else if (b.sinSubEn && p.subtitulos !== true) sinSub.push([T0 + b.sinSubEn[0], T0 + b.sinSubEn[1]]);
   if (dur < 1) c.aviso(`dura solo ${dur} s. Un plano tan corto casi no se lee`);
 });
 

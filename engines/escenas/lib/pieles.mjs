@@ -107,7 +107,7 @@ export const PIELES = {
         hojas.push(`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rot)} ${f(w / 2)} ${f(h / 2)})"><path d="${d}" fill="#fff" fill-opacity=".85" transform="translate(-4 -5)"/><path d="${d}" fill="${col}"/></g>`);
       }
       const puntos = r() < 0.75 ? `<div class="capa semitono" style="--x:${f(r() * 100)}%;--y:${f(r() * 70)}%"></div>` : "";
-      return `<svg class="capa" viewBox="0 0 ${W} ${H}" style="filter:drop-shadow(5px 9px 0 rgba(0,0,0,.28))">${hojas.join("")}</svg>${puntos}<div class="capa fibra"></div>`;
+      return `<svg class="capa" data-layout-ignore viewBox="0 0 ${W} ${H}" style="filter:drop-shadow(5px 9px 0 rgba(0,0,0,.28))">${hojas.join("")}</svg>${puntos}<div class="capa fibra"></div>`;
     },
     css: `.fibra{background:url("papel.png");background-size:512px;mix-blend-mode:multiply;opacity:.9;pointer-events:none}
 .semitono{background-image:radial-gradient(var(--tinta) 3.4px,transparent 3.8px);background-size:16px 16px;opacity:.5;-webkit-mask-image:radial-gradient(44% 34% at var(--x) var(--y),#000 0%,transparent 100%);mask-image:radial-gradient(44% 34% at var(--x) var(--y),#000 0%,transparent 100%)}

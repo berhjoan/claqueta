@@ -1,6 +1,6 @@
 // Los bloques: cada uno convierte un plano de pieza.json en HTML fijo y una línea de tiempo de GSAP, función del tiempo.
 // Todo se compone con medidas reales de las letras, así que el texto cabe sin abrir un navegador.
-import { ajustarCaja, ajustarLinea, ancho, envolver, esClaro, f, html, icono, mezclar, norm, RAIZ, rutaLocal } from "./base.mjs";
+import { ajustarCaja, ajustarLinea, ancho, contraste, envolver, esClaro, f, html, icono, mezclar, norm, RAIZ, rutaLocal } from "./base.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import { ENTRADAS } from "./pieles.mjs";
@@ -26,10 +26,15 @@ function marcarPalabras(c, linea, acentos, prefijo) {
 }
 
 // Pone líneas de texto en el cuadro y programa su entrada. Devuelve el HTML. `tiempos[k]` es el segundo local de cada línea.
+// Lo que cada recorte de collage ocupa de más, en em. Sale de .chip en pieles.mjs: relleno de .2 y margen de .02, a cada lado.
+const relleno = (c) => (c.piel.chips ? 0.44 : 0);
+
 function ponerLineas(c, o) {
   const { lineas, x, y, px, lh = c.piel.lh, fam = c.fam.display, peso = c.piel.pesoDisplay, color = c.tinta, track = c.piel.track, tiempos = [], prefijo, acentos = new Set() } = o;
   const pxDe = (k) => (Array.isArray(px) ? px[k] : px);
   let yy = y, salida = "";
+  const horas = o.porPalabra ? c.horas(lineas.join(" ")) : null;
+  let nPal = 0;
   lineas.forEach((l, k) => {
     const id = `${prefijo}-l${k}`, tam = pxDe(k), t = tiempos[k] ?? k * 0.2;
     const estilo = `left:${f(x)}px;top:${f(yy)}px;font-family:'${fam}';font-weight:${peso};font-size:${f(tam, 1)}px;letter-spacing:${track}em;color:${color}`;
@@ -37,8 +42,10 @@ function ponerLineas(c, o) {
       const r = c.r;
       const palabras = l.split(/\s+/).map((w, q) => {
         const es = acentos.has(norm(w));
-        const hora = c.dicho(w, null);
-        const fondo = es ? c.pal.acento : q % 3 === 2 ? c.pal.superficie : c.pal.tinta, tinta = es ? c.pal.fondo : q % 3 === 2 ? c.pal.tinta : c.pal.fondo;
+        const hora = horas ? horas[nPal++] : null;
+        if (hora !== null && q === 0) c.sonar("entra", hora + 0.02, { g: -18 });
+        const fondo = es ? c.pal.acento : q % 3 === 2 ? c.pal.superficie : c.pal.tinta, tintaBase = es ? c.pal.fondo : q % 3 === 2 ? c.pal.tinta : c.pal.fondo;
+        const tinta = contraste(tintaBase, fondo) >= 4.5 ? tintaBase : [c.pal.fondo, c.pal.tinta, "#111111", "#FFFFFF"].sort((a, b) => contraste(b, fondo) - contraste(a, fondo))[0];
         const giro = f((r() - 0.5) * 3.6), idw = `${id}-w${q}`;
         c.tl.push(c.entrada(`#${idw}`, o.porPalabra && hora !== null ? Math.max(0, hora - 0.06) : t + q * 0.06, { tipo: "pegar", r: giro, x: f((r() - 0.5) * 70), y: f(40 + r() * 50) }));
         return `<span class="chip" id="${idw}" style="background:${fondo};color:${tinta};transform:rotate(${giro}deg)">${html(w)}</span>`;
@@ -70,20 +77,46 @@ function lasDice(c, texto) {
   return dichas.filter((w) => escritas.has(w)).length / dichas.length >= 0.6;
 }
 
+// Lo que se escribe tiene que caber en el tiempo en que se dice. Si no, el texto queda a medias o el cuadro vacío, y no se nota sin mirar.
+function revisarTiempos(c, lineas, { vacio = false } = {}) {
+  const texto = lineas.join(" "), escritas = texto.split(/\s+/).filter(Boolean), horas = c.horas(texto);
+  const despues = new Set(c.reloj.palabras.filter((x) => x.inicio >= c.T1 && x.inicio < c.T1 + 8).map((x) => norm(x.palabra)));
+  const tarde = escritas.filter((w, k) => horas[k] === null && despues.has(norm(w)));
+  if (tarde.length >= 2) c.aviso(`«${tarde.slice(0, 5).join(" ")}» se dice después de que este plano termina, y no alcanza a verse. Mueve el ancla del plano siguiente, o acorta este texto`);
+  const primera = horas.find((h) => h !== null);
+  if (vacio && primera !== undefined && primera > 1.2) c.aviso(`«${escritas[0]}» se dice ${primera.toFixed(1)} s después de que empieza el plano, y hasta entonces no hay texto. Ancla el plano en esa palabra`);
+}
+
+// Cuándo se dice cada línea, con todas alineadas juntas: una línea de una palabra corta no se confunde con otra vez que la voz la dijo.
+function horaDeCadaLinea(c, lineas) {
+  const horas = c.horas(lineas.join(" "));
+  let q = 0;
+  return lineas.map((l) => {
+    const n = l.split(/\s+/).length, propias = horas.slice(q, q + n);
+    q += n;
+    return propias.find((x) => x !== null) ?? null;
+  });
+}
+
+// Si lo escrito se dice entero en este plano, el subtítulo solo lo repetiría mientras suena.
+function tramoDicho(c, texto) {
+  const n = String(texto).split(/[\s|]+/).filter(Boolean).length, h = c.horas(texto).filter((x) => x !== null);
+  return h.length >= Math.max(2, n * 0.8) ? [Math.min(...h) - 0.1, Math.max(...h) + 0.5] : null;
+}
+
 // Texto ya visible en tono tenue, que se enciende palabra a palabra con la voz.
 function encender(c, o) {
   const { z, fam, piel } = c;
   const { lineas, x, y, px, lh = piel.lh, acentos = new Set(), tenue = 0.4, primera = false } = o;
   const peso = piel.pesoDisplay, apagado = mezclar(c.tinta, c.suelo, tenue);
   const pxDe = (k) => (Array.isArray(px) ? px[k] : px);
-  const voz = c.reloj.palabras.filter((w) => w.inicio >= c.T0 - 0.05 && w.inicio < c.T1);
+  const horas = c.horas(lineas.join(" "));
   const total = lineas.join(" ").split(/\s+/).length;
   let q = 0, yy = y, info = "";
   lineas.forEach((l, k) => {
     const pal = l.split(/\s+/).map((w) => {
       if (primera && k === 0 && !acentos.has(norm(w))) { q++; return `<span class="pal">${html(w)}</span>`; }
-      const v = voz.find((u, n) => n >= q && norm(u.palabra) === norm(w));
-      const dicha = v ? v.inicio - c.T0 : c.resp((q / total) * c.dur * 0.72);
+      const dicha = horas[q] ?? c.resp((q / total) * c.dur * 0.72);
       const t = Math.max(0, dicha - 0.04), id = `${c.id}-w${q++}`, es = acentos.has(norm(w));
       if (es && piel.acentoEnBloque) {
         c.tl.push(`tl.fromTo(${j(`#${id} i`)},{scaleX:0},{scaleX:1,duration:.24,ease:"power3.out"},${f(t)});`);
@@ -104,9 +137,9 @@ function encender(c, o) {
 export function titulo(c, p) {
   const { z, piel, fam } = c;
   const peso = piel.pesoDisplay, texto = caso(c, p.texto);
-  const w = z.ancho * (piel.chips ? 0.86 : 1), h = z.alto * (p.alto ?? (z.horizontal ? 0.9 : 0.74));
+  const w = z.ancho, h = z.alto * (p.alto ?? (z.horizontal ? 0.9 : 0.74));
   const acentos = acentosDe(p);
-  const base = ajustarCaja(texto, fam.display, peso, { w, h }, { lh: piel.lh, max: z.horizontal ? 170 : 210, min: z.minTexto + 6, tracking: piel.track, frases: true });
+  const base = ajustarCaja(texto, fam.display, peso, { w, h }, { porPalabra: relleno(c), lh: piel.lh, max: z.horizontal ? 170 : 210, min: z.minTexto + 6, tracking: piel.track, frases: true });
   if (base.desborda) c.aviso("El título no cabe. Acórtalo: nunca se encoge la letra por debajo del mínimo");
   let px = base.px;
   if (piel.justifica) {
@@ -117,14 +150,16 @@ export function titulo(c, p) {
   const total = altoDe(px, base.lineas.length, piel.lh);
   const alinea = p.alinea ?? (c.i % 2 ? "abajo" : "centro");
   const y = alinea === "arriba" ? z.y0 : alinea === "abajo" ? z.y1 - total : z.y0 + (z.alto - total) * 0.38;
-  const repite = lasDice(c, texto);
+  const repite = lasDice(c, texto), sinSubEn = repite ? null : tramoDicho(c, texto);
+  revisarTiempos(c, base.lineas);
   // El primer cuadro es la portada: el título completo ya está, y se enciende con la voz.
   if (c.i === 0 && !piel.chips) {
-    return { info: encender(c, { lineas: base.lineas, x: z.x0, y, px, acentos, tenue: 0.42, primera: true }), heroe: [z.x0 + w / 2, y + total / 2], sinSubtitulos: repite };
+    return { info: encender(c, { lineas: base.lineas, x: z.x0, y, px, acentos, tenue: 0.42, primera: true }), heroe: [z.x0 + w / 2, y + total / 2], sinSubtitulos: repite, sinSubEn };
   }
-  const tiempos = base.lineas.map((l, k) => Math.max(0, (c.dicho(l, null) ?? c.resp(k * 0.26)) - 0.1));
+  const horasLinea = horaDeCadaLinea(c, base.lineas);
+  const tiempos = base.lineas.map((l, k) => Math.max(0, (horasLinea[k] ?? c.resp(k * 0.26)) - 0.1));
   tiempos.forEach((t) => c.sonar("entra", t + 0.04, { g: -18 }));
-  return { info: ponerLineas(c, { lineas: base.lineas, x: z.x0, y, px, tiempos, prefijo: c.id, acentos }), heroe: [z.x0 + w / 2, y + total / 2], sinSubtitulos: repite };
+  return { info: ponerLineas(c, { lineas: base.lineas, x: z.x0, y, px, tiempos, prefijo: c.id, acentos }), heroe: [z.x0 + w / 2, y + total / 2], sinSubtitulos: repite, sinSubEn };
 }
 
 // El número protagonista: en collage es un recorte pegado, para que se lea sobre cualquier hoja.
@@ -241,7 +276,7 @@ export function barras(c, p) {
   const pxR = Math.max(z.minTexto, Math.min(fila * 0.2, z.es916 ? 62 : 48)), altoB = fila * 0.52, pxV = Math.min(altoB * 0.9, z.es916 ? 150 : 110);
   let info = "";
   if (p.titulo) {
-    const a = ajustarCaja(caso(c, p.titulo), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.14 }, { lh: piel.lh, max: 92, min: z.minTexto + 6 });
+    const a = ajustarCaja(caso(c, p.titulo), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.14 }, { porPalabra: relleno(c), lh: piel.lh, max: 92, min: z.minTexto + 6 });
     info += ponerLineas(c, { lineas: a.lineas, x: z.x0, y: z.y0, px: a.px, tiempos: a.lineas.map(() => c.resp(0)), prefijo: `${c.id}-t` });
   }
   const textoMax = Math.max(...items.map((o) => ancho(textoCifra(o), fam.display, piel.pesoDisplay, pxV)));
@@ -270,7 +305,7 @@ export function linea(c, p) {
   const t0 = c.resp(0.15), durTrazo = Math.min(1.8, c.dur * 0.55);
   let info = "", yTop = z.y0;
   if (p.titulo) {
-    const a = ajustarCaja(caso(c, p.titulo), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.22 }, { lh: piel.lh, max: 96, min: z.minTexto + 6 });
+    const a = ajustarCaja(caso(c, p.titulo), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.22 }, { porPalabra: relleno(c), lh: piel.lh, max: 96, min: z.minTexto + 6 });
     info += ponerLineas(c, { lineas: a.lineas, x: z.x0, y: z.y0, px: a.px, tiempos: a.lineas.map(() => t0), prefijo: `${c.id}-t` });
     yTop += a.lineas.length * a.px * piel.lh + 26;
   }
@@ -381,7 +416,7 @@ export function comparar(c, p) {
       html2 += ponerLineas(c, { lineas: [caso(c, o.titulo)], x: caja.x, y, px, fam: fam.cuerpo, peso: 600, track: 0, lh: 1.2, color: col, tiempos: [t], prefijo: `${c.id}-${lado}t` });
       y += px * 1.5;
     }
-    const a2 = ajustarCaja(caso(c, o.texto ?? ""), fam.display, piel.pesoDisplay, { w: caja.w, h: caja.y + caja.h - y }, { lh: piel.lh, max: z.horizontal ? 130 : 170, min: z.minTexto + 4, tracking: piel.track, frases: true });
+    const a2 = ajustarCaja(caso(c, o.texto ?? ""), fam.display, piel.pesoDisplay, { w: caja.w, h: caja.y + caja.h - y }, { porPalabra: relleno(c), lh: piel.lh, max: z.horizontal ? 130 : 170, min: z.minTexto + 4, tracking: piel.track, frases: true });
     html2 += ponerLineas(c, { lineas: a2.lineas, x: caja.x, y, px: a2.px, color: col, tiempos: a2.lineas.map((_, k) => t + 0.06 + k * 0.08), prefijo: `${c.id}-${lado}x` });
     return html2;
   };
@@ -399,11 +434,12 @@ export function frase(c, p) {
   const { z, piel, fam } = c;
   const texto = caso(c, p.texto), acentos = acentosDe(p), peso = piel.pesoDisplay;
   const h = (z.es916 ? z.sub.y2 : z.y1 + (z.H - z.y1) * 0.6) - z.y0;
-  const lh = piel.lh + 0.02;
-  const a = ajustarCaja(texto, fam.display, peso, { w: z.ancho, h: h * 0.86 }, { lh, max: z.horizontal ? 150 : 200, min: z.minTexto + 8, tracking: piel.track, frases: true });
+  const lh = piel.lh + (piel.chips ? 0.16 : 0.02);
+  const a = ajustarCaja(texto, fam.display, peso, { w: z.ancho, h: h * 0.86 }, { porPalabra: relleno(c), lh, max: z.horizontal ? 150 : 200, min: z.minTexto + 8, tracking: piel.track, frases: true });
   if (a.desborda) c.aviso("La frase no cabe. Acórtala o pártela en dos planos");
+  revisarTiempos(c, a.lineas, { vacio: Boolean(piel.chips) });
   const y = z.y0 + (h - a.lineas.length * a.px * lh) * 0.36;
-  if (piel.chips) return { info: ponerLineas(c, { lineas: a.lineas, x: z.x0, y, px: a.px, lh: lh + 0.14, acentos, prefijo: c.id, porPalabra: true, tiempos: a.lineas.map((_, k) => c.resp((k / a.lineas.length) * c.dur * 0.7)) }), sinSubtitulos: p.subtitulos !== true, heroe: [z.W / 2, y + a.px] };
+  if (piel.chips) return { info: ponerLineas(c, { lineas: a.lineas, x: z.x0, y, px: a.px, lh, acentos, prefijo: c.id, porPalabra: true, tiempos: a.lineas.map((_, k) => c.resp((k / a.lineas.length) * c.dur * 0.7)) }), sinSubtitulos: p.subtitulos !== true, heroe: [z.W / 2, y + a.px] };
   return { info: encender(c, { lineas: a.lineas, x: z.x0, y, px: a.px, lh, acentos }), sinSubtitulos: p.subtitulos !== true, heroe: [z.W / 2, y + a.px] };
 }
 
@@ -460,7 +496,7 @@ export function imagen(c, p) {
   const mundo = `<img class="foto" id="${id}" src="${html(src)}" alt="" style="${filtro}">${capas}<div class="capa" style="background:linear-gradient(180deg,transparent 40%,color-mix(in srgb,${c.pal.fondo} 86%,transparent) 88%)"></div>`;
   let info = "";
   if (p.texto) {
-    const a2 = ajustarCaja(caso(c, p.texto), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.42 }, { lh: piel.lh, max: 120, min: z.minTexto + 6, tracking: piel.track });
+    const a2 = ajustarCaja(caso(c, p.texto), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.42 }, { porPalabra: relleno(c), lh: piel.lh, max: 120, min: z.minTexto + 6, tracking: piel.track });
     const y = z.y1 - a2.lineas.length * a2.px * piel.lh;
     info = ponerLineas(c, { lineas: a2.lineas, x: z.x0, y, px: a2.px, tiempos: a2.lineas.map((l, k) => Math.max(0, (c.dicho(l, null) ?? c.resp(0.2 + k * 0.22)) - 0.1)), prefijo: c.id, acentos: acentosDe(p), color: c.pal.tinta });
   }
@@ -501,7 +537,7 @@ export function captura(c, p) {
   }
   let info = `<div id="${cam}" class="capa"><div style="position:absolute;${marcoEst}">${puntos}<img src="${html(src)}" alt="" style="position:absolute;left:0;top:${barra}px;width:100%;height:calc(100% - ${barra}px);object-fit:cover;object-position:top"></div>${cursor}</div>`;
   if (p.texto) {
-    const a = ajustarCaja(caso(c, p.texto), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.2 }, { lh: piel.lh, max: 84, min: z.minTexto, tracking: piel.track });
+    const a = ajustarCaja(caso(c, p.texto), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.2 }, { porPalabra: relleno(c), lh: piel.lh, max: 84, min: z.minTexto, tracking: piel.track });
     info += ponerLineas(c, { lineas: a.lineas, x: z.x0, y: z.y0, px: a.px, tiempos: a.lineas.map(() => c.resp(0.1)), prefijo: `${c.id}-t`, acentos: acentosDe(p) });
   }
   return { info, heroe: [z.W / 2, (z.y0 + z.y1) / 2] };
@@ -542,14 +578,16 @@ export function cierre(c, p) {
   const { z, piel, fam } = c;
   const texto = caso(c, p.frase ?? p.texto ?? "");
   const h = z.alto * (p.emblema || p.marca ? 0.62 : 0.8);
-  const a = ajustarCaja(texto, fam.display, piel.pesoDisplay, { w: z.ancho * (piel.chips ? 0.86 : 1), h }, { lh: piel.lh, max: z.horizontal ? 150 : 190, min: z.minTexto + 8, tracking: piel.track, frases: true });
+  const a = ajustarCaja(texto, fam.display, piel.pesoDisplay, { w: z.ancho, h }, { porPalabra: relleno(c), lh: piel.lh, max: z.horizontal ? 150 : 190, min: z.minTexto + 8, tracking: piel.track, frases: true });
+  revisarTiempos(c, a.lineas);
   let px = a.px;
   if (piel.justifica) px = a.lineas.map((l) => Math.min(ajustarLinea(l, fam.display, piel.pesoDisplay, z.ancho), a.px * 1.5));
   const total = altoDe(px, a.lineas.length, piel.lh);
   const dEmblema = p.emblema ? (z.es916 ? 170 : 120) : 0;
   const altoMarca = p.emblema ? dEmblema + 34 : p.marca ? 110 : 0, altoLlamado = p.llamado ? 120 : 0;
   const y = z.y0 + Math.max(0, (z.alto - total - altoMarca - altoLlamado - 48) * 0.36);
-  const tiempos = a.lineas.map((l, k) => Math.max(0, (c.dicho(l, null) ?? c.resp(0.1 + k * 0.24)) - 0.1));
+  const horasLinea = horaDeCadaLinea(c, a.lineas);
+  const tiempos = a.lineas.map((l, k) => Math.max(0, (horasLinea[k] ?? c.resp(0.1 + k * 0.24)) - 0.1));
   let info = ponerLineas(c, { lineas: a.lineas, x: z.x0, y, px, tiempos, prefijo: c.id, acentos: acentosDe(p) });
   c.sonar("cierre", Math.min(c.dur - 0.4, tiempos[tiempos.length - 1] + 0.3), { g: -15 });
   let yy = y + total + 40;
@@ -575,7 +613,8 @@ export function cierre(c, p) {
     info += `<div class="ficha" id="${idl}" style="left:${z.x0}px;top:${f(yy)}px;width:${f(w)}px;height:${f(pxL * 1.9)}px;background:${c.acento};color:${c.suelo};border-color:${c.acento};font-family:'${fam.cuerpo}';font-weight:700;font-size:${pxL}px">${html(p.llamado)}</div>`;
     c.tl.push(c.entrada(`#${idl}`, tMarca + 0.16, { tipo: "revelar", dur: 0.3, y: 12 }));
   }
-  return { info, heroe: [z.W / 2, y + total / 2] };
+  const dicho = tramoDicho(c, texto);
+  return { info, heroe: [z.W / 2, y + total / 2], sinSubEn: dicho ? [dicho[0], c.dur] : null };
 }
 
 // ── Video: una toma real a toda pantalla. Va al compás de la pieza: en un corte a un gráfico, la toma sigue corriendo por debajo.
@@ -587,7 +626,7 @@ export function video(c, p) {
   const mundo = `<video id="${id}" class="clip foto" src="${html(src)}" muted playsinline data-start="0" data-duration="${f(c.dur)}" data-media-start="${f(recorte)}" data-track-index="0"></video>`;
   let info = "";
   if (p.texto) {
-    const a2 = ajustarCaja(caso(c, p.texto), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.3 }, { lh: piel.lh, max: 110, min: z.minTexto + 6, tracking: piel.track, frases: true });
+    const a2 = ajustarCaja(caso(c, p.texto), fam.display, piel.pesoDisplay, { w: z.ancho, h: z.alto * 0.3 }, { porPalabra: relleno(c), lh: piel.lh, max: 110, min: z.minTexto + 6, tracking: piel.track, frases: true });
     info = `<div class="capa" style="background:linear-gradient(180deg,color-mix(in srgb,${c.pal.fondo} 72%,transparent) 0%,transparent 34%)"></div>${ponerLineas(c, { lineas: a2.lineas, x: z.x0, y: z.y0, px: a2.px, tiempos: a2.lineas.map((l, k) => Math.max(0, (c.dicho(l, null) ?? c.resp(0.2 + k * 0.2)) - 0.1)), prefijo: c.id, acentos: acentosDe(p), color: c.pal.tinta })}`;
   }
   return { mundo, info, sinMundo: true, sinPantalla: true, heroe: [z.W / 2, z.H * 0.35] };
@@ -676,7 +715,14 @@ export function plantilla(c, p) {
   const sinTexto = (ficha.variables ?? []).filter((v) => !(v.id in dadas)).map((v) => v.id);
   if (sinTexto.length) c.aviso(`${id} va con su texto de ejemplo en: ${sinTexto.join(", ")}. Escríbelos en "textos", o déjalos en "" para ocultarlos`);
   for (const s of ficha.sonidos ?? []) if (s.t < c.dur) c.eventoLibre(s);
-  return { externa: { id, archivo: fichero, ficha, valores: dadas }, sinMundo: true };
+  // Una escena con shader carga su motor desde el proyecto: sin él se queda en su degradado de reserva.
+  const copias = [];
+  if (ficha.requiere?.includes("assets/lib/shaders.iife.js")) {
+    const lib = path.join(RAIZ, "library", "hyperframes-registro", "shaders", "lib");
+    copias.push([path.join(lib, "shaders.iife.js"), path.join("assets", "lib", "shaders.iife.js")], [path.join(lib, "shaders.THIRD-PARTY-LICENSES.txt"), path.join("assets", "lib", "shaders.THIRD-PARTY-LICENSES.txt")]);
+    c.aviso(`${id} usa WebGPU. Sin GPU, el plano se queda en su degradado de reserva: míralo en un cuadro, y si es tu caso usa otro estilo`);
+  }
+  return { externa: { id, archivo: fichero, ficha, valores: dadas, copias }, sinMundo: true };
 }
 
 // ── Propia: una escena escrita a mano, con el formato de library/plantillas/FORMATO.md. Se monta tal cual y sobrevive a otra corrida de armar.mjs.
