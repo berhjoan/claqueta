@@ -1,0 +1,19 @@
+{
+  "formato": "9:16",
+  "piel": "infografia",
+  "paleta": "bg",
+  "dur": 24,
+  "semilla": 3,
+  "planos": [
+    { "tipo": "barras", "titulo": "Horas por pieza", "items": [
+      { "rotulo": "Antes, a mano", "valor": 40 },
+      { "rotulo": "Con plantilla", "valor": 12 },
+      { "rotulo": "Con este kit", "valor": 3, "acento": true }
+    ], "sufijo": " h" },
+    { "tipo": "linea", "desde": 4, "titulo": "Piezas al mes", "serie": [2, 3, 3, 5, 8, 13, 21], "etiquetas": ["Enero", "Julio"], "final": "21 piezas" },
+    { "tipo": "comparar", "desde": 8, "a": { "titulo": "Lo que se cree", "texto": "Hace falta pagar" }, "b": { "titulo": "Lo que pasa", "texto": "Todo corre en tu equipo" } },
+    { "tipo": "codigo", "desde": 12, "lineas": ["pista.py voz --guion guion.txt", "armar.mjs pieza.json", "hyperframes render", { "texto": "Listo: 18 s medidos", "salida": true, "acento": true }] },
+    { "tipo": "cifra", "desde": 16, "valor": 74, "sufijo": " %", "rotulo": "de la barra se llena sola", "barra": 0.74, "fuente": "Ejemplo sin datos reales" },
+    { "tipo": "cierre", "desde": 20, "frase": "La IA, explicada con claridad", "acento": "claridad", "marca": "BG System IA", "llamado": "Sígueme" }
+  ]
+}
