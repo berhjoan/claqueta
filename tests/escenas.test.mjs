@@ -348,14 +348,14 @@ test("una plantilla que abre la pieza arranca adelantada, y solo esa", () => {
   const r = correr(d);
   assert.equal(r.status, 0, r.stderr);
   const abre = leer(d, "compositions/S12.html");
-  assert.match(abre, /window\.__timelines\["S12"\] = gsap\.timeline\(\{ paused: true \}\)\.to\(adelanto/);
-  assert.ok(abre.includes(".pause(0.7)"));
-  assert.ok(!leer(d, "compositions/S21.html").includes("adelanto"), "la que no abre va tal cual");
+  assert.match(abre, /A = 0\.7/);
+  assert.match(abre, /window\.__timelines\["S12"\] = gsap\.timeline\(\{ paused: true \}\)\.to\(reloj/);
+  assert.ok(!leer(d, "compositions/S21.html").includes("enEscena"), "la que no abre va tal cual");
   const original = fs.readFileSync(path.join(raiz, "library", "plantillas", "S21", "escena.html"), "utf8");
   assert.equal(leer(d, "compositions/S21.html"), original);
   const sin = proyecto({ dur: 6, paleta: "propia", planos: [{ tipo: "plantilla", estilo: "S12", adelanto: 0, textos: {} }] });
   assert.equal(correr(sin).status, 0);
-  assert.ok(!leer(sin, "compositions/S12.html").includes("adelanto"));
+  assert.ok(!leer(sin, "compositions/S12.html").includes("enEscena"));
 });
 
 const vozDe = (texto, paso = 0.4) => texto.split(" ").map((palabra, i) => ({ palabra, inicio: f3(i * paso), fin: f3(i * paso + paso - 0.05) }));
@@ -435,3 +435,45 @@ function proyectoSinShader() {
   correr(d);
   return d;
 }
+
+test("una plantilla reparte su tiempo para que cada texto llegue cuando la voz lo dice", () => {
+  const texto = "Empieza despacio. La regla es luz y después viene la cuadrícula con el enfoque al final de todo.";
+  const planos = [
+    { tipo: "titulo", texto: "Empieza despacio." },
+    { tipo: "plantilla", desde: "@La", estilo: "S27", textos: { rotulo: "ANÁLISIS", dato1: "luz", dato2: "cuadrícula", dato3: "enfoque", nivel: "NIVEL" } },
+  ];
+  const d = proyecto({ paleta: "propia", planos }, { tiempos: conVoz(texto) });
+  const r = correr(d);
+  assert.equal(r.status, 0, r.stderr);
+  const c = leer(d, "compositions/S27.html");
+  const anclas = JSON.parse(c.match(/anclas = (\[.*?\]);/)[1]);
+  assert.deepEqual(anclas.map((a) => a[0]), ["dato1", "dato2", "dato3"], "solo lo que la voz dice");
+  assert.ok(anclas[0][1] < anclas[1][1] && anclas[1][1] < anclas[2][1]);
+  // «en» manda sobre la búsqueda, y una variable que no existe se dice.
+  const conEn = proyecto({ paleta: "propia", planos: [planos[0], { ...planos[1], en: { dato1: "@final" } }] }, { tiempos: conVoz(texto) });
+  assert.equal(correr(conEn).status, 0);
+  const a2 = JSON.parse(leer(conEn, "compositions/S27.html").match(/anclas = (\[.*?\]);/)[1]);
+  assert.ok(a2.find((a) => a[0] === "dato1")[1] > anclas.find((a) => a[0] === "dato3")[1], "dato1 va ahora en «final»");
+  const malo = proyecto({ paleta: "propia", planos: [planos[0], { ...planos[1], en: { nada: "@final" } }] }, { tiempos: conVoz(texto) });
+  const m = correr(malo);
+  assert.notEqual(m.status, 0);
+  assert.match(`${m.stderr}${m.stdout}`, /no tiene la variable «nada»/);
+  const sinAnclar = proyecto({ paleta: "propia", planos: [planos[0], { ...planos[1], anclar: false }] }, { tiempos: conVoz(texto) });
+  assert.equal(correr(sinAnclar).status, 0);
+  assert.ok(!leer(sinAnclar, "compositions/S27.html").includes("enEscena"));
+});
+
+test("el corte busca un pulso en toda la pausa que hay antes de la palabra", () => {
+  const voz = { palabras: [{ palabra: "uno", inicio: 0, fin: 1 }, { palabra: "dos", inicio: 2, fin: 2.5 }], pausas: [{ inicio: 1, fin: 2 }] };
+  const reloj = new Reloj(voz, { pulsos: [0.5, 1.4, 2.6] });
+  assert.equal(reloj.alPulso(1.94), 1.4, "dentro de la pausa");
+  const sinPausa = new Reloj({ palabras: voz.palabras, pausas: [] }, { pulsos: [0.5, 1.4, 2.6] });
+  assert.equal(sinPausa.alPulso(1.94), 1.94, "sin pausa, solo un pulso muy cerca");
+});
+
+test("un ancla con mayúscula prefiere la vez que abre una oración", () => {
+  const reloj = new Reloj({ palabras: [{ palabra: "y", inicio: 0, fin: 0.1 }, { palabra: "el", inicio: 1, fin: 1.1 }, { palabra: "El", inicio: 3, fin: 3.1 }] });
+  assert.equal(reloj.resolver("@El", 0), 3);
+  assert.equal(reloj.resolver("@el", 0), 1);
+  assert.equal(reloj.resolver("@EL", 0), 1, "sin la misma forma, la primera que siga");
+});

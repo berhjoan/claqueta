@@ -97,6 +97,36 @@ fs.mkdirSync("assets/fonts", { recursive: true });
 // Las escenas de una corrida anterior no deben quedar colgando.
 for (const n of fs.readdirSync("compositions")) if (/^(p\d+|transiciones|subtitulos)\.html$/.test(n)) fs.rmSync(path.join("compositions", n));
 
+// El reloj de una escena montada. La escena sigue siendo función del tiempo, pero de un tiempo que se reparte: cada texto llega a su hora
+// a velocidad normal y lo demás espera despacio, sin congelarse. También le da el adelanto a la que abre la pieza.
+function relojDeEscena(id, tl, { adelanto, anclas, dur }) {
+  return `(function (plantilla) {
+        var D = ${dur}, A = ${adelanto}, anclas = ${JSON.stringify(anclas)};
+        var inicioDe = function (t) { var s = t.startTime(), p = t.parent; while (p && p !== plantilla) { s = p.startTime() + s / (p.timeScale() || 1); p = p.parent; } return s; };
+        var marca = function (v) {
+          var el = document.querySelector('[data-composition-id="${id}"] [data-var-text="' + v + '"]'), m = null;
+          for (; el && m === null && !el.hasAttribute("data-composition-id"); el = el.parentElement) {
+            plantilla.getTweensOf(el).forEach(function (t) { if (t.duration() > 0 && t.duration() <= 2) { var s = inicioDe(t); if (m === null || s < m) m = s; } });
+          }
+          return m;
+        };
+        var puntos = [[0, A]];
+        anclas.map(function (a) { return [a[1], marca(a[0])]; }).filter(function (q) { return q[1] !== null && q[1] > A; }).sort(function (x, y) { return x[1] - y[1]; }).forEach(function (q) {
+          var u = puntos[puntos.length - 1], dm = q[1] - u[1], da = q[0] - u[0];
+          if (da <= 0.02 || dm <= 0) return;
+          if (da > dm) puntos.push([u[0] + dm * 0.85, u[1] + dm * 0.85]);
+          puntos.push(q);
+        });
+        var enEscena = function (t) {
+          for (var i = 1; i < puntos.length; i++) if (t <= puntos[i][0]) { var a = puntos[i - 1], b = puntos[i]; return a[1] + (b[1] - a[1]) * (t - a[0]) / (b[0] - a[0]); }
+          var u = puntos[puntos.length - 1]; return Math.min(plantilla.duration(), u[1] + (t - u[0]));
+        };
+        plantilla.pause(enEscena(0));
+        var reloj = { t: 0 };
+        window.__timelines["${id}"] = gsap.timeline({ paused: true }).to(reloj, { t: D, duration: D, ease: "none", onUpdate: function () { plantilla.time(enEscena(reloj.t)); } }, 0);
+      })(${tl});`;
+}
+
 // ── Una escena por plano.
 const eventos = [];
 const escenas = [];
@@ -129,7 +159,7 @@ planos.forEach((p, i) => {
       const s = piel.sonidos[tipo];
       if (s) eventos.push({ pico: f(T0 + Math.max(0, t) + 1 / 30), sonido: s, ganancia: o.g ?? -15, clase: tipo });
     },
-    eventoLibre(e) { eventos.push({ pico: f(T0 + Number(e.t) + 1 / 30), sonido: e.sonido, ganancia: e.ganancia ?? -15, clase: "entra" }); },
+    eventoLibre(e) { eventos.push({ pico: f(T0 + Number(e.t) + 1 / 30), sonido: e.sonido, ganancia: e.ganancia ?? -15, clase: e.fijo ? "fijo" : "entra" }); },
   };
   c.suelo = piel.suelo(c);
   c.tinta = piel.tintaEn(c);
@@ -147,10 +177,10 @@ planos.forEach((p, i) => {
     // HyperFrames da 10 s para abrir WebGPU si una escena lo exige, y con muchas escenas se pasa aunque haya GPU. Sin exigirlo, el shader se ve igual; sin GPU, queda su degradado de reserva.
     if (ext.ficha.requiere?.includes("webgpu")) fuenteExt = fuenteExt.replace(/\s+data-requires-webgpu(="[^"]*")?/g, "");
     const adelanto = Number(p.adelanto ?? (i === 0 && p.tipo === "plantilla" && ext.id !== "rafaga" ? 0.7 : 0));
-    if (adelanto > 0) {
+    if (adelanto > 0 || ext.anclas?.length) {
       const registro = new RegExp(`window\\.__timelines\\[(["'])${ext.id}\\1\\]\\s*=\\s*(\\w+);`);
       if (registro.test(fuenteExt)) {
-        fuenteExt = fuenteExt.replace(registro, (_, __, tl) => `${tl}.pause(${adelanto}); var adelanto = { t: ${adelanto} }; window.__timelines["${ext.id}"] = gsap.timeline({ paused: true }).to(adelanto, { t: ${tl}.duration(), duration: ${tl}.duration() - ${adelanto}, ease: "none", onUpdate: function () { ${tl}.time(adelanto.t); } }, 0);`);
+        fuenteExt = fuenteExt.replace(registro, (_, __, tl) => relojDeEscena(ext.id, tl, { adelanto, anclas: ext.anclas ?? [], dur: f(dur) }));
       } else c.aviso(`${ext.id}: no se pudo adelantar su inicio, y el primer cuadro puede salir vacío`);
     }
     fs.writeFileSync(path.join("compositions", `${ext.id}.html`), fuenteExt);
@@ -395,7 +425,7 @@ function fueraDePalabra(ev) {
   return opciones.length ? { ...ev, pico: f(opciones[0]) } : { ...ev, ganancia: ev.ganancia - 3 };
 }
 // Y uno por segundo como máximo, contado ya en su lugar final: si hay más acciones, suena la más importante.
-const orden = { trans: 3, cifra: 3, cierre: 3, golpe: 2, entra: 1, trazo: 0 };
+const orden = { fijo: 4, trans: 3, cifra: 3, cierre: 3, golpe: 2, entra: 1, trazo: 0 };
 const SEPARACION = 1.02;
 const elegidos = [];
 for (const ev of eventos.map(fueraDePalabra).sort((a, b) => (orden[b.clase] ?? 0) - (orden[a.clase] ?? 0) || a.pico - b.pico)) {
@@ -410,7 +440,10 @@ const efectos = elegidos.filter((e) => e.pico < durTotal - 0.02).map((e, k) => {
 });
 fs.writeFileSync("efectos.json", JSON.stringify(efectos, null, 1));
 
+const pulsosRejilla = (reloj.rejilla?.pulsos ?? []).map((x) => (typeof x === "object" ? (x.inicio ?? x.t) : x));
+const cortesEnPulso = pulsosRejilla.length ? `${inicios.slice(1).filter((t) => pulsosRejilla.some((x) => Math.abs(x - t) < 0.04)).length} de ${inicios.length - 1}` : null;
 console.log(JSON.stringify({
+  cortes_en_pulso: cortesEnPulso,
   ok: true, piel: nombrePiel, formato, dur: durTotal, escenas: escenas.map(({ id, tipo, inicio, fin }) => ({ id, tipo, inicio, fin })), transiciones: trans.map((t) => t.tipo), efectos: efectos.length, avisos,
   siguiente: provisional ? "Corre pista.py mezcla: la pista actual es muda. Después: hyperframes check, render y revisar.py" : "Corre hyperframes check, render y revisar.py",
 }));

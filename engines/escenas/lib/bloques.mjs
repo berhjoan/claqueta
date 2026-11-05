@@ -714,7 +714,25 @@ export function plantilla(c, p) {
   }
   const sinTexto = (ficha.variables ?? []).filter((v) => !(v.id in dadas)).map((v) => v.id);
   if (sinTexto.length) c.aviso(`${id} va con su texto de ejemplo en: ${sinTexto.join(", ")}. Escríbelos en "textos", o déjalos en "" para ocultarlos`);
-  for (const s of ficha.sonidos ?? []) if (s.t < c.dur) c.eventoLibre(s);
+  // Cada texto aterriza cuando la voz lo dice. «en» lo fija a mano; si no, se busca el propio texto en lo que se dice durante el plano.
+  const anclas = [], fijadas = new Set();
+  for (const [k, v] of Object.entries(p.en ?? {})) {
+    if (!(ficha.variables ?? []).some((x) => x.id === k)) throw new Error(`la plantilla ${id} no tiene la variable «${k}» que nombra "en". Tiene: ${(ficha.variables ?? []).map((x) => x.id).join(", ")}`);
+    const t = c.t(v, null);
+    if (t !== null) { anclas.push([k, f(Math.max(0, t - 0.06))]); fijadas.add(k); }
+  }
+  if (p.anclar !== false) for (const [k, v] of Object.entries(dadas)) {
+    if (fijadas.has(k) || !String(v).trim()) continue;
+    const h = c.horas(v), dichas = h.filter((x) => x !== null);
+    if (dichas.length >= Math.max(1, h.length * 0.8)) anclas.push([k, f(Math.max(0, dichas[0] - 0.06))]);
+  }
+  // Los sonidos de la ficha van a tiempos fijos: si los textos siguen a la voz, suena cada texto al llegar.
+  const sonidos = ficha.sonidos ?? [];
+  if (anclas.length) {
+    const toma = sonidos.find((s) => s.t > 0.3) ?? sonidos[0];
+    for (const s of sonidos.filter((x) => x.t <= 0.3)) c.eventoLibre(s);
+    if (toma) for (const [, t] of anclas) c.eventoLibre({ ...toma, t });
+  } else for (const s of sonidos) if (s.t < c.dur) c.eventoLibre(s);
   // Una escena con shader carga su motor desde el proyecto: sin él se queda en su degradado de reserva.
   const copias = [];
   if (ficha.requiere?.includes("assets/lib/shaders.iife.js")) {
@@ -722,7 +740,7 @@ export function plantilla(c, p) {
     copias.push([path.join(lib, "shaders.iife.js"), path.join("assets", "lib", "shaders.iife.js")], [path.join(lib, "shaders.THIRD-PARTY-LICENSES.txt"), path.join("assets", "lib", "shaders.THIRD-PARTY-LICENSES.txt")]);
     c.aviso(`${id} usa WebGPU. Sin GPU, el plano se queda en su degradado de reserva: míralo en un cuadro, y si es tu caso usa otro estilo`);
   }
-  return { externa: { id, archivo: fichero, ficha, valores: dadas, copias }, sinMundo: true };
+  return { externa: { id, archivo: fichero, ficha, valores: dadas, copias, anclas, dur: c.dur }, sinMundo: true };
 }
 
 // ── Propia: una escena escrita a mano, con el formato de library/plantillas/FORMATO.md. Se monta tal cual y sobrevive a otra corrida de armar.mjs.

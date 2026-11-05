@@ -138,8 +138,11 @@ export class Reloj {
       if (!p) throw new Error(`«${m[1]}» aparece ${iguales.length} veces, no ${m[2]}`);
       return p.inicio;
     }
-    const siguiente = iguales.find((p) => p.inicio >= desde - 0.01);
-    return (siguiente ?? iguales[0]).inicio;
+    const siguientes = iguales.filter((p) => p.inicio >= desde - 0.01);
+    // «@El» con mayúscula prefiere la vez que abre una oración: «el» en minúscula se repite mucho.
+    const sinSignos = (x) => x.replace(/[^\p{L}\p{N}]/gu, "");
+    const exacta = siguientes.find((p) => sinSignos(p.palabra) === sinSignos(m[1]));
+    return (exacta ?? siguientes[0] ?? iguales[0]).inicio;
   }
 
   // Busca en un tramo la primera palabra de un texto, para que un elemento caiga cuando se nombra.
@@ -188,7 +191,10 @@ export class Reloj {
     const pulsos = this.rejilla?.pulsos;
     if (!pulsos?.length) return t;
     const lista = pulsos.map((p) => (typeof p === "object" ? (p.inicio ?? p.t) : p));
-    return lista.filter((p) => p <= t + 0.03 && p >= t - 0.28).sort((a, b) => b - a)[0] ?? t;
+    // En una pausa, cualquier pulso sirve: el corte cae en silencio, antes de la palabra.
+    const pausa = this.pausas.find((x) => Math.abs(x.fin - t) < 0.15);
+    const desde = pausa ? Math.min(t - 0.28, pausa.inicio + 0.05) : t - 0.28;
+    return lista.filter((p) => p <= t + 0.03 && p >= desde).sort((a, b) => b - a)[0] ?? t;
   }
 }
 

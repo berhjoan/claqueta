@@ -45,7 +45,7 @@ node ../.claqueta/engines/escenas/armar.mjs --ayuda
 }
 ```
 
-- **`desde`** dice cuándo empieza el plano: `@palabra`, `@palabra#2` si se repite, segundos, `pulso:8` o `compas:3`. Una palabra se busca después del plano anterior. El primer plano empieza en 0.
+- **`desde`** dice cuándo empieza el plano: `@palabra`, `@palabra#2` si se repite, segundos, `pulso:8` o `compas:3`, que cuentan desde 1. Una palabra se busca después del plano anterior, y `@El` con mayúscula prefiere la vez que empieza una oración. El corte cae en un pulso si hay uno en la pausa antes de la palabra: `armar.mjs` dice cuántos lo lograron en `cortes_en_pulso`. El primer plano empieza en 0.
 - **`en`** ancla un elemento dentro del plano. Sin él, el elemento cae cuando la voz dice su texto, o se reparte en el plano.
 - **`|`** fuerza un salto de línea en `titulo`.
 - **`acento`** marca palabras: van sobre un bloque, o en color si la piel no usa bloque.
@@ -139,6 +139,10 @@ Cada `compositions/p*.html` es HTML y GSAP normales. Si un plano necesita algo q
 Licencia: MIT. Los iconos son Lucide (ISC). Las fuentes son SIL OFL 1.1; sus licencias se copian con ellas.
 
 ## Plantillas y escenas propias
+
+Una plantilla aterriza con la voz sin tocarla. Cada texto de `textos` que la voz dice durante el plano llega cuando se dice: la escena corre a velocidad normal hasta ese texto y lo demás espera despacio. Si otra palabra debe marcarlo, `"en": {"dato1": "@luz"}`. `"anclar": false` lo apaga.
+
+`"sonidos": [{"t": 1.2, "sonido": "impacto", "ganancia": -10, "fijo": true}]`, en una escena `propia`: `fijo` manda sobre las transiciones cuando dos efectos caen a menos de 1 s.
 
 Una plantilla que abre la pieza arranca 0,7 s adelantada, para que el primer cuadro ya muestre algo: es la portada en el feed. `"adelanto": 0` lo apaga, y otro número lo cambia; también sirve en cualquier otro plano montado.
 
