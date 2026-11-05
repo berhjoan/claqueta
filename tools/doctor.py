@@ -3,12 +3,17 @@
 
 Uso: python tools/doctor.py
 """
+import base64
+import hashlib
 import importlib.util
 import json
 import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
+
+GSAP_SHA384 = "XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly"
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -46,6 +51,9 @@ def main():
         fila(mod, bool(importlib.util.find_spec(mod)), f"{uso}. Si la usas: {inst}", necesario=False)
     npx = shutil.which("npx") or shutil.which("npx.cmd")
     fila("npx", bool(npx), "corre HyperFrames sin instalarlo: npx hyperframes@0.9.9", "Viene con Node")
+    gsap = Path(__file__).resolve().parent / "lib" / "gsap.min.js"
+    igual = gsap.exists() and base64.b64encode(hashlib.sha384(gsap.read_bytes()).digest()).decode() == GSAP_SHA384
+    fila("GSAP 3.15.0 local", igual, "hash comprobado" if igual else "no coincide con el hash esperado", "Vuelve a clonar el sistema: tools/lib/gsap.min.js no coincide")
     print("\n".join(filas))
     print(json.dumps({"listo": not faltan, "faltan": sorted(set(faltan))}, ensure_ascii=False))
     sys.exit(0 if not faltan else 1)

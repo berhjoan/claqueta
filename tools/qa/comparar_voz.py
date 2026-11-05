@@ -4,6 +4,8 @@
 Uso: python tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt [--modelo base] [--minimo 0.85]
 Compara cómo suena de corrido, no palabra por palabra. Whisper confunde homófonos: base y small oyen «una gente» donde se dijo «un agente».
 Si dudas de una palabra, repite con --modelo medium (unos 1,5 GB) antes de cambiar la voz.
+Con una palabra rara, como un anglicismo, añade --contexto "un buen prompt": sin contexto, base y medium oyen «pronto» donde se dijo «prompt».
+El contexto inclina el oído hacia lo esperado: sirve para confirmar una palabra, no para aprobar la voz. Lo seguro es que la oiga una persona.
 Termina con error si coincide menos de lo pedido. Gratis y local: pip install faster-whisper
 """
 import argparse
@@ -25,9 +27,10 @@ def main():
     p.add_argument("--guion", required=True)
     p.add_argument("--modelo", default="base")
     p.add_argument("--minimo", type=float, default=0.85)
+    p.add_argument("--contexto", help="Texto que orienta al transcriptor para confirmar una palabra rara")
     a = p.parse_args()
     guion = [w for w in Path(a.guion).read_text(encoding="utf-8").split() if normal(w)]
-    oido = [w[0] for w in transcribir(a.audio, a.modelo)]
+    oido = [w[0] for w in transcribir(a.audio, a.modelo, a.contexto)]
     x, y = [normal(w) for w in guion], [normal(w) for w in oido]
     faltan, sobran = [], []
     aciertos = 0

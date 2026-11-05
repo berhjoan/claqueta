@@ -278,7 +278,60 @@ test("una ficha de estilo no contradice al encargo", () => {
   for (const lang of ["es", "en"]) {
     const t = texto(armar({}, iso), lang);
     assert.ok(!/85 mm|altura de los ojos|Eye-level/.test(t), `${lang}: lente o ángulo en una proyección isométrica`);
+    const plana = texto(armar({}, recetas.find((r) => r.id === "pizarra")), lang);
+    assert.ok(!/50 mm|altura de los ojos|Eye-level/.test(plana), `${lang}: lente o ángulo en una composición plana`);
     assert.ok(/Proyección isométrica, sin lente|Isometric projection, with no lens/.test(t), `${lang}: falta la nota de proyección`);
     assert.ok(/mandan la paleta de abajo y la sección 8|the palette below and section 8 win/.test(t), `${lang}: falta quién manda sobre la ficha`);
   }
+});
+
+test("$DUR sale de donde termina la última palabra, no del largo del archivo", () => {
+  for (const lang of ["es", "en"]) {
+    const t = texto(armar(), lang);
+    assert.ok(t.includes("fin_voz"), `${lang}: falta fin_voz`);
+    assert.ok(!t.includes("ffprobe"), `${lang}: el largo del archivo incluye la cola en silencio`);
+    const grabada = texto(armar({ "sonido.voz_propia": "grabada" }), lang);
+    assert.ok(grabada.includes("alinear.py"), `${lang}: una voz grabada también necesita sus tiempos`);
+  }
+});
+
+test("mito y verdad, y antes y después, conservan la misma cámara en sus tres partes", () => {
+  for (const [id, partes] of [["mito", ["Lo que se cree", "Se borra", "La verdad"]], ["antes", ["Antes", "El cambio", "Después"]]]) {
+    const { planos } = armar({ "guion.estructura": id, "entrega.duracion": 20 });
+    const elegidos = planos.filter((p) => partes.some((c) => p.titulo.startsWith(c)));
+    assert.ok(elegidos.length >= 3, `${id}: faltan partes`);
+    assert.deepEqual([...new Set(elegidos.map((p) => p.cam))], ["fija"], `${id}: cambia la cámara`);
+  }
+});
+
+test("saltos.py ignora la banda fija de subtítulos, y solo esa", () => {
+  const conBanda = texto(armar({ "entrega.formato": "16:9" }), "es");
+  assert.ok(conBanda.includes("saltos.py renders/final.mp4 --ignorar 842-994"));
+  const vertical = texto(armar(), "es");
+  assert.ok(vertical.includes("saltos.py renders/final.mp4 --ignorar 1300-1540"));
+  const centro = texto(armar({ "subtitulos.posicion": "centro" }), "es");
+  assert.ok(!/saltos\.py[^\n]*--ignorar/.test(centro));
+});
+
+test("en un guion exacto, el gancho es solo para la imagen", () => {
+  for (const lang of ["es", "en"]) {
+    const fijo = texto(armar({ "guion.modo": "exacto", "guion.texto": "Hola." }), lang);
+    assert.match(fijo, /Solo para la imagen, porque el guion ya está escrito\.|For the picture only, since the script is fixed\./, lang);
+    const libre = texto(armar(), lang);
+    assert.ok(!/Solo para la imagen|For the picture only/.test(libre), `${lang}: sin guion, el gancho sí da una frase`);
+  }
+});
+
+test("el encargo pide escribir la versión fija de HyperFrames y estima con el ritmo medido", () => {
+  const t = texto(armar({ "guion.modo": "exacto", "guion.texto": Array(32).fill("palabra").join(" ") }), "es");
+  assert.ok(t.includes("escribe siempre `npx hyperframes@"), "falta la versión fija");
+  assert.ok(t.includes("estas voces lo leen en unos 10 s"), "32 palabras a 3,2 por segundo son 10 s");
+  assert.ok(t.includes("tools/audio/pausas.py"), "falta cómo medir las pausas");
+  assert.ok(t.indexOf("`guion.txt`, genera la voz") < t.indexOf("`SPEC.md`"), "SPEC.md necesita los tiempos reales");
+});
+
+test("Kokoro avisa de su trampa con «IA», y las demás voces no", () => {
+  const con = texto(armar({ "sonido.voz": "kokoro:em_alex" }), "es");
+  assert.ok(con.includes("con Kokoro, el modelo `base` oye «ella»"));
+  assert.ok(!texto(armar(), "es").includes("con Kokoro, el modelo `base`"));
 });

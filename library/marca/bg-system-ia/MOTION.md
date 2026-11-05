@@ -41,7 +41,7 @@ Videos cortos verticales que explican inteligencia artificial con claridad y cri
 - **Pesos autorizados:** Sora 500, 600, 700; JetBrains Mono 500.
 - **Casing:** oración (solo la primera mayúscula). Mayúsculas sostenidas solo en etiquetas cortas (≤ 2 palabras) como "NUEVO".
 - **Tracking:** títulos −1 %; etiquetas en mayúsculas +6 %.
-- **Reglas de longitud:** titular ≤ 7 palabras y ≤ 2 líneas; subtítulos ≤ 2 líneas de ≤ 32 caracteres; tamaño mínimo 44 px para lectura y 64 px+ para titulares.
+- **Reglas de longitud:** titular ≤ 7 palabras y ≤ 2 líneas; subtítulos ≤ 2 líneas de ≤ 28 caracteres; tamaño mínimo 44 px para lectura y 64 px+ para titulares.
 
 ## 5. Grid y composición (1080×1920)
 - **Márgenes:** 72 px laterales.

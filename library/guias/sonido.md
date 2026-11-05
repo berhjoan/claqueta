@@ -91,11 +91,12 @@ python tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musi
 - La voz se lleva a −16 LUFS antes de mezclar.
 - `--nivel-musica` es cuánto queda la música bajo la voz mientras se habla. Sube 6 dB cuando la voz calla, con subida de 120 ms y bajada de 700 ms.
 - `--silencios` calla música y efectos en esos tramos. La voz no se toca: un silencio real va en una pausa de la voz. Para crearla: `hablar.py --por-oraciones --pausa 0.4`.
-- Sale en −14 LUFS y −3 dBTP. Después de AAC queda entre −2,7 y −2,2 dBTP, dentro del máximo de −1.
+- Con música escasa de `notas.py`, `--nivel-musica` mide el promedio y cada ataque sube mucho sobre él: usa `vel` de 0,3 a 0,6 y revisa que ninguna nota quede sobre la voz.
+- Sale en −14 LUFS con −3 dBTP como máximo, y puede quedar más abajo: una voz con pocos picos dio −5,3. Después de AAC sube unas décimas, dentro del máximo de −1.
 
 ## Revisar sin oído
 
-- `npx hyperframes@0.9.9 audio` dice dónde cae cada golpe en tiempo de película.
+- `mezcla.py` imprime el `pico_s` de cada efecto. `npx hyperframes@0.9.9 audio` confirma los golpes secos en tiempo de película, pero no ve los barridos.
 - `tools/qa/verificar_video.py` mide volumen y pico del archivo final.
 - `python tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt` transcribe y compara con el guion. Si coincide, la música no tapa la voz.
 - `ffmpeg -i mezcla.wav -lavfi showspectrumpic=s=1600x600 espectro.png` muestra si algo tapa la voz.

@@ -149,7 +149,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Español | English | Qué pide |
 |---|---|---|
 | Limpio | Clean | Acabado limpio, con un grano mínimo del 1 % solo para evitar bandas: tools/imagen/grano.py --alfa 1. |
-| Grano fino | Fine grain | Grano fino de 2 % a 3 % con semilla fija, sobre el fondo y no sobre el texto: tools/imagen/grano.py --alfa 2.5. |
+| Grano fino | Fine grain | Grano fino de 2 % a 3 % con semilla fija, en una capa quieta sobre el fondo y bajo el texto: `python ../.claqueta/tools/imagen/grano.py --salida assets/grano.png --alfa 2.5`. Su cabecera trae el CSS. |
 | Papel | Paper | Textura de papel con fibra visible al 4 %. |
 | Semitono | Halftone | Trama de semitono ordenada en sombras e imágenes. |
 | Película analógica | Analog film | Acabado de película: grano 3 % (tools/imagen/grano.py --alfa 3), viñeta 6 % y leve halación en las luces. |
@@ -195,7 +195,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Español | English | Qué pide |
 |---|---|---|
 | Fija | Locked-off | Cámara fija en trípode: el movimiento lo hacen los elementos, no el encuadre. |
-| Acercamiento lento | Slow push-in | Acercamiento lento: escala del mundo de 1,00 a 1,08 durante el plano, curva de cámara cubic-bezier(.65,0,.35,1), con el sujeto en el centro óptico. Termina antes de que el texto se lea. |
+| Acercamiento lento | Slow push-in | Acercamiento lento: escala del mundo de 1,00 a 1,08 durante el plano, curva de cámara cubic-bezier(.65,0,.35,1), con el sujeto en el centro óptico. |
 | Alejamiento que revela | Pull-back reveal | Alejamiento que revela: abre cerrado en un detalle a cuadro completo y se aleja hasta el conjunto en 1,2 a 2 s, escala de 1,6 a 1,0, curva de cámara cubic-bezier(.65,0,.35,1). Mantén la acción dentro del detalle antes de abrir. |
 | Dolly hacia adentro | Dolly in | Dolly hacia adentro con parallax real: la cámara avanza en Z entre 200 y 400 px, el primer plano cruza más rápido que el fondo, curva de cámara cubic-bezier(.65,0,.35,1). |
 | Dolly hacia atrás | Dolly out | Dolly hacia atrás: la cámara retrocede 200 a 400 px en Z y aparecen elementos nuevos a los lados, curva de cámara cubic-bezier(.65,0,.35,1). |
@@ -589,7 +589,7 @@ Todas las opciones del panel, con su nombre en español e inglés y lo que le pi
 | Español | English | Qué pide |
 |---|---|---|
 | Máster MP4 | MP4 master | Máster MP4 H.264, yuv420p, CRF 16 a 18, con audio AAC. |
-| Copia liviana | Light copy | Copia liviana de menos de 30 MB para revisar en el teléfono. |
+| Copia liviana | Light copy | Copia liviana de menos de 30 MB para revisar en el teléfono, si el máster pesa más. |
 | Portada | Cover | Portada PNG tomada de un cuadro real y legible. |
 | Subtítulos SRT | SRT captions | Archivo SRT con el guion exacto. |
 | Proyecto editable | Editable project | Proyecto editable completo con sus fuentes, audio y assets. |

@@ -20,8 +20,9 @@ Desde la carpeta que tiene a `.claqueta`. Si el encargo ya corrió `init` y est�
 ```bash
 npx hyperframes@0.9.9 init proyecto --resolution portrait --non-interactive --skip-skills
 cd proyecto
-mkdir -p assets/pizarra assets/audio assets/fonts compositions
+mkdir -p assets/pizarra assets/audio assets/fonts assets/lib compositions
 cp ../.claqueta/engines/pizarra/*.js assets/pizarra/
+cp ../.claqueta/tools/lib/gsap.min.js assets/lib/
 cp ../.claqueta/engines/pizarra/ejemplo/index.html .
 cp ../.claqueta/engines/pizarra/ejemplo/pizarra.html ../.claqueta/engines/pizarra/ejemplo/capa.html compositions/
 cp ../.claqueta/assets/fonts/*.ttf assets/fonts/
@@ -33,9 +34,9 @@ Las escenas importan `./assets/pizarra/board.js`, relativo a `index.html`. Con e
 Cambia estas cuatro cosas:
 
 1. `assets/pizarra/film.js`, tu película.
-2. `DUR` en `film.js`, y el mismo número en cada `data-duration` de `index.html`, `pizarra.html` y `capa.html`, y en la constante `D` de `pizarra.html`.
+2. La duración, con `node ../.claqueta/engines/pizarra/fijar-duracion.mjs 9.9 --lema 7.85`. Cambia `DUR` en `film.js`, los `data-duration` de `index.html`, `pizarra.html` y `capa.html`, la constante `D` y el segundo en que entra la frase de cierre. Córrelo cada vez que cambie la duración.
 3. `index.html` trae `assets/audio/mezcla.wav`. Mientras no exista, quita ese `<audio>` o `check` dará error.
-4. `capa.html` trae el emblema y una frase de cierre, a partir del segundo 11,6 y en y 1352. Cámbialos, o quita esa escena de `index.html` si no van. Con subtítulos, la frase debe ir fuera de su banda o después del último.
+4. `capa.html` trae el emblema y una frase de cierre en y 1352. Cámbialos, o quita esa escena de `index.html` si no van. Con subtítulos, la frase debe ir fuera de su banda o después del último. `check` avisa `line_unread` si queda menos de 2 s en pantalla: con un cierre corto, súbela de la banda y hazla entrar antes.
 
 ## Escribir tu película
 
@@ -51,12 +52,20 @@ linea(S, L, '¿Qué hace un', 430, 76, -.45, 1.6, { color: TINTA, seed: 1, press
 - Pon en `PALETA` los colores del encargo. La pared, la pizarra y las tizas de la bandeja salen de ahí.
 - `y` es la línea base y `cap` la altura de letra. `cap` 76 da mayúsculas de 103 px y unos 13 caracteres en 888 px. Mide con `latinWidth(texto, cap)`.
 - Lo pequeño pide más peso: con `cap` 60 la tiza ya se ve calada, y con 40 queda débil.
-- Mano creíble: 0,08–0,13 s por trazo. `linea` reparte los trazos en `dur`. Por eso una frase larga no cabe: al mundo van palabras clave, y las frases van en los subtítulos.
+- Mano creíble: 0,08–0,13 s por trazo. `linea` reparte los trazos en `dur`; con `null` como duración usa la velocidad natural de la mano, y `.t1` de lo que devuelve dice cuándo termina. Por eso una frase larga no cabe: al mundo van palabras clave, y las frases van en los subtítulos.
 - Un segundo de inicio negativo deja la línea escrita al abrir.
 - `trazo(S, puntos, t0, t1, opciones)` dibuja subrayados, flechas, marcas o globos.
 - El borrador es una lista: `wipes = [{ t0, t1, w, path }, ...]`. Una línea o un trazo con `borrador: 0` se va en la primera pasada, con `borrador: 1` en la segunda.
 - `C` es la cámara: claves `[segundo, centro x, centro y, escala]`, siempre de frente. `curvaCamara` es la curva entre claves: cámbiala si el encargo pide otra. No escales el lienzo con CSS: se vería borroso.
 - Varía el borrador de una pasada a otra: otra dirección, otro recorrido. Es la transición natural de este material.
+
+## Comprobar antes de renderizar
+
+```bash
+node ../.claqueta/engines/pizarra/zonas.mjs assets/pizarra/film.js
+```
+
+Mide dónde queda la tinta en pantalla, con el grosor del trazo y la cámara aplicada, y avisa si sale de x 72–960 y de y 220–1280 o si la mano va muy apurada. Un acercamiento final también empuja el contenido: con escala 1,08 sobre el centro de la pantalla, una línea en y 1250 baja a y 1276. Solo cuenta lo ya escrito, con la cámara casi quieta y sin primer plano, es decir, con escala hasta 1,25. No sustituye a mirar los cuadros.
 
 ## Piezas largas
 
@@ -65,7 +74,7 @@ Una escena basta para piezas cortas. Para más de 30 s conviene partir: copia `p
 ## Reloj y selectores
 
 - El reloj es un tween proxy de GSAP: tiempo local, solo dibuja con la escena activa. Nunca `requestAnimationFrame` ni `Date`.
-- Dentro de una escena no uses `document.getElementById("root")`: la página armada tiene varios `#root`, y te da el primero. Si `check` marca `text_occluded` o contraste 1,06:1 sobre texto creado por script, suele ser eso. Busca por `[data-composition-id="tu-escena"]`.
+- Dentro de una escena no busques `#root` ni `[data-composition-id="tu-escena"]`: el primero da el `#root` de la página y el segundo, el host de `index.html`, que está fuera del `#root` de tu escena. Lo que crees ahí pierde las variables y la fuente de tu `#root`: sale en Times de 16 px y casi negro, y `check` puede no avisar. Pon en la plantilla un contenedor con id único, como `<div id="subs-caja"></div>`, y agrega con `document.getElementById("subs-caja")`. O escribe el HTML fijo en la plantilla y anima por id. Probado en 0.9.9.
 
 ## Sonido
 

@@ -15,7 +15,7 @@ Una capa continua puede bajar mientras se habla con "bajo_voz": -24. La semilla 
 - silencios: tramos donde callan música y efectos. Sirven para que la siguiente frase pese.
 - Usa "pico" con un cuadro más que el segundo de su imagen: primero se ve y luego se oye.
 
-Sale en -14 LUFS con pico verdadero de -3 dBTP. Imprime lo medido.
+Sale en -14 LUFS con pico verdadero de -3 dBTP como máximo. Imprime lo medido.
 Necesita numpy, scipy, soundfile y ffmpeg.
 """
 import argparse

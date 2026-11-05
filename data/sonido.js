@@ -63,7 +63,7 @@ export const sonido = {
         { k: "sfx", t: "opciones", vista: "chips", titulo: "Cuánto suena", def: "accion", label: ["Efectos", "Effects"], opciones: densidadSfx },
         { k: "fuente_sfx", t: "opciones", vista: "chips", titulo: "De dónde salen", def: "sintetico", label: ["Fuente de efectos", "Effects source"], opciones: fuentesSfx },
         { k: "silencios", t: "interruptor", titulo: "Dos silencios reales", ayuda: "Uno antes del dato más importante.", def: true, p: ["Al menos dos silencios reales, uno de 0,3 a 0,5 s antes del dato más importante.", "At least two real silences, one of 0.3 to 0.5 s before the most important fact."] },
-        { k: "golpes", t: "interruptor", titulo: "El sonido llega un cuadro después", ayuda: "Primero se ve, luego se oye.", def: true, p: ["El pico de cada efecto cae un cuadro después de su imagen. Comprueba dónde golpea con el comando audio de HyperFrames.", "Each effect's peak lands one frame after its picture. Check where it hits with HyperFrames' audio command."] },
+        { k: "golpes", t: "interruptor", titulo: "El sonido llega un cuadro después", ayuda: "Primero se ve, luego se oye.", def: true, p: ["El pico de cada efecto cae un cuadro después de su imagen. `mezcla.py` imprime el `pico_s` de cada uno; el comando audio de HyperFrames confirma los golpes secos, pero no ve los barridos.", "Each effect's peak lands one frame after its picture. `mezcla.py` prints each one's `pico_s`; HyperFrames' audio command confirms sharp hits but does not see sweeps."] },
       ] },
   ],
 };

@@ -218,3 +218,90 @@ print(json.dumps({"dur": len(x) / sr, "hueco": float(np.sum(~e[int(1.03 * sr):in
   assert.ok(Math.abs(j.marcas[0].inicio - 0.03) < 0.03, JSON.stringify(j.marcas));
   assert.ok(Math.abs(j.marcas[1].inicio - 1.49) < 0.06, JSON.stringify(j.marcas));
 });
+
+test("el SRT reparte una frase que no alcanza a leerse y corta en el signo", { skip: !python && "falta Python" }, () => {
+  const pal = path.join(dir, "pal2.json"), gui = path.join(dir, "gui2.txt"), srt = path.join(dir, "s2.srt");
+  const guion = "Un buen prompt es uno claro: dice qué quieres, para quién y cómo.";
+  const inicios = [4.3, 4.45, 4.6, 4.85, 4.98, 5.1, 5.69, 5.9, 6.05, 6.6, 6.9, 7.2, 7.3];
+  fs.writeFileSync(pal, JSON.stringify(guion.split(" ").map((palabra, i) => ({ palabra, inicio: inicios[i], fin: inicios[i] + 0.14 }))));
+  fs.writeFileSync(gui, guion);
+  const r = correr(python, ["tools/subtitulos/srt.py", "--palabras", pal, "--guion", gui, "--salida", srt]);
+  assert.equal(r.status, 0, r.stderr);
+  const t = fs.readFileSync(srt, "utf8");
+  assert.match(t, /Un buen prompt es uno claro:\r?\ndice qué quieres,/);
+  assert.match(t, /para quién y cómo\./);
+  assert.equal([...t.matchAll(/-->/g)].length, 2);
+  assert.deepEqual(JSON.parse(r.stdout).muy_rapidos, []);
+});
+
+test("fijar-duracion cambia la duración en todos los archivos y mueve la frase de cierre", () => {
+  const p = fs.mkdtempSync(path.join(dir, "fijar-"));
+  fs.mkdirSync(path.join(p, "assets/pizarra"), { recursive: true });
+  fs.mkdirSync(path.join(p, "compositions"));
+  fs.copyFileSync(path.join(raiz, "engines/pizarra/film.js"), path.join(p, "assets/pizarra/film.js"));
+  fs.copyFileSync(path.join(raiz, "engines/pizarra/ejemplo/index.html"), path.join(p, "index.html"));
+  for (const a of ["pizarra.html", "capa.html"]) fs.copyFileSync(path.join(raiz, "engines/pizarra/ejemplo", a), path.join(p, "compositions", a));
+  const r = spawnSync(process.execPath, [path.join(raiz, "engines/pizarra/fijar-duracion.mjs"), "9.9", "--lema", "7.85"], { cwd: p, encoding: "utf8" });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(fs.readFileSync(path.join(p, "assets/pizarra/film.js"), "utf8"), /DUR = 9\.9\b/);
+  const pizarra = fs.readFileSync(path.join(p, "compositions/pizarra.html"), "utf8");
+  assert.ok(pizarra.includes('data-duration="9.9"') && pizarra.includes("D = 9.9") && !pizarra.includes('data-duration="15"'));
+  const indice = fs.readFileSync(path.join(p, "index.html"), "utf8");
+  assert.ok(!indice.includes('data-duration="15"'));
+  const capa = fs.readFileSync(path.join(p, "compositions/capa.html"), "utf8");
+  assert.match(capa, /id="ca-frase"[^>]*data-start="7\.85" data-duration="2\.05"/);
+  assert.match(capa, /tl\.fromTo\("#ca-frase-txt"[^;]*, 7\.85\);/);
+  assert.ok(!capa.includes('data-duration="15"'));
+});
+
+test("zonas mide la tinta con la cámara y avisa si se sale", () => {
+  const p = fs.mkdtempSync(path.join(dir, "zonas-"));
+  for (const a of fs.readdirSync(path.join(raiz, "engines/pizarra"))) if (a.endsWith(".js")) fs.copyFileSync(path.join(raiz, "engines/pizarra", a), path.join(p, a));
+  const correrZonas = () => spawnSync(process.execPath, [path.join(raiz, "engines/pizarra/zonas.mjs"), path.join(p, "film.js")], { encoding: "utf8" });
+  const bien = correrZonas();
+  assert.equal(bien.status, 0, bien.stdout + bien.stderr);
+  assert.equal(JSON.parse(bien.stdout).ok, true);
+  const film = fs.readFileSync(path.join(p, "film.js"), "utf8");
+  fs.writeFileSync(path.join(p, "film.js"), film.replace("'y revisa.', 1210, 72, 10.2, .85", "'y revisa.', 1500, 72, 10.2, .1"));
+  const mal = correrZonas();
+  assert.equal(mal.status, 1);
+  const avisos = JSON.parse(mal.stdout).avisos.join(" ");
+  assert.match(avisos, /«y revisa\.»: la tinta baja hasta y \d+/);
+  assert.match(avisos, /la mano se ve apurada/);
+});
+
+test("pausas mide los huecos reales de la voz, no la cola final", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  const wav = path.join(dir, "pausas.wav");
+  const r = correr("ffmpeg", ["-y", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "sine=f=300:r=48000:d=1", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono:d=0.5", "-f", "lavfi", "-i", "sine=f=300:r=48000:d=1", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono:d=0.8", "-filter_complex", "[0][1][2][3]concat=n=4:v=0:a=1", wav]);
+  assert.equal(r.status, 0, r.stderr);
+  const p = correr(python, ["tools/audio/pausas.py", wav]);
+  assert.equal(p.status, 0, p.stderr);
+  const d = JSON.parse(p.stdout);
+  assert.equal(d.pausas.length, 1, p.stdout);
+  assert.ok(Math.abs(d.pausas[0].inicio - 1) < 0.05 && Math.abs(d.pausas[0].fin - 1.5) < 0.05, p.stdout);
+  assert.ok(Math.abs(d.fin_voz - 2.5) < 0.05, p.stdout);
+  assert.match(d.silencios, /^[\d.]+-[\d.]+$/);
+});
+
+test("saltos deja fuera la banda de subtítulos", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  const mp4 = path.join(dir, "saltos.mp4");
+  const r = correr("ffmpeg", ["-y", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i", "color=c=gray:s=360x640:r=30:d=2", "-vf", "drawbox=x=0:y=500:w=360:h=80:color=white:t=fill:enable='gte(t,1)'", "-pix_fmt", "yuv420p", mp4]);
+  assert.equal(r.status, 0, r.stderr);
+  const con = JSON.parse(correr(python, ["tools/qa/saltos.py", mp4]).stdout);
+  assert.equal(con.saltos_o_cortes.length, 1, "el cambio debe verse sin la opción");
+  const sin = JSON.parse(correr(python, ["tools/qa/saltos.py", mp4, "--ignorar", "490-590"]).stdout);
+  assert.equal(sin.saltos_o_cortes.length, 0, "dentro de la franja no es un salto");
+});
+
+test("Kokoro recibe una ruta que espeak-ng puede abrir", { skip: (!python || process.platform !== "win32") && "solo en Windows" }, () => {
+  const carpeta = fs.mkdtempSync(path.join(dir, "ñandú í-"));
+  const s = `import sys
+sys.path.insert(0, r"${path.join(raiz, "tools", "tts")}")
+import hablar
+r = hablar.ruta_ascii(r"${carpeta}")
+assert r.isascii(), r
+assert hablar.ruta_ascii("C:/sin/acentos") == "C:/sin/acentos"
+`;
+  const r = correr(python, ["-c", s]);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+});

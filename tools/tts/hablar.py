@@ -14,6 +14,7 @@ Uso:
   python tools/tts/hablar.py --motor edge --voz es-MX-JorgeNeural --texto "Hola" --salida voz.mp3 --palabras palabras.json
 
 --palabras escribe los tiempos de cada palabra (solo edge). Para los demás motores usa tools/subtitulos/alinear.py.
+--idioma elige el acento de kokoro: es-419, de Latinoamérica, por defecto, o es, de España, con zeta y elle.
 --por-oraciones genera cada oración aparte y las une con --pausa segundos de silencio real. Sirve cuando una frase se deforma
 dentro de una toma larga, o cuando hace falta un silencio de verdad antes de un dato. Necesita numpy y ffmpeg.
 """
@@ -113,16 +114,45 @@ def edge(texto, voz, salida, velocidad, tono, palabras):
         Path(palabras).write_text(json.dumps(marcas, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def kokoro(texto, voz, salida, velocidad):
+def ruta_ascii(ruta):
+    """espeak-ng no abre rutas con tildes o eñes y cierra el proceso sin avisar. En Windows, la ruta corta 8.3 es ASCII."""
+    ruta = str(ruta)
+    if ruta.isascii() or os.name != "nt":
+        return ruta
+    import ctypes
+    corta = ctypes.create_unicode_buffer(1024)
+    if ctypes.windll.kernel32.GetShortPathNameW(ruta, corta, 1024) and corta.value.isascii():
+        return corta.value
+    falla(f"espeak-ng no puede abrir {ruta}, que tiene tildes o eñes, y este disco no da rutas cortas. Crea el entorno virtual en una carpeta sin esas letras.")
+
+
+def espeak_con_ruta_ascii(datos):
+    """phonemizer resuelve la ruta y deshace cualquier ruta corta que reciba: se convierte justo antes de entregársela a espeak."""
+    if str(datos).isascii() or os.name != "nt":
+        return
+    from phonemizer.backend.espeak import api
+    original = getattr(api.EspeakAPI, "_data_path_argument", None)
+    if original is None:
+        falla(f"espeak-ng no puede abrir {datos}, que tiene tildes o eñes. Crea el entorno virtual en una carpeta sin esas letras.")
+
+    def corta(data_path, version, tempdir=None):
+        return ruta_ascii(original(data_path, version, tempdir).decode("utf-8")).encode("ascii")
+
+    api.EspeakAPI._data_path_argument = staticmethod(corta)
+
+
+def kokoro(texto, voz, salida, velocidad, idioma="es-419"):
     try:
+        import espeakng_loader
         import soundfile as sf
         from kokoro_onnx import Kokoro
     except ImportError:
         falla("falta kokoro-onnx. Instala con: pip install kokoro-onnx soundfile")
     modelo = bajar(f"{KOKORO}/kokoro-v1.0.int8.onnx", CACHE / "kokoro-v1.0.int8.onnx")
     voces = bajar(f"{KOKORO}/voices-v1.0.bin", CACHE / "voices-v1.0.bin")
+    espeak_con_ruta_ascii(espeakng_loader.get_data_path())
     motor = Kokoro(str(modelo), str(voces))
-    muestras, sr = motor.create(texto, voice=voz, speed=velocidad, lang="es")
+    muestras, sr = motor.create(texto, voice=voz, speed=velocidad, lang=idioma)
     temporal = Path(tempfile.mkdtemp()) / "voz.wav"
     sf.write(temporal, muestras, sr)
     a_salida(temporal, salida)
@@ -221,6 +251,7 @@ def main():
     p.add_argument("--palabras", help="Solo edge: JSON con el tiempo de cada palabra")
     p.add_argument("--por-oraciones", action="store_true", help="Genera cada oración aparte y las une")
     p.add_argument("--pausa", type=float, default=0.35, help="Con --por-oraciones: segundos de silencio entre oraciones")
+    p.add_argument("--idioma", default="es-419", help="Solo kokoro: es-419 para Latinoamérica, es para España")
     p.add_argument("--listar", action="store_true")
     a = p.parse_args()
     if a.listar:
@@ -235,7 +266,7 @@ def main():
         if a.motor == "edge":
             edge(t, a.voz, salida, a.velocidad, a.tono, palabras)
         elif a.motor == "kokoro":
-            kokoro(t, a.voz, salida, a.velocidad)
+            kokoro(t, a.voz, salida, a.velocidad, a.idioma)
         elif a.motor == "pocket":
             pocket(t, a.voz, salida, a.velocidad)
         else:
@@ -245,7 +276,12 @@ def main():
         por_oraciones(generar, texto, a.salida, a.pausa, a.palabras)
     else:
         generar(texto, a.salida, a.palabras)
-    print(json.dumps({"ok": True, "salida": str(a.salida), "motor": a.motor, "voz": a.voz}, ensure_ascii=False))
+    informe = {"ok": True, "salida": str(a.salida), "motor": a.motor, "voz": a.voz}
+    if a.palabras and Path(a.palabras).exists():  # El segundo en que termina la última palabra: los motores dejan una cola en silencio.
+        marcas = json.loads(Path(a.palabras).read_text(encoding="utf-8"))
+        if marcas:
+            informe["fin_voz"] = round(marcas[-1]["fin"], 3)
+    print(json.dumps(informe, ensure_ascii=False))
 
 
 if __name__ == "__main__":

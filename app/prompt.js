@@ -112,6 +112,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   item(L("Si `.claqueta` ya existe, actualízala con `git -C .claqueta pull`. Si tu sistema no deja instalar paquetes de Python, usa un entorno virtual.", "If `.claqueta` already exists, update it with `git -C .claqueta pull`. If your system blocks Python packages, use a virtual environment."));
   item(L(`Sin terminal: lee ${SITIO}/llms.txt y abre los archivos que indica.`, `With no terminal: read ${SITIO}/llms.txt and open the files it lists.`));
   item(una("motor", "destino"));
+  if (conHF) item(L(
+    `Las skills dicen \`npx hyperframes\` sin versión: escribe siempre \`${HF}\`. Revisa el sistema con \`tools/doctor.py\`, porque \`hyperframes doctor\` avisa de cosas que aquí no hacen falta. No abras la vista previa del Studio si nadie está mirando.`,
+    `The skills say \`npx hyperframes\` with no version: always write \`${HF}\`. Check the system with \`tools/doctor.py\`, because \`hyperframes doctor\` flags things not needed here. Do not open the Studio preview if nobody is watching.`
+  ));
   item(L(
     "Quién manda en las decisiones creativas y las cifras del video: este encargo, luego el `MOTION.md` de la marca, luego las guías de `library/guias` y por último las skills de terceros. Si dos documentos dicen cifras distintas, usa la del que va primero en esta lista y sigue. `init` escribe un `AGENTS.md` y un `CLAUDE.md` genéricos sobre cómo usar HyperFrames: no corras lo que proponen sobre actualizar skills o publicar.",
     "What wins in creative decisions and video numbers: this brief, then the brand's `MOTION.md`, then the guides in `library/guias`, and last any third-party skill. If two documents give different numbers, use the one that comes first in this list and keep going. `init` writes a generic `AGENTS.md` and `CLAUDE.md` about using HyperFrames: do not run what they suggest about updating skills or publishing."
@@ -131,6 +135,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     "Use free, local tools only. Do not use paid APIs, paid MCP servers or subscription services, and do not ask for a key. From HyperFrames, do not use `cloud`, `lambda`, `cloudrun`, `templates`, `reverse`, `publish`, `auth`, `billing`, `skills update`, `audio --quality best` or the `style-sampling` skill. If something seems to need payment, use the free alternative in `../.claqueta/AGENTS.md` and note it in the delivery."
   ));
 
+  const texto = (v.guion.texto ?? "").trim();
+  // Si hay texto y quedó «lo escribe la IA», se toma como borrador. Sin texto, no hay nada que respetar.
+  const modoGuion = texto ? (v.guion.modo === "ia" ? "mejorar" : v.guion.modo) : "ia";
+
   sec("4. Proyecto", "4. Project");
   item(titulo ? `${L("Tema", "Topic")} (${L("en español", "in Spanish")}): «${titulo}»` : L("Tema: propón uno claro y útil para la audiencia.", "Topic: propose a clear, useful one for the audience, in Spanish."));
   item(una("guion", "tipo"));
@@ -139,7 +147,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   if (audiencia) item(`${L("Audiencia", "Audience")}: ${audiencia}`);
   item(una("guion", "tono"));
   item(una("guion", "estructura"));
-  item(una("guion", "gancho"));
+  item(`${modoGuion === "exacto" ? L("Solo para la imagen, porque el guion ya está escrito. ", "For the picture only, since the script is fixed. ") : ""}${una("guion", "gancho")}`);
   item(una("guion", "final"));
   item(L("Una sola idea, un giro y un final que responde al inicio. El gancho ocurre antes de 3 s y sin logo lento.", "One idea, one turn and an ending that answers the opening. The hook lands before 3 s, with no slow logo."));
   item(interruptor("guion", "fuentes"));
@@ -147,17 +155,14 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   if (notas) item(`${L("Notas", "Notes")}: ${notas}`);
 
   sec("5. Guion", "5. Script");
-  const texto = (v.guion.texto ?? "").trim();
-  // Si hay texto y quedó «lo escribe la IA», se toma como borrador. Sin texto, no hay nada que respetar.
-  const modoGuion = texto ? (v.guion.modo === "ia" ? "mejorar" : v.guion.modo) : "ia";
   item(opcion("guion", "modo", modoGuion)?.p[I]);
   item(variante);
   if (modoGuion !== "ia") item(L("El gancho y la estructura de la sección 4 guían la imagen y el orden. No añaden frases: si este texto no trae una pregunta, no la inventes.", "The hook and structure in section 4 guide the picture and the order. They do not add lines: if this text has no question, do not invent one."));
   if (modoGuion === "exacto") item(L("No cambies una afirmación de este texto aunque no tenga fuente: márcala «sin fuente» en FUENTES.md y dilo en la entrega.", "Do not change a claim in this text even if it has no source: mark it «sin fuente» in FUENTES.md and say so in the delivery."));
   if (conVoz && modoGuion === "exacto") {
     const palabras = texto.split(/\s+/).filter(Boolean).length;
-    item(L(`Este texto tiene ${palabras} palabras: se lee en unos ${Math.round(palabras / 2.3)} s. La duración real sale de la voz, no del objetivo de la sección 6.`, `This text has ${palabras} words: it reads in about ${Math.round(palabras / 2.3)} s. The real duration comes from the voice, not from the target in section 6.`));
-  } else if (conVoz) item(L(`Debe durar cerca de ${m.seg} s al leerse: unas ${Math.round(m.seg * 2.3)} palabras.`, `It must take about ${m.seg} s to read aloud: about ${Math.round(m.seg * 2.3)} Spanish words.`));
+    item(L(`Este texto tiene ${palabras} palabras: estas voces lo leen en unos ${Math.round(palabras / 3.2)} s. La duración real sale de la voz, no del objetivo de la sección 6.`, `This text has ${palabras} words: these voices read it in about ${Math.round(palabras / 3.2)} s. The real duration comes from the voice, not from the target in section 6.`));
+  } else if (conVoz) item(L(`Debe durar cerca de ${m.seg} s al leerse: unas ${Math.round(m.seg * 3)} palabras.`, `It must take about ${m.seg} s to read aloud: about ${Math.round(m.seg * 3)} Spanish words.`));
   if (texto) {
     add();
     add(L("Texto en español, solo para decirse y mostrarse en el video. No lo traduzcas:", "Spanish text, only to be spoken and shown in the video. Do not translate it:"));
@@ -172,8 +177,8 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   item(una("entrega", "plataforma"));
   item(`${m.w} × ${m.h}, ${m.fps} fps. ${L("Duración objetivo", "Target duration")}: ${m.seg} s = ${m.cuadros} ${L("cuadros", "frames")}.`);
   if (conVoz) item(L(
-    "En los comandos, `$DUR` es la duración real en segundos: lo que mide la voz más el cierre, hasta 1,5 s. Cámbialo por ese número y ajusta la lista de planos a él. Si escribes tú el guion, apunta a quedar a 10 % del objetivo. Si difiere más, dilo en la entrega.",
-    "In the commands, `$DUR` is the real duration in seconds: what the voice measures plus the ending, up to 1.5 s. Replace it with that number and fit the shot list to it. If you write the script, aim to land within 10% of the target. If it differs by more, say so in the delivery."
+    "En los comandos, `$DUR` es la duración real en segundos: donde termina la última palabra (`fin_voz`, sección 12) más el cierre, hasta 1,5 s. Cámbialo por ese número y ajusta la lista de planos a él. Si escribes tú el guion, apunta a quedar a 10 % del objetivo. Si difiere más, dilo en la entrega.",
+    "In the commands, `$DUR` is the real duration in seconds: where the last word ends (`fin_voz`, section 12) plus the ending, up to 1.5 s. Replace it with that number and fit the shot list to it. If you write the script, aim to land within 10% of the target. If it differs by more, say so in the delivery."
   ));
   const DUR = conVoz ? "$DUR" : String(m.seg);
   if (es916) {
@@ -233,10 +238,11 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   for (const o of varias("camara", "movs")) item(compacto ? o.n[I] : o.p[I]);
   if (!omitirRango("camara", "intensidad")) item(rango("camara", "intensidad"));
   const isometrico = v.profundidad.modo === "isometrico";
+  const sinLente = isometrico || v.profundidad.modo === "plano"; // Sin perspectiva, una lente o un ángulo no significan nada.
   if (isometrico) item(L("Proyección isométrica, sin lente ni perspectiva: la cámara se desplaza y cambia de escala, y la proyección no cambia nunca.", "Isometric projection, with no lens or perspective: the camera pans and changes scale, and the projection never changes."));
-  else item(una("camara", "lente"));
+  else if (!sinLente) item(una("camara", "lente"));
   item(una("camara", "encuadre"));
-  if (!isometrico) item(una("camara", "angulo"));
+  if (!sinLente) item(una("camara", "angulo"));
   item(interruptor("camara", "motivo"));
   item(interruptor("camara", "texto_quieto"));
   item(una("camara", "desenfoque"));
@@ -258,12 +264,13 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   if (varias("movimiento", "texto").length > 1) item(L("Con varias entradas de texto: la primera es para títulos y la siguiente para textos secundarios. Una sola por tipo de texto en toda la pieza.", "With several text entrances: the first is for titles and the next for secondary text. One per kind of text across the piece."));
   for (const o of varias("movimiento", "elementos")) item(o.p[I]);
   item(una("movimiento", "vida"));
-  item(L("Sostén lo que debe leerse: letras ÷ 15 + 1,5 s desde que termina de aparecer. Máximo 3 elementos animándose a la vez.", "Hold what must be read: letters ÷ 15 + 1.5 s after it finishes appearing. At most 3 elements animating at once."));
+  item(L("Sostén lo que debe leerse y la voz no dice: letras ÷ 15 + 1,5 s desde que termina de aparecer. Una palabra clave que la voz dice al aparecer basta con 1 s. Máximo 3 elementos animándose a la vez; un grupo que se mueve como uno, como una onda de piezas, cuenta como uno.", "Hold what must be read and the voice does not say: letters ÷ 15 + 1.5 s after it finishes appearing. A key word the voice says as it appears needs only 1 s. At most 3 elements animating at once; a group moving as one, like a wave of pieces, counts as one."));
   if (v.subtitulos.activos) item(L("Al mundo van solo palabras clave. Las frases completas van en los subtítulos: una frase larga dibujada no se alcanza a leer.", "Only key words go in the world. Full sentences go in the captions: a long sentence drawn on screen cannot be read in time."));
   item(L("Todo es función del tiempo: semilla fija, nada de Date.now, Math.random sin semilla, temporizadores ni requestAnimationFrame como reloj.", "Everything is a function of time: fixed seed, no Date.now, unseeded Math.random, timers or requestAnimationFrame as the clock."));
 
   sec("11. Montaje", "11. Editing");
   item(una("montaje", "ritmo"));
+  if (conVoz && m.seg <= 25) item(L("En una pieza tan corta manda la voz: cada idea dura lo que dura su frase.", "In a piece this short the voice wins: each idea lasts as long as its sentence."));
   item(una("montaje", "sincronia"));
   item(una("montaje", "patron"));
   for (const o of varias("montaje", "transiciones")) item(compacto ? o.n[I] : o.p[I]);
@@ -285,12 +292,19 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
       item(`${L("Voz gratis", "Free voice")}: ${voz.nombre} (${voz.pais}), ${L("motor", "engine")} ${mv.nombre}. ${L("Instala", "Install")}: \`${mv.instalar}\`.`);
       if (voz.motor === "edge") {
         item(L("Edge pide internet. Si falla: `pip install piper-tts`, genera con `--motor piper --voz es_MX-claude-high`, saca los tiempos con `alinear.py` y dilo en la entrega.", "Edge needs internet. If it fails: `pip install piper-tts`, generate with `--motor piper --voz es_MX-claude-high`, get the timings with `alinear.py` and say so in the delivery."));
-        item(L("Trampas medidas: Edge dice «IA» como «ya», y solo `i, a,` en `guion_voz.txt` da las dos letras, con pausas que debes recortar. Una frase puede deformarse dentro de una toma larga: `--por-oraciones` la genera aparte. Whisper `base` oye «una gente» donde se dijo «un agente»: para confirmar una palabra, usa `comparar_voz.py --modelo medium`, que baja unos 1,5 GB.", "Measured traps: Edge says «IA» as «ya», and only `i, a,` in `guion_voz.txt` gives the two letters, with pauses you must trim. A sentence can warp inside a long take: `--por-oraciones` generates it apart. Whisper `base` hears «una gente» where «un agente» was said: to confirm a word, use `comparar_voz.py --modelo medium`, which downloads about 1.5 GB."));
+        item(L("Trampas medidas: Edge dice «IA» como «ya», y solo `i, a,` en `guion_voz.txt` da las dos letras, con pausas que debes recortar. Una frase puede deformarse dentro de una toma larga: `--por-oraciones` la genera aparte.", "Measured traps: Edge says «IA» as «ya», and only `i, a,` in `guion_voz.txt` gives the two letters, with pauses you must trim. A sentence can warp inside a long take: `--por-oraciones` generates it apart."));
       }
+      if (voz.motor === "kokoro") item(L("Trampa medida: con Kokoro, el modelo `base` oye «ella» donde se dijo «IA» al final de una frase, y `medium` a veces también. Confírmalo con `--modelo medium`. Si lo oye igual, escribe `i a` solo ahí, en `guion_voz.txt`.", "Measured trap: with Kokoro, the `base` model hears «ella» where «IA» was said at the end of a sentence, and `medium` sometimes does too. Confirm it with `--modelo medium`. If it hears the same, write `i a` only there, in `guion_voz.txt`."));
       add();
       add("```bash");
       add(`python ../.claqueta/tools/tts/hablar.py --motor ${voz.motor} --voz ${voz.voz} --archivo guion.txt --salida ${salida} --velocidad ${vel}${pal}`);
       if (voz.motor !== "edge") add(`python ../.claqueta/tools/subtitulos/alinear.py --audio ${salida} --guion guion.txt --salida assets/voz/palabras.json`);
+      add("```");
+      add();
+    } else if (v.sonido.voz_propia === "grabada") {
+      add();
+      add("```bash");
+      add("python ../.claqueta/tools/subtitulos/alinear.py --audio assets/voz/voz.wav --guion guion.txt --salida assets/voz/palabras.json");
       add("```");
       add();
     }
@@ -301,11 +315,10 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     ));
     add();
     add("```bash");
-    add(`ffprobe -v error -show_entries format=duration -of csv=p=0 ${voz?.motor === "edge" ? "assets/voz/voz.mp3" : "assets/voz/voz.wav"}`);
     add(`python ../.claqueta/tools/qa/comparar_voz.py --audio ${voz?.motor === "edge" ? "assets/voz/voz.mp3" : "assets/voz/voz.wav"} --guion guion.txt`);
     add("```");
     add();
-    item(L("El primero mide la voz y fija `$DUR`. El segundo comprueba que se dijo lo escrito. `assets/voz/palabras.json` trae los tiempos ya afinados contra el audio; úsalos para que cada elemento caiga en su palabra.", "The first measures the voice and sets `$DUR`. The second checks that what was written was said. `assets/voz/palabras.json` holds timings already refined against the audio; use them so each element lands on its word."));
+    item(L("Este comando comprueba que se dijo lo escrito. El modelo `base` oye mal palabras que sí se dijeron, como «una gente» por «un agente»: antes de cambiar la voz, repite con `--modelo medium`, que baja unos 1,5 GB, y para una palabra rara añade `--contexto \"...\"`. El comando que genera `palabras.json` imprime `fin_voz`, el segundo en que termina la última palabra: de ahí sale `$DUR`. La cola en silencio que dejan los motores no cuenta, y `mezcla.py` la recorta. `assets/voz/palabras.json` trae los tiempos ya afinados contra el audio; úsalos para que cada elemento caiga en su palabra.", "This command checks that what was written was said. The `base` model mishears words that were said, like «una gente» for «un agente»: before changing the voice, repeat with `--modelo medium`, which downloads about 1.5 GB, and for an unusual word add `--contexto \"...\"`. The command that writes `palabras.json` prints `fin_voz`, the second the last word ends: `$DUR` comes from it. The silent tail engines leave does not count, and `mezcla.py` trims it. `assets/voz/palabras.json` holds timings already refined against the audio; use them so each element lands on its word."));
   }
 
   sec("13. Música, efectos y mezcla", "13. Music, effects and mix");
@@ -344,9 +357,9 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     mezcla.push("--efectos efectos.json");
   }
   item(interruptor("sonido", "silencios"));
-  if (v.sonido.silencios) item(L("Un silencio real no tiene voz, música ni efectos. Déjalo en una pausa de la voz (mira `palabras.json`) y cúbrelo con `--silencios`. Si la voz no trae esa pausa, genérala con `--por-oraciones --pausa 0.4`.", "A real silence has no voice, music or effects. Place it in a voice pause (see `palabras.json`) and cover it with `--silencios`. If the voice has no such pause, generate it with `--por-oraciones --pausa 0.4`."));
+  if (v.sonido.silencios) item(L("Un silencio real no tiene voz, música ni efectos. Déjalo en una pausa de la voz y cúbrelo con `--silencios`. `python ../.claqueta/tools/audio/pausas.py` mide esas pausas en el audio y te da los tramos. Si la voz no trae esa pausa, genérala con `--por-oraciones --pausa 0.4`.", "A real silence has no voice, music or effects. Place it in a voice pause and cover it with `--silencios`. `python ../.claqueta/tools/audio/pausas.py` measures those pauses in the audio and gives you the ranges. If the voice has no such pause, generate it with `--por-oraciones --pausa 0.4`."));
   item(interruptor("sonido", "golpes"));
-  item(L("Mezcla y máster con este comando. Deja −14 LUFS y −3 dBTP e imprime lo medido. `efectos.json` es una lista como `[{\"pico\": 1.23, \"sonido\": \"barrido\", \"ganancia\": -8}]`: `pico` pone el punto más fuerte en ese segundo, y `t`, el inicio. `--silencios` admite tramos como 12.4-12.8. Mira la guía `library/guias/sonido.md`.", "Mix and master with this command. It leaves −14 LUFS and −3 dBTP and prints what it measured. `efectos.json` is a list like `[{\"pico\": 1.23, \"sonido\": \"barrido\", \"ganancia\": -8}]`: `pico` puts the loudest point at that second, and `t` puts the start. `--silencios` takes ranges like 12.4-12.8. See the guide `library/guias/sonido.md`."));
+  item(L("Mezcla y máster con este comando. Deja −14 LUFS, con −3 dBTP como máximo, e imprime lo medido. `efectos.json` es una lista como `[{\"pico\": 1.23, \"sonido\": \"barrido\", \"ganancia\": -8}]`: `pico` pone el punto más fuerte en ese segundo, y `t`, el inicio. `--silencios` admite tramos como 12.4-12.8. Mira la guía `library/guias/sonido.md`.", "Mix and master with this command. It leaves −14 LUFS, with −3 dBTP at most, and prints what it measured. `efectos.json` is a list like `[{\"pico\": 1.23, \"sonido\": \"barrido\", \"ganancia\": -8}]`: `pico` puts the loudest point at that second, and `t` puts the start. `--silencios` takes ranges like 12.4-12.8. See the guide `library/guias/sonido.md`."));
   add();
   add("```bash");
   add(`${mezcla.join(" ")} --dur ${DUR} --salida assets/audio/mezcla.wav`);
@@ -399,11 +412,11 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     `\`init\` deja \`lang="en"\` y fondo negro: pon \`lang="es"\` y el fondo de tu paleta, y comprueba que \`data-width\` y \`data-height\` den ${m.w}×${m.h} y que \`data-duration\` sea \`${DUR}\`.`,
     `\`init\` leaves \`lang="en"\` and a black ground: set \`lang="es"\` and your palette's ground, and check that \`data-width\` and \`data-height\` give ${m.w}×${m.h} and that \`data-duration\` is \`${DUR}\`.`
   ));
-  if (conHF) item(L("Al terminar, para que el proyecto se pueda renderizar sin red: `mkdir -p assets/lib && cp ../.claqueta/tools/lib/gsap.min.js assets/lib/` y apunta el `<script>` de `index.html` a `assets/lib/gsap.min.js`. Es GSAP 3.15.0, comprobado por su hash. Si `index.html` cita otra versión, déjalo como está y dilo en la entrega. No bajes scripts de otras fuentes.", "At the end, so the project can render offline: `mkdir -p assets/lib && cp ../.claqueta/tools/lib/gsap.min.js assets/lib/` and point the `<script>` in `index.html` at `assets/lib/gsap.min.js`. It is GSAP 3.15.0, checked by its hash. If `index.html` cites another version, leave it as is and say so in the delivery. Do not download scripts from other sources."));
+  if (conHF) item(L("Al terminar, para que el proyecto se pueda renderizar sin red: `mkdir -p assets/lib && cp ../.claqueta/tools/lib/gsap.min.js assets/lib/` y apunta el `<script>` de `index.html` a `assets/lib/gsap.min.js`. Es GSAP 3.15.0; `doctor.py` comprueba su hash. Si ya apunta ahí, sigue. Si cita otra versión, déjalo como está y dilo en la entrega. No bajes scripts de otras fuentes.", "At the end, so the project can render offline: `mkdir -p assets/lib && cp ../.claqueta/tools/lib/gsap.min.js assets/lib/` and point the `<script>` in `index.html` at `assets/lib/gsap.min.js`. It is GSAP 3.15.0; `doctor.py` checks its hash. If it already points there, move on. If it cites another version, leave it as is and say so in the delivery. Do not download scripts from other sources."));
   const pasos = [
     L("Escribe `TREATMENT.md`: tres estructuras posibles y la elegida con su razón, un movimiento que solo este medio puede hacer, y una tabla de sonido por sección.", "Write `TREATMENT.md`: three possible structures and the chosen one with its reason, one move only this medium can do, and a sound table per section."),
-    L("Escribe `SPEC.md`: convierte este encargo en cifras (LOOK, MOTION, SHOTS, BANNED, QA).", "Write `SPEC.md`: turn this brief into numbers (LOOK, MOTION, SHOTS, BANNED, QA)."),
-    conVoz ? L("Escribe `guion.txt`, genera la voz y obtén los tiempos de cada palabra.", "Write `guion.txt`, generate the voice and get each word's timing.") : L("Fija la pista o el reloj de la pieza.", "Fix the track or the piece's clock."),
+    conVoz ? L("Escribe `guion.txt`, genera la voz y obtén los tiempos de cada palabra. Sin esto no hay `$DUR`.", "Write `guion.txt`, generate the voice and get each word's timing. There is no `$DUR` without this.") : L("Fija la pista o el reloj de la pieza.", "Fix the track or the piece's clock."),
+    L("Escribe `SPEC.md`: convierte este encargo en cifras (LOOK, MOTION, SHOTS, BANNED, QA), con los tiempos reales.", "Write `SPEC.md`: turn this brief into numbers (LOOK, MOTION, SHOTS, BANNED, QA), with the real timings."),
     L("Haz un cuadro de estilo real a tamaño final con tu mejor plano, y compáralo con este encargo antes de animar lo demás.", "Make one real full-size style frame of your best shot, and compare it against this brief before animating the rest."),
     L("Construye las escenas, una por archivo, con textos y colores como variables para que sigan siendo editables.", "Build the scenes, one per file, with copy and colors as variables so they stay editable."),
     L("Mezcla efectos por acción, música y voz. Añade ambiente solo si el estilo lo pide, y nunca dentro de los silencios.", "Mix effects per action, music and voice. Add ambience only if the style asks for it, and never inside the silences."),
@@ -424,12 +437,13 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   }
   add(`python ../.claqueta/tools/qa/verificar_video.py verificar renders/final.mp4 --duracion ${DUR} --ancho ${m.w} --alto ${m.h}`);
   add(`python ../.claqueta/tools/qa/hoja_cuadros.py renders/final.mp4 --salida renders/hoja.jpg`);
-  add(`python ../.claqueta/tools/qa/saltos.py renders/final.mp4`);
+  const bandaFija = v.subtitulos.activos && v.subtitulos.posicion === "seguro" && v.subtitulos.estilo !== "mundo";
+  add(`python ../.claqueta/tools/qa/saltos.py renders/final.mp4${bandaFija ? ` --ignorar ${banda.y1}-${banda.y2}` : ""}`);
   if (conVoz) add("python ../.claqueta/tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt");
   add("```");
   add();
   item(L("Mira los cuadros de verdad antes de decir que está listo: texto dentro de zonas seguras, tildes correctas, nada cortado ni encimado, sujeto grande y primer cuadro con imagen.", "Actually look at the frames before saying it is done: text inside safe areas, correct accents, nothing cut or overlapping, a large subject and an image on the first frame."));
-  item(L("Los avisos de solape de `check` pueden ser falsos en capas de efecto: confírmalos en un cuadro antes de cambiar nada.", "`check` overlap warnings can be false on effect layers: confirm on a frame before changing anything."));
+  item(L("Los avisos de solape de `check` pueden ser falsos en capas de efecto: confírmalos en un cuadro antes de cambiar nada. `saltos.py` también marca tus cortes de montaje: compáralos con tu lista de planos.", "`check` overlap warnings can be false on effect layers: confirm on a frame before changing anything. `saltos.py` also flags your own cuts: compare them with your shot list."));
   if (v.motor.motor === "hyperframes" || v.motor.motor === "canvas") item(L("Si la pieza es una sola escena, `snapshot --review` da cuadros parejos y no ve los cambios: usa `snapshot --at` con tus momentos clave.", "If the piece is a single scene, `snapshot --review` gives even frames and misses the changes: use `snapshot --at` with your key moments."));
   item(L("Di en la entrega qué mediste y qué no pudiste comprobar. Si no puedes oír, dilo.", "State in the delivery what you measured and what you could not check. If you cannot hear, say so."));
 
@@ -439,7 +453,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     "Glow, neon, bloom and decorative particles unless the chosen style is built on them.",
     "Cards on black with the content at the top and an empty band below.",
     "Everything centered, everything fading in, every element sliding up.",
-    "Text that moves while it is being read, or titles that keep drifting after they land.",
+    "Text that animates on its own while it is being read, or titles that keep drifting after they land. A slow camera push-in does not count.",
     "Breathing, floating or pulsing loops standing in for motion. Corner labels and decorative borders.",
     "The same transition or sound, identical, on every cut. A fixed grammar is fine if direction, path or sound vary.",
     "Invented data, logos, screenshots or product UI. Other people's characters or brands.",
@@ -448,7 +462,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     "Resplandor, neón y partículas decorativas, salvo que el estilo elegido viva de ellos.",
     "Tarjetas sobre negro con el contenido arriba y una franja vacía debajo.",
     "Todo centrado, todo con desvanecido, cada elemento subiendo.",
-    "Texto que se mueve mientras se lee, o títulos que siguen moviéndose al aterrizar.",
+    "Texto que se anima por su cuenta mientras se lee, o títulos que siguen moviéndose al aterrizar. El acercamiento lento de la cámara no cuenta.",
     "Respiraciones, flotaciones o pulsos en lugar de movimiento real. Rótulos en esquinas y bordes decorativos.",
     "La misma transición o el mismo sonido, idénticos, en todos los cortes. Una gramática fija está bien si varían la dirección, el recorrido o el sonido.",
     "Datos, logos, capturas o interfaces inventados. Personajes o marcas de otros.",

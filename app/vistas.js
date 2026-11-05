@@ -47,7 +47,7 @@ export function pintarNotaLectura() {
   if (!nota) return;
   const palabras = (leer("guion.texto") ?? "").trim().split(/\s+/).filter(Boolean).length;
   if (!palabras) { nota.replaceChildren(); return; }
-  const seg = Math.max(1, Math.round(palabras / 2.3));
+  const seg = Math.max(1, Math.round(palabras / 3.2));
   const pedido = Number(leer("entrega.duracion"));
   const ideal = Math.max(5, seg + 2);
   const lejos = Math.abs(ideal - pedido) / pedido > 0.15;

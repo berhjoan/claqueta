@@ -60,10 +60,12 @@ test("no se publican capturas del video ajeno", () => {
   assert.ok(!fs.existsSync(path.join(raiz, "library/hyperframes/skills/style-sampling")), "style-sampling es de pago");
 });
 
-test("la copia local de GSAP es exactamente la versión verificada del ejemplo", () => {
+test("la copia local de GSAP es la versión comprobada y llega igual a cualquier clon", () => {
   const copia = fs.readFileSync(path.join(raiz, "tools/lib/gsap.min.js"));
   const hash = `sha384-${createHash("sha384").update(copia).digest("base64")}`;
+  assert.equal(hash, "sha384-XmJ9SoHtVOHoQUcKvFAzVXwdkKo1Ie3bhmSoIAkcdsHGaIrVJIkmozyq0FJeb/Ly");
   const ejemplo = fs.readFileSync(path.join(raiz, "engines/pizarra/ejemplo/index.html"), "utf8");
-  assert.ok(ejemplo.includes(`integrity="${hash}"`), "el hash del ejemplo no coincide con la copia local");
-  assert.ok(ejemplo.includes("gsap@3.15.0"));
+  assert.ok(ejemplo.includes('src="assets/lib/gsap.min.js"'), "el ejemplo debe usar la copia local");
+  assert.ok(!ejemplo.includes("data-hf-id"), "el ejemplo no lleva atributos del Studio");
+  assert.match(fs.readFileSync(path.join(raiz, ".gitattributes"), "utf8"), /^\* -text$/m, "sin esto, autocrlf cambia el hash al clonar en Windows");
 });

@@ -44,8 +44,8 @@ Estilo, sujeto, movimiento, cámara, tiempos, estado final y restricciones. Ejem
 ## Lectura
 
 - Tiempo de lectura: letras ÷ 15 + 1,5 s desde que el texto termina de aparecer.
-- Subtítulo: mínimo 1,8 s y al menos la línea hablada + 0,6 s.
-- Define las frases de los subtítulos a mano. El agrupador automático deja fragmentos como «a empezar,» o «de 2024,».
+- Subtítulo: mínimo 1,8 s. Si la voz no deja tiempo, junta la frase corta con la siguiente cuando quepan en 2 líneas. Si no caben, manda la voz: el subtítulo cambia cuando empieza la frase siguiente. `tools/subtitulos/srt.py` hace esto y lista en `muy_rapidos` los que quedan apurados.
+- Usa los grupos de `srt.py` o define las frases a mano. El agrupador automático de HyperFrames deja fragmentos como «a empezar,» o «de 2024,».
 
 ## Sonido
 

@@ -14,12 +14,15 @@ const TINTA = rgb(PALETA.tinta), ACENTO = rgb(PALETA.acento), SEGUNDO = rgb(PALE
 // Margen izquierdo. Con 72 px y sin acercar la cámara, una línea cabe hasta x = 960, antes del riel derecho.
 const X0 = 72;
 
-// Escribe una línea y reparte sus trazos en `dur` segundos. Con `borrador: n`, la pasada número n se la lleva.
+// Escribe una línea y reparte sus trazos en `dur` segundos. Con `null`, usa la velocidad natural de la mano y `.t1` dice cuándo termina.
+// Con `borrador: n`, la pasada número n se la lleva.
 function linea(S, L, txt, by, cap, t0, dur, o = {}) {
-  const x = o.x ?? X0, s = writeLatin(txt, x, by, cap, t0, o), k = dur / (s.end - t0);
+  const x = o.x ?? X0, s = writeLatin(txt, x, by, cap, t0, o);
+  dur ??= s.end - t0;
+  const k = dur / (s.end - t0);
   for (const st of s) {
     st.t0 = t0 + (st.t0 - t0) * k; st.t1 = t0 + (st.t1 - t0) * k;
-    st.cap = cap; st.acento = o.color === ACENTO; st.borrador = o.borrador ?? -1;
+    st.cap = cap; st.acento = o.color === ACENTO; st.borrador = o.borrador ?? -1; st.linea = txt;
     S.push(st);
   }
   const l = { txt, x0: x, x1: s.x, ancho: s.x - x, by, cap, t0, t1: t0 + dur, trazos: s.length, sPorTrazo: dur / s.length };
@@ -54,7 +57,7 @@ export function build() {
 
   // ── 3. El texto: cada línea es (texto, y, altura de letra, empieza, dura, opciones). Un segundo negativo ya está escrito al abrir.
   linea(S, L, '¿Qué hace un', 430, 76, -.45, 1.6, { color: TINTA, seed: 1, press: 1.1 });
-  linea(S, L, 'agente de IA?', 560, 76, 1.6, 1.3, { color: TINTA, seed: 2, press: 1.1 });
+  linea(S, L, 'agente de IA?', 560, 74, 1.6, 1.3, { color: TINTA, seed: 2, press: 1.1 });
   const error = linea(S, L, 'Contesta.', 850, 116, 3.15, .9, { color: TINTA, seed: 3, borrador: 0 });
   const respuesta = linea(S, L, 'Actúa.', 900, 176, 7.0, .95, { color: ACENTO, seed: 4, R: 2.5 });
   linea(S, L, 'Diseña, ejecuta', 1090, 72, 8.6, 1.55, { color: TINTA, seed: 5, press: 1.1 });
@@ -62,7 +65,7 @@ export function build() {
 
   // ── 4. Trazos sueltos: el subrayado de la respuesta, justo al terminar la palabra.
   const a = respuesta;
-  trazo(S, [[X0 + 6, a.by + 62], [X0 + a.ancho * .45, a.by + 50], [X0 + a.ancho - 10, a.by + 44]], 7.97, 8.27, { color: ACENTO, cap: 176 });
+  trazo(S, [[X0 + 14, a.by + 62], [X0 + a.ancho * .45, a.by + 50], [X0 + a.ancho - 10, a.by + 44]], 7.97, 8.27, { color: ACENTO, cap: 176 });
 
   // ── 5. El borrador: una lista de pasadas. Cada una se lleva las líneas y los trazos con su número en `borrador`.
   const e = error, ey = e.by - e.cap * .55;
@@ -71,7 +74,7 @@ export function build() {
   ];
 
   // ── 6. La cámara, siempre de frente. Cada clave es [segundo, centro x, centro y, escala].
-  const C = [[-1, 372, 660, 1.55], [.1, 372, 660, 1.55], [.95, 610, 660, 1.55], [1.95, 540, 960, 1], [6.95, 540, 960, 1], [8.3, 545, 850, 1.045], [8.45, 545, 850, 1.045], [9.25, 540, 960, 1], [99, 540, 960, 1]];
+  const C = [[-1, 372, 660, 1.55], [.1, 372, 660, 1.55], [.95, 610, 660, 1.55], [1.95, 540, 960, 1], [99, 540, 960, 1]];
   const camAt = (t) => {
     let i = 0;
     while (i < C.length - 2 && t >= C[i + 1][0]) i++;

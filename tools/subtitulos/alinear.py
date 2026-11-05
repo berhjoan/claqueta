@@ -47,7 +47,7 @@ def parecido(guion, oido):
     return difflib.SequenceMatcher(None, a, b, autojunk=False).ratio()
 
 
-def transcribir(audio, modelo):
+def transcribir(audio, modelo, contexto=None):
     pistas = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "a", "-show_entries", "stream=index", "-of", "csv=p=0", str(audio)], capture_output=True, text=True)
     if pistas.returncode or not pistas.stdout.strip():
         print(f"Error: {audio} no tiene pista de audio. Revisa que el audio esté en la composición antes de renderizar.", file=sys.stderr)
@@ -55,7 +55,7 @@ def transcribir(audio, modelo):
     try:
         from faster_whisper import WhisperModel
         m = WhisperModel(modelo, device="cpu", compute_type="int8")
-        segs, _ = m.transcribe(str(audio), language="es", word_timestamps=True, vad_filter=True)
+        segs, _ = m.transcribe(str(audio), language="es", word_timestamps=True, vad_filter=True, initial_prompt=contexto)
         return [(w.word.strip(), float(w.start), float(w.end)) for s in segs for w in (s.words or [])]
     except ImportError:
         pass
@@ -65,7 +65,7 @@ def transcribir(audio, modelo):
         print("Error: instala un transcriptor gratis: pip install faster-whisper", file=sys.stderr)
         sys.exit(2)
     m = whisper.load_model(modelo)
-    r = m.transcribe(str(audio), language="es", word_timestamps=True)
+    r = m.transcribe(str(audio), language="es", word_timestamps=True, initial_prompt=contexto)
     return [(w["word"].strip(), float(w["start"]), float(w["end"])) for s in r["segments"] for w in s.get("words", [])]
 
 
@@ -114,7 +114,7 @@ def main():
     palabras = refinar(palabras, a.audio)
     Path(a.salida).parent.mkdir(parents=True, exist_ok=True)
     Path(a.salida).write_text(json.dumps(palabras, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(json.dumps({"ok": True, "palabras": len(palabras), "coincidencia": round(cobertura, 3), "salida": a.salida}))
+    print(json.dumps({"ok": True, "palabras": len(palabras), "coincidencia": round(cobertura, 3), "fin_voz": round(palabras[-1]["fin"], 3) if palabras else None, "salida": a.salida}))
     if cobertura < 0.85:
         print("Aviso: suena menos de un 85 % igual al guion. Quizá la voz no dijo lo escrito: usa tools/qa/comparar_voz.py para ver qué palabras cambian.", file=sys.stderr)
 

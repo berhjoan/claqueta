@@ -3,7 +3,7 @@ export const VERSION_HF = "0.9.9";
 
 export const motores = [
   { id: "hyperframes", n: ["HyperFrames", "HyperFrames"], d: "HTML a video. El recomendado: probado en esta casa, Apache-2.0.", gratis: "Gratis y local", docs: ["library/hyperframes/skills/hyperframes/SKILL.md"],
-    paso: [`Motor: HyperFrames ${VERSION_HF}. Crea el proyecto con npx hyperframes@${VERSION_HF} init. Usa siempre esa versión exacta y cumple el contrato de library/hyperframes/skills/hyperframes/SKILL.md.`, `Engine: HyperFrames ${VERSION_HF}. Create the project with npx hyperframes@${VERSION_HF} init. Always use that exact version and follow the contract in library/hyperframes/skills/hyperframes/SKILL.md.`] },
+    paso: [`Motor: HyperFrames ${VERSION_HF}. Crea el proyecto con npx hyperframes@${VERSION_HF} init. Usa siempre esa versión exacta, aunque avise de una más nueva, y cumple el contrato de library/hyperframes/skills/hyperframes/SKILL.md.`, `Engine: HyperFrames ${VERSION_HF}. Create the project with npx hyperframes@${VERSION_HF} init. Always use that exact version, even if it reports a newer one, and follow the contract in library/hyperframes/skills/hyperframes/SKILL.md.`] },
   { id: "remotion", n: ["Remotion", "Remotion"], d: "React a video. Gratis para personas y equipos de hasta 3; mira su licencia.", gratis: "Gratis con límites", docs: ["library/guias/motores.md"],
     paso: ["Motor: Remotion. Crea el proyecto con npx create-video@latest --blank. Todo deriva de useCurrentFrame() e interpolate con clamp; nada de CSS animation, Math.random, Date ni temporizadores. Si existe la skill oficial, instálala con npx skills add remotion-dev/skills. Confirma que el uso cumple su licencia.", "Engine: Remotion. Create the project with npx create-video@latest --blank. Everything derives from useCurrentFrame() and clamped interpolate; no CSS animation, Math.random, Date or timers. If available, install the official skill with npx skills add remotion-dev/skills. Confirm the use complies with its license."] },
   { id: "canvas", n: ["Motores de estilo en Canvas", "Canvas style engines"], d: "Tiza, terminal, isométrico: material que el DOM no da, dentro de HyperFrames.", gratis: "Gratis y local", docs: ["engines/pizarra/README.md", "library/lemo-opuscar/TECHNIQUE.md"],
@@ -55,7 +55,7 @@ export const formatos = [
 
 export const entregables = [
   { id: "master", n: ["Máster MP4", "MP4 master"], p: ["Máster MP4 H.264, yuv420p, CRF 16 a 18, con audio AAC.", "MP4 master, H.264, yuv420p, CRF 16 to 18, with AAC audio."] },
-  { id: "liviano", n: ["Copia liviana", "Light copy"], p: ["Copia liviana de menos de 30 MB para revisar en el teléfono.", "Light copy under 30 MB for phone review."] },
+  { id: "liviano", n: ["Copia liviana", "Light copy"], p: ["Copia liviana de menos de 30 MB para revisar en el teléfono, si el máster pesa más.", "Light copy under 30 MB for phone review, if the master is larger."] },
   { id: "portada", n: ["Portada", "Cover"], p: ["Portada PNG tomada de un cuadro real y legible.", "PNG cover taken from a real, readable frame."] },
   { id: "srt", n: ["Subtítulos SRT", "SRT captions"], p: ["Archivo SRT con el guion exacto.", "SRT file with the exact script."] },
   { id: "editable", n: ["Proyecto editable", "Editable project"], p: ["Proyecto editable completo con sus fuentes, audio y assets.", "Complete editable project with its fonts, audio and assets."] },

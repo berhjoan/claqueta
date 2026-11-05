@@ -1,0 +1,2 @@
+# Nada se convierte al clonar: en Windows, autocrlf cambiaría el hash de GSAP y rompería los scripts de shell.
+* -text

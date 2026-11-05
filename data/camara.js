@@ -8,7 +8,7 @@ export const movimientos = [
     p: c("Cámara fija en trípode: el movimiento lo hacen los elementos, no el encuadre.", "Locked-off tripod shot: the elements move, the frame does not."),
     cam: { from: {}, to: {} } },
   { id: "push", n: ["Acercamiento lento", "Slow push-in"], d: "Se acerca despacio para dar peso a una idea.",
-    p: c("Acercamiento lento: escala del mundo de 1,00 a 1,08 durante el plano, {curva}, con el sujeto en el centro óptico. Termina antes de que el texto se lea.", "Slow push-in: world scale 1.00 to 1.08 across the shot, {curva}, subject at the optical center. It ends before the text is read."),
+    p: c("Acercamiento lento: escala del mundo de 1,00 a 1,08 durante el plano, {curva}, con el sujeto en el centro óptico.", "Slow push-in: world scale 1.00 to 1.08 across the shot, {curva}, subject at the optical center."),
     cam: { from: { z: 0 }, to: { z: 110 }, ease: "inOut" } },
   { id: "pull", n: ["Alejamiento que revela", "Pull-back reveal"], d: "Abre en un detalle y se aleja hasta mostrar el conjunto.",
     p: c("Alejamiento que revela: abre cerrado en un detalle a cuadro completo y se aleja hasta el conjunto en 1,2 a 2 s, escala de 1,6 a 1,0, {curva}. Mantén la acción dentro del detalle antes de abrir.", "Pull-back reveal: open tight on a full-frame detail and pull back to the whole in 1.2 to 2 s, scale 1.6 to 1.0, {curva}. Let the detail play before opening."),
@@ -137,7 +137,7 @@ export const camara = {
       ] },
     { id: "reglas", titulo: "Reglas de cámara", controles: [
         { k: "motivo", t: "interruptor", titulo: "Cada movimiento con motivo", ayuda: "Un movimiento por plano y siempre causado por la historia.", def: true, p: ["Un solo movimiento principal por plano y siempre con un motivo en la historia. Lo secundario recorre del 50 % al 70 % y empieza entre 100 y 200 ms después.", "One hero move per shot, always motivated by the story. Secondary moves travel 50% to 70% as far and start 100 to 200 ms later."] },
-        { k: "texto_quieto", t: "interruptor", titulo: "Texto quieto al leerse", ayuda: "Ningún giro ni escala mientras se lee.", def: true, p: ["La cámara nunca se mueve sobre texto que se está leyendo: un título que aterrizó queda completamente quieto.", "The camera never moves over text being read: a landed title stays dead still."] },
+        { k: "texto_quieto", t: "interruptor", titulo: "Texto quieto al leerse", ayuda: "Mientras se lee, solo un acercamiento lento.", def: true, p: ["Sobre texto que se está leyendo, la cámara solo puede hacer un acercamiento lento de hasta 8 % en el plano. Cualquier otro movimiento termina antes de que el texto aterrice. Un título que aterrizó no se anima por su cuenta.", "Over text being read, the camera may only do a slow push-in of up to 8% across the shot. Any other move ends before the text lands. A landed title does not animate on its own."] },
         { k: "desenfoque", t: "opciones", vista: "chips", def: "suave", titulo: "Desenfoque de movimiento", label: ["Desenfoque de movimiento", "Motion blur"], opciones: [
           { id: "no", n: ["Sin desenfoque", "None"], p: ["Sin desenfoque de movimiento.", "No motion blur."] },
           { id: "suave", n: ["Solo en lo rápido", "Fast moves only"], p: ["Desenfoque solo en movimientos rápidos, con el pico en el cuadro más veloz: 6 a 12 px en elementos del tamaño de un texto y 15 a 20 px a cuadro completo.", "Blur only on fast moves, peaking at the fastest frame: 6 to 12 px on text-sized elements and 15 to 20 px full frame."] },

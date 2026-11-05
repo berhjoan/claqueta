@@ -33,7 +33,7 @@ El sistema queda al lado del proyecto, no adentro, para que HyperFrames no lo to
 
 1. El encargo completo.
 2. `library/guias/direccion.md`.
-3. Los documentos que nombra la sección «Carga el sistema» del encargo. No leas toda la biblioteca.
+3. Los documentos que nombra la sección «Prepara el sistema» del encargo. No leas toda la biblioteca.
 4. `library/guias/aprendizajes.md`, solo los grupos que vas a tocar.
 
 Si existe `MOTION.md` en la raíz del proyecto del usuario, léelo entero: sus reglas mandan sobre las generales.
@@ -85,11 +85,12 @@ python ../.claqueta/tools/subtitulos/srt.py --palabras assets/voz/palabras.json 
 python ../.claqueta/tools/audio/musica.py --caracter calido --bpm 96 --dur 30 --salida assets/audio/musica.wav --rejilla assets/audio/rejilla.json
 python ../.claqueta/tools/audio/notas.py partitura.json --dur 30 --salida assets/audio/musica.wav
 python ../.claqueta/tools/audio/efecto.py --listar
+python ../.claqueta/tools/audio/pausas.py assets/voz/voz.mp3
 python ../.claqueta/tools/audio/mezcla.py --voz assets/voz/voz.mp3 --musica assets/audio/musica.wav --efectos efectos.json --dur 30 --salida assets/audio/mezcla.wav
 
 python ../.claqueta/tools/qa/verificar_video.py verificar renders/final.mp4 --duracion 30
 python ../.claqueta/tools/qa/hoja_cuadros.py renders/final.mp4 --salida renders/hoja.jpg
-python ../.claqueta/tools/qa/saltos.py renders/final.mp4
+python ../.claqueta/tools/qa/saltos.py renders/final.mp4 --ignorar 1300-1540
 python ../.claqueta/tools/qa/comparar_voz.py --audio renders/final.mp4 --guion guion.txt
 ```
 

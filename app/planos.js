@@ -28,9 +28,9 @@ export function generarPlanos(v) {
   const extra = n - compases.length;
   const porCompas = compases.map((_, i) => (i === 0 || i === compases.length - 1 ? 1 : 1 + Math.floor(extra / Math.max(1, medios)) + (i - 1 < extra % Math.max(1, medios) ? 1 : 0)));
 
-  const nombres = [];
+  const nombres = [], compasDe = [];
   compases.forEach((c, i) => {
-    for (let k = 0; k < porCompas[i]; k++) nombres.push(porCompas[i] > 1 ? `${c} ${k + 1}` : c);
+    for (let k = 0; k < porCompas[i]; k++) { nombres.push(porCompas[i] > 1 ? `${c} ${k + 1}` : c); compasDe.push(c); }
   });
 
   // La forma del ritmo cambia el peso de cada plano.
@@ -62,7 +62,7 @@ export function generarPlanos(v) {
   };
   const planos = nombres.map((titulo, i) => ({
     id: nuevoId(), titulo, texto: "", dur: redondear(durs[i]),
-    cam: movs[i % movs.length], tr: i === nombres.length - 1 ? "corte" : salida(i), nota: "",
+    cam: est?.mismaCamara?.includes(compasDe[i]) ? "fija" : movs[i % movs.length], tr: i === nombres.length - 1 ? "corte" : salida(i), nota: "",
   }));
   // Ajusta el redondeo para que la suma sea exacta.
   const dif = redondear(total - planos.reduce((a, p) => a + p.dur, 0));

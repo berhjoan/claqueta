@@ -6,6 +6,7 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 
 - En Git Bash, ffmpeg y Node necesitan rutas Windows (`cygpath -m`). Node importa rutas absolutas como `file:///C:/…`.
 - Git Bash y Python de Windows entienden distinto `/tmp`: Python escribe en `C:\\tmp` y bash en otra parte. Usa rutas dentro del proyecto.
+- En Git Bash, `source .venv/Scripts/activate` deja rutas mezcladas. Usa `export PATH="$PWD/.venv/Scripts:$PATH"`.
 - `python -I` ignora `PYTHONUTF8`. Para imprimir tildes fija `PYTHONIOENCODING=utf-8`.
 - `hyperframes snapshot` en 0.8.x describe los cuadros con Gemini si existe `GEMINI_API_KEY` y envía imágenes del video: usa `--describe false`. En 0.9.9 está apagado por defecto.
 - WebGL funciona en una Intel UHD 730 por D3D11 (ANGLE).
@@ -15,6 +16,9 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 
 - Si una palabra suena mal, no toques el guion: usa una copia solo para el motor, con una coma o escrita como suena. El guion sigue literal para subtítulos y comparación. Una coma en «ejecuta, y revisa» arregló lo que bajar la velocidad no arregló.
 - Whisper `base` y `small` oyen «una gente de ella» donde se dijo «un agente de IA»: no es la voz. Para confirmar una palabra, usa `medium`.
+- Kokoro con `lang="es"` habla como en España: «proceso» sale con zeta y «Llega» con elle. `hablar.py` usa `es-419` por defecto.
+- espeak-ng, dentro de Kokoro, no abre rutas con tildes o eñes y cierra el proceso sin traza. `phonemizer` deshace una ruta corta porque la resuelve, así que `hablar.py` la convierte justo antes de entregarla.
+- `palabras.json` marca dónde termina cada palabra, pero para poner un silencio mide el audio: `tools/audio/pausas.py`.
 - Edge lee «IA» como la sílaba «ya» en cualquier grafía: `IA`, `I A`, `i a`, `ía`, `I-A`. Lo único que dio los dos nombres de letra fue `i, a,` en el guion de voz, recortando después las pausas que deja. Una persona debe oírlo.
 - Una toma larga puede deformar una frase que sola sale bien: «Cada chat» salió «cacha te» dentro de dos oraciones y bien al generarla aparte. Genera por oraciones y une en la pausa.
 - Edge es un servicio en línea y mañana puede devolver otra toma: guarda las que uses.
@@ -56,7 +60,7 @@ Lo que costó descubrir produciendo videos reales con estas herramientas, en Win
 - `check` da falsos errores con capas superpuestas (glitch, neón, ASCII) y tableros en giro: verifica en un cuadro antes de arreglar.
 - Sora no tiene `≈`, `≠` ni flechas (`→ ↑`), y ninguna fuente de marca tiene `✓` ni `✗`: `≠` en JetBrains Mono o SVG; flechas y `✓ ✗`, siempre en SVG.
 - `check --json` escribe su avance por stderr: no redirijas `2>&1` si vas a leer el JSON.
-- Dentro de una escena no uses `document.getElementById("root")`: la página armada tiene varios `#root` y te da el primero. El texto creado por script cae en el padre equivocado y `check` marca `text_occluded` o contraste 1,06:1. Busca por `[data-composition-id="tu-escena"]`.
+- Dentro de una escena no busques `#root` ni `[data-composition-id="tu-escena"]`: el primero da el `#root` de la página y el segundo, el host de `index.html`, que está fuera del `#root` de tu escena. Lo que crees ahí pierde las variables y la fuente de tu `#root`: sale en Times de 16 px y casi negro, y `check` puede no avisar. Pon en la plantilla un contenedor con id único, como `<div id="subs-caja"></div>`, y agrega con `document.getElementById("subs-caja")`. O escribe el HTML fijo en la plantilla y anima por id. Probado en 0.9.9.
 - Con fondo `#0B0806` y poco contenido, `blackdetect` marca cuadros negros que no lo son. Mira el cuadro.
 - `render` sin `--crf` puede salir en calidad `standard`, aunque la ayuda diga otra cosa. Para un máster, pasa `--crf 17`.
 - three.js en render real: `three@0.181.2/+esm`, `preserveDrawingBuffer:true`, `setPixelRatio(1)`, un renderer por frame y dibujo solo desde un tween proxy de GSAP.

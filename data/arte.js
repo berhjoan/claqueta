@@ -49,7 +49,7 @@ export const pantallas = [
 
 export const texturas = [
   { id: "limpio", n: ["Limpio", "Clean"], p: ["Acabado limpio, con un grano mínimo del 1 % solo para evitar bandas: tools/imagen/grano.py --alfa 1.", "Clean finish with a minimal 1% grain only to prevent banding: tools/imagen/grano.py --alfa 1."] },
-  { id: "grano", n: ["Grano fino", "Fine grain"], p: ["Grano fino de 2 % a 3 % con semilla fija, sobre el fondo y no sobre el texto: tools/imagen/grano.py --alfa 2.5.", "Fine grain of 2% to 3% with a fixed seed, on the ground and not on the text: tools/imagen/grano.py --alfa 2.5."] },
+  { id: "grano", n: ["Grano fino", "Fine grain"], p: ["Grano fino de 2 % a 3 % con semilla fija, en una capa quieta sobre el fondo y bajo el texto: `python ../.claqueta/tools/imagen/grano.py --salida assets/grano.png --alfa 2.5`. Su cabecera trae el CSS.", "Fine grain of 2% to 3% with a fixed seed, in a still layer over the ground and under the text: `python ../.claqueta/tools/imagen/grano.py --salida assets/grano.png --alfa 2.5`. Its header has the CSS."] },
   { id: "papel", n: ["Papel", "Paper"], p: ["Textura de papel con fibra visible al 4 %.", "Paper texture with visible fiber at 4%."] },
   { id: "semitono", n: ["Semitono", "Halftone"], p: ["Trama de semitono ordenada en sombras e imágenes.", "Ordered halftone screen in shadows and images."] },
   { id: "pelicula", n: ["Película analógica", "Analog film"], p: ["Acabado de película: grano 3 % (tools/imagen/grano.py --alfa 3), viñeta 6 % y leve halación en las luces.", "Film finish: 3% grain (tools/imagen/grano.py --alfa 3), 6% vignette and slight halation on highlights."] },

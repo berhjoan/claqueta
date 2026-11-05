@@ -94,6 +94,12 @@ def refinar(palabras, audio, desfase_global=False):
                 k -= 1
             if sonoro[k]:
                 p["fin"] = (k + 1) * PASO
+        else:  # Sigue sonando: una oración suele terminar unas centésimas después de su marca.
+            tope = a_idx(salida[i + 1]["inicio"]) if i + 1 < len(salida) else n - 1
+            k = e
+            while k < tope and sonoro[k] and (k - e) * PASO < 0.4:
+                k += 1
+            p["fin"] = k * PASO
         p["fin"] = max(p["fin"], p["inicio"] + 0.04)
         if i + 1 < len(salida):
             p["fin"] = min(p["fin"], max(salida[i + 1]["inicio"], p["inicio"] + 0.04))
