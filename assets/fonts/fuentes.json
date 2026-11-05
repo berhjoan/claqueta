@@ -1,0 +1,231 @@
+{
+ "familias": {
+  "Sora": {
+   "archivos": [
+    {
+     "archivo": "Sora-Variable.ttf",
+     "pesos": "100 800"
+    }
+   ],
+   "licencia": "OFL-Sora.txt"
+  },
+  "JetBrains Mono": {
+   "archivos": [
+    {
+     "archivo": "JetBrains_Mono-Variable.ttf",
+     "pesos": "100 800"
+    }
+   ],
+   "licencia": "OFL-JetBrainsMono.txt"
+  },
+  "Archivo Black": {
+   "archivos": [
+    {
+     "archivo": "ArchivoBlack-400.woff2",
+     "pesos": "400"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Archivo": {
+   "archivos": [
+    {
+     "archivo": "Archivo-Variable.woff2",
+     "pesos": "100 900"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Bebas Neue": {
+   "archivos": [
+    {
+     "archivo": "BebasNeue-400.woff2",
+     "pesos": "400"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Barlow": {
+   "archivos": [
+    {
+     "archivo": "Barlow-400.woff2",
+     "pesos": "400"
+    },
+    {
+     "archivo": "Barlow-500.woff2",
+     "pesos": "500"
+    },
+    {
+     "archivo": "Barlow-700.woff2",
+     "pesos": "700"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Anton": {
+   "archivos": [
+    {
+     "archivo": "Anton-400.woff2",
+     "pesos": "400"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Fraunces": {
+   "archivos": [
+    {
+     "archivo": "Fraunces-Variable.woff2",
+     "pesos": "100 900"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Source Sans 3": {
+   "archivos": [
+    {
+     "archivo": "SourceSans3-Variable.woff2",
+     "pesos": "200 900"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "DM Serif Display": {
+   "archivos": [
+    {
+     "archivo": "DMSerifDisplay-400.woff2",
+     "pesos": "400"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "DM Sans": {
+   "archivos": [
+    {
+     "archivo": "DMSans-Variable.woff2",
+     "pesos": "100 1000"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Syne": {
+   "archivos": [
+    {
+     "archivo": "Syne-Variable.woff2",
+     "pesos": "400 800"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Manrope": {
+   "archivos": [
+    {
+     "archivo": "Manrope-Variable.woff2",
+     "pesos": "200 800"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Unbounded": {
+   "archivos": [
+    {
+     "archivo": "Unbounded-Variable.woff2",
+     "pesos": "200 900"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Onest": {
+   "archivos": [
+    {
+     "archivo": "Onest-Variable.woff2",
+     "pesos": "100 900"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Poiret One": {
+   "archivos": [
+    {
+     "archivo": "PoiretOne-400.woff2",
+     "pesos": "400"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "Josefin Sans": {
+   "archivos": [
+    {
+     "archivo": "JosefinSans-Variable.woff2",
+     "pesos": "100 700"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  },
+  "VT323": {
+   "archivos": [
+    {
+     "archivo": "VT323-400.woff2",
+     "pesos": "400"
+    }
+   ],
+   "licencia": "OFL-fuentes.txt"
+  }
+ },
+ "pares": {
+  "marca": {
+   "display": "Sora",
+   "cuerpo": "Sora",
+   "datos": "JetBrains Mono"
+  },
+  "impacto": {
+   "display": "Archivo Black",
+   "cuerpo": "Archivo",
+   "datos": "JetBrains Mono"
+  },
+  "cartel": {
+   "display": "Bebas Neue",
+   "cuerpo": "Barlow",
+   "datos": "JetBrains Mono"
+  },
+  "editorial": {
+   "display": "Fraunces",
+   "cuerpo": "Source Sans 3",
+   "datos": "JetBrains Mono"
+  },
+  "dm": {
+   "display": "DM Serif Display",
+   "cuerpo": "DM Sans",
+   "datos": "JetBrains Mono"
+  },
+  "syne": {
+   "display": "Syne",
+   "cuerpo": "Manrope",
+   "datos": "JetBrains Mono"
+  },
+  "unbounded": {
+   "display": "Unbounded",
+   "cuerpo": "Onest",
+   "datos": "JetBrains Mono"
+  },
+  "deco": {
+   "display": "Poiret One",
+   "cuerpo": "Josefin Sans",
+   "datos": "JetBrains Mono"
+  },
+  "terminal": {
+   "display": "VT323",
+   "cuerpo": "JetBrains Mono",
+   "datos": "JetBrains Mono"
+  },
+  "tiza": {
+   "display": "Sora",
+   "cuerpo": "Sora",
+   "datos": "JetBrains Mono"
+  },
+  "anton": {
+   "display": "Anton",
+   "cuerpo": "Barlow",
+   "datos": "JetBrains Mono"
+  }
+ }
+}
