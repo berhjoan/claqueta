@@ -142,7 +142,7 @@ export function crearGaleria(estilos, { monitor, avisar, alCambiarPlanos }) {
       ficha.replaceChildren(
         e.thumb ? h("img", { src: e.thumb, alt: `Ejemplo del estilo ${e.name.es}`, loading: "lazy", onerror: (ev) => { ev.target.style.visibility = "hidden"; } }) : h("span", { class: "sin-img" }, e.name.es),
         h("div", { class: "ficha-texto" },
-          h("h4", {}, e.name.es), h("p", { class: "ficha-meta" }, `${e.id}, ${e.family.es}. ${ESTADO[e.status] ?? e.status}.${e.plantilla ? " Con plantilla probada." : ""}${e.piel ? " Lo hace el kit de escenas." : ""}`),
+          h("h4", {}, e.name.es), h("p", { class: "ficha-meta" }, `${e.id}, ${e.family.es}. ${ESTADO[e.status] ?? e.status}.${e.plantilla ? " Con plantilla probada." : ""}${e.piel ? " Lo hace el kit de escenas." : ""}${e.gpu ? " Necesita una GPU para renderizarse." : ""}`),
           e.palette ? h("div", { class: "ficha-paleta" }, Object.entries(NOMBRE_COLOR).map(([k, n]) => { const s = h("span", { title: `${n}: ${e.palette[k]}` }, h("i", {}), n); s.firstChild.style.background = e.palette[k]; return s; })) : null,
           h("p", {}, e.traits.es), e.uses ? h("p", {}, h("b", {}, "Sirve para: "), e.uses.es) : null, e.avoid ? h("p", {}, h("b", {}, "Cuidado: "), e.avoid.es) : null,
           esRecorrido()

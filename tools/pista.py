@@ -212,7 +212,7 @@ def main():
     v.add_argument("--pausa", type=float, default=0.4)
     v.add_argument("--formato", choices=list(ANCHOS), default="9:16")
     v.add_argument("--ancho", type=int, help="Caracteres por línea de subtítulo. Si falta, sale del formato")
-    v.add_argument("--cierre", type=float, default=1.2, help="Segundos de la pieza después de la última palabra")
+    v.add_argument("--cierre", type=float, default=1.6, help="Segundos de la pieza después de la última palabra")
     v.add_argument("--modelo", default="base")
     v.add_argument("--comprobar", action="store_true", help="Transcribe la voz y la compara con el guion")
     v.set_defaults(fn=cmd_voz)

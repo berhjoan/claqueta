@@ -10,13 +10,14 @@ export function motorDe(v, base) {
   // El kit es 2D: una profundidad real o un espacio 3D se construyen a mano.
   if (["real", "css3d", "nubes", "zespacio"].includes(v.profundidad.modo)) return "hyperframes";
   if (v.arte.modo === "recorrido" && (v.arte.recorrido ?? []).length) return "escenas";
-  if (base?.piel || base?.plantilla) return "escenas";
+  // Con plantilla pero sin piel, el kit no sabe hacer más planos de ese estilo: una plantilla se monta una sola vez.
+  if (base?.piel) return "escenas";
   return "hyperframes";
 }
 
 // El plano de la lista se vuelve un plano de pieza.json. El tipo es una propuesta: lo decide quien escribe el guion.
-function planoDePieza(p, i, total, estilos, conRecorrido, propios, vertical) {
-  const e = estilos.find((x) => x.id === p.estilo);
+function planoDePieza(p, i, total, estilos, conRecorrido, propios, vertical, enMezcla) {
+  const e = estilos.find((x) => x.id === (enMezcla ?? p.estilo));
   const salida = { tipo: i === 0 ? "titulo" : i === total - 1 ? "cierre" : "frase", _idea: p.titulo };
   if (i > 0) salida.desde = "@primera-palabra-de-esta-parte";
   if (p.tipo === "rafaga") {
@@ -30,7 +31,7 @@ function planoDePieza(p, i, total, estilos, conRecorrido, propios, vertical) {
   if (i === 0) salida.texto = p.texto || "El gancho, tal como se dice";
   else if (i === total - 1) salida.frase = p.texto || "La frase que responde al inicio";
   else salida.texto = p.texto || "La frase o palabra clave de esta parte";
-  if (conRecorrido && e) {
+  if ((conRecorrido || enMezcla) && e) {
     salida.estilo = e.id;
     if (e.plantilla && vertical) {
       salida.tipo = "plantilla";
@@ -52,6 +53,23 @@ function planoDePieza(p, i, total, estilos, conRecorrido, propios, vertical) {
   return salida;
 }
 
+// En una mezcla, el principal abre y cierra; el secundario y el acento toman planos del medio, repartidos.
+export function planosDeMezcla(v, total) {
+  const reparto = new Map();
+  const { secundario, acento } = v.arte.estilos ?? {};
+  const medio = Array.from({ length: Math.max(0, total - 2) }, (_, k) => k + 1);
+  if (v.arte.modo === "recorrido" || !medio.length) return reparto;
+  const cuantos = secundario ? Math.max(1, Math.round(total * (acento ? 0.2 : 0.25))) : 0;
+  const libres = [...medio];
+  for (let k = 0; k < cuantos && libres.length; k += 1) {
+    const i = libres[Math.floor(((k + 0.5) / cuantos) * libres.length)];
+    reparto.set(i, secundario);
+    libres.splice(libres.indexOf(i), 1);
+  }
+  if (acento && libres.length) reparto.set(libres[Math.floor(libres.length * 0.66)], acento);
+  return reparto;
+}
+
 export function piezaInicial(v, planos, { estilos = [], base, tipografia = null } = {}) {
   const conRecorrido = v.arte.modo === "recorrido";
   const propios = v.arte.paleta === "propios";
@@ -60,6 +78,7 @@ export function piezaInicial(v, planos, { estilos = [], base, tipografia = null 
   else pieza.paleta = v.arte.paleta;
   if (tipografia) pieza.tipografia = tipografia;
   pieza.subtitulos = v.subtitulos.activos ? { estilo: v.subtitulos.estilo, posicion: v.subtitulos.posicion } : false;
-  pieza.planos = planos.map((p, i) => planoDePieza(p, i, planos.length, estilos, conRecorrido, propios, v.entrega.formato === "9:16"));
+  const mezcla = planosDeMezcla(v, planos.length);
+  pieza.planos = planos.map((p, i) => planoDePieza(p, i, planos.length, estilos, conRecorrido, propios, v.entrega.formato === "9:16", mezcla.get(i)));
   return pieza;
 }

@@ -394,7 +394,7 @@ test("el lema tiene su excepción y el cierre le da tiempo", () => {
     assert.ok(t.includes("--cierre 2.5"), `${lang}: con lema, el cierre sube`);
     assert.ok(/excepción a esa fórmula|exception to that formula/.test(t), `${lang}: falta la excepción del lema`);
     const sin = texto(armar(), lang);
-    assert.ok(sin.includes("--cierre 1.2") && !/excepción a esa fórmula|exception to that formula/.test(sin), `${lang}: sin lema no hay excepción`);
+    assert.ok(sin.includes("--cierre 1.6") && !/excepción a esa fórmula|exception to that formula/.test(sin), `${lang}: sin lema no hay excepción`);
   }
 });
 

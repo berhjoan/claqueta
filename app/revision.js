@@ -66,6 +66,8 @@ export function revisar(estado, { estilos = [], palabras = 0, compacto = false }
   }
 
   // Lo que conviene saber.
+  const conGpu = elegidos.filter((e) => e.gpu);
+  if (conGpu.length) aviso("necesita-gpu", "info", `${conGpu.map((e) => e.name.es).join(", ")} ${conGpu.length > 1 ? "necesitan" : "necesita"} una GPU para renderizarse. En una máquina sin GPU, tu IA tendrá que cambiar ese estilo.`);
   const sinProbar = elegidos.filter((e) => e.status === "adaptar" && !e.plantilla && !e.piel && !e.motorListo);
   if (sinProbar.length) aviso("estilos-sin-probar", "info", `${sinProbar.map((e) => e.name.es).slice(0, 4).join(", ")}${sinProbar.length > 4 ? "…" : ""} no ${sinProbar.length > 1 ? "tienen" : "tiene"} plantilla probada: la IA los construye desde su ficha.`);
   if (motorDe(v, base) === "remotion") aviso("remotion", "info", "Remotion es de pago desde 4 personas. Para ti entra gratis; revísalo si es para una empresa.");

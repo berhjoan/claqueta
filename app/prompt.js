@@ -5,7 +5,7 @@ import { VERSION_HF } from "../data/motor.js";
 import { vozPorId, motoresVoz } from "../data/voces.js";
 import { caracterPara } from "../data/sonido.js";
 import { tiempo } from "./planos.js";
-import { motorDe, piezaInicial } from "./pieza.js";
+import { motorDe, piezaInicial, planosDeMezcla } from "./pieza.js";
 
 export const REPO = "https://github.com/berhjoan/claqueta";
 export const SITIO = "https://berhjoan.github.io/claqueta";
@@ -188,7 +188,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     ? L(`Se entrega en ${v.entrega.formato}. Las plataformas elegidas suelen ir en ${plataforma.formato}: manda el formato, y el cuadro se recompone, sin recortar.`, `Delivered in ${v.entrega.formato}. The chosen platforms usually take ${plataforma.formato}: the format wins, and the frame is recomposed, never cropped.`)
     : una("entrega", "plataforma"));
   item(`${m.w} × ${m.h}, ${m.fps} fps. ${L("Duración objetivo", "Target duration")}: ${m.seg} s = ${m.cuadros} ${L("cuadros", "frames")}.`);
-  const cierreS = v.arte.marca !== "ninguna" ? 2.5 : 1.2;
+  const cierreS = v.arte.marca !== "ninguna" ? 2.5 : 1.6; // La última línea de una pieza necesita 2 s en pantalla.
   if (conVoz) item(L(
     `La duración real sale de la voz: \`pista.py voz\` mide dónde termina la última palabra (\`fin_voz\`), suma el cierre y lo escribe como \`dur\` en \`assets/tiempos.json\`. Ajusta la lista de planos a ese número. Si escribes tú el guion, apunta a quedar a 10 % del objetivo. Si difiere más, dilo en la entrega.`,
     `The real duration comes from the voice: \`pista.py voz\` measures where the last word ends (\`fin_voz\`), adds the ending and writes it as \`dur\` in \`assets/tiempos.json\`. Fit the shot list to that number. If you write the script, aim to land within 10% of the target. If it differs by more, say so in the delivery.`
@@ -254,11 +254,22 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
     verEstilo(sec2, L("Estilo secundario", "Secondary style"), pSec);
     verEstilo(acento, L("Acento", "Accent"), pAcento);
     if (base?.plantilla) item(L(`Plantilla probada de este estilo: \`../.claqueta/library/plantillas/${base.id}/\`. Parte de ella.`, `Tested template for this style: \`../.claqueta/library/plantillas/${base.id}/\`. Start from it.`));
+    if (kit && (sec2 || acento)) {
+      const reparto = planosDeMezcla(v, planos.length);
+      const donde = (e) => (e ? [...reparto].filter(([, id]) => id === e.id).map(([i]) => i + 1) : []);
+      for (const e of [sec2, acento]) {
+        const n = donde(e);
+        if (e && n.length) item(L(`${e.id} ya va en ${n.length > 1 ? "los planos" : "el plano"} ${n.join(", ")} del \`pieza.json\` de abajo. Si no trae cifras el guion, usa su lenguaje sin datos: pasos, diagrama o comparación, nunca valores inventados.`, `${e.id} already sits in shot${n.length > 1 ? "s" : ""} ${n.join(", ")} of the \`pieza.json\` below. If the script has no figures, use its language without data: steps, diagram or comparison, never invented values.`));
+        if (e && n.length && !e.piel && (!e.plantilla || v.entrega.formato !== "9:16")) item(L(`${e.id}: el kit no trae su material. Escribe su escena en \`escenas/${e.id}.html\` con el formato de \`../.claqueta/library/plantillas/FORMATO.md\`, a ${m.w}×${m.h}, y móntala como \`propia\`.`, `${e.id}: the kit has no material for it. Write its scene in \`escenas/${e.id}.html\` using the format in \`../.claqueta/library/plantillas/FORMATO.md\`, at ${m.w}×${m.h}, and mount it as \`propia\`.`));
+      }
+    }
     if (base) item(L(
       "Un estilo es material, cámara y sonido, no solo una paleta. Prueba de reconocimiento: si se oculta el nombre, deben verse dos o tres rasgos propios en cada plano. Nunca mezcles más de estos estilos.",
       "A style is material, camera and sound, not just a palette. Recognition test: with its name hidden, two or three of its own traits must show in every shot. Never mix in other styles."
     ));
   }
+  const conGpu = estilosUsados.filter((e) => e.gpu);
+  if (conGpu.length) item(L(`${conGpu.map((e) => e.id).join(", ")} ${conGpu.length > 1 ? "usan" : "usa"} shaders de WebGPU, que necesitan una GPU. Sin ella, ese plano se queda en un degradado liso, sin su shader. Míralo en un cuadro antes de seguir: si es tu caso, cámbialo por otro estilo con plantilla que no sea de shader, y dilo en la entrega.`, `${conGpu.map((e) => e.id).join(", ")} ${conGpu.length > 1 ? "use" : "uses"} WebGPU shaders, which need a GPU. Without one, that shot stays on a flat gradient, with no shader. Look at it in a frame before going on: if that is your case, swap it for another non-shader template, and say so in the delivery.`));
   if (base) item(L("Toma de cada ficha su lenguaje, no sus ejemplos: si el guion no trae cifras, no hay ejes ni valores.", "Take each sheet's language, not its examples: if the script has no figures, there are no axes or values."));
   if (base && !propios) item(L("Si una ficha nombra otros colores u otra cámara, mandan la paleta de abajo y la sección 8. De la ficha toma el material, las formas y el ritmo.", "If a sheet names other colors or another camera, the palette below and section 8 win. Take its material, shapes and rhythm."));
   else if (base) item(L("Si una ficha nombra otra cámara, manda la sección 8. De la ficha toma el material, las formas y el ritmo.", "If a sheet names another camera, section 8 wins. Take its material, shapes and rhythm."));
@@ -272,6 +283,8 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
   else item(`${L("Paleta exacta", "Exact palette")}: ${textoPaleta(pal)}. ${significado}`);
   if (kit) {
     item(L("La textura, las fuentes y los tamaños de letra los pone la piel del kit, y el texto se ajusta para que quepa. `\"tipografia\"` en `pieza.json` cambia las fuentes.", "Texture, fonts and type sizes come from the kit's skin, and text is fitted so it fits. `\"tipografia\"` in `pieza.json` changes the fonts."));
+    const conPiel = estilosUsados.filter((e) => e.piel && (!e.plantilla || v.entrega.formato !== "9:16"));
+    if (conPiel.length) item(L(`Sin plantilla propia, ${conPiel.map((e) => `${e.id} toma la piel \`${e.piel}\``).join(" y ")}: es el material más cercano, no el estilo entero. Para que se reconozca, añade dos de sus rasgos en \`compositions/p*.html\` después del último armado, o escribe ese plano como \`propia\`. Sin eso, di en la entrega que quedó aproximado.`, `With no template of ${conPiel.length > 1 ? "their" : "its"} own, ${conPiel.map((e) => `${e.id} takes the \`${e.piel}\` skin`).join(" and ")}: that is the closest material, not the whole style. To make it recognizable, add two of its traits in \`compositions/p*.html\` after the last build, or write that shot as \`propia\`. Otherwise, say in the delivery that it came out approximate.`));
   } else {
     item(una("arte", "textura"));
     item(una("arte", "tipografia"));
@@ -398,7 +411,7 @@ export function construirPrompt(estado, { lang = "es", estilos = [], traduccione
       if (voz.motor === "kokoro") item(L("Trampa medida: con Kokoro, el modelo `base` oye «ella» donde se dijo «IA» al final de una frase, y `medium` a veces también. Confírmalo con `--modelo medium`. Si lo oye igual, escribe `i a` solo ahí, en `guion_voz.txt`.", "Measured trap: with Kokoro, the `base` model hears «ella» where «IA» was said at the end of a sentence, and `medium` sometimes does too. Confirm it with `--modelo medium`. If it hears the same, write `i a` only there, in `guion_voz.txt`."));
       add();
       add("```bash");
-      add(`python ../.claqueta/tools/pista.py voz --motor ${voz.motor} --voz ${voz.voz} --guion guion.txt --velocidad ${vel} --formato ${v.entrega.formato} --cierre ${v.arte.marca !== "ninguna" ? 2.5 : 1.2}${v.sonido.silencios ? " --por-oraciones --pausa 0.4" : ""}`);
+      add(`python ../.claqueta/tools/pista.py voz --motor ${voz.motor} --voz ${voz.voz} --guion guion.txt --velocidad ${vel} --formato ${v.entrega.formato} --cierre ${v.arte.marca !== "ninguna" ? 2.5 : 1.6}${v.sonido.silencios ? " --por-oraciones --pausa 0.4" : ""}`);
       add("```");
       add();
     } else if (v.sonido.voz_propia === "grabada") {
