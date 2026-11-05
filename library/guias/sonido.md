@@ -23,7 +23,8 @@ python ../.claqueta/tools/pista.py mezcla --nivel-musica -22 --silencios 2
 Por debajo:
 
 1. Voz: `tools/tts/hablar.py`. Su duración real manda sobre la lista de planos.
-2. Tiempos de palabra: `tools/subtitulos/alinear.py`. Con Edge ya salen de `--palabras`. Sin acceso a Hugging Face: `tools/subtitulos/tiempos_por_tramos.py`.
+2. Subtítulos: si el reparto automático no te sirve, escribe `frases.txt` con un subtítulo por línea y añade `--frases frases.txt` a `pista.py voz` o `pista.py subtitulos`.
+3. Tiempos de palabra: `tools/subtitulos/alinear.py`. Con Edge ya salen de `--palabras`. Sin acceso a Hugging Face: `tools/subtitulos/tiempos_por_tramos.py`.
 3. Música: `tools/audio/musica.py`, con la duración real. Una pista con licencia: `tools/medios/medios.py audio`.
 4. Efectos: `tools/audio/efecto.py`. El kit de escenas los coloca solo, en `efectos.json`.
 5. Mezcla y máster: `tools/audio/mezcla.py`.

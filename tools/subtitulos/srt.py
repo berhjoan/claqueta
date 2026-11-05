@@ -47,8 +47,11 @@ def frases(palabras, max_car=56):
     return grupos
 
 
+CONECTORES = {"a", "al", "ante", "con", "de", "del", "e", "el", "en", "la", "las", "lo", "los", "mi", "mis", "o", "para", "por", "que", "se", "sin", "sobre", "su", "sus", "tu", "tus", "u", "un", "una", "unas", "unos", "y"}
+
+
 def en_dos_lineas(texto, ancho=28):
-    """Primero que quepa, luego que corte en un signo, luego que quede parejo."""
+    """Primero que quepa, luego que la línea no acabe en un artículo o una preposición, luego que corte en un signo, luego que quede parejo."""
     if len(texto) <= ancho:
         return texto
     palabras = texto.split()
@@ -56,8 +59,8 @@ def en_dos_lineas(texto, ancho=28):
     for i in range(1, len(palabras)):
         a, b = " ".join(palabras[:i]), " ".join(palabras[i:])
         d = max(len(a), len(b))
-        opciones.append((d > ancho, d if d > ancho else 0, not re.search(r"[.,:;?!…]$", a), d, i))
-    corte = min(opciones)[4]
+        opciones.append((d > ancho, d if d > ancho else 0, palabras[i - 1].lower() in CONECTORES, not re.search(r"[.,:;?!…]$", a), d, i))
+    corte = min(opciones)[5]
     return " ".join(palabras[:corte]) + "\n" + " ".join(palabras[corte:])
 
 
@@ -67,8 +70,9 @@ def caben(grupo, ancho, max_car):
 
 
 def muy_rapido(grupo, siguiente, minimo, letras_por_s):
+    """No alcanza a leerse, o es un fragmento suelto de una o dos palabras que no da tiempo a nada."""
     disponible = siguiente[0]["inicio"] - grupo[0]["inicio"]
-    return disponible < minimo and len(texto_de(grupo)) / max(disponible, 0.01) > letras_por_s
+    return disponible < minimo and (len(texto_de(grupo)) / max(disponible, 0.01) > letras_por_s or len(grupo) <= 2)
 
 
 def equilibrar(grupos, minimo, ancho, max_car, letras_por_s=15):

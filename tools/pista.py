@@ -52,14 +52,26 @@ def leer_tiempos():
     return json.loads(TIEMPOS.read_text(encoding="utf-8"))
 
 
-def grupos_de(palabras, guion, ancho, minimo=1.8):
+def grupos_a_mano(palabras, archivo):
+    """Cada línea de frases.txt es un subtítulo. Tienen que sumar las mismas palabras que el guion."""
+    lineas = [l.split() for l in Path(archivo).read_text(encoding="utf-8").splitlines() if l.strip()]
+    if sum(map(len, lineas)) != len(palabras):
+        sys.exit(f"Error: {archivo} tiene {sum(map(len, lineas))} palabras y la voz dijo {len(palabras)}. Cada línea es un subtítulo, con las palabras del guion tal cual")
+    grupos, q = [], 0
+    for l in lineas:
+        grupos.append(palabras[q : q + len(l)])
+        q += len(l)
+    return grupos
+
+
+def grupos_de(palabras, guion, ancho, minimo=1.8, a_mano=None):
     from srt import alinear, en_dos_lineas, equilibrar, frases, marca, muy_rapido, texto_de
 
     if guion:
         escritas = [(x["palabra"], x["inicio"], x["fin"]) for x in palabras]
         palabras, _ = alinear(guion, escritas)
     tope = ancho * 2
-    grupos = equilibrar(frases(palabras, tope), minimo, ancho, tope)
+    grupos = grupos_a_mano(palabras, a_mano) if a_mano else equilibrar(frases(palabras, tope), minimo, ancho, tope)
     rapidos = [{"texto": texto_de(g), "dura": round(s[0]["inicio"] - g[0]["inicio"], 2)} for g, s in zip(grupos, grupos[1:]) if muy_rapido(g, s, minimo, 15)]
     salida, srt = [], []
     for i, g in enumerate(grupos):
@@ -102,7 +114,7 @@ def cmd_voz(a):
             print(f"Aviso: la voz coincide solo {info['coincidencia']:.0%} con el guion. Comprueba con tools/qa/comparar_voz.py --modelo medium.", file=sys.stderr)
     crudas = json.loads(palabras_json.read_text(encoding="utf-8"))
     ancho = a.ancho or ANCHOS[a.formato]
-    grupos, srt, rapidos, palabras = grupos_de(crudas, guion.read_text(encoding="utf-8"), ancho)
+    grupos, srt, rapidos, palabras = grupos_de(crudas, guion.read_text(encoding="utf-8"), ancho, a_mano=a.frases)
     Path("renders").mkdir(exist_ok=True)
     Path("renders/final.srt").write_text(srt, encoding="utf-8")
     pausas = correr("audio/pausas.py", audio)
@@ -125,7 +137,7 @@ def cmd_subtitulos(a):
     if not t.get("palabras"):
         sys.exit("Error: falta assets/tiempos.json. Corre primero pista.py voz")
     ancho = a.ancho or ANCHOS[a.formato]
-    grupos, srt, rapidos, _ = grupos_de(t["palabras"], Path(a.guion).read_text(encoding="utf-8"), ancho)
+    grupos, srt, rapidos, _ = grupos_de(t["palabras"], Path(a.guion).read_text(encoding="utf-8"), ancho, a_mano=a.frases)
     t.update(grupos=grupos, formato=a.formato)
     TIEMPOS.write_text(json.dumps(t, ensure_ascii=False, indent=0), encoding="utf-8")
     Path("renders").mkdir(exist_ok=True)
@@ -171,11 +183,14 @@ def pausa_antes_de(ancla, t):
     iguales = [w for w in t.get("palabras", []) if llano(str(w.get("palabra", w.get("texto", "")))) == buscada]
     if len(iguales) < vez:
         sys.exit(f"Error: la voz no dice «{m.group(1)}»{f' {vez} veces' if vez > 1 else ''}. Corre pista.py voz, o revisa la palabra")
-    inicio = iguales[vez - 1]["inicio"]
-    pausa = next((p for p in t.get("pausas", []) if abs(p["fin"] - inicio) < 0.2), None)
-    if not pausa or pausa["fin"] - pausa["inicio"] < 0.15:
-        sys.exit(f"Error: no hay una pausa antes de «{m.group(1)}» ({inicio} s). Pon un punto en el guion, o usa --por-oraciones al generar la voz")
-    return f"{pausa['inicio']}-{pausa['fin']}"
+    # Sin #n, vale la primera vez que la dice después de una pausa: una palabra corta se repite mucho.
+    candidatas = [iguales[vez - 1]] if m.group(2) else iguales
+    for w in candidatas:
+        pausa = next((p for p in t.get("pausas", []) if abs(p["fin"] - w["inicio"]) < 0.2 and p["fin"] - p["inicio"] >= 0.15), None)
+        if pausa:
+            return f"{pausa['inicio']}-{pausa['fin']}"
+    veces = ", ".join(str(w["inicio"]) for w in iguales[:6])
+    sys.exit(f"Error: la voz dice «{m.group(1)}» en {veces} s, y no hay una pausa antes{' de esa vez' if m.group(2) else ''}. Pon un punto en el guion, o usa --por-oraciones al generar la voz")
 
 
 def cmd_mezcla(a):
@@ -199,6 +214,7 @@ def cmd_mezcla(a):
 
 
 def main():
+    sys.argv = ["--help" if x == "--ayuda" else x for x in sys.argv]
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="comando", required=True)
     v = sub.add_parser("voz", help="Genera la voz y escribe assets/tiempos.json")
@@ -215,11 +231,13 @@ def main():
     v.add_argument("--cierre", type=float, default=1.6, help="Segundos de la pieza después de la última palabra")
     v.add_argument("--modelo", default="base")
     v.add_argument("--comprobar", action="store_true", help="Transcribe la voz y la compara con el guion")
+    v.add_argument("--frases", help="Archivo con un subtítulo por línea, si quieres repartirlos a mano")
     v.set_defaults(fn=cmd_voz)
     s = sub.add_parser("subtitulos", help="Rehace los grupos de subtítulos para otro formato, sin generar otra voz")
     s.add_argument("--guion", default="guion.txt")
     s.add_argument("--formato", choices=list(ANCHOS), default="9:16")
     s.add_argument("--ancho", type=int)
+    s.add_argument("--frases", help="Archivo con un subtítulo por línea, si quieres repartirlos a mano")
     s.set_defaults(fn=cmd_subtitulos)
     m = sub.add_parser("musica", help="Compone la música y su rejilla de pulsos")
     m.add_argument("--caracter", default="calido")

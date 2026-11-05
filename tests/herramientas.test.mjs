@@ -429,3 +429,55 @@ test("el contexto de la comparación de voz es para una palabra, no para el guio
   assert.notEqual(r.status, 0);
   assert.match(r.stderr, /--contexto es para una palabra rara/);
 });
+
+test("un fragmento suelto se junta, y la línea no acaba en un artículo", { skip: !python && "falta Python" }, () => {
+  const codigo = `import sys, json, importlib.util as u
+s = u.spec_from_file_location("s", "tools/subtitulos/srt.py"); m = u.module_from_spec(s); s.loader.exec_module(m)
+sys.stdout.reconfigure(encoding="utf-8")
+print(m.en_dos_lineas("En tu celular ya vienen la cuadrícula y el enfoque.", 28).replace(chr(10), "|"))
+pal = [{"palabra": w, "inicio": i * 0.3, "fin": i * 0.3 + 0.25} for i, w in enumerate("Luz: no apuntes al sol con la cámara.".split())]
+g = m.equilibrar(m.frases(pal, 56), 1.8, 28, 56)
+print(json.dumps([m.texto_de(x) for x in g], ensure_ascii=False))`;
+  const r = correr(python, ["-c", codigo]);
+  assert.equal(r.status, 0, r.stderr);
+  const [lineas, grupos] = r.stdout.trim().split(/\r?\n/);
+  assert.ok(!/ la\|/.test(lineas), lineas);
+  assert.deepEqual(JSON.parse(grupos), ["Luz: no apuntes al sol con la cámara."]);
+});
+
+test("los subtítulos se pueden repartir a mano", { skip: !python && "falta Python" }, () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), "frases-"));
+  fs.writeFileSync(path.join(d, "f.txt"), "Hola mundo\n\nesto va junto\n");
+  const codigo = `import sys, json, importlib.util as u
+s = u.spec_from_file_location("p", "tools/pista.py"); m = u.module_from_spec(s); s.loader.exec_module(m)
+sys.stdout.reconfigure(encoding="utf-8")
+pal = [{"palabra": w, "inicio": i, "fin": i + 0.5} for i, w in enumerate("Hola mundo esto va junto".split())]
+print(json.dumps([len(g) for g in m.grupos_a_mano(pal, sys.argv[1])]))
+try:
+    m.grupos_a_mano(pal[:2], sys.argv[1])
+except SystemExit as e:
+    print("sale", "palabras" in str(e))`;
+  const r = correr(python, ["-c", codigo, path.join(d, "f.txt")]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.deepEqual(r.stdout.trim().split(/\r?\n/), ["[2, 3]", "sale True"]);
+});
+
+test("un silencio por palabra toma la vez que viene tras una pausa", { skip: !python && "falta Python" }, () => {
+  const codigo = `import sys, json, importlib.util as u
+s = u.spec_from_file_location("p", "tools/pista.py"); m = u.module_from_spec(s); s.loader.exec_module(m)
+t = {"palabras": [{"palabra": "no", "inicio": 0.5, "fin": 0.6}, {"palabra": "es", "inicio": 0.7, "fin": 0.8}, {"palabra": "el", "inicio": 0.97, "fin": 1.1}, {"palabra": "El", "inicio": 3.0, "fin": 3.2}], "pausas": [{"inicio": 1.1, "fin": 3.0}]}
+print(m.tramos_de_silencio("@El", t))
+try:
+    m.tramos_de_silencio("@el#1", t)
+except SystemExit as e:
+    print("sale", "no hay una pausa" in str(e))`;
+  const r = correr(python, ["-c", codigo]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.deepEqual(r.stdout.trim().split(/\r?\n/), ["1.1-3.0", "sale True"]);
+});
+
+test("pista.py acepta --ayuda como armar.mjs", { skip: !python && "falta Python" }, () => {
+  const r = correr(python, ["tools/pista.py", "--ayuda"]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /usage/);
+});

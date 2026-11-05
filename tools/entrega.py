@@ -191,6 +191,14 @@ LICENCIAS_VOZ = {
 }
 
 
+def tiene_material_suelto(proyecto):
+    assets = proyecto / "assets"
+    if not assets.is_dir():
+        return False
+    propias = {"thumbs", "escenas", "fonts", "lib", "audio", "voz", "iconos", "isometrico"}
+    return any(a.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp", ".mp4", ".mov", ".webm", ".mp3", ".wav") for a in assets.rglob("*") if a.is_file() and a.relative_to(assets).parts[0] not in propias)
+
+
 def licencia_voz(tiempos):
     """(licencia, exige crédito) de la voz de assets/tiempos.json, o (None, False) si es grabada o no se conoce."""
     motor, voz = tiempos.get("motor"), tiempos.get("nombre_voz")
@@ -219,7 +227,9 @@ def escribir_creditos(proyecto, titulo, destino):
         L.append("")
     elif creditos is None:
         L.append("No hay `creditos.json` en el proyecto. Si usaste imágenes o sonidos de terceros, falta anotar su origen y su licencia antes de publicar.\n")
-        avisos.append("no hay creditos.json")
+        # Solo es un problema si hay material que pudo venir de fuera. Lo que el kit copia y lo generado no cuenta.
+        if tiene_material_suelto(proyecto):
+            avisos.append("hay imágenes o video en assets/ y no hay creditos.json: anota de dónde salieron")
     else:
         L.append("Ningún material de `creditos.json` exige atribución.\n")
     # 2. Material con licencia

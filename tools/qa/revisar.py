@@ -636,6 +636,8 @@ def analizar_sonido(x, dur, a, t, efectos):
             palabras = t["palabras"]
             sobre = []
             for g in golpes:
+                if g.get("ganancia") is not None and g["ganancia"] <= -20:
+                    continue  # A 20 dB o más bajo la voz, un efecto no tapa la palabra.
                 for p in palabras:
                     if p["inicio"] - 0.02 <= g["t"] <= p["fin"] + 0.02:
                         sobre.append({"t": round(g["t"], 2), "efecto": g["nombre"], "palabra": p["palabra"], "ganancia": g["ganancia"]})
@@ -685,7 +687,7 @@ def preguntas(hoja, hoja_planos, mirar):
     h = rel(hoja) if hoja else "la hoja de cuadros"
     p = [
         f"En {h}: ¿el sujeto de cada plano (o su texto, si es un plano de texto) ocupa al menos el 40 % del cuadro, o hay planos con algo pequeño o pegado a un borde?",
-        "¿Hay algo cortado en los bordes: texto, sujeto, logo o subtítulo? Mira el borde de cada cuadro, no el centro.",
+        "¿Hay algo cortado en los bordes: texto, sujeto, logo o subtítulo? Mira el borde de cada cuadro, no el centro. En vertical, ¿algo clave entra en el riel derecho, x 960 a 1080 entre y 900 y 1700, donde cae la interfaz de la app?",
         "¿Las tildes, la ñ y los signos ¿ ¡ están completos en cada texto en pantalla? Abre 3 cuadros con texto a tamaño completo: ffmpeg -ss SEGUNDO -i video -frames:v 1 cuadro.png.",
         "¿Hay contraste suficiente entre cada texto y su fondo? Busca texto claro sobre fondo claro y color sobre el mismo color.",
         "¿Los subtítulos tapan al sujeto o a otro texto en algún cuadro?",
