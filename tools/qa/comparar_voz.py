@@ -21,6 +21,37 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "subtitulos"))
 from alinear import normal, parecido, transcribir  # noqa: E402
 
 
+# Whisper escribe «106» donde se dijo «ciento seis», y eso no es un error de la voz.
+UNIDADES = "cero uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciseis diecisiete dieciocho diecinueve veinte veintiuno veintidos veintitres veinticuatro veinticinco veintiseis veintisiete veintiocho veintinueve".split()
+DECENAS = {3: "treinta", 4: "cuarenta", 5: "cincuenta", 6: "sesenta", 7: "setenta", 8: "ochenta", 9: "noventa"}
+CENTENAS = {1: "ciento", 2: "doscientos", 3: "trescientos", 4: "cuatrocientos", 5: "quinientos", 6: "seiscientos", 7: "setecientos", 8: "ochocientos", 9: "novecientos"}
+
+
+def en_palabras(n):
+    if n < 30:
+        return UNIDADES[n].split()
+    if n < 100:
+        return [DECENAS[n // 10]] + (["y", UNIDADES[n % 10]] if n % 10 else [])
+    if n == 100:
+        return ["cien"]
+    if n < 1000:
+        return [CENTENAS[n // 100]] + (en_palabras(n % 100) if n % 100 else [])
+    if n < 1000000:
+        return (["mil"] if n // 1000 == 1 else en_palabras(n // 1000) + ["mil"]) + (en_palabras(n % 1000) if n % 1000 else [])
+    return [str(n)]
+
+
+def sin_cifras(palabras):
+    salida = []
+    for w in palabras:
+        solo = w.strip(".,;:!?¿¡()«»\"'")
+        if solo.isdigit() and len(solo) <= 6:
+            salida += en_palabras(int(solo))
+        else:
+            salida.append(w)
+    return salida
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--audio", required=True)
@@ -29,8 +60,8 @@ def main():
     p.add_argument("--minimo", type=float, default=0.85)
     p.add_argument("--contexto", help="Texto que orienta al transcriptor para confirmar una palabra rara")
     a = p.parse_args()
-    guion = [w for w in Path(a.guion).read_text(encoding="utf-8").split() if normal(w)]
-    oido = [w[0] for w in transcribir(a.audio, a.modelo, a.contexto)]
+    guion = sin_cifras([w for w in Path(a.guion).read_text(encoding="utf-8").split() if normal(w)])
+    oido = sin_cifras([w[0] for w in transcribir(a.audio, a.modelo, a.contexto)])
     x, y = [normal(w) for w in guion], [normal(w) for w in oido]
     faltan, sobran = [], []
     aciertos = 0
