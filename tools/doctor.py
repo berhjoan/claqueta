@@ -49,6 +49,8 @@ def main():
         fila(mod, bool(importlib.util.find_spec(mod)), uso, paquetes)
     for mod, inst, uso in (("edge_tts", "pip install edge-tts", "voz Edge"), ("kokoro_onnx", "pip install kokoro-onnx soundfile", "voz Kokoro"), ("piper", "pip install piper-tts", "voz Piper"), ("pocket_tts", "pip install pocket-tts", "voz Pocket TTS")):
         fila(mod, bool(importlib.util.find_spec(mod)), f"{uso}. Si la usas: {inst}", necesario=False)
+    for mod, inst, uso in (("cv2", "pip install opencv-python", "reencuadrar siguiendo la cara"), ("PIL", "pip install pillow", "hojas de aprobación de una toma")):
+        fila(mod, bool(importlib.util.find_spec(mod)), f"{uso}. Si la usas: {inst}", necesario=False)
     npx = shutil.which("npx") or shutil.which("npx.cmd")
     fila("npx", bool(npx), "corre HyperFrames sin instalarlo: npx hyperframes@0.9.9", "Viene con Node")
     gsap = Path(__file__).resolve().parent / "lib" / "gsap.min.js"

@@ -56,8 +56,8 @@ def en_dos_lineas(texto, ancho=28):
     for i in range(1, len(palabras)):
         a, b = " ".join(palabras[:i]), " ".join(palabras[i:])
         d = max(len(a), len(b))
-        opciones.append((d > ancho, not re.search(r"[.,:;?!…]$", a), d, i))
-    corte = min(opciones)[3]
+        opciones.append((d > ancho, d if d > ancho else 0, not re.search(r"[.,:;?!…]$", a), d, i))
+    corte = min(opciones)[4]
     return " ".join(palabras[:corte]) + "\n" + " ".join(palabras[corte:])
 
 

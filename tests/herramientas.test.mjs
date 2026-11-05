@@ -16,7 +16,7 @@ const dir = fs.mkdtempSync(path.join(os.tmpdir(), "claqueta-"));
 test.after(() => fs.rmSync(dir, { recursive: true, force: true }));
 
 test("la ayuda de cada herramienta corre", { skip: !python && "falta Python" }, () => {
-  for (const h of ["tools/tts/hablar.py", "tools/subtitulos/alinear.py", "tools/qa/verificar_video.py", "tools/qa/hoja_cuadros.py"]) {
+  for (const h of ["tools/tts/hablar.py", "tools/subtitulos/alinear.py", "tools/qa/verificar_video.py", "tools/qa/hoja_cuadros.py", "tools/pista.py", "tools/qa/revisar.py", "tools/qa/referencia.py", "tools/entrega.py", "tools/medios/medios.py", "tools/medios/fuentes.py", "tools/medios/icono.py", "tools/material/toma.py", "tools/material/cortos.py", "tools/material/reencuadre.py"]) {
     const r = correr(python, [h, "--help"]);
     assert.equal(r.status, 0, `${h}: ${r.stderr}`);
   }
@@ -304,4 +304,88 @@ assert hablar.ruta_ascii("C:/sin/acentos") == "C:/sin/acentos"
 `;
   const r = correr(python, ["-c", s]);
   assert.equal(r.status, 0, r.stderr + r.stdout);
+});
+
+test("las fuentes del panel vienen incluidas y traen las letras del español", { skip: !python && "falta Python" }, () => {
+  const catalogo = JSON.parse(fs.readFileSync(path.join(raiz, "assets/fonts/fuentes.json"), "utf8"));
+  const metricas = JSON.parse(fs.readFileSync(path.join(raiz, "assets/fonts/metricas.json"), "utf8"));
+  for (const [familia, d] of Object.entries(catalogo.familias)) {
+    for (const a of d.archivos) assert.ok(fs.existsSync(path.join(raiz, "assets/fonts", a.archivo)), a.archivo);
+    assert.ok(fs.existsSync(path.join(raiz, "assets/fonts", d.licencia)), d.licencia);
+    const medidas = Object.entries(metricas.fuentes).filter(([k]) => k.startsWith(`${familia}|`));
+    assert.ok(medidas.length, `${familia}: sin medir`);
+    for (const [k, m] of medidas) assert.deepEqual(m.faltan, [], `${k}: le faltan letras`);
+  }
+  for (const par of Object.values(catalogo.pares)) for (const f of Object.values(par)) assert.ok(catalogo.familias[f], f);
+  const salida = path.join(dir, "fuentes");
+  const r = correr(python, ["tools/medios/fuentes.py", "cartel", "--carpeta", salida]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.ok(fs.readFileSync(path.join(salida, "fuentes.css"), "utf8").includes("Bebas Neue"));
+});
+
+test("los iconos se buscan y se escriben", { skip: !python && "falta Python" }, () => {
+  const b = correr(python, ["tools/medios/icono.py", "buscar", "mail"]);
+  assert.ok(JSON.parse(b.stdout).iconos.includes("mail"));
+  const s = correr(python, ["tools/medios/icono.py", "svg", "mail", "--color", "#E9A93B"]);
+  assert.match(s.stdout, /stroke="#E9A93B"/);
+  assert.notEqual(correr(python, ["tools/medios/icono.py", "svg", "no-existe"]).status, 0);
+});
+
+test("la pista escribe el mismo formato que leen el kit y la revisión", { skip: !python && "falta Python" }, () => {
+  const p = path.join(dir, "pista");
+  fs.mkdirSync(path.join(p, "assets", "voz"), { recursive: true });
+  fs.writeFileSync(path.join(p, "guion.txt"), "Hola mundo. Otra frase corta aquí.");
+  const tiempos = "Hola mundo. Otra frase corta aquí.".split(" ").map((w, i) => ({ palabra: w, inicio: i * 0.5, fin: i * 0.5 + 0.4 }));
+  fs.writeFileSync(path.join(p, "assets", "tiempos.json"), JSON.stringify({ palabras: tiempos, dur: 4, grupos: [], pausas: [] }));
+  const r = spawnSync(python, [path.join(raiz, "tools/pista.py"), "subtitulos", "--formato", "16:9"], { cwd: p, encoding: "utf8", env: { ...process.env, PYTHONIOENCODING: "utf-8" } });
+  assert.equal(r.status, 0, r.stderr);
+  const t = JSON.parse(fs.readFileSync(path.join(p, "assets", "tiempos.json"), "utf8"));
+  assert.equal(t.formato, "16:9");
+  assert.ok(t.grupos.length >= 1 && t.grupos[0].lineas && t.grupos[0].palabras[0].inicio !== undefined);
+  assert.ok(fs.existsSync(path.join(p, "renders", "final.srt")));
+});
+
+test("una cifra que oye el transcriptor no cuenta como error de la voz", { skip: !python && "falta Python" }, () => {
+  const codigo = `import sys; sys.path.insert(0, "tools/qa"); import importlib.util as u
+s = u.spec_from_file_location("c", "tools/qa/comparar_voz.py"); m = u.module_from_spec(s); s.loader.exec_module(m)
+print(" ".join(m.sin_cifras(["106", "estilos,", "21", "voces", "y", "1384.", "cien"])))
+print(" ".join(m.en_palabras(29)), "|", " ".join(m.en_palabras(100)), "|", " ".join(m.en_palabras(2024)))`;
+  const r = correr(python, ["-c", codigo]);
+  if (r.status !== 0 && /faster_whisper|whisper/.test(r.stderr)) return;
+  assert.equal(r.status, 0, r.stderr);
+  const [a, b] = r.stdout.trim().split(/\r?\n/);
+  assert.equal(a, "ciento seis estilos, veintiuno voces y mil trescientos ochenta y cuatro cien");
+  assert.equal(b, "veintinueve | cien | dos mil veinticuatro");
+});
+
+test("un subtítulo sin corte que quepa queda parejo, aunque haya una coma al principio", { skip: !python && "falta Python" }, () => {
+  const codigo = `import sys, importlib.util as u
+s = u.spec_from_file_location("s", "tools/subtitulos/srt.py"); m = u.module_from_spec(s); s.loader.exec_module(m)
+sys.stdout.reconfigure(encoding="utf-8")
+print(m.en_dos_lineas("Llega el mensaje, lo lee con calma y prepara toda la respuesta completa", 28))`;
+  const r = correr(python, ["-c", codigo]);
+  assert.equal(r.status, 0, r.stderr);
+  const [a, b] = r.stdout.trim().split(/\r?\n/);
+  assert.ok(Math.abs(a.length - b.length) <= 12, `${a.length} y ${b.length}: ${r.stdout}`);
+});
+
+test("los silencios se eligen por la palabra que sigue", { skip: !python && "falta Python" }, () => {
+  const codigo = `import sys, json, importlib.util as u
+s = u.spec_from_file_location("p", "tools/pista.py"); m = u.module_from_spec(s); s.loader.exec_module(m)
+t = {"palabras": [{"palabra": "Hola,", "inicio": 0.1, "fin": 0.5}, {"palabra": "tú", "inicio": 2.0, "fin": 2.2}, {"palabra": "ven", "inicio": 2.3, "fin": 2.5}, {"palabra": "Tú.", "inicio": 4.0, "fin": 4.3}],
+     "pausas": [{"inicio": 0.5, "fin": 2.0}, {"inicio": 2.5, "fin": 4.0}]}
+print(m.tramos_de_silencio("@Tu", t))
+print(m.tramos_de_silencio("@tú#2,9-9.5", t))
+print(m.tramos_de_silencio("1", t))
+try:
+    m.tramos_de_silencio("@ven", t)
+except SystemExit as e:
+    print("sale", "pausa" in str(e))
+try:
+    m.tramos_de_silencio("@nada", t)
+except SystemExit as e:
+    print("sale", "no dice" in str(e))`;
+  const r = correr(python, ["-c", codigo]);
+  assert.equal(r.status, 0, r.stderr);
+  assert.deepEqual(r.stdout.trim().split(/\r?\n/), ["0.5-2.0", "2.5-4.0,9-9.5", "0.5-2.0", "sale True", "sale True"]);
 });
