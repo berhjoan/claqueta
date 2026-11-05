@@ -267,7 +267,7 @@ test("una escena propia se monta tal cual y se valida su formato", () => {
   assert.equal(r.status, 2);
   assert.match(r.stderr, /ruta no permitida/);
   // Una plantilla vertical en un video horizontal: se detiene y dice qué hacer.
-  fs.writeFileSync(path.join(d, "pieza.json"), JSON.stringify({ dur: 6, formato: "16:9", planos: [{ tipo: "plantilla", estilo: "S07" }] }));
+  fs.writeFileSync(path.join(d, "pieza.json"), JSON.stringify({ dur: 6, formato: "16:9", planos: [{ tipo: "plantilla", estilo: "S21" }] }));
   r = correr();
   assert.equal(r.status, 2);
   assert.match(r.stderr, /vertical/);
@@ -298,9 +298,7 @@ test("una escena montada no hereda los colores ni las fuentes de la pieza", () =
 });
 
 test("una plantilla sin textos avisa que lleva los de ejemplo", () => {
-  const dir = path.join(raiz, "library", "plantillas");
-  const id = fs.readdirSync(dir).find((n) => fs.existsSync(path.join(dir, n, "ficha.json")) && JSON.parse(fs.readFileSync(path.join(dir, n, "ficha.json"), "utf8")).variables?.length);
-  assert.ok(id, "no hay plantillas con variables");
+  const id = "S21";
   const d = fs.mkdtempSync(path.join(os.tmpdir(), "ejemplo-"));
   fs.writeFileSync(path.join(d, "pieza.json"), JSON.stringify({ dur: 8, planos: [{ tipo: "titulo", texto: "Inicio" }, { tipo: "plantilla", desde: 2, estilo: id, textos: {} }] }));
   const salida = JSON.parse(execFileSync(process.execPath, [armar, "pieza.json"], { cwd: d, encoding: "utf8" }));
