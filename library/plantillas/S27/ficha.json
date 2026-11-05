@@ -1,0 +1,88 @@
+{
+  "id": "S27",
+  "nombre": "Interfaz de ciencia ficción (HUD)",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "rotulo",
+      "etiqueta": "Cabecera",
+      "defecto": "Análisis",
+      "max": 16
+    },
+    {
+      "id": "dato1",
+      "etiqueta": "Dato 1",
+      "defecto": "blanco fijo",
+      "max": 12
+    },
+    {
+      "id": "dato2",
+      "etiqueta": "Dato 2",
+      "defecto": "señal clara",
+      "max": 12
+    },
+    {
+      "id": "dato3",
+      "etiqueta": "Dato 3",
+      "defecto": "listo",
+      "max": 12
+    },
+    {
+      "id": "nivel",
+      "etiqueta": "Medidor",
+      "defecto": "Nivel",
+      "max": 16
+    }
+  ],
+  "paleta": {
+    "fondo": "#031421",
+    "tinta": "#D9F9FF",
+    "acento": "#3DE8FF",
+    "segundo": "#FFB347",
+    "superficie": "#062236"
+  },
+  "fuentes": [
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Anillos que giran y frenan, con marcas cada 5°",
+    "Barrido corto del objetivo",
+    "Tres datos con marca de verificación",
+    "Medidor, celdas y señal de fondo"
+  ],
+  "sonidos": [
+    {
+      "t": 0.3,
+      "sonido": "barrido",
+      "ganancia": -18
+    },
+    {
+      "t": 0.95,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 1.35,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 1.75,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 2.3,
+      "sonido": "campana",
+      "ganancia": -18
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

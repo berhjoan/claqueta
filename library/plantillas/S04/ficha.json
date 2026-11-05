@@ -1,0 +1,72 @@
+{
+  "id": "S04",
+  "nombre": "Resplandor neón",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "linea1",
+      "etiqueta": "Línea 1",
+      "defecto": "Una idea",
+      "max": 12
+    },
+    {
+      "id": "linea2",
+      "etiqueta": "Línea 2",
+      "defecto": "hecha de luz",
+      "max": 12
+    },
+    {
+      "id": "rotulo",
+      "etiqueta": "Cartel",
+      "defecto": "Abierto",
+      "max": 14
+    },
+    {
+      "id": "lema",
+      "etiqueta": "Lema",
+      "defecto": "El brillo guía la mirada",
+      "max": 30
+    }
+  ],
+  "paleta": {
+    "fondo": "#07040F",
+    "tinta": "#FDF6FF",
+    "acento": "#19F6FF",
+    "segundo": "#FF2BD6",
+    "superficie": "#140A24"
+  },
+  "fuentes": [
+    "Sora"
+  ],
+  "rasgos": [
+    "Túnel de marcos de neón que avanza y frena",
+    "Título por máscara con resplandor que no se recorta",
+    "Cartel que se enciende con dos parpadeos",
+    "Cian y magenta sobre negro violáceo"
+  ],
+  "sonidos": [
+    {
+      "t": 0.3,
+      "sonido": "barrido",
+      "ganancia": -18
+    },
+    {
+      "t": 1.0,
+      "sonido": "destello",
+      "ganancia": -14
+    },
+    {
+      "t": 1.9,
+      "sonido": "pop",
+      "ganancia": -18
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "id": "S29",
+  "nombre": "Synthwave (retrofuturismo)",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Retro",
+      "max": 10
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "el futuro que imaginamos",
+      "max": 26
+    }
+  ],
+  "paleta": {
+    "fondo": "#291440",
+    "tinta": "#FFFFFF",
+    "acento": "#FF6AD5",
+    "segundo": "#FF2975",
+    "superficie": "#12002B"
+  },
+  "fuentes": [
+    "Archivo Black",
+    "Sora"
+  ],
+  "rasgos": [
+    "Sol segmentado y montañas en el horizonte",
+    "Rejilla en perspectiva que avanza y frena",
+    "Ecualizador sintético",
+    "Título cromado con resplandor"
+  ],
+  "sonidos": [
+    {
+      "t": 0.0,
+      "sonido": "subida",
+      "ganancia": -16
+    },
+    {
+      "t": 0.4,
+      "sonido": "impacto",
+      "ganancia": -12
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

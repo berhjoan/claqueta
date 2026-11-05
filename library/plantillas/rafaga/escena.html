@@ -1,0 +1,109 @@
+<template>
+  <style>
+    #pl-rafaga { position: absolute; inset: 0; overflow: hidden; background-color: var(--fondo, #121212); background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 60px 60px; font-family: var(--display, "Sora"), sans-serif; color: var(--tinta, #FFFFFF); }
+    #pl-rafaga-mosaico { position: absolute; inset: 0; }
+    .pl-rafaga-m { position: absolute; width: 135px; height: 165px; object-fit: cover; }
+    #pl-rafaga-sombra { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.4); }
+    #pl-rafaga-caja { position: absolute; left: 240px; top: 600px; width: 600px; height: 470px; border-radius: 16px; background: rgba(10, 10, 10, 0.9); border: 2px solid rgba(255, 255, 255, 0.28); }
+    #pl-rafaga-num { position: absolute; left: 0; right: 0; top: 30px; text-align: center; font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 500; font-size: 250px; line-height: 1.1; color: var(--tinta, #FFFFFF); }
+    #pl-rafaga-est { position: absolute; left: 0; right: 0; top: 340px; text-align: center; font-size: 76px; font-weight: 600; line-height: 1.1; color: var(--acento, #FFD166); white-space: nowrap; }
+    #pl-rafaga-baraja { position: absolute; inset: 0; opacity: 0; }
+    #pl-rafaga-marco { position: absolute; left: 150px; top: 300px; width: 780px; height: 820px; border-radius: 18px; background: var(--superficie, #1E1E1E); border: 2px solid rgba(255, 255, 255, 0.22); box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55); }
+    #pl-rafaga-barra { position: absolute; left: 150px; top: 288px; width: 780px; height: 6px; background: var(--acento, #FFD166); transform-origin: 0 50%; transform: scaleX(0); }
+    .pl-rafaga-carta { position: absolute; inset: 0; opacity: 0; }
+    .pl-rafaga-carta img { position: absolute; left: 160px; top: 320px; width: 760px; height: 780px; object-fit: contain; }
+    .pl-rafaga-pos { position: absolute; left: 150px; top: 238px; font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 500; font-size: 44px; line-height: 1; color: var(--segundo, #9A9A9A); white-space: nowrap; }
+    .pl-rafaga-nombre { position: absolute; left: 72px; width: 936px; top: 1136px; text-align: center; font-size: 58px; font-weight: 600; line-height: 1.1; white-space: nowrap; }
+    .pl-rafaga-id { position: absolute; left: 72px; width: 936px; top: 1208px; text-align: center; font-family: var(--datos, "JetBrains Mono"), monospace; font-weight: 500; font-size: 44px; line-height: 1.1; color: var(--segundo, #9A9A9A); white-space: nowrap; }
+    .pl-rafaga-fuente { display: none; }
+  </style>
+  <div id="pl-rafaga" data-composition-id="rafaga" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"lista","type":"string","label":"Miniaturas en orden (ids del catálogo, separados por comas)","default":"S21,L-microgame,S37,L-satellite-briefing,S30,S25,S08,L-backrooms,S40,L-watercolor,S33,S04"},{"id":"paradas","type":"string","label":"Paradas con nombre (ids de la lista)","default":"S40,S04"},{"id":"cadencia","type":"string","label":"Cuadros por miniatura","default":"2"},{"id":"pausa","type":"string","label":"Segundos que dura una parada","default":"0.5"},{"id":"mosaico","type":"string","label":"Mosaico inicial: todo, no, o una lista de ids","default":"todo"},{"id":"etiqueta","type":"string","label":"Palabra del contador","default":"estilos"},{"id":"carpeta","type":"string","label":"Carpeta de las miniaturas","default":"assets/thumbs"}]'>
+    <div id="pl-rafaga-mosaico" data-layout-ignore><div id="pl-rafaga-sombra"></div></div>
+    <div id="pl-rafaga-caja"><div id="pl-rafaga-num">0</div><div id="pl-rafaga-est" data-var-text="etiqueta">estilos</div></div>
+    <div id="pl-rafaga-baraja"><div id="pl-rafaga-marco" data-layout-ignore></div><div id="pl-rafaga-barra" data-layout-ignore></div></div>
+    <span id="pl-rafaga-v-lista" class="pl-rafaga-fuente" data-var-text="lista">S21,L-microgame,S37,L-satellite-briefing,S30,S25,S08,L-backrooms,S40,L-watercolor,S33,S04</span>
+    <span id="pl-rafaga-v-paradas" class="pl-rafaga-fuente" data-var-text="paradas">S40,S04</span>
+    <span id="pl-rafaga-v-cadencia" class="pl-rafaga-fuente" data-var-text="cadencia">2</span>
+    <span id="pl-rafaga-v-pausa" class="pl-rafaga-fuente" data-var-text="pausa">0.5</span>
+    <span id="pl-rafaga-v-mosaico" class="pl-rafaga-fuente" data-var-text="mosaico">todo</span>
+    <span id="pl-rafaga-v-carpeta" class="pl-rafaga-fuente" data-var-text="carpeta">assets/thumbs</span>
+    <script type="application/json" id="pl-rafaga-catalogo">{"S01":["Partículas","Procedural"],"S02":["Morphing líquido","Material y forma"],"S03":["Holográfico","Material"],"S04":["Resplandor neón","Luz"],"S05":["Malla 3D","Representación 3D"],"S06":["Cristal esmerilado","Interfaz y material"],"S07":["Tipografía cinética","Tipografía"],"S08":["Isométrico","Proyección"],"S09":["Arcilla 3D","Material 3D"],"S10":["Arte ASCII","Representación"],"S11":["Malla de gradientes","Fondo"],"S12":["Cómic","Lenguaje editorial"],"S13":["Panel de láminas","Tipografía mecánica"],"S14":["Retro VHS","Tratamiento de imagen"],"S15":["Semitono","Impresión"],"S16":["Bauhaus geométrico","Composición"],"S17":["Pixel art","Representación raster"],"S18":["Plano técnico","Dibujo técnico"],"S19":["Art déco","Composición ornamental"],"S20":["Neobrutalismo","Diseño gráfico"],"S21":["Editorial minimalista","Composición"],"S22":["Collage de papel","Material gráfico"],"S23":["Parallax 2.5D","Profundidad"],"S24":["Anotación dibujada (doodle)","Trazo"],"S25":["Trazo continuo (line art)","Dibujo"],"S26":["Infografía animada","Información"],"S27":["Interfaz de ciencia ficción (HUD)","Interfaz"],"S28":["Glitch digital","Transición"],"S29":["Synthwave (retrofuturismo)","Dirección artística"],"S30":["Película analógica","Tratamiento de imagen"],"S31":["Animación por poses (stop motion)","Temporalidad"],"S32":["Cel shading (cartoon 3D)","Material"],"S33":["Low poly","Geometría"],"S34":["Vóxel","Geometría volumétrica"],"S35":["Tinta y acuarela","Material pictórico"],"S36":["Producto de estudio (macro 3D)","Iluminación y cámara"],"S37":["Siluetas y contraluz","Iluminación"],"S38":["Doble exposición","Composición de capas"],"S39":["Datamosh simulado","Transición de distorsión"],"S40":["Pizarra","Material y explicación"],"L-caption-news":["Noticia con subtítulos","Montaje y documental"],"L-newsreel":["Noticiero de los años 20","Montaje y documental"],"L-countdown":["Cuenta atrás en pantalla dividida en vivo","Montaje y documental"],"L-city-symphony":["Sinfonía de time-lapse","Montaje y documental"],"L-visual-investigation":["Investigación visual","Montaje y documental"],"L-kino-montage":["Montaje constructivista","Montaje y documental"],"L-telestrator":["Telestrator deportivo","Montaje y documental"],"L-news-package":["Paquete de noticiero de televisión","Montaje y documental"],"L-satellite-briefing":["Informe satelital","Cine de evidencias"],"L-briefing-board":["Pizarra de informe de ingeniería","Cine de evidencias"],"L-lidar-survey":["Levantamiento LiDAR","Cine de evidencias"],"L-white-model":["Proyección sobre maqueta blanca","Cine de evidencias"],"L-data-physical":["Datos hechos objeto","Cine de evidencias"],"L-teardown":["Despiece de producto","Cine de evidencias"],"L-microscope":["Relato de microscopio","Cine de evidencias"],"L-archive-lighttable":["Mesa de luz de archivo","Cine de evidencias"],"L-crayon-book":["Libro ilustrado en crayón","Dibujo a mano y pintura"],"L-watercolor":["Pincel de acuarela","Dibujo a mano y pintura"],"L-ink-wash":["Pintura china a la tinta","Dibujo a mano y pintura"],"L-impasto":["Óleo con empaste","Dibujo a mano y pintura"],"L-one-line":["Dibujo de una sola línea","Dibujo a mano y pintura"],"L-whiteboard":["Explicador en pizarra blanca","Dibujo a mano y pintura"],"L-urban-sketch":["Boceto urbano con pluma y aguada","Dibujo a mano y pintura"],"L-chalkboard":["Pizarra de tiza","Dibujo a mano y pintura"],"L-shadow-puppet":["Teatro de sombras","Tradiciones de Asia oriental"],"L-ukiyoe":["Ukiyo-e","Tradiciones de Asia oriental"],"L-papercut-red":["Papel recortado rojo","Tradiciones de Asia oriental"],"L-paper-lantern":["Caja de luz de papel recortado","Tradiciones de Asia oriental"],"L-risograph":["Impresión risográfica","Impresión y grabado"],"L-halftone-dossier":["Expediente en semitono","Impresión y grabado"],"L-woodcut":["Xilografía","Impresión y grabado"],"L-engraving":["Grabado en cobre","Impresión y grabado"],"L-silkscreen-poster":["Cartel de serigrafía de viajes","Impresión y grabado"],"L-printed-long-take":["Plano secuencia impreso","Impresión y grabado"],"L-swiss-motion":["Gráfica en movimiento suiza","Gráfica y tipografía"],"L-spy-titles":["Créditos de espías de los años 60","Gráfica y tipografía"],"L-art-deco":["Art déco","Gráfica y tipografía"],"L-blueprint":["Plano técnico en cianotipo","Gráfica y tipografía"],"L-stained-glass":["Vitral","Gráfica y tipografía"],"L-pictogram-motion":["Movimiento de pictogramas","Gráfica y tipografía"],"L-ascii-crt":["Terminal ASCII y CRT","Gráfica y tipografía"],"L-dataviz":["Narración con datos","Información y keynote"],"L-iso-infographic":["Infografía isométrica","Información y keynote"],"L-dark-keynote":["Keynote tecnológico oscuro","Información y keynote"],"L-living-screencast":["Screencast vivo","Información y keynote"],"L-hologram-hud":["Holograma HUD de ciencia ficción","Información y keynote"],"L-transit-map":["Mapa de transporte","Información y keynote"],"L-isometric-picture-book":["Libro ilustrado isométrico","Información y keynote"],"L-circuit-board":["Placa de circuito","Información y keynote"],"L-rubber-hose":["Caricatura de los años 30 con extremidades de manguera","Dibujos animados y anime"],"L-cel-anime-80s":["Anime de cel de los años 80","Dibujos animados y anime"],"L-midcentury-toon":["Caricatura de mediados de siglo","Dibujos animados y anime"],"L-pixel-rpg":["RPG de píxeles de 16 bits","Videojuegos"],"L-hd-2d":["HD-2D","Videojuegos"],"L-microgame":["Frenesí de microjuegos","Videojuegos"],"L-game-show":["Concurso en vector plano","Videojuegos"],"L-silent-film":["Cine mudo de los años 20","Cine y épocas"],"L-backrooms":["Metraje encontrado liminal","Cine y épocas"],"L-tilt-shift":["Miniatura tilt-shift","Materiales y 3D"],"L-lowpoly-island":["Isla isométrica low poly","Materiales y 3D"],"L-glass-product":["Render de producto en vidrio","Materiales y 3D"],"L-memphis-diorama":["Diorama Memphis","Materiales y 3D"],"L-desktop-flythrough":["Recorrido por el escritorio","Materiales y 3D"]}</script>
+  </div>
+  <script>
+    (function () {
+      const raiz = document.getElementById("pl-rafaga");
+      const CAT = JSON.parse(raiz.querySelector("#pl-rafaga-catalogo").textContent); // id → [nombre, familia]
+      const dato = (id) => (raiz.querySelector("#pl-rafaga-v-" + id).textContent || "").trim();
+      const ids = (txt) => txt.split(/[\s,;]+/).filter(Boolean);
+      const num = (txt, def) => { const n = Number(String(txt).replace(",", ".")); return Number.isFinite(n) && n > 0 ? n : def; };
+      let lista = ids(dato("lista")).filter((id) => CAT[id]);
+      if (!lista.length) lista = Object.keys(CAT).slice(0, 8);
+      const paradas = new Set(ids(dato("paradas")));
+      const cuadros = Math.max(1, Math.round(num(dato("cadencia"), 2)));
+      const pausa = num(dato("pausa"), 0.5);
+      const carpeta = (dato("carpeta") || "assets/thumbs").replace(/\/+$/, "");
+      const modo = dato("mosaico").toLowerCase();
+      const mosaico = modo === "no" ? [] : modo === "todo" || modo === "" ? Object.keys(CAT) : ids(dato("mosaico")).filter((id) => CAT[id]);
+      const ruta = (id) => carpeta + "/" + id + ".webp";
+      const nuevo = (tag, clase, id) => { const e = document.createElement(tag); if (clase) e.className = clase; if (id) e.id = id; return e; };
+
+      // A. Mosaico: 8 columnas de 135 px, centrado en vertical; entra en ola diagonal.
+      const COLS = 8, W = 135, H = 165, filas = Math.ceil(mosaico.length / COLS), y0 = Math.round((1920 - filas * H) / 2);
+      const cont = raiz.querySelector("#pl-rafaga-mosaico");
+      const sombra = raiz.querySelector("#pl-rafaga-sombra");
+      mosaico.forEach((id, i) => {
+        const im = nuevo("img", "pl-rafaga-m");
+        const c = i % COLS, f = Math.floor(i / COLS);
+        im.src = ruta(id); im.alt = ""; im.style.left = c * W + "px"; im.style.top = y0 + f * H + "px";
+        im.dataset.d = ((c + f) * 0.025).toFixed(3);
+        cont.insertBefore(im, sombra);
+      });
+      const mosaicoSeg = mosaico.length ? 1.3 : 0;
+
+      // B. Baraja: una carta por miniatura, apiladas; solo una visible a la vez.
+      const baraja = raiz.querySelector("#pl-rafaga-baraja");
+      const cartas = lista.map((id, i) => {
+        const c = nuevo("div", "pl-rafaga-carta", "pl-rafaga-c" + i);
+        const im = nuevo("img"); im.src = ruta(id); im.alt = "";
+        c.appendChild(im);
+        if (paradas.has(id)) {
+          const pos = nuevo("div", "pl-rafaga-pos"); pos.textContent = String(i + 1).padStart(2, "0") + " / " + String(lista.length).padStart(2, "0");
+          c.appendChild(pos);
+          const n = nuevo("div", "pl-rafaga-nombre"); n.textContent = CAT[id][0];
+          c.appendChild(n);
+          // La familia pide más tiempo que el nombre: en una parada corta no se alcanza a leer.
+          if (pausa >= 1) { const d = nuevo("div", "pl-rafaga-id"); d.textContent = id + " · " + CAT[id][1]; c.appendChild(d); }
+        }
+        baraja.appendChild(c);
+        return c;
+      });
+
+      const tl = gsap.timeline({ paused: true });
+      if (mosaico.length) {
+        cont.querySelectorAll(".pl-rafaga-m").forEach((m) => tl.fromTo(m, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: "expo.out" }, parseFloat(m.dataset.d)));
+        tl.fromTo("#pl-rafaga-mosaico", { scale: 1, transformOrigin: "540px 960px" }, { scale: 1.06, duration: mosaicoSeg, ease: "power2.inOut" }, 0);
+        // El contador aterriza en la cifra en 0,45 s.
+        const n = { v: 0 }, cifra = raiz.querySelector("#pl-rafaga-num");
+        tl.fromTo("#pl-rafaga-caja", { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power4.out" }, 0.3);
+        tl.fromTo(n, { v: 0 }, { v: mosaico.length, duration: 0.45, ease: "power3.out", onUpdate: () => { cifra.textContent = String(Math.round(n.v)); } }, 0.3);
+        tl.set(["#pl-rafaga-mosaico", "#pl-rafaga-caja"], { opacity: 0 }, mosaicoSeg);
+      } else {
+        tl.set("#pl-rafaga-caja", { opacity: 0 }, 0);
+      }
+      tl.set("#pl-rafaga-baraja", { opacity: 1 }, mosaicoSeg);
+      // Cada carta dura «cuadros»/30 s; una parada dura «pausa» s. La última se queda.
+      let t = mosaicoSeg;
+      cartas.forEach((c, i) => {
+        const dur = paradas.has(lista[i]) ? pausa : cuadros / 30;
+        tl.set(c, { opacity: 1 }, t);
+        tl.set("#pl-rafaga-barra", { scaleX: (i + 1) / cartas.length }, t);
+        if (i < cartas.length - 1) tl.set(c, { opacity: 0 }, t + dur);
+        t += dur;
+      });
+      tl.to({}, { duration: Math.max(4, t) }, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["rafaga"] = tl;
+    })();
+  </script>
+</template>

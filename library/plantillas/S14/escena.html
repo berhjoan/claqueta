@@ -1,0 +1,91 @@
+<template>
+  <style>
+    #pl-s14 { position: absolute; inset: 0; overflow: hidden; background: linear-gradient(180deg, var(--fondo, #0A1A8C) 0%, var(--superficie, #1C0F70) 100%); color: var(--tinta, #FFFFFF); font-family: var(--datos, "VT323"), monospace; }
+    #pl-s14-contenido { position: absolute; inset: 0; filter: blur(0.7px); }
+    #pl-s14-osd { position: absolute; left: 72px; top: 268px; display: flex; align-items: center; gap: 26px; font-size: 84px; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55); white-space: nowrap; }
+    #pl-s14-canal { position: absolute; right: 72px; top: 268px; font-size: 84px; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55); color: var(--acento, #05D9E8); white-space: nowrap; }
+    #pl-s14-zona { position: absolute; left: 72px; width: 936px; top: 460px; height: 560px; display: flex; align-items: center; justify-content: center; }
+    #pl-s14-titulo { width: 936px; display: grid; justify-items: center; text-align: center; font-family: var(--display, "Archivo Black"), sans-serif; font-size: 300px; line-height: 1.02; letter-spacing: -0.01em; text-transform: uppercase; }
+    .pl-s14-capa { grid-area: 1 / 1; width: 100%; }
+    #pl-s14-c { color: var(--acento, #05D9E8); mix-blend-mode: screen; }
+    #pl-s14-m { color: var(--segundo, #FF2A6D); mix-blend-mode: screen; }
+    #pl-s14-b { color: var(--tinta, #FFFFFF); }
+    #pl-s14-sub { position: absolute; left: 72px; width: 936px; top: 1050px; text-align: center; font-size: 96px; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55); white-space: nowrap; }
+    #pl-s14-cuenta { position: absolute; left: 72px; top: 1160px; font-size: 76px; line-height: 1; text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.55); white-space: nowrap; }
+    #pl-s14-rec { display: inline-block; width: 34px; height: 34px; border-radius: 50%; background: var(--segundo, #FF2A6D); margin-right: 18px; vertical-align: 4px; }
+    #pl-s14-barras { position: absolute; left: 0; top: 1600px; width: 1080px; height: 150px; display: flex; opacity: 0.92; }
+    #pl-s14-barras div { flex: 1; }
+    #pl-s14-lineas { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.24) 0 3px, transparent 3px 6px); }
+    #pl-s14-banda { position: absolute; left: -40px; top: 0; width: 1160px; height: 150px; opacity: 0; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 38%, rgba(255,255,255,0.62) 50%, rgba(255,255,255,0.22) 62%, rgba(255,255,255,0) 100%); mix-blend-mode: screen; }
+    #pl-s14-ruido { position: absolute; left: 0; top: 0; width: 1080px; height: 150px; opacity: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.0) 0 7px, rgba(255,255,255,0.55) 7px 11px, rgba(255,255,255,0) 11px 23px, rgba(255,255,255,0.35) 23px 24px, rgba(255,255,255,0) 24px 41px); mix-blend-mode: overlay; }
+    #pl-s14-cabezal { position: absolute; left: -60px; top: 1790px; width: 1200px; height: 130px; opacity: 0.75; background: repeating-linear-gradient(90deg, rgba(255,255,255,0) 0 18px, rgba(255,255,255,0.5) 18px 24px, rgba(0,0,0,0.5) 24px 40px, rgba(255,255,255,0) 40px 63px); mix-blend-mode: overlay; }
+    #pl-s14-sombra { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%); }
+  </style>
+  <div id="pl-s14" data-composition-id="S14" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"osd","type":"string","label":"Texto de pantalla","default":"Reproducir"},{"id":"canal","type":"string","label":"Canal","default":"CH 03"},{"id":"titulo","type":"string","label":"Título","default":"VHS"},{"id":"subtitulo","type":"string","label":"Subtítulo","default":"Cinta 01"}]'>
+    <div id="pl-s14-contenido">
+      <div id="pl-s14-osd"><svg width="64" height="74" viewBox="0 0 64 74" data-layout-ignore><polygon points="0,0 64,37 0,74" fill="#fff"/></svg><span data-var-text="osd">Reproducir</span></div>
+      <div id="pl-s14-canal" data-var-text="canal">CH 03</div>
+      <div id="pl-s14-zona"><div id="pl-s14-titulo">
+        <div id="pl-s14-c" class="pl-s14-capa" data-var-text="titulo">VHS</div>
+        <div id="pl-s14-m" class="pl-s14-capa" data-var-text="titulo">VHS</div>
+        <div id="pl-s14-b" class="pl-s14-capa" data-var-text="titulo">VHS</div>
+      </div></div>
+      <div id="pl-s14-sub" data-var-text="subtitulo">Cinta 01</div>
+      <div id="pl-s14-cuenta"><span id="pl-s14-rec"></span><span id="pl-s14-tc">0:00:00</span></div>
+    </div>
+    <div id="pl-s14-barras" data-layout-ignore><div style="background:#ffffff"></div><div style="background:#f2e000"></div><div style="background:#00d8d8"></div><div style="background:#12c212"></div><div style="background:#d612d6"></div><div style="background:#e01212"></div><div style="background:#1212e0"></div></div>
+    <div id="pl-s14-cabezal" data-layout-ignore></div>
+    <div id="pl-s14-banda" data-layout-ignore></div>
+    <div id="pl-s14-ruido" data-layout-ignore></div>
+    <div id="pl-s14-lineas" data-layout-ignore></div>
+    <div id="pl-s14-sombra" data-layout-ignore></div>
+  </div>
+  <script>
+    (function () {
+      const tc = document.getElementById("pl-s14-tc");
+      const titulo = document.getElementById("pl-s14-titulo");
+      // El título llena el ancho: el tamaño sale de su palabra más larga (Archivo Black en mayúsculas mide ~0,9 del cuerpo por letra).
+      let ultimo = null;
+      function ajustar() {
+        const t = (document.getElementById("pl-s14-b").textContent || "").trim();
+        if (t === ultimo) return;
+        ultimo = t;
+        const largo = Math.max(1, ...t.split(/\s+/).map((w) => w.length));
+        titulo.style.fontSize = Math.max(72, Math.min(300, Math.floor(900 / (largo * 0.9)))) + "px";
+      }
+      ajustar();
+      const cuenta = { s: 0 };
+      const tl = gsap.timeline({ paused: true });
+      // El texto de pantalla entra a saltos; el título llega con los canales RGB separados y se recompone en cinco cuadros.
+      tl.fromTo("#pl-s14-osd", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.4, ease: "steps(10)" }, 0);
+      tl.fromTo("#pl-s14-canal", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.2);
+      const saltos = [[-46, 38], [30, -34], [-18, 22], [9, -9], [0, 0]];
+      tl.fromTo("#pl-s14-titulo", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.12);
+      saltos.forEach(([c, m], i) => {
+        const t = 0.12 + i * 0.0333;
+        tl.set("#pl-s14-c", { x: c, y: i < 4 ? -5 : 0 }, t);
+        tl.set("#pl-s14-m", { x: m, y: i < 4 ? 5 : 0 }, t);
+      });
+      // Desalineación fina que se queda (sangrado de color de la cinta).
+      tl.set("#pl-s14-c", { x: -7 }, 0.3);
+      tl.set("#pl-s14-m", { x: 7 }, 0.3);
+      tl.fromTo("#pl-s14-sub", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 0.7);
+      tl.fromTo("#pl-s14-cuenta", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 0.9);
+      // Defecto de tracking: una banda de ruido sube por el cuadro y sacude el título a su paso.
+      tl.fromTo("#pl-s14-banda", { y: 1560, opacity: 0.9 }, { y: 150, opacity: 0.9, duration: 1.3, ease: "none" }, 0.7);
+      tl.fromTo("#pl-s14-ruido", { y: 1560, opacity: 0.9 }, { y: 150, opacity: 0.9, duration: 1.3, ease: "none" }, 0.7);
+      tl.set(["#pl-s14-banda", "#pl-s14-ruido"], { opacity: 0 }, 2.01);
+      [[1.12, 22, 4], [1.17, -16, -3], [1.22, 12, 2], [1.27, -8, 0], [1.32, 0, 0]].forEach(([t, x, k]) => tl.set("#pl-s14-contenido", { x, skewX: k }, t));
+      // Cuenta de la cinta: segundo a segundo.
+      tl.fromTo(cuenta, { s: 0 }, { s: 3, duration: 3, ease: "none", onUpdate: () => { tc.textContent = "0:00:0" + Math.floor(cuenta.s); } }, 0);
+      // El ruido de la cabeza de lectura pasa de largo y queda quieto.
+      tl.fromTo("#pl-s14-cabezal", { x: 0 }, { x: -63, duration: 3.2, ease: "power2.out" }, 0);
+      tl.fromTo({ v: 0 }, { v: 0 }, { v: 1, duration: 4, ease: "none", onUpdate: ajustar }, 0);
+      tl.fromTo("#pl-s14-barras", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "steps(14)" }, 0.3);
+      tl.to({}, { duration: 4 }, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S14"] = tl;
+    })();
+  </script>
+</template>

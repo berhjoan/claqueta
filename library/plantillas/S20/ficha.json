@@ -1,0 +1,85 @@
+{
+  "id": "S20",
+  "nombre": "Neobrutalismo",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "boton",
+      "etiqueta": "Botón",
+      "defecto": "Empezar",
+      "max": 12
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Tres pasos, cero líos",
+      "max": 24
+    },
+    {
+      "id": "chip1",
+      "etiqueta": "Ficha 1",
+      "defecto": "rápido",
+      "max": 8
+    },
+    {
+      "id": "chip2",
+      "etiqueta": "Ficha 2",
+      "defecto": "claro",
+      "max": 8
+    },
+    {
+      "id": "chip3",
+      "etiqueta": "Ficha 3",
+      "defecto": "firme",
+      "max": 8
+    },
+    {
+      "id": "archivo",
+      "etiqueta": "Nombre del archivo",
+      "defecto": "resultado.mp4",
+      "max": 22
+    }
+  ],
+  "paleta": {
+    "fondo": "#FFDE59",
+    "tinta": "#111111",
+    "acento": "#FF5C8A",
+    "segundo": "#7BDFF2",
+    "superficie": "#FFFFFF"
+  },
+  "fuentes": [
+    "Archivo Black",
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Bloques con borde negro y sombra dura desplazada",
+    "Entrada con giro de 2° y rebote mínimo",
+    "Botón que se hunde hasta su sombra",
+    "Barra de progreso hasta el 100 %"
+  ],
+  "sonidos": [
+    {
+      "t": 0.0,
+      "sonido": "pop",
+      "ganancia": -16
+    },
+    {
+      "t": 1.1,
+      "sonido": "clic",
+      "ganancia": -10
+    },
+    {
+      "t": 2.9,
+      "sonido": "campana",
+      "ganancia": -14
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

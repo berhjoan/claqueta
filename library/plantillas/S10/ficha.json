@@ -1,0 +1,88 @@
+{
+  "id": "S10",
+  "nombre": "Arte ASCII",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "barra",
+      "etiqueta": "Barra de la ventana",
+      "defecto": "~/proyecto",
+      "max": 18
+    },
+    {
+      "id": "linea1",
+      "etiqueta": "Línea 1",
+      "defecto": "$ abrir proyecto",
+      "max": 28
+    },
+    {
+      "id": "linea2",
+      "etiqueta": "Línea 2",
+      "defecto": "$ cargar escena",
+      "max": 28
+    },
+    {
+      "id": "linea3",
+      "etiqueta": "Línea 3",
+      "defecto": "> tres capas listas",
+      "max": 28
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título en arte ASCII",
+      "defecto": "HOLA",
+      "max": 8
+    }
+  ],
+  "paleta": {
+    "fondo": "#020A05",
+    "tinta": "#46FF78",
+    "acento": "#B6FFC9",
+    "segundo": "#1E8C3A",
+    "superficie": "#06210F"
+  },
+  "fuentes": [
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Ventana de terminal con líneas escritas a pasos",
+    "Título en arte ASCII hecho con una tipografía de 5×7 puntos",
+    "Lluvia de caracteres al fondo",
+    "Barra de carga en texto y cursor que parpadea"
+  ],
+  "sonidos": [
+    {
+      "t": 0.1,
+      "sonido": "tecla",
+      "ganancia": -18
+    },
+    {
+      "t": 0.55,
+      "sonido": "tecla",
+      "ganancia": -18
+    },
+    {
+      "t": 1.0,
+      "sonido": "tecla",
+      "ganancia": -18
+    },
+    {
+      "t": 1.7,
+      "sonido": "clic",
+      "ganancia": -14
+    },
+    {
+      "t": 3.2,
+      "sonido": "campana",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

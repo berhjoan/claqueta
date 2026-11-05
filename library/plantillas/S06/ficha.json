@@ -1,0 +1,73 @@
+{
+  "id": "S06",
+  "nombre": "Cristal esmerilado",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "etiqueta",
+      "etiqueta": "Etiqueta",
+      "defecto": "Nuevo",
+      "max": 14
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Cristal esmerilado",
+      "max": 22
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Luz que atraviesa el vidrio",
+      "max": 30
+    },
+    {
+      "id": "ficha1",
+      "etiqueta": "Ficha 1",
+      "defecto": "translúcido",
+      "max": 11
+    },
+    {
+      "id": "ficha2",
+      "etiqueta": "Ficha 2",
+      "defecto": "suave",
+      "max": 11
+    }
+  ],
+  "paleta": {
+    "fondo": "#140F2E",
+    "tinta": "#FFFFFF",
+    "acento": "#7B5CFF",
+    "segundo": "#00C2A8",
+    "superficie": "#2A2250"
+  },
+  "fuentes": [
+    "Sora"
+  ],
+  "rasgos": [
+    "Tarjeta de vidrio con desenfoque y borde claro",
+    "Entrada con desfase de 0,12 s, 24 px y escala 0,96 → 1",
+    "Manchas de color que se desplazan y frenan",
+    "Un brillo cruza el cristal una sola vez"
+  ],
+  "sonidos": [
+    {
+      "t": 0.0,
+      "sonido": "pop",
+      "ganancia": -16
+    },
+    {
+      "t": 1.0,
+      "sonido": "destello",
+      "ganancia": -20
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

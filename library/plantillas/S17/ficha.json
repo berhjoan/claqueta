@@ -1,0 +1,59 @@
+{
+  "id": "S17",
+  "nombre": "Pixel art",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "NIVEL 1",
+      "max": 7
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "PULSA START",
+      "max": 16
+    },
+    {
+      "id": "etiqueta",
+      "etiqueta": "Marcador",
+      "defecto": "MONEDAS",
+      "max": 8
+    }
+  ],
+  "paleta": {
+    "fondo": "#7CC4EF",
+    "tinta": "#1B1030",
+    "acento": "#FFD23F",
+    "segundo": "#3FBF4F",
+    "superficie": "#8A5A2B"
+  },
+  "fuentes": [],
+  "rasgos": [
+    "Lienzo de 108×192 escalado ×10 sin suavizado",
+    "Tipografía de píxeles propia, con contorno",
+    "Sprites en poses discretas: héroe, moneda y arbustos",
+    "Título que cae letra a letra en pasos de píxel"
+  ],
+  "sonidos": [
+    {
+      "t": 0.25,
+      "sonido": "pop",
+      "ganancia": -18
+    },
+    {
+      "t": 1.8,
+      "sonido": "campana",
+      "ganancia": -12
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "id": "S12",
+  "nombre": "Cómic",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "onomatopeya",
+      "etiqueta": "Onomatopeya",
+      "defecto": "¡PUM!",
+      "max": 6
+    },
+    {
+      "id": "globo",
+      "etiqueta": "Texto del globo",
+      "defecto": "¿Lo viste venir?",
+      "max": 22
+    },
+    {
+      "id": "caja",
+      "etiqueta": "Cartela",
+      "defecto": "Mientras tanto",
+      "max": 20
+    }
+  ],
+  "paleta": {
+    "fondo": "#FFD72E",
+    "tinta": "#111111",
+    "acento": "#E4352B",
+    "segundo": "#1F6FEB",
+    "superficie": "#FFFFFF"
+  },
+  "fuentes": [
+    "Archivo Black",
+    "Archivo"
+  ],
+  "rasgos": [
+    "Onomatopeya que golpea 0,9 → 1,05 → 1 con temblor de cuatro cuadros",
+    "Líneas de acción y trama de puntos",
+    "Globo con sombra dura y cartela inclinada"
+  ],
+  "sonidos": [
+    {
+      "t": 0.0,
+      "sonido": "impacto",
+      "ganancia": -8
+    },
+    {
+      "t": 0.9,
+      "sonido": "pop",
+      "ganancia": -14
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

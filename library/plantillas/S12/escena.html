@@ -1,0 +1,82 @@
+<template>
+  <style>
+    #pl-s12 { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #FFD72E); font-family: var(--display, "Archivo Black"), sans-serif; color: var(--tinta, #111111); }
+    #pl-s12-mundo { position: absolute; left: -40px; top: -40px; width: 1160px; height: 2000px; }
+    #pl-s12-trama { position: absolute; inset: 0; background-image: radial-gradient(var(--acento, #E4352B) 24%, transparent 26%); background-size: 36px 36px; -webkit-mask-image: radial-gradient(ellipse at 50% 32%, rgba(0,0,0,0.0) 10%, rgba(0,0,0,1) 85%); mask-image: radial-gradient(ellipse at 50% 32%, rgba(0,0,0,0.0) 10%, rgba(0,0,0,1) 85%); }
+    #pl-s12-rayos, #pl-s12-explosion { position: absolute; left: 40px; top: 40px; width: 1080px; height: 1920px; }
+    #pl-s12-pum { position: absolute; left: 100px; width: 880px; top: 440px; height: 330px; display: flex; align-items: center; justify-content: center; transform: rotate(-6deg); }
+    #pl-s12-onoma { font-size: 176px; line-height: 1; white-space: nowrap; color: var(--acento, #E4352B); text-shadow: -7px -7px 0 #111, 7px -7px 0 #111, -7px 7px 0 #111, 7px 7px 0 #111, 0 -9px 0 #111, 0 9px 0 #111, -9px 0 0 #111, 9px 0 0 #111, 16px 16px 0 #111; }
+    #pl-s12-caja { position: absolute; left: 72px; top: 262px; max-width: 760px; padding: 14px 30px 12px; background: var(--segundo, #1F6FEB); color: #FFFFFF; border: 7px solid #111; box-shadow: 10px 10px 0 #111; font-family: var(--cuerpo, "Archivo"), sans-serif; font-weight: 800; font-size: 46px; line-height: 1.15; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap; transform: rotate(-1.5deg); }
+    #pl-s12-globo { position: absolute; left: 110px; top: 960px; width: 820px; height: 330px; }
+    #pl-s12-globo svg { position: absolute; left: 0; top: 0; }
+    #pl-s12-texto { position: absolute; left: 50px; top: 24px; width: 720px; height: 210px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 74px; line-height: 1.08; color: #111; overflow-wrap: anywhere; }
+    #pl-s12-destello { position: absolute; inset: 0; background: #FFFFFF; opacity: 0; }
+  </style>
+  <div id="pl-s12" data-composition-id="S12" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"onomatopeya","type":"string","label":"Onomatopeya","default":"¡PUM!"},{"id":"globo","type":"string","label":"Texto del globo","default":"¿Lo viste venir?"},{"id":"caja","type":"string","label":"Cartela","default":"Mientras tanto"}]'>
+    <div id="pl-s12-mundo">
+      <div id="pl-s12-trama" data-layout-ignore></div>
+      <svg id="pl-s12-rayos" viewBox="0 0 1080 1920" data-layout-ignore><g id="pl-s12-rayos-g"></g></svg>
+      <svg id="pl-s12-explosion" viewBox="0 0 1080 1920" data-layout-ignore>
+        <g id="pl-s12-ex"><polygon id="pl-s12-ex-sombra" fill="#111" /><polygon id="pl-s12-ex-cuerpo" fill="#FFFFFF" stroke="#111" stroke-width="14" stroke-linejoin="round" /><polygon id="pl-s12-ex-nucleo" fill="var(--fondo, #FFD72E)" stroke="#111" stroke-width="8" stroke-linejoin="round" /></g>
+      </svg>
+      <div id="pl-s12-pum"><span id="pl-s12-onoma" data-var-text="onomatopeya">¡PUM!</span></div>
+      <div id="pl-s12-caja" data-var-text="caja">Mientras tanto</div>
+      <div id="pl-s12-globo">
+        <svg width="820" height="330" viewBox="0 0 820 330" data-layout-ignore>
+          <path d="M70 18 C 330 4 640 4 760 36 C 806 50 806 230 744 262 C 640 296 520 300 430 296 L 330 326 L 346 292 C 210 292 90 280 58 250 C 6 210 8 62 70 18 Z" fill="#111" transform="translate(14 14)" />
+          <path d="M70 18 C 330 4 640 4 760 36 C 806 50 806 230 744 262 C 640 296 520 300 430 296 L 330 326 L 346 292 C 210 292 90 280 58 250 C 6 210 8 62 70 18 Z" fill="var(--superficie, #FFFFFF)" stroke="#111" stroke-width="10" stroke-linejoin="round" />
+        </svg>
+        <div id="pl-s12-texto" data-var-text="globo">¿Lo viste venir?</div>
+      </div>
+    </div>
+    <div id="pl-s12-destello" data-layout-ignore></div>
+  </div>
+  <script>
+    (function () {
+      const NS = "http://www.w3.org/2000/svg";
+      const raiz = document.getElementById("pl-s12");
+      // Líneas de acción: cuñas negras que salen del centro de la explosión.
+      const CX = 540, CY = 600, g = raiz.querySelector("#pl-s12-rayos-g");
+      for (let i = 0; i < 28; i++) {
+        const a = (i / 28) * Math.PI * 2 + (i % 2) * 0.01, ancho = i % 2 ? 0.02 : 0.04, R = 2400;
+        const p = document.createElementNS(NS, "polygon");
+        p.setAttribute("points", `${CX},${CY} ${CX + R * Math.cos(a - ancho)},${CY + R * Math.sin(a - ancho)} ${CX + R * Math.cos(a + ancho)},${CY + R * Math.sin(a + ancho)}`);
+        p.setAttribute("fill", "#111");
+        g.appendChild(p);
+      }
+      // Estrella de 14 puntas, algo irregular, con sombra desplazada.
+      const estrella = (R1, R2, n) => Array.from({ length: n * 2 }, (_, k) => {
+        const r = k % 2 ? R2 * (1 + 0.06 * Math.sin(k * 2.3)) : R1 * (1 + 0.05 * Math.cos(k * 1.7));
+        const a = (k / (n * 2)) * Math.PI * 2 - Math.PI / 2;
+        return `${(CX + r * Math.cos(a)).toFixed(1)},${(CY + r * Math.sin(a) * 0.8).toFixed(1)}`;
+      }).join(" ");
+      raiz.querySelector("#pl-s12-ex-sombra").setAttribute("points", estrella(430, 300, 14));
+      raiz.querySelector("#pl-s12-ex-cuerpo").setAttribute("points", estrella(430, 300, 14));
+      raiz.querySelector("#pl-s12-ex-nucleo").setAttribute("points", estrella(330, 240, 14));
+      const sombra = raiz.querySelector("#pl-s12-ex-sombra");
+      sombra.setAttribute("transform", "translate(22 22)");
+
+      const tl = gsap.timeline({ paused: true });
+      // La onomatopeya golpea 0,9 → 1,05 → 1 (S12) y el cuadro tiembla cuatro cuadros.
+      const golpe = (sel, t, origen) => {
+        tl.fromTo(sel, { scale: 0.9, transformOrigin: origen }, { scale: 1.05, duration: 0.1, ease: "power2.out" }, t);
+        tl.fromTo(sel, { scale: 1.05 }, { scale: 1, duration: 0.14, ease: "power2.out", immediateRender: false }, t + 0.1);
+      };
+      tl.fromTo("#pl-s12-rayos", { opacity: 0, scale: 0.7, transformOrigin: "540px 600px" }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 0);
+      golpe("#pl-s12-explosion", 0, "540px 600px");
+      golpe("#pl-s12-pum", 0.04, "50% 50%");
+      tl.fromTo("#pl-s12-destello", { opacity: 0.85 }, { opacity: 0, duration: 0.18, ease: "power2.out" }, 0.05);
+      [[-12, 8], [14, -9], [-7, 5], [0, 0]].forEach(([x, y], i) => tl.set("#pl-s12-mundo", { x, y }, 0.08 + i * 0.033));
+      // La cartela entra de lado y el globo llega con el mismo golpe.
+      tl.fromTo("#pl-s12-caja", { x: -140, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 0.35);
+      tl.fromTo("#pl-s12-globo", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, 0.9);
+      golpe("#pl-s12-globo", 0.9, "50% 50%");
+      // Las líneas de acción pulsan una vez y se quedan.
+      tl.fromTo("#pl-s12-rayos-g", { rotation: -2, svgOrigin: "540 600" }, { rotation: 2, svgOrigin: "540 600", duration: 3.0, ease: "power1.out" }, 0.2);
+      tl.to({}, { duration: 4 }, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S12"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,87 @@
+<template>
+  <style>
+    #pl-s40 { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(circle at 30% 24%, var(--superficie, #2C4036) 0%, var(--fondo, #1F2E27) 55%, #131C17 100%); color: var(--tinta, #F3F1E8); font-family: var(--cuerpo, "Josefin Sans"), sans-serif; }
+    .pl-s40-polvo { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.16); filter: blur(60px); }
+    #pl-s40-borrado { position: absolute; left: 0; top: 0; }
+    #pl-s40-pizarra { position: absolute; left: 100px; top: 270px; width: 880px; display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
+    .pl-s40-tiza { filter: url(#pl-s40-filtro); }
+    .pl-s40-escribe { --p: -14%; -webkit-mask-image: linear-gradient(90deg, #000 var(--p), transparent calc(var(--p) + 14%)); mask-image: linear-gradient(90deg, #000 var(--p), transparent calc(var(--p) + 14%)); }
+    #pl-s40-titulo { font-family: var(--display, "Fraunces"), serif; font-style: italic; font-weight: 600; font-size: 150px; line-height: 1.08; letter-spacing: -0.01em; padding-right: 20px; }
+    #pl-s40-sub-linea { width: 880px; height: 40px; overflow: visible; margin-top: -10px; }
+    .pl-s40-nota { display: flex; align-items: baseline; gap: 30px; font-size: 76px; font-weight: 500; line-height: 1.2; white-space: nowrap; }
+    .pl-s40-num { font-family: var(--display, "Fraunces"), serif; font-style: italic; font-size: 76px; color: var(--segundo, #FAD86F); }
+    #pl-s40-concl-w { position: relative; display: inline-block; margin-top: 34px; padding: 22px 44px 24px; }
+    #pl-s40-concl { font-family: var(--cuerpo, "Josefin Sans"), sans-serif; font-weight: 700; font-size: 80px; line-height: 1.1; white-space: nowrap; color: var(--acento, #FF8F42); }
+    #pl-s40-caja { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+    #pl-s40-marco { x: 4px; y: 4px; width: calc(100% - 8px); height: calc(100% - 8px); rx: 16px; ry: 16px; }
+    #pl-s40-bandeja { position: absolute; left: 0; top: 1740px; width: 1080px; height: 180px; background: linear-gradient(180deg, #7A5532 0%, #5B3D22 40%, #3C2713 100%); border-top: 6px solid #A17848; box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.45); }
+    .pl-s40-barra { position: absolute; height: 26px; border-radius: 13px; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.35); }
+    #pl-s40-borrador { position: absolute; left: 700px; top: 1690px; width: 260px; height: 70px; border-radius: 10px; background: linear-gradient(180deg, #55524A 0%, #55524A 60%, #A17848 60%, #7A5532 100%); box-shadow: 0 8px 0 rgba(0, 0, 0, 0.4); }
+  </style>
+  <div id="pl-s40" data-composition-id="S40" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"titulo","type":"string","label":"Título","default":"Una idea a la vez"},{"id":"nota1","type":"string","label":"Nota 1","default":"observar"},{"id":"nota2","type":"string","label":"Nota 2","default":"dibujar"},{"id":"nota3","type":"string","label":"Nota 3","default":"explicar"},{"id":"conclusion","type":"string","label":"Conclusión","default":"así se aprende"}]'>
+    <svg width="0" height="0" style="position:absolute" data-layout-ignore>
+      <filter id="pl-s40-filtro" x="-6%" y="-12%" width="112%" height="124%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="ruido" />
+        <feColorMatrix in="ruido" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.4 2.15" result="grano" />
+        <feComposite in="SourceGraphic" in2="grano" operator="in" result="rugoso" />
+        <feTurbulence type="turbulence" baseFrequency="0.035" numOctaves="2" seed="3" result="onda" />
+        <feDisplacementMap in="rugoso" in2="onda" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    <div class="pl-s40-polvo" style="left: -120px; top: 200px; width: 700px; height: 360px" data-layout-ignore></div>
+    <div class="pl-s40-polvo" style="left: 520px; top: 980px; width: 640px; height: 320px; opacity: 0.7" data-layout-ignore></div>
+    <div class="pl-s40-polvo" style="left: 60px; top: 1380px; width: 800px; height: 280px; opacity: 0.6" data-layout-ignore></div>
+    <svg id="pl-s40-borrado" width="1080" height="1920" viewBox="0 0 1080 1920" data-layout-ignore><g fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="86" stroke-linecap="round"><path d="M-40 1180 C 260 1120 520 1250 1140 1150" /><path d="M-40 1480 C 300 1430 640 1540 1140 1440" /><path d="M600 220 C 800 170 1000 240 1140 200" /></g></svg>
+    <div id="pl-s40-pizarra">
+      <div id="pl-s40-titulo" class="pl-s40-tiza pl-s40-escribe" data-var-text="titulo">Una idea a la vez</div>
+      <svg id="pl-s40-sub-linea" class="pl-s40-tiza" viewBox="0 0 880 40" preserveAspectRatio="none" data-layout-ignore><path id="pl-s40-subraya" d="M6 24 C 140 8, 280 34, 430 18 S 700 10, 874 22" fill="none" stroke="var(--segundo, #FAD86F)" stroke-width="9" stroke-linecap="round" pathLength="1" stroke-dasharray="1 2" stroke-dashoffset="1" /></svg>
+      <div id="pl-s40-n1" class="pl-s40-nota pl-s40-tiza pl-s40-escribe"><span class="pl-s40-num">1</span><span data-var-text="nota1">observar</span></div>
+      <div id="pl-s40-n2" class="pl-s40-nota pl-s40-tiza pl-s40-escribe"><span class="pl-s40-num">2</span><span data-var-text="nota2">dibujar</span></div>
+      <div id="pl-s40-n3" class="pl-s40-nota pl-s40-tiza pl-s40-escribe"><span class="pl-s40-num">3</span><span data-var-text="nota3">explicar</span></div>
+      <div id="pl-s40-concl-w">
+        <div id="pl-s40-concl" class="pl-s40-tiza pl-s40-escribe" data-var-text="conclusion">así se aprende</div>
+        <svg id="pl-s40-caja" class="pl-s40-tiza" data-layout-ignore><rect id="pl-s40-marco" fill="none" stroke="var(--acento, #FF8F42)" stroke-width="6" stroke-linecap="butt" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" /></svg>
+      </div>
+    </div>
+    <div id="pl-s40-bandeja" data-layout-ignore>
+      <div class="pl-s40-barra" style="left: 90px; top: 34px; width: 210px; background: #F3F1E8; transform: rotate(-3deg)"></div>
+      <div class="pl-s40-barra" style="left: 330px; top: 60px; width: 160px; background: var(--segundo, #FAD86F); transform: rotate(4deg)"></div>
+      <div class="pl-s40-barra" style="left: 520px; top: 30px; width: 120px; background: var(--acento, #FF8F42); transform: rotate(-6deg)"></div>
+    </div>
+    <div id="pl-s40-borrador" data-layout-ignore></div>
+  </div>
+  <script>
+    (function () {
+      const raiz = document.getElementById("pl-s40");
+      const titulo = raiz.querySelector("#pl-s40-titulo");
+      let ultimoT = null;
+      // El título se ajusta a su palabra más larga; el marco de la conclusión se dimensiona solo con CSS.
+      function ajustar() {
+        const t = (titulo.textContent || "").trim();
+        if (t !== ultimoT) {
+          ultimoT = t;
+          const largo = Math.max(1, ...t.split(/\s+/).map((w) => w.length));
+          titulo.style.fontSize = Math.max(80, Math.min(150, Math.floor(840 / (largo * 0.56)))) + "px";
+        }
+      }
+      ajustar();
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo({ v: 0 }, { v: 0 }, { v: 1, duration: 4, ease: "none", onUpdate: ajustar }, 0);
+      // La tiza escribe de izquierda a derecha con un borde suave; la subraya se dibuja después.
+      const escribe = (sel, t, d) => tl.fromTo(sel, { "--p": "-14%" }, { "--p": "100%", duration: d, ease: "power1.inOut" }, t);
+      tl.fromTo("#pl-s40-bandeja", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0);
+      tl.fromTo("#pl-s40-borrador", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.1);
+      escribe("#pl-s40-titulo", 0.1, 0.9);
+      tl.fromTo("#pl-s40-subraya", { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.4, ease: "power2.out" }, 0.95);
+      escribe("#pl-s40-n1", 1.3, 0.4);
+      escribe("#pl-s40-n2", 1.65, 0.4);
+      escribe("#pl-s40-n3", 2.0, 0.4);
+      escribe("#pl-s40-concl", 2.45, 0.45);
+      tl.fromTo("#pl-s40-marco", { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.5, ease: "power2.inOut" }, 2.7);
+      tl.to({}, { duration: 4 }, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S40"] = tl;
+    })();
+  </script>
+</template>

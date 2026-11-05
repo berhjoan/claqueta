@@ -1,0 +1,78 @@
+{
+  "id": "S18",
+  "nombre": "Plano técnico",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "ancho",
+      "etiqueta": "Cota horizontal",
+      "defecto": "1080",
+      "max": 10
+    },
+    {
+      "id": "alto",
+      "etiqueta": "Cota vertical",
+      "defecto": "1920",
+      "max": 10
+    },
+    {
+      "id": "etiqueta1",
+      "etiqueta": "Etiqueta de la cabecera",
+      "defecto": "cabecera",
+      "max": 18
+    },
+    {
+      "id": "etiqueta2",
+      "etiqueta": "Etiqueta del bloque grande",
+      "defecto": "contenido",
+      "max": 18
+    },
+    {
+      "id": "rotulo",
+      "etiqueta": "Cajetín",
+      "defecto": "Plano 01",
+      "max": 12
+    }
+  ],
+  "paleta": {
+    "fondo": "#0E3A8A",
+    "tinta": "#EAF4FF",
+    "acento": "#FFE066",
+    "segundo": "#7FB2E8",
+    "superficie": "#13489F"
+  },
+  "fuentes": [
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Contornos que se trazan en 1,2 s",
+    "Cotas en cascada, regla con cabezal y reloj",
+    "Dos engranajes de línea clara que engranan de verdad",
+    "Azul de ingeniería con retícula doble"
+  ],
+  "sonidos": [
+    {
+      "t": 0.1,
+      "sonido": "paso",
+      "ganancia": -18
+    },
+    {
+      "t": 1.0,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 2.0,
+      "sonido": "destello",
+      "ganancia": -18
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

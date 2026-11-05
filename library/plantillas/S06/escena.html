@@ -1,0 +1,76 @@
+<template>
+  <style>
+    #pl-s06 { position: absolute; inset: 0; overflow: hidden; background: var(--fondo, #140F2E); font-family: var(--display, "Sora"), sans-serif; color: var(--tinta, #FFFFFF); }
+    .pl-s06-mancha { position: absolute; border-radius: 50%; filter: blur(96px); }
+    #pl-s06-m1 { left: -200px; top: 60px; width: 800px; height: 800px; background: var(--acento, #7B5CFF); opacity: 0.95; }
+    #pl-s06-m2 { left: 480px; top: 700px; width: 760px; height: 760px; background: var(--segundo, #00C2A8); opacity: 0.9; }
+    #pl-s06-m3 { left: 120px; top: 1260px; width: 700px; height: 700px; background: #FF8A3D; opacity: 0.85; }
+    #pl-s06-m4 { left: 560px; top: -160px; width: 520px; height: 520px; background: var(--segundo, #00C2A8); opacity: 0.5; }
+    #pl-s06-tarjeta { position: absolute; left: 90px; top: 270px; width: 900px; padding: 54px 56px 58px; border-radius: 36px; background: rgba(255, 255, 255, 0.13); border: 2px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(30px); box-shadow: 0 34px 90px rgba(10, 0, 40, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.35); overflow: hidden; }
+    #pl-s06-brillo { position: absolute; left: -400px; top: -100px; width: 260px; height: 1300px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.28), rgba(255,255,255,0)); transform: rotate(18deg); opacity: 0; }
+    #pl-s06-etiqueta { display: inline-flex; align-items: center; gap: 16px; height: 68px; padding: 0 30px 0 22px; border-radius: 34px; background: rgba(255, 255, 255, 0.16); border: 2px solid rgba(255, 255, 255, 0.55); font-family: var(--cuerpo, "Sora"), sans-serif; font-size: 44px; font-weight: 600; line-height: 1; white-space: nowrap; }
+    #pl-s06-punto { width: 18px; height: 18px; border-radius: 50%; background: var(--segundo, #00C2A8); box-shadow: 0 0 16px var(--segundo, #00C2A8); }
+    #pl-s06-titulo { margin-top: 30px; font-size: 100px; font-weight: 700; line-height: 1.04; letter-spacing: -0.025em; overflow-wrap: anywhere; }
+    #pl-s06-sub { margin-top: 18px; font-family: var(--cuerpo, "Sora"), sans-serif; font-size: 50px; font-weight: 500; line-height: 1.2; color: rgba(255, 255, 255, 0.86); }
+    #pl-s06-visual { margin-top: 30px; width: 788px; height: 280px; border-radius: 24px; background: rgba(255, 255, 255, 0.08); border: 2px solid rgba(255, 255, 255, 0.35); overflow: hidden; position: relative; }
+    #pl-s06-svg { position: absolute; left: 0; top: 0; }
+    #pl-s06-fichas { display: flex; gap: 20px; margin-top: 30px; flex-wrap: nowrap; }
+    .pl-s06-ficha { height: 84px; padding: 0 34px; border-radius: 42px; display: flex; align-items: center; font-family: var(--cuerpo, "Sora"), sans-serif; font-size: 46px; font-weight: 600; white-space: nowrap; background: rgba(255, 255, 255, 0.18); border: 2px solid rgba(255, 255, 255, 0.6); }
+  </style>
+  <div id="pl-s06" data-composition-id="S06" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"etiqueta","type":"string","label":"Etiqueta","default":"Nuevo"},{"id":"titulo","type":"string","label":"Título","default":"Cristal esmerilado"},{"id":"subtitulo","type":"string","label":"Subtítulo","default":"Luz que atraviesa el vidrio"},{"id":"ficha1","type":"string","label":"Ficha 1","default":"translúcido"},{"id":"ficha2","type":"string","label":"Ficha 2","default":"suave"}]'>
+    <div id="pl-s06-m1" class="pl-s06-mancha" data-layout-ignore></div>
+    <div id="pl-s06-m2" class="pl-s06-mancha" data-layout-ignore></div>
+    <div id="pl-s06-m3" class="pl-s06-mancha" data-layout-ignore></div>
+    <div id="pl-s06-m4" class="pl-s06-mancha" data-layout-ignore></div>
+    <div id="pl-s06-tarjeta">
+      <div id="pl-s06-brillo" data-layout-ignore></div>
+      <div id="pl-s06-etiqueta"><span id="pl-s06-punto"></span><span data-var-text="etiqueta">Nuevo</span></div>
+      <div id="pl-s06-titulo" data-var-text="titulo">Cristal esmerilado</div>
+      <div id="pl-s06-sub" data-var-text="subtitulo">Luz que atraviesa el vidrio</div>
+      <div id="pl-s06-visual">
+        <svg id="pl-s06-svg" width="788" height="280" viewBox="0 0 788 280" data-layout-ignore>
+          <defs>
+            <radialGradient id="pl-s06-g1" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="0.35" stop-color="#7B5CFF" stop-opacity="0.9"/><stop offset="1" stop-color="#2A2250" stop-opacity="0.9"/></radialGradient>
+            <radialGradient id="pl-s06-g2" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="0.35" stop-color="#00C2A8" stop-opacity="0.9"/><stop offset="1" stop-color="#063a40" stop-opacity="0.9"/></radialGradient>
+            <radialGradient id="pl-s06-g3" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="0.4" stop-color="#FF8A3D" stop-opacity="0.9"/><stop offset="1" stop-color="#6b2a0c" stop-opacity="0.9"/></radialGradient>
+          </defs>
+          <g fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><ellipse cx="394" cy="140" rx="340" ry="96" /><ellipse cx="394" cy="140" rx="236" ry="60" /></g>
+          <circle id="pl-s06-d1" cx="270" cy="142" r="92" fill="url(#pl-s06-g1)" />
+          <circle id="pl-s06-d2" cx="470" cy="124" r="72" fill="url(#pl-s06-g2)" />
+          <circle id="pl-s06-d3" cx="610" cy="176" r="46" fill="url(#pl-s06-g3)" />
+        </svg>
+      </div>
+      <div id="pl-s06-fichas"><div id="pl-s06-f1" class="pl-s06-ficha" data-var-text="ficha1">translúcido</div><div id="pl-s06-f2" class="pl-s06-ficha" data-var-text="ficha2">suave</div></div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // Fondo lento: las manchas se desplazan y frenan; el texto no se mueve (S06).
+      tl.fromTo("#pl-s06-m1", { x: 0, y: 0 }, { x: 130, y: 70, duration: 3.2, ease: "power1.out" }, 0);
+      tl.fromTo("#pl-s06-m2", { x: 0, y: 0 }, { x: -120, y: -60, duration: 3.2, ease: "power1.out" }, 0);
+      tl.fromTo("#pl-s06-m3", { x: 0, y: 0 }, { x: 100, y: -40, duration: 3.2, ease: "power1.out" }, 0);
+      tl.fromTo("#pl-s06-m4", { x: 0, y: 0 }, { x: -70, y: 90, duration: 3.2, ease: "power1.out" }, 0);
+      // Entrada con desfase de 0,12 s, desplazamiento de 24 px y escala 0,96 → 1.
+      const entra = (sel, t, d = 0.5) => tl.fromTo(sel, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: d, ease: "power4.out" }, t);
+      tl.fromTo("#pl-s06-tarjeta", { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power4.out" }, 0);
+      entra("#pl-s06-etiqueta", 0.12);
+      entra("#pl-s06-titulo", 0.24);
+      entra("#pl-s06-sub", 0.36);
+      entra("#pl-s06-visual", 0.48, 0.6);
+      entra("#pl-s06-f1", 0.72);
+      entra("#pl-s06-f2", 0.84);
+      // Los tres volúmenes flotan una sola vez y se asientan.
+      tl.fromTo("#pl-s06-d1", { y: 14 }, { y: -10, duration: 2.8, ease: "sine.out" }, 0.3);
+      tl.fromTo("#pl-s06-d2", { y: -12 }, { y: 8, duration: 2.8, ease: "sine.out" }, 0.3);
+      tl.fromTo("#pl-s06-d3", { y: 10 }, { y: -14, duration: 2.8, ease: "sine.out" }, 0.3);
+      // Un brillo cruza el vidrio una vez.
+      tl.fromTo("#pl-s06-brillo", { x: 0, opacity: 0 }, { x: 1500, opacity: 1, duration: 1.2, ease: "power1.inOut" }, 1.0);
+      tl.fromTo("#pl-s06-brillo", { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "none", immediateRender: false }, 2.2);
+      tl.to({}, { duration: 4 }, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S06"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,75 @@
+{
+  "id": "S40",
+  "nombre": "Pizarra",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Una idea a la vez",
+      "max": 18
+    },
+    {
+      "id": "nota1",
+      "etiqueta": "Nota 1",
+      "defecto": "observar",
+      "max": 16
+    },
+    {
+      "id": "nota2",
+      "etiqueta": "Nota 2",
+      "defecto": "dibujar",
+      "max": 16
+    },
+    {
+      "id": "nota3",
+      "etiqueta": "Nota 3",
+      "defecto": "explicar",
+      "max": 16
+    },
+    {
+      "id": "conclusion",
+      "etiqueta": "Conclusión",
+      "defecto": "así se aprende",
+      "max": 16
+    }
+  ],
+  "paleta": {
+    "fondo": "#1F2E27",
+    "tinta": "#F3F1E8",
+    "acento": "#FF8F42",
+    "segundo": "#FAD86F",
+    "superficie": "#2C4036"
+  },
+  "fuentes": [
+    "Fraunces",
+    "Josefin Sans"
+  ],
+  "rasgos": [
+    "Texto de tiza con grano y borde irregular",
+    "Escritura de izquierda a derecha con borde suave",
+    "Subrayado y marco que se dibujan",
+    "Bandeja con tizas y borrador",
+    "Sin letra a mano real: la pizarra completa, con trazos de tiza uno a uno, está en engines/pizarra/"
+  ],
+  "sonidos": [
+    {
+      "t": 0.1,
+      "sonido": "chasquido",
+      "ganancia": -18
+    },
+    {
+      "t": 2.8,
+      "sonido": "pop",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

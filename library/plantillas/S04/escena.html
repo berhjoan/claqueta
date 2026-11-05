@@ -1,0 +1,76 @@
+<template>
+  <style>
+    #pl-s04 { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(ellipse at 50% 36%, var(--superficie, #140A24) 0%, var(--fondo, #07040F) 72%); font-family: var(--display, "Sora"), sans-serif; color: var(--tinta, #FDF6FF); }
+    #pl-s04-tunel { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+    #pl-s04-grano { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 100%); }
+    .pl-s04-masc { position: absolute; left: 72px; width: 936px; height: 170px; text-align: center; clip-path: inset(-300px -300px 0px -300px); }
+    .pl-s04-linea { display: inline-block; font-size: 116px; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; white-space: nowrap; color: var(--tinta, #FDF6FF); text-shadow: 0 0 6px var(--tinta, #FDF6FF), 0 0 22px var(--acento, #19F6FF), 0 0 54px var(--acento, #19F6FF), 0 0 96px var(--segundo, #FF2BD6); }
+    #pl-s04-barra { position: absolute; left: 280px; top: 742px; width: 520px; height: 12px; border-radius: 6px; background: var(--acento, #19F6FF); box-shadow: 0 0 18px var(--acento, #19F6FF), 0 0 54px var(--acento, #19F6FF); transform-origin: 50% 50%; }
+    #pl-s04-cartel { position: absolute; left: 90px; width: 900px; top: 830px; height: 190px; border: 7px solid var(--segundo, #FF2BD6); border-radius: 30px; box-shadow: 0 0 22px var(--segundo, #FF2BD6), 0 0 64px var(--segundo, #FF2BD6), inset 0 0 26px var(--segundo, #FF2BD6); display: flex; align-items: center; justify-content: center; }
+    #pl-s04-rotulo { font-size: 84px; font-weight: 600; line-height: 1.1; white-space: nowrap; color: var(--tinta, #FDF6FF); text-shadow: 0 0 6px var(--tinta, #FDF6FF), 0 0 20px var(--segundo, #FF2BD6), 0 0 52px var(--segundo, #FF2BD6); }
+    #pl-s04-lema { position: absolute; left: 72px; width: 936px; top: 1110px; text-align: center; font-family: var(--cuerpo, "Sora"), sans-serif; font-size: 50px; font-weight: 600; line-height: 1.25; color: var(--tinta, #FDF6FF); text-shadow: 0 0 14px var(--acento, #19F6FF); white-space: nowrap; }
+  </style>
+  <div id="pl-s04" data-composition-id="S04" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"linea1","type":"string","label":"Línea 1","default":"Una idea"},{"id":"linea2","type":"string","label":"Línea 2","default":"hecha de luz"},{"id":"rotulo","type":"string","label":"Cartel","default":"Abierto"},{"id":"lema","type":"string","label":"Lema","default":"El brillo guía la mirada"}]'>
+    <canvas id="pl-s04-tunel" width="1080" height="1920" data-layout-ignore></canvas>
+    <div id="pl-s04-grano" data-layout-ignore></div>
+    <div id="pl-s04-l1-m" class="pl-s04-masc" data-layout-allow-overflow style="top: 330px"><span id="pl-s04-l1" class="pl-s04-linea" data-layout-allow-overflow data-var-text="linea1">Una idea</span></div>
+    <div id="pl-s04-l2-m" class="pl-s04-masc" data-layout-allow-overflow style="top: 510px"><span id="pl-s04-l2" class="pl-s04-linea" data-layout-allow-overflow data-var-text="linea2">hecha de luz</span></div>
+    <div id="pl-s04-barra"></div>
+    <div id="pl-s04-cartel"><div id="pl-s04-rotulo" data-var-text="rotulo">Abierto</div></div>
+    <div id="pl-s04-lema" data-var-text="lema">El brillo guía la mirada</div>
+  </div>
+  <script>
+    (function () {
+      const raiz = document.getElementById("pl-s04");
+      const estilo = getComputedStyle(raiz);
+      const color = (n, r) => estilo.getPropertyValue(n).trim() || r;
+      const ctx = raiz.querySelector("#pl-s04-tunel").getContext("2d");
+      // Túnel de marcos de neón: cada marco nace pequeño al fondo y crece hacia la cámara. Todo sale de t.
+      function tunel(t) {
+        const cerca = color("--acento", "#19F6FF"), lejos = color("--segundo", "#FF2BD6");
+        ctx.clearRect(0, 0, 1080, 1920);
+        const marcos = [];
+        for (let i = 0; i < 10; i++) marcos.push(((((i + t * 0.35 * 3) % 10) + 10) % 10) / 10);
+        marcos.sort((a, b) => a - b);
+        for (const d of marcos) {
+          const k = 0.08 * Math.pow(22, d);
+          const a = 0.62 * Math.min(1, d / 0.15) * Math.min(1, (1 - d) / 0.12);
+          if (a <= 0.01) continue;
+          ctx.save();
+          ctx.globalAlpha = a;
+          ctx.strokeStyle = d < 0.5 ? lejos : cerca;
+          ctx.lineWidth = Math.max(1.5, 5 * k);
+          ctx.shadowColor = d < 0.5 ? lejos : cerca;
+          ctx.shadowBlur = 18 + 22 * k;
+          ctx.beginPath();
+          ctx.roundRect(540 - 450 * k, 900 - 650 * k, 900 * k, 1300 * k, Math.max(2, 6 * k));
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+      tunel(0);
+      const r = { t: 0 };
+      const tl = gsap.timeline({ paused: true });
+      // El túnel avanza rápido y frena hasta quedar quieto antes de 3,2 s.
+      tl.fromTo(r, { t: 0 }, { t: 1.6, duration: 3.2, ease: "power2.out", onUpdate: () => tunel(r.t) }, 0);
+      // Máscara que no recorta el resplandor: al terminar de subir, se abre el recorte.
+      [["#pl-s04-l1", 0.05], ["#pl-s04-l2", 0.3]].forEach(([sel, t]) => {
+        tl.fromTo(sel, { yPercent: 105 }, { yPercent: 0, duration: 0.45, ease: "power3.out" }, t);
+        tl.fromTo(sel + "-m", { clipPath: "inset(-300px -300px 0px -300px)" }, { clipPath: "inset(-300px -300px -300px -300px)", duration: 0.01 }, t + 0.46);
+      });
+      tl.fromTo("#pl-s04-barra", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "expo.out" }, 0.75);
+      // El cartel se enciende con dos parpadeos y queda fijo (contorno en 0,3 s, S04).
+      tl.fromTo("#pl-s04-cartel", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 1.0);
+      tl.set("#pl-s04-cartel", { opacity: 0.25 }, 1.08);
+      tl.set("#pl-s04-cartel", { opacity: 1 }, 1.16);
+      tl.set("#pl-s04-cartel", { opacity: 0.45 }, 1.26);
+      tl.set("#pl-s04-cartel", { opacity: 1 }, 1.32);
+      tl.fromTo("#pl-s04-rotulo", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power3.out" }, 1.1);
+      tl.fromTo("#pl-s04-lema", { opacity: 0, y: 16, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "power3.out" }, 1.9);
+      tl.to({}, { duration: 4 }, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S04"] = tl;
+    })();
+  </script>
+</template>

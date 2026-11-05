@@ -1,0 +1,62 @@
+{
+  "id": "S30",
+  "nombre": "Película analógica",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título de la tarjeta",
+      "defecto": "Cuadro a cuadro",
+      "max": 18
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Una película artesanal",
+      "max": 24
+    }
+  ],
+  "paleta": {
+    "fondo": "#1D130B",
+    "tinta": "#F3E6C8",
+    "acento": "#C0392B",
+    "segundo": "#8A6A48",
+    "superficie": "#EAD8B2"
+  },
+  "fuentes": [
+    "Fraunces",
+    "Source Sans 3",
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Tira con perforaciones que avanza cuadro a cuadro",
+    "Grano propio, rayones y fuga de luz",
+    "Vaivén de ventanilla que se apaga",
+    "Tarjeta de título de película muda"
+  ],
+  "sonidos": [
+    {
+      "t": 0.5,
+      "sonido": "chasquido",
+      "ganancia": -12
+    },
+    {
+      "t": 0.95,
+      "sonido": "chasquido",
+      "ganancia": -12
+    },
+    {
+      "t": 1.4,
+      "sonido": "chasquido",
+      "ganancia": -12
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "id": "S28",
+  "nombre": "Glitch digital",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Señal",
+      "max": 12
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "se pierde y vuelve",
+      "max": 20
+    },
+    {
+      "id": "tachado",
+      "etiqueta": "Palabra tachada",
+      "defecto": "ruido",
+      "max": 12
+    }
+  ],
+  "paleta": {
+    "fondo": "#050507",
+    "tinta": "#FFFFFF",
+    "acento": "#00E5FF",
+    "segundo": "#FF1F5A",
+    "superficie": "#111117"
+  },
+  "fuentes": [
+    "Sora"
+  ],
+  "rasgos": [
+    "RGB separado que se recupera en cinco cuadros",
+    "Bandas de inversión con semilla fija",
+    "Palabra tachada con un trazo que se dibuja",
+    "Tamaño del título ajustado a su palabra más larga"
+  ],
+  "sonidos": [
+    {
+      "t": 0.12,
+      "sonido": "falla",
+      "ganancia": -8
+    },
+    {
+      "t": 2.0,
+      "sonido": "chasquido",
+      "ganancia": -14
+    },
+    {
+      "t": 2.5,
+      "sonido": "falla",
+      "ganancia": -12
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

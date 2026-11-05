@@ -1,0 +1,55 @@
+<template>
+  <style>
+    #pl-s16 { position: absolute; inset: 0; overflow: hidden; background-color: var(--fondo, #EFE6D2); background-image: linear-gradient(rgba(17,17,17,0.07) 2px, transparent 2px), linear-gradient(90deg, rgba(17,17,17,0.07) 2px, transparent 2px); background-size: 190px 190px; background-position: 15px 15px; font-family: var(--display, "Archivo Black"), sans-serif; color: var(--tinta, #111111); }
+    /* Piezas grandes del mundo: llenan los 1920 px y quedan detrás de todo. */
+    .pl-s16-mundo { position: absolute; }
+    #pl-s16-gran-cuarto { left: 540px; top: 1380px; width: 600px; height: 600px; border-radius: 600px 0 0 0; background: #F2B705; }
+    #pl-s16-gran-circulo { left: -170px; top: 1480px; width: 480px; height: 480px; border-radius: 50%; background: var(--acento, #D62828); }
+    #pl-s16-gran-barra { left: 330px; top: 1680px; width: 330px; height: 70px; background: var(--tinta, #111111); }
+    #pl-s16-gran-cuadro { left: 990px; top: 80px; width: 190px; height: 190px; background: var(--segundo, #1D4E89); }
+    #pl-s16-titulo-m { position: absolute; left: 110px; width: 860px; top: 252px; height: 128px; overflow: hidden; }
+    #pl-s16-titulo { display: inline-block; font-size: 92px; line-height: 1.3; white-space: nowrap; }
+    #pl-s16-regla { position: absolute; left: 110px; top: 392px; width: 860px; height: 14px; background: var(--tinta, #111111); transform-origin: 0 50%; }
+    .pl-s16-fila { position: absolute; left: 0; width: 1080px; height: 170px; }
+    .pl-s16-forma { position: absolute; left: 110px; top: 10px; width: 150px; height: 150px; }
+    .pl-s16-mascara { position: absolute; left: 310px; top: 0; width: 650px; height: 170px; overflow: hidden; display: flex; align-items: center; }
+    .pl-s16-palabra { display: inline-block; font-size: 100px; line-height: 1.2; white-space: nowrap; }
+    #pl-s16-f1 { border-radius: 50%; background: var(--acento, #D62828); }
+    #pl-s16-f2 { background: var(--segundo, #1D4E89); }
+    #pl-s16-f3 { width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 150px solid #F2B705; }
+    #pl-s16-f4 { height: 75px; top: 48px; border-radius: 150px 150px 0 0; background: var(--tinta, #111111); }
+  </style>
+  <div id="pl-s16" data-composition-id="S16" data-start="0" data-duration="4" data-width="1080" data-height="1920"
+    data-composition-variables='[{"id":"titulo","type":"string","label":"Título","default":"Forma y función"},{"id":"palabra1","type":"string","label":"Palabra 1","default":"círculo"},{"id":"palabra2","type":"string","label":"Palabra 2","default":"cuadrado"},{"id":"palabra3","type":"string","label":"Palabra 3","default":"triángulo"},{"id":"palabra4","type":"string","label":"Palabra 4","default":"arco"}]'>
+    <div id="pl-s16-gran-cuarto" class="pl-s16-mundo" data-layout-ignore></div>
+    <div id="pl-s16-gran-circulo" class="pl-s16-mundo" data-layout-ignore></div>
+    <div id="pl-s16-gran-barra" class="pl-s16-mundo" data-layout-ignore></div>
+    <div id="pl-s16-gran-cuadro" class="pl-s16-mundo" data-layout-ignore></div>
+    <div id="pl-s16-titulo-m" data-layout-allow-overflow><span id="pl-s16-titulo" data-layout-allow-overflow data-var-text="titulo">Forma y función</span></div>
+    <div id="pl-s16-regla"></div>
+    <div class="pl-s16-fila" style="top: 450px"><div id="pl-s16-f1" class="pl-s16-forma"></div><div class="pl-s16-mascara" data-layout-allow-overflow><span data-layout-allow-overflow id="pl-s16-p1" class="pl-s16-palabra" data-var-text="palabra1">círculo</span></div></div>
+    <div class="pl-s16-fila" style="top: 650px"><div id="pl-s16-f2" class="pl-s16-forma"></div><div class="pl-s16-mascara" data-layout-allow-overflow><span data-layout-allow-overflow id="pl-s16-p2" class="pl-s16-palabra" data-var-text="palabra2">cuadrado</span></div></div>
+    <div class="pl-s16-fila" style="top: 850px"><div id="pl-s16-f3" class="pl-s16-forma"></div><div class="pl-s16-mascara" data-layout-allow-overflow><span data-layout-allow-overflow id="pl-s16-p3" class="pl-s16-palabra" data-var-text="palabra3">triángulo</span></div></div>
+    <div class="pl-s16-fila" style="top: 1050px"><div id="pl-s16-f4" class="pl-s16-forma"></div><div class="pl-s16-mascara" data-layout-allow-overflow><span data-layout-allow-overflow id="pl-s16-p4" class="pl-s16-palabra" data-var-text="palabra4">arco</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // Piezas del mundo: giran 90° y crecen desde su centro, con ritmo regular.
+      [["#pl-s16-gran-cuarto", "100% 100%"], ["#pl-s16-gran-circulo", "50% 50%"], ["#pl-s16-gran-barra", "0% 50%"], ["#pl-s16-gran-cuadro", "50% 50%"]].forEach(([sel, origen], i) => {
+        tl.fromTo(sel, { rotation: -90, scale: 0.3, opacity: 0, transformOrigin: origen }, { rotation: 0, scale: 1, opacity: 1, duration: 0.5, ease: "expo.out" }, 0.05 + i * 0.1);
+      });
+      tl.fromTo("#pl-s16-regla", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "expo.out" }, 0.1);
+      tl.fromTo("#pl-s16-titulo", { yPercent: 105 }, { yPercent: 0, duration: 0.4, ease: "power3.out" }, 0.1);
+      // Cada módulo gira 90° y crece desde su centro; la palabra sube por máscara. 0,3 s por fila.
+      [1, 2, 3, 4].forEach((n, i) => {
+        const t = 0.5 + i * 0.35;
+        tl.fromTo("#pl-s16-f" + n, { rotation: -90, scale: 0.3, opacity: 0 }, { rotation: 0, scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, t);
+        tl.fromTo("#pl-s16-p" + n, { yPercent: 105 }, { yPercent: 0, duration: 0.3, ease: "power3.out" }, t);
+      });
+      tl.to({}, { duration: 4 }, 0);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["S16"] = tl;
+    })();
+  </script>
+</template>

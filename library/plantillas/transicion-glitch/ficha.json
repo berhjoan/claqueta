@@ -1,0 +1,47 @@
+{
+  "id": "transicion-glitch",
+  "nombre": "Transición glitch",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "semilla",
+      "etiqueta": "Semilla del glitch (cada número da uno distinto)",
+      "defecto": "7",
+      "max": 6
+    },
+    {
+      "id": "cuadros",
+      "etiqueta": "Cuadros que dura, a 30 por segundo",
+      "defecto": "6",
+      "max": 2
+    }
+  ],
+  "paleta": {
+    "fondo": "#000000",
+    "tinta": "#FFFFFF",
+    "acento": "#00F0FF",
+    "segundo": "#FF0055",
+    "superficie": "#000000"
+  },
+  "fuentes": [],
+  "rasgos": [
+    "Bandas de ruido de 6 cuadros con mix-blend-mode: difference",
+    "Semilla fija: la misma cifra da siempre el mismo glitch",
+    "Se monta sobre el corte, sin barridos propios"
+  ],
+  "sonidos": [
+    {
+      "t": 0.0,
+      "sonido": "falla",
+      "ganancia": -10
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

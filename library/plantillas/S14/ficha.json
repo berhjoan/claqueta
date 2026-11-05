@@ -1,0 +1,68 @@
+{
+  "id": "S14",
+  "nombre": "Retro VHS",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "osd",
+      "etiqueta": "Texto de pantalla",
+      "defecto": "Reproducir",
+      "max": 12
+    },
+    {
+      "id": "canal",
+      "etiqueta": "Canal",
+      "defecto": "CH 03",
+      "max": 8
+    },
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "VHS",
+      "max": 12
+    },
+    {
+      "id": "subtitulo",
+      "etiqueta": "Subtítulo",
+      "defecto": "Cinta 01",
+      "max": 16
+    }
+  ],
+  "paleta": {
+    "fondo": "#0A1A8C",
+    "tinta": "#FFFFFF",
+    "acento": "#05D9E8",
+    "segundo": "#FF2A6D",
+    "superficie": "#1C0F70"
+  },
+  "fuentes": [
+    "Archivo Black",
+    "VT323"
+  ],
+  "rasgos": [
+    "Texto de pantalla escrito a pasos y cuenta de cinta",
+    "Título con canales RGB que se recomponen en cinco cuadros",
+    "Banda de tracking que sube y sacude el cuadro",
+    "Barras de color y líneas de barrido"
+  ],
+  "sonidos": [
+    {
+      "t": 0.12,
+      "sonido": "falla",
+      "ganancia": -14
+    },
+    {
+      "t": 0.7,
+      "sonido": "barrido",
+      "ganancia": -20
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

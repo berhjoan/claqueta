@@ -1,0 +1,83 @@
+{
+  "id": "S16",
+  "nombre": "Bauhaus geométrico",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "titulo",
+      "etiqueta": "Título",
+      "defecto": "Forma y función",
+      "max": 15
+    },
+    {
+      "id": "palabra1",
+      "etiqueta": "Palabra 1",
+      "defecto": "círculo",
+      "max": 9
+    },
+    {
+      "id": "palabra2",
+      "etiqueta": "Palabra 2",
+      "defecto": "cuadrado",
+      "max": 9
+    },
+    {
+      "id": "palabra3",
+      "etiqueta": "Palabra 3",
+      "defecto": "triángulo",
+      "max": 9
+    },
+    {
+      "id": "palabra4",
+      "etiqueta": "Palabra 4",
+      "defecto": "arco",
+      "max": 9
+    }
+  ],
+  "paleta": {
+    "fondo": "#EFE6D2",
+    "tinta": "#111111",
+    "acento": "#D62828",
+    "segundo": "#1D4E89",
+    "superficie": "#E3D8C0"
+  },
+  "fuentes": [
+    "Archivo Black"
+  ],
+  "rasgos": [
+    "Retícula visible y piezas grandes que llenan el mundo",
+    "Módulos que giran 90° y crecen desde su centro",
+    "Palabras que suben por máscara, una por fila",
+    "Rojo, azul y amarillo sobre crema (el amarillo es fijo)"
+  ],
+  "sonidos": [
+    {
+      "t": 0.5,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 0.85,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 1.2,
+      "sonido": "clic",
+      "ganancia": -16
+    },
+    {
+      "t": 1.55,
+      "sonido": "clic",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}

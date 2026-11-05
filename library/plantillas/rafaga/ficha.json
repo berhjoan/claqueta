@@ -1,0 +1,86 @@
+{
+  "id": "rafaga",
+  "nombre": "Ráfaga de estilos",
+  "duracion": 4,
+  "variables": [
+    {
+      "id": "lista",
+      "etiqueta": "Miniaturas en orden (ids del catálogo, separados por comas)",
+      "defecto": "S21,L-microgame,S37,L-satellite-briefing,S30,S25,S08,L-backrooms,S40,L-watercolor,S33,S04",
+      "max": 900
+    },
+    {
+      "id": "paradas",
+      "etiqueta": "Paradas con nombre (ids de la lista)",
+      "defecto": "S40,S04",
+      "max": 200
+    },
+    {
+      "id": "cadencia",
+      "etiqueta": "Cuadros por miniatura",
+      "defecto": "2",
+      "max": 2
+    },
+    {
+      "id": "pausa",
+      "etiqueta": "Segundos que dura una parada",
+      "defecto": "0.5",
+      "max": 4
+    },
+    {
+      "id": "mosaico",
+      "etiqueta": "Mosaico inicial: todo, no, o una lista de ids",
+      "defecto": "todo",
+      "max": 900
+    },
+    {
+      "id": "etiqueta",
+      "etiqueta": "Palabra del contador",
+      "defecto": "estilos",
+      "max": 12
+    },
+    {
+      "id": "carpeta",
+      "etiqueta": "Carpeta de las miniaturas",
+      "defecto": "assets/thumbs",
+      "max": 80
+    }
+  ],
+  "paleta": {
+    "fondo": "#121212",
+    "tinta": "#FFFFFF",
+    "acento": "#FFD166",
+    "segundo": "#9A9A9A",
+    "superficie": "#1E1E1E"
+  },
+  "fuentes": [
+    "Sora",
+    "JetBrains Mono"
+  ],
+  "rasgos": [
+    "Mosaico del catálogo con contador",
+    "Volteo a la cadencia pedida, en cuadros",
+    "Paradas con nombre y familia",
+    "Lista, paradas y carpeta por variable"
+  ],
+  "sonidos": [
+    {
+      "t": 0.3,
+      "sonido": "golpe",
+      "ganancia": -12
+    },
+    {
+      "t": 1.3,
+      "sonido": "barrido",
+      "ganancia": -16
+    }
+  ],
+  "origen": "propia",
+  "licencia": "MIT",
+  "probado": {
+    "motor": "hyperframes@0.9.9",
+    "check": "0 errores",
+    "render": true,
+    "fecha": "2026-11-05"
+  }
+}
