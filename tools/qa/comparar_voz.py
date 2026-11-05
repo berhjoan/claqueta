@@ -61,6 +61,8 @@ def main():
     p.add_argument("--contexto", help="Texto que orienta al transcriptor para confirmar una palabra rara")
     a = p.parse_args()
     guion = sin_cifras([w for w in Path(a.guion).read_text(encoding="utf-8").split() if normal(w)])
+    if a.contexto and len(a.contexto.split()) > 12:
+        sys.exit("Error: --contexto es para una palabra rara, en una frase corta. Con el guion entero, el transcriptor copia lo esperado o se confunde, y la comparación no sirve.")
     oido = sin_cifras([w[0] for w in transcribir(a.audio, a.modelo, a.contexto)])
     x, y = [normal(w) for w in guion], [normal(w) for w in oido]
     faltan, sobran = [], []

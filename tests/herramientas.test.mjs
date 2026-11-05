@@ -389,3 +389,43 @@ except SystemExit as e:
   assert.equal(r.status, 0, r.stderr);
   assert.deepEqual(r.stdout.trim().split(/\r?\n/), ["0.5-2.0", "2.5-4.0,9-9.5", "0.5-2.0", "sale True", "sale True"]);
 });
+
+test("la voz entra en los créditos con su licencia, y pide atribución si la exige", { skip: !python && "falta Python" }, () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), "creditos-"));
+  fs.mkdirSync(path.join(d, "assets"), { recursive: true });
+  const creditos = (motor, voz) => {
+    fs.writeFileSync(path.join(d, "assets", "tiempos.json"), JSON.stringify({ motor, nombre_voz: voz, dur: 8 }));
+    const codigo = `import sys, json, importlib.util as u
+from pathlib import Path
+s = u.spec_from_file_location("e", "tools/entrega.py"); m = u.module_from_spec(s); sys.modules["e"] = m; s.loader.exec_module(m)
+sys.stdout.reconfigure(encoding="utf-8")
+print(json.dumps(m.escribir_creditos(Path(sys.argv[1]), "T", Path(sys.argv[1]) / "C.md")))`;
+    const r = correr(python, ["-c", codigo, d]);
+    assert.equal(r.status, 0, r.stderr);
+    return { info: JSON.parse(r.stdout.trim().split(/\r?\n/).at(-1)), texto: fs.readFileSync(path.join(d, "C.md"), "utf8") };
+  };
+  const conCredito = creditos("piper", "es_AR-daniela-high");
+  assert.equal(conCredito.info.exigen_atribucion, 1);
+  assert.match(conCredito.texto.split("## Contenido generado")[0], /es_AR-daniela-high.*CC BY-SA 4\.0/);
+  const libre = creditos("kokoro", "em_alex");
+  assert.equal(libre.info.exigen_atribucion, 0);
+  assert.match(libre.texto, /licencia: Apache-2\.0/);
+});
+
+test("la licencia de cada voz es la misma en los créditos y en el panel", async () => {
+  const { voces } = await import("../data/voces.js");
+  const texto = fs.readFileSync("tools/entrega.py", "utf8");
+  for (const v of voces.filter((x) => x.motor === "piper")) {
+    const fila = `"piper:${v.voz}": ("${v.licencia.split(",")[0]}", ${/crédito/.test(v.licencia) ? "True" : "False"})`;
+    assert.ok(texto.includes(fila), `falta en LICENCIAS_VOZ: ${fila}`);
+  }
+});
+
+test("el contexto de la comparación de voz es para una palabra, no para el guion", { skip: !python && "falta Python" }, () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), "contexto-"));
+  fs.writeFileSync(path.join(d, "g.txt"), "Hola");
+  const largo = "una dos tres cuatro cinco seis siete ocho nueve diez once doce trece";
+  const r = correr(python, ["tools/qa/comparar_voz.py", "--audio", path.join(d, "no-hace-falta.wav"), "--guion", path.join(d, "g.txt"), "--contexto", largo]);
+  assert.notEqual(r.status, 0);
+  assert.match(r.stderr, /--contexto es para una palabra rara/);
+});

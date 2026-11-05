@@ -178,6 +178,25 @@ def familias_usadas(proyecto):
     return res, True
 
 
+# Licencia de la voz según su motor. La misma tabla está en data/voces.js y en tools/tts/README.md; tests/revision.test.mjs vigila que no se separen.
+LICENCIAS_VOZ = {
+    "piper:es_MX-claude-high": ("Apache-2.0", False),
+    "piper:es_MX-ald-medium": ("Unlicense", False),
+    "piper:es_AR-daniela-high": ("CC BY-SA 4.0", True),
+    "piper:es_ES-davefx-medium": ("CC0", False),
+    "piper:es_ES-sharvard-medium": ("CC BY 3.0", True),
+    "kokoro": ("Apache-2.0", False),
+    "pocket": ("modelo CC BY 4.0, con crédito a Kyutai", True),
+    "edge": ("servicio de Microsoft, sin licencia pública para el audio: mira sus términos si es un uso comercial", False),
+}
+
+
+def licencia_voz(tiempos):
+    """(licencia, exige crédito) de la voz de assets/tiempos.json, o (None, False) si es grabada o no se conoce."""
+    motor, voz = tiempos.get("motor"), tiempos.get("nombre_voz")
+    return LICENCIAS_VOZ.get(f"{motor}:{voz}") or LICENCIAS_VOZ.get(motor) or (None, False)
+
+
 def licencia_ofl(archivo):
     return "SIL Open Font License 1.1" if archivo and archivo.startswith("OFL") else (archivo or "licencia sin identificar")
 
@@ -190,6 +209,9 @@ def escribir_creditos(proyecto, titulo, destino):
     # 1. Atribución obligatoria
     L.append("## Atribución obligatoria\n")
     exigen = [c for c in (creditos or []) if c.get("credito_necesario")]
+    lic_voz, voz_pide = licencia_voz(tiempos)
+    if voz_pide:
+        exigen = [{"credito": f"Voz: `{tiempos.get('nombre_voz')}`, motor {tiempos.get('motor')}. Licencia: {lic_voz}."}] + exigen
     if exigen:
         L.append("Estas licencias piden crédito. Pega estas líneas en la descripción de cada publicación:\n")
         for c in exigen:
@@ -221,7 +243,7 @@ def escribir_creditos(proyecto, titulo, destino):
     voz_gen = bool(tiempos) and tiempos.get("motor") not in (None, "grabada") and (tiempos.get("motor") in MOTORES_GENERADOS or tiempos.get("motor"))
     if voz_gen:
         generada.append("voz")
-        L.append(f"- **Voz generada** con el motor `{tiempos.get('motor')}`, voz `{tiempos.get('nombre_voz', 'n/d')}`. No es una persona hablando: Instagram, YouTube y TikTok piden declarar el contenido sintético.")
+        L.append(f"- **Voz generada** con el motor `{tiempos.get('motor')}`, voz `{tiempos.get('nombre_voz', 'n/d')}`{f' (licencia: {lic_voz})' if lic_voz else ''}. No es una persona hablando: Instagram, YouTube y TikTok piden declarar el contenido sintético.")
     elif tiempos:
         L.append(f"- Voz grabada (`{tiempos.get('nombre_voz', 'n/d')}`).")
     else:

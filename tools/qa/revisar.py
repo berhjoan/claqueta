@@ -684,7 +684,7 @@ def cuadro(ruta, t, salida, ancho=540):
 def preguntas(hoja, hoja_planos, mirar):
     h = rel(hoja) if hoja else "la hoja de cuadros"
     p = [
-        f"En {h}: ¿el sujeto de cada plano ocupa al menos el 40 % del cuadro, o hay planos con un objeto pequeño o pegado a un borde?",
+        f"En {h}: ¿el sujeto de cada plano (o su texto, si es un plano de texto) ocupa al menos el 40 % del cuadro, o hay planos con algo pequeño o pegado a un borde?",
         "¿Hay algo cortado en los bordes: texto, sujeto, logo o subtítulo? Mira el borde de cada cuadro, no el centro.",
         "¿Las tildes, la ñ y los signos ¿ ¡ están completos en cada texto en pantalla? Abre 3 cuadros con texto a tamaño completo: ffmpeg -ss SEGUNDO -i video -frames:v 1 cuadro.png.",
         "¿Hay contraste suficiente entre cada texto y su fondo? Busca texto claro sobre fondo claro y color sobre el mismo color.",
