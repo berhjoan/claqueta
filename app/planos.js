@@ -60,9 +60,18 @@ export function generarPlanos(v) {
     if (cortes < maxCortes) { cortes += 1; return t; }
     return otras[i % otras.length];
   };
+  // Lo que se compara se ve con la misma cámara, pero solo en la unión: en una pieza larga, el resto de cada parte conserva su movimiento.
+  const partes = est?.mismaCamara ?? [];
+  const enUnion = (i) => {
+    const k = partes.indexOf(compasDe[i]);
+    if (k < 0) return false;
+    if (k === 0) return compasDe[i + 1] !== compasDe[i];
+    if (k === partes.length - 1) return compasDe[i - 1] !== compasDe[i];
+    return true;
+  };
   const planos = nombres.map((titulo, i) => ({
     id: nuevoId(), titulo, texto: "", dur: redondear(durs[i]),
-    cam: est?.mismaCamara?.includes(compasDe[i]) ? "fija" : movs[i % movs.length], tr: i === nombres.length - 1 ? "corte" : salida(i), nota: "",
+    cam: enUnion(i) ? "fija" : movs[i % movs.length], tr: i === nombres.length - 1 ? "corte" : salida(i), nota: "",
   }));
   // Ajusta el redondeo para que la suma sea exacta.
   const dif = redondear(total - planos.reduce((a, p) => a + p.dur, 0));

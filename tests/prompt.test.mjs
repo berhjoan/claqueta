@@ -298,9 +298,10 @@ test("$DUR sale de donde termina la última palabra, no del largo del archivo", 
 test("mito y verdad, y antes y después, conservan la misma cámara en sus tres partes", () => {
   for (const [id, partes] of [["mito", ["Lo que se cree", "Se borra", "La verdad"]], ["antes", ["Antes", "El cambio", "Después"]]]) {
     const { planos } = armar({ "guion.estructura": id, "entrega.duracion": 20 });
-    const elegidos = planos.filter((p) => partes.some((c) => p.titulo.startsWith(c)));
-    assert.ok(elegidos.length >= 3, `${id}: faltan partes`);
-    assert.deepEqual([...new Set(elegidos.map((p) => p.cam))], ["fija"], `${id}: cambia la cámara`);
+    const de = (c) => planos.filter((p) => p.titulo.startsWith(c));
+    assert.equal(de(partes[0]).at(-1).cam, "fija", `${id}: cambia la cámara al llegar a la unión`);
+    assert.ok(de(partes[1]).every((p) => p.cam === "fija"), `${id}: cambia la cámara en el cambio`);
+    assert.equal(de(partes[2])[0].cam, "fija", `${id}: cambia la cámara al salir de la unión`);
   }
 });
 
@@ -334,4 +335,15 @@ test("Kokoro avisa de su trampa con «IA», y las demás voces no", () => {
   const con = texto(armar({ "sonido.voz": "kokoro:em_alex" }), "es");
   assert.ok(con.includes("con Kokoro, el modelo `base` oye «ella»"));
   assert.ok(!texto(armar(), "es").includes("con Kokoro, el modelo `base`"));
+});
+
+test("en una pieza larga, la misma cámara queda solo en la unión del mito con la verdad", () => {
+  const { planos } = armar({ "guion.estructura": "mito", "entrega.duracion": 60 });
+  const de = (c) => planos.filter((p) => p.titulo.startsWith(c));
+  assert.ok(de("Lo que se cree").length > 1 && de("La verdad").length > 1, "esta prueba necesita varias tomas por parte");
+  assert.equal(de("Lo que se cree").at(-1).cam, "fija");
+  assert.ok(de("Se borra").every((p) => p.cam === "fija"));
+  assert.equal(de("La verdad")[0].cam, "fija");
+  const seguidos = planos.reduce((m, p) => { m.ahora = p.cam === "fija" ? m.ahora + p.dur : 0; m.max = Math.max(m.max, m.ahora); return m; }, { ahora: 0, max: 0 }).max;
+  assert.ok(seguidos < 39, `cámara fija seguida durante ${seguidos} s`);
 });
