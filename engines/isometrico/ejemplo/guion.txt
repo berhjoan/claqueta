@@ -1,0 +1,1 @@
+Llega un mensaje de un cliente. La IA lo lee, busca el pedido y prepara la respuesta. Tú revisas y apruebas. Así de simple se ve un proceso con IA.
