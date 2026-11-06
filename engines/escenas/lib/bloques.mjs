@@ -40,9 +40,16 @@ function ponerLineas(c, o) {
     const estilo = `left:${f(x)}px;top:${f(yy)}px;font-family:'${fam}';font-weight:${peso};font-size:${f(tam, 1)}px;letter-spacing:${track}em;color:${color}`;
     if (c.piel.chips) {
       const r = c.r;
-      const palabras = l.split(/\s+/).map((w, q) => {
-        const es = acentos.has(norm(w));
-        const hora = horas ? horas[nPal++] : null;
+      // Un signo suelto («·», «—», «/») va pegado a la palabra anterior: en un recorte propio caía oscuro, uno de cada tres,
+      // y se leía como una muesca negra («28 oct · fingerprint.com», 2026-11-06). Cada grupo gasta las horas de sus palabras.
+      const grupos = [];
+      for (const w of l.split(/\s+/)) {
+        if (grupos.length && !/[\p{L}\p{N}]/u.test(w)) { grupos.at(-1).texto += ` ${w}`; grupos.at(-1).n++; } else grupos.push({ texto: w, primera: w, n: 1 });
+      }
+      const palabras = grupos.map(({ texto: w, primera, n }, q) => {
+        const es = acentos.has(norm(primera));
+        const hora = horas ? horas[nPal] : null;
+        nPal += n;
         if (hora !== null && q === 0) c.sonar("entra", hora + 0.02, { g: -18 });
         const fondo = es ? c.pal.acento : q % 3 === 2 ? c.pal.superficie : c.pal.tinta, tintaBase = es ? c.pal.fondo : q % 3 === 2 ? c.pal.tinta : c.pal.fondo;
         const tinta = contraste(tintaBase, fondo) >= 4.5 ? tintaBase : [c.pal.fondo, c.pal.tinta, "#111111", "#FFFFFF"].sort((a, b) => contraste(b, fondo) - contraste(a, fondo))[0];

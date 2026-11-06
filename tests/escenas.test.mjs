@@ -391,6 +391,20 @@ test("en collage el texto cabe con su relleno, también con muchas palabras por 
   assert.ok(a.lineas.length * a.px * 1.2 <= 700);
 });
 
+test("en collage un signo suelto va pegado a la palabra anterior, no en un recorte propio", () => {
+  // Pasó de verdad (2026-11-06): «28 oct · fingerprint.com» dejó el «·» solo en un recorte oscuro, que se leía como una muesca negra.
+  const d = proyecto({ dur: 6, piel: "collage", paleta: "bg", planos: [{ tipo: "pasos", items: [
+    { texto: "Instinct", detalle: "28 oct · fingerprint.com" }, { texto: "Meta Muse", detalle: "6 oct — fingerprint.com" },
+  ] }] });
+  const r = correr(d);
+  assert.equal(r.status, 0, r.stderr);
+  const html = fs.readdirSync(path.join(d, "compositions")).filter((n) => /^p\d+\.html$/.test(n)).map((n) => leer(d, `compositions/${n}`)).join("");
+  const chips = [...html.matchAll(/<span class="chip"[^>]*>([^<]*)<\/span>/g)].map((m) => m[1]);
+  assert.ok(chips.length > 4, chips.join(" | "));
+  assert.ok(chips.every((t) => /[\p{L}\p{N}]/u.test(t)), `recorte sin letras: ${chips.join(" | ")}`);
+  assert.ok(chips.includes("oct ·") && chips.includes("oct —"), chips.join(" | "));
+});
+
 test("el cierre calla el subtítulo solo mientras se dice lo que ya está escrito", () => {
   const texto = "Así que el pan no se pone duro por perder humedad: se pone duro porque su almidón se reacomoda.";
   const palabras = vozDe(texto);
