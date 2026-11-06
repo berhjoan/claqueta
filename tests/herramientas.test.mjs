@@ -57,6 +57,41 @@ test("efectos y mezcla dejan el nivel objetivo", { skip: !conAudio && "faltan de
   assert.ok(j.pico_verdadero <= -2.5, `pico ${j.pico_verdadero}`);
 });
 
+test("en un silencio calla también la respiración de la voz, pero nunca una frase", { skip: !conAudio && "faltan dependencias de audio" }, () => {
+  // Pasó de verdad (2026-11-06): el limitador subió la respiración de una pausa a -45 dBFS y el silencio no contó como real.
+  const SR = 48000;
+  const voz = new Int16Array(SR * 3);
+  let semilla = 7;
+  const ruido = () => { semilla = (semilla * 1103515245 + 12345) % 2147483648; return semilla / 1073741824 - 1; };
+  for (let i = 0; i < voz.length; i++) {
+    const t = i / SR;
+    const habla = t < 1 || (t >= 1.6 && t < 2.6);
+    const x = habla ? 0.14 * Math.sin(2 * Math.PI * 220 * t) * (0.6 + 0.4 * Math.sin(2 * Math.PI * 3 * t)) : t < 1.6 ? 0.006 * ruido() : 0;
+    voz[i] = Math.round(x * 32767);
+  }
+  const wav = path.join(dir, "voz-respira.wav");
+  const cab = Buffer.alloc(44);
+  cab.write("RIFF", 0); cab.writeUInt32LE(36 + voz.byteLength, 4); cab.write("WAVEfmt ", 8); cab.writeUInt32LE(16, 16);
+  cab.writeUInt16LE(1, 20); cab.writeUInt16LE(1, 22); cab.writeUInt32LE(SR, 24); cab.writeUInt32LE(SR * 2, 28);
+  cab.writeUInt16LE(2, 32); cab.writeUInt16LE(16, 34); cab.write("data", 36); cab.writeUInt32LE(voz.byteLength, 40);
+  fs.writeFileSync(wav, Buffer.concat([cab, Buffer.from(voz.buffer)]));
+  const salida = path.join(dir, "mez-respira.wav");
+  // 1.05-1.55 es la pausa con respiración; 0.2-0.6 es un tramo puesto a mano sobre una frase.
+  const r = correr(python, ["tools/audio/mezcla.py", "--voz", wav, "--dur", "3", "--salida", salida, "--silencios", "1.05-1.55,0.2-0.6"]);
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  assert.deepEqual(JSON.parse(r.stdout.trim().split("\n").pop()).voz_callada, ["1.05-1.55"]);
+  const b = fs.readFileSync(salida);
+  const datos = b.indexOf("data") + 8;
+  const canales = b.readUInt16LE(22);
+  const nivel = (t0, t1) => {
+    let suma = 0, k = 0;
+    for (let i = Math.round(t0 * SR); i < Math.round(t1 * SR); i++, k++) { const v = b.readInt16LE(datos + i * 2 * canales) / 32768; suma += v * v; }
+    return 10 * Math.log10(suma / k + 1e-12);
+  };
+  assert.ok(nivel(1.12, 1.48) < -50, `la pausa quedó en ${nivel(1.12, 1.48).toFixed(1)} dBFS`);
+  assert.ok(nivel(0.3, 0.5) > -30, "la frase bajo el tramo puesto a mano tiene que seguir sonando");
+});
+
 test("el motor de pizarra entrega eventos de sonido", () => {
   const salida = path.join(dir, "eventos.json");
   const r = correr(process.execPath, ["engines/pizarra/eventos.mjs", "engines/pizarra/film.js", salida]);

@@ -12,7 +12,8 @@ efectos.json es una lista de golpes. "pico" pone el punto más fuerte del sonido
 Una capa continua puede bajar mientras se habla con "bajo_voz": -24. La semilla da otra toma del mismo sonido.
 
 - nivel-musica: decibeles de la música por debajo de la voz mientras se habla. Sin voz, sube 6 dB.
-- silencios: tramos donde callan música y efectos. Sirven para que la siguiente frase pese.
+- silencios: tramos donde callan música y efectos. Sirven para que la siguiente frase pese. La respiración de la voz
+  también calla ahí, salvo que el tramo caiga sobre una frase: esa nunca se corta.
 - Usa "pico" con un cuadro más que el segundo de su imagen: primero se ve y luego se oye.
 
 Sale en -14 LUFS con pico verdadero de -3 dBTP como máximo. Imprime lo medido.
@@ -80,6 +81,27 @@ def presencia(voz, n):
     return salida
 
 
+def callar_voz(voz, lista, n, umbral_db=-35.0):
+    """Curva 0-1 que calla la voz dentro de cada silencio, dejando 30 ms a cada lado, solo si ahí ya casi no suena.
+
+    La respiración de una pausa queda unos 40 dB bajo la frase, pero el limitador final la sube: en una pieza real llegó
+    a -45 dBFS y el silencio no contó como real (2026-11-06). Si un tramo puesto a mano cae sobre una frase, no la corta.
+    """
+    curva = np.ones(n, np.float32)
+    ventana = int(0.02 * SR)
+    callados = []
+    for t0, t1 in lista:
+        j0, j1 = int((t0 + 0.03) * SR), min(n, int((t1 - 0.03) * SR))
+        if j1 - j0 < ventana:
+            continue
+        x = voz[j0:j1].mean(1)
+        nivel = 20 * np.log10(float(np.sqrt(np.maximum(uniform_filter1d(x * x, size=ventana), 0)).max()) + 1e-9)
+        if nivel < umbral_db:
+            curva[j0:j1] = 0.0
+            callados.append(f"{t0:g}-{t1:g}")
+    return uniform_filter1d(curva, size=ventana), callados
+
+
 def tramos(texto):
     salida = []
     for pieza in filter(None, (texto or "").split(",")):
@@ -122,6 +144,7 @@ def main():
         i0, i1 = int(t0 * SR), min(n, int(t1 * SR))
         silencio[i0:i1] = 0.0
     silencio = uniform_filter1d(silencio, size=int(0.04 * SR))
+    callado, informe["voz_callada"] = callar_voz(voz, tramos(a.silencios), n)
 
     if a.musica:
         m = ajustar(leer(a.musica), n)
@@ -157,7 +180,7 @@ def main():
                 x = x * (10 ** (float(ev["bajo_voz"]) * curva[s : s + len(x)] / 20))[:, None]
             mezcla[s : s + len(x)] += x * silencio[s : s + len(x), None]
             colocados.append({"efecto": ev.get("sonido") or Path(ev["archivo"]).name, "pico_s": round((s + int(np.argmax(np.abs(x).max(1)))) / SR, 3)})
-    mezcla = mezcla + voz
+    mezcla = mezcla + voz * callado[:, None]
 
     mezcla, i, tp = nivelar(mezcla, SR, a.lufs, a.techo)
     Path(a.salida).parent.mkdir(parents=True, exist_ok=True)
